@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Gavel } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export function PopupModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,42 +52,77 @@ export function PopupModal() {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
+            className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden border border-white/20"
           >
             {/* Header Image Area */}
-            <div className="h-32 bg-gradient-to-br from-primary to-orange-400 relative flex items-center justify-center">
-              <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')] bg-cover bg-center mix-blend-overlay" />
-              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg relative z-10">
-                <Gavel className="w-8 h-8 text-primary" />
+            <div className="h-48 relative group overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                alt="Japan Auction Preview"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent" />
+              
+              {/* Badge */}
+              <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg animate-bounce">
+                New Feature
               </div>
+
               <button
                 onClick={() => setIsOpen(false)}
-                className="absolute top-4 right-4 text-white/80 hover:text-white bg-black/20 hover:bg-black/40 rounded-full p-1.5 transition-colors z-10"
+                className="absolute top-4 right-4 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-full p-2 transition-all z-10"
               >
                 <X className="w-5 h-5" />
               </button>
+
+              <div className="absolute bottom-4 left-6 right-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center border border-white/20">
+                    <Gavel className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-display font-black text-2xl text-white leading-none">Japan Live Auction</h3>
+                    <p className="text-white/70 text-xs mt-1 font-medium">Direct Bidding Experience</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Body */}
-            <div className="p-8 text-center">
-              <h3 className="font-display font-bold text-2xl text-dark mb-3">New Update</h3>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                Now offering a live Japan auction bidding experience! Get real-time access to thousands
-                of vehicles directly from Japanese auction houses.
-              </p>
+            <div className="p-8">
+              <div className="space-y-4 mb-8">
+                <p className="text-gray-600 leading-relaxed font-medium">
+                  We've just integrated <span className="text-dark font-bold">Live Auction Access</span>. 
+                  Now you can bid on thousands of premium vehicles directly from Japan's most exclusive auction houses in real-time.
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { label: 'Real-time Bidding', icon: '⚡' },
+                    { label: 'Full History Reports', icon: '📋' },
+                    { label: 'Direct Import', icon: '🚢' },
+                    { label: 'Verified Condition', icon: '✅' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 text-[11px] font-bold text-gray-400 bg-gray-50 px-3 py-2 rounded-lg">
+                      <span>{item.icon}</span>
+                      <span>{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={handleExplore}
-                  className="w-full bg-primary hover:bg-primary-hover text-white font-semibold py-3.5 rounded-xl transition-colors shadow-lg shadow-primary/25"
+                  className="flex-1 bg-primary hover:bg-primary-hover text-white font-black text-xs uppercase tracking-widest py-4 rounded-xl transition-all shadow-xl shadow-primary/25 active:scale-[0.98]"
                 >
-                  Explore Now
+                  Start Exploring
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3.5 rounded-xl transition-colors"
+                  className="px-8 bg-gray-100 hover:bg-gray-200 text-gray-500 font-black text-xs uppercase tracking-widest py-4 rounded-xl transition-all active:scale-[0.98]"
                 >
-                  Close
+                  Maybe Later
                 </button>
               </div>
             </div>

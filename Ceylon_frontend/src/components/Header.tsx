@@ -43,8 +43,8 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-2' : 'bg-white border-b border-gray-100 py-4'
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+        isScrolled ? 'bg-white shadow-lg py-2' : 'bg-white border-b border-gray-100 py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,13 +69,13 @@ export function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden xl:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-4 lg:gap-8">
             {navLinks.map((link) =>
               link.path ? (
                 <Link
                   key={link.name}
                   href={link.path}
-                  className={`text-[13px] font-bold tracking-wider transition-colors hover:text-primary ${
+                  className={`text-[11px] lg:text-[13px] font-bold tracking-wider transition-colors hover:text-primary ${
                     pathname === link.path ? 'text-primary' : 'text-gray-700'
                   }`}
                 >
@@ -85,7 +85,7 @@ export function Header() {
                 <button
                   key={link.name}
                   onClick={() => handleNavClick(link.hash!)}
-                  className="text-[13px] font-bold tracking-wider text-gray-700 hover:text-primary transition-colors"
+                  className="text-[11px] lg:text-[13px] font-bold tracking-wider text-gray-700 hover:text-primary transition-colors"
                 >
                   {link.name}
                 </button>
@@ -94,7 +94,7 @@ export function Header() {
           </nav>
 
           {/* Right Actions */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             <div className="flex items-center gap-2 text-dark font-bold">
               <Phone className="w-4 h-4 text-primary" />
               <span className="text-sm">077 123 4567</span>
@@ -103,7 +103,7 @@ export function Header() {
               href="https://wa.me/94771234567"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20 uppercase"
+              className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 xl:px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20 uppercase"
             >
               <MessageCircle className="w-4 h-4" />
               WhatsApp Us

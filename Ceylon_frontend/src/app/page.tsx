@@ -6,13 +6,13 @@ import { LiveAuction } from '@/components/home/LiveAuction';
 import { WhyChooseUs } from '@/components/home/WhyChooseUs';
 import { Inquiry } from '@/components/home/Inquiry';
 import { PopupModal } from '@/components/PopupModal';
-import { FloatingIcons } from '@/components/FloatingIcons';
+import { FloatingActionButton } from '@/components/FloatingActionButton';
 
 export default function HomePage() {
   return (
     <main className="w-full">
       <PopupModal />
-      <FloatingIcons />
+      <FloatingActionButton />
       <Hero />
       <Features />
       <HowItWorks />

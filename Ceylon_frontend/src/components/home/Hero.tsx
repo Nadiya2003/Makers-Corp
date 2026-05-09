@@ -25,10 +25,10 @@ export function Hero() {
       {/* Background Image - Mount Fuji & City Skyline */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-          alt="Mount Fuji and Tokyo Skyline"
+          src="https://pegasusels.com/wp-content/uploads/2023/03/81.jpg"
+          alt="Premium Japanese Vehicle Background"
           fill
-          className="object-cover object-center opacity-40 blur-[2px] scale-105"
+          className="object-cover object-center opacity-40 blur-[5px] scale-105"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white" />

@@ -63,7 +63,7 @@ export function PopupModal() {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent" />
-              
+
               {/* Badge */}
               <div className="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg animate-bounce">
                 New Feature
@@ -93,15 +93,15 @@ export function PopupModal() {
             <div className="p-8">
               <div className="space-y-4 mb-8">
                 <p className="text-gray-600 leading-relaxed font-medium">
-                  We've just integrated <span className="text-dark font-bold">Live Auction Access</span>. 
+                  We've just integrated <span className="text-dark font-bold">Live Auction Access</span>.
                   Now you can bid on thousands of premium vehicles directly from Japan's most exclusive auction houses in real-time.
                 </p>
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { label: 'Real-time Bidding', icon: '⚡' },
-                    { label: 'Full History Reports', icon: '📋' },
-                    { label: 'Direct Import', icon: '🚢' },
-                    { label: 'Verified Condition', icon: '✅' },
+                    /*  { label: 'Real-time Bidding', icon: '⚡' },
+                      { label: 'Full History Reports', icon: '📋' },
+                      { label: 'Direct Import', icon: '🚢' },
+                      { label: 'Verified Condition', icon: '✅' },*/
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2 text-[11px] font-bold text-gray-400 bg-gray-50 px-3 py-2 rounded-lg">
                       <span>{item.icon}</span>

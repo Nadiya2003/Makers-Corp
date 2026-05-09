@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'blogs.worldbank.org',
       },
+      {
+        protocol: 'https',
+        hostname: 'pegasusels.com',
+      },
     ],
   },
 };

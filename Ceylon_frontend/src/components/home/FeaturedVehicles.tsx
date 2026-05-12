@@ -1,49 +1,43 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Fuel, Gauge, ArrowRight } from 'lucide-react';
+import { Calendar, Fuel, Gauge, ArrowRight, Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import axios from 'axios';
+
+interface Vehicle {
+  _id: string;
+  name: string;
+  image: string;
+  year: string;
+  fuel: string;
+  mileage: string;
+  price: string;
+}
 
 export function FeaturedVehicles() {
-  const vehicles = [
-    {
-      id: 1,
-      name: 'Toyota Land Cruiser Prado',
-      image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      year: '2023',
-      fuel: 'Petrol',
-      mileage: '4,500 km',
-      price: '38,500,000',
-    },
-    {
-      id: 2,
-      name: 'Honda Vezel e:HEV',
-      image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      year: '2022',
-      fuel: 'Hybrid',
-      mileage: '12,000 km',
-      price: '14,200,000',
-    },
-    {
-      id: 3,
-      name: 'Suzuki Swift RS',
-      image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      year: '2021',
-      fuel: 'Petrol',
-      mileage: '28,000 km',
-      price: '8,500,000',
-    },
-    {
-      id: 4,
-      name: 'Toyota CH-R G-T',
-      image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      year: '2020',
-      fuel: 'Petrol',
-      mileage: '35,000 km',
-      price: '12,800,000',
-    },
-  ];
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/vehicles?featured=true`);
+        if (response.data.success) {
+          setVehicles(response.data.data);
+        }
+      } catch (err) {
+        console.error('Error fetching vehicles:', err);
+        setError('Failed to load featured vehicles.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVehicles();
+  }, []);
 
   const scrollToInquiry = () => {
     document.getElementById('inquiry')?.scrollIntoView({ behavior: 'smooth' });
@@ -68,10 +62,26 @@ export function FeaturedVehicles() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {vehicles.map((vehicle, index) => (
-            <motion.div
-              key={vehicle.id}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20 w-full col-span-full">
+            <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
+            <p className="text-gray-500">Loading premium selection...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-20 w-full col-span-full">
+            <p className="text-red-500 mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="text-primary font-semibold hover:underline"
+            >
+              Try again
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {vehicles.map((vehicle, index) => (
+              <motion.div
+                key={vehicle._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -124,8 +134,9 @@ export function FeaturedVehicles() {
                 </div>
               </div>
             </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         <button
           onClick={scrollToInquiry}

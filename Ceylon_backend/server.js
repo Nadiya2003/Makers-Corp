@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 
 const inquiryRoutes = require('./routes/inquiryRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const vehicleRoutes = require('./routes/vehicleRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.use(morgan('dev'));
 // ─── Routes ──────────────────────────────────────────────────────────────────
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/auth', authRoutes);
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {

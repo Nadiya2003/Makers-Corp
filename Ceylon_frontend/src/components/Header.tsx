@@ -6,7 +6,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X, Phone, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { useSettings } from '@/context/SettingsContext';
+
 export function Header() {
+  const { settings, loading } = useSettings();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -41,6 +44,9 @@ export function Header() {
     { name: 'CONTACT US', path: '/contact' },
   ];
 
+  const siteName = settings?.siteName || 'MAKERS CEYLON';
+  const contactNumber = settings?.footer?.phone || '077 123 4567';
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
@@ -51,16 +57,20 @@ export function Header() {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 z-50">
-            <div className="relative w-10 h-10 flex-shrink-0">
-              <div className="absolute inset-0 bg-primary rounded-full flex items-center justify-center">
-                <div className="w-6 h-6 border-2 border-white rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-white rounded-full" />
+            {settings?.logo ? (
+              <img src={settings.logo} alt={siteName} className="w-10 h-10 object-contain" />
+            ) : (
+              <div className="relative w-10 h-10 flex-shrink-0">
+                <div className="absolute inset-0 bg-primary rounded-full flex items-center justify-center">
+                  <div className="w-6 h-6 border-2 border-white rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-white rounded-full" />
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
             <div className="flex flex-col -gap-1">
               <span className="font-display font-black text-xl tracking-tight text-dark leading-none">
-                MAKERS CEYLON
+                {siteName}
               </span>
               <span className="text-[10px] font-bold text-gray-500 tracking-[0.1em]">
                 IMPORT YOUR DREAM
@@ -97,10 +107,10 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             <div className="flex items-center gap-2 text-dark font-bold">
               <Phone className="w-4 h-4 text-primary" />
-              <span className="text-sm">077 123 4567</span>
+              <span className="text-sm">{contactNumber}</span>
             </div>
             <a
-              href="https://wa.me/94771234567"
+              href={`https://wa.me/94${contactNumber.replace(/\s/g, '').replace(/^0/, '')}`}
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 xl:px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20 uppercase"
@@ -154,9 +164,9 @@ export function Header() {
               )}
               <div className="h-px bg-gray-100 my-2" />
               <div className="flex items-center justify-between p-2">
-                <span className="font-bold text-dark">077 123 4567</span>
+                <span className="font-bold text-dark">{contactNumber}</span>
                 <a
-                  href="https://wa.me/94771234567"
+                  href={`https://wa.me/94${contactNumber.replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold"

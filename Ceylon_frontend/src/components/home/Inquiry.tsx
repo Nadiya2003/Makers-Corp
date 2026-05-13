@@ -5,7 +5,17 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, MessageCircle, Send } from 'lucide-react';
 import axios from 'axios';
 
+import { useSettings } from '@/context/SettingsContext';
+
 export function Inquiry() {
+  const { settings } = useSettings();
+  
+  const contactData = settings?.footer || {
+    phone: '+94 77 123 4567',
+    email: 'info@ceylonimports.lk',
+    address: '123 Import Avenue, Colombo 03, Sri Lanka'
+  };
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -70,7 +80,7 @@ export function Inquiry() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-400 mb-1">Call Us</p>
-                      <p className="font-medium text-lg">+94 77 123 4567</p>
+                      <p className="font-medium text-lg">{contactData.phone}</p>
                     </div>
                   </div>
 
@@ -80,7 +90,7 @@ export function Inquiry() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-400 mb-1">Email Us</p>
-                      <p className="font-medium text-lg">info@ceylonimports.lk</p>
+                      <p className="font-medium text-lg">{contactData.email}</p>
                     </div>
                   </div>
 
@@ -90,17 +100,15 @@ export function Inquiry() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-400 mb-1">Visit Us</p>
-                      <p className="font-medium text-lg leading-relaxed">
-                        123 Import Avenue,
-                        <br />
-                        Colombo 03, Sri Lanka
+                      <p className="font-medium text-lg leading-relaxed whitespace-pre-line">
+                        {contactData.address}
                       </p>
                     </div>
                   </div>
                 </div>
 
                 <a
-                  href="https://wa.me/94771234567"
+                  href={`https://wa.me/94${contactData.phone.replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl font-medium transition-colors w-full justify-center"

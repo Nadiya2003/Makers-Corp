@@ -1,193 +1,162 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { LayoutDashboard, Users, Car, LogOut, Loader2, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { 
+  Users, 
+  Car, 
+  Gavel, 
+  Mail, 
+  TrendingUp, 
+  Clock,
+  ArrowRight,
+  Loader2
+} from 'lucide-react';
 
-export default function AdminPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [inquiries, setInquiries] = useState([]);
-  const [vehicles, setVehicles] = useState([]);
-  const [activeTab, setActiveTab] = useState('inquiries');
+export default function AdminDashboard() {
+  const [data, setData] = useState({
+    vehicles: [],
+    inquiries: [],
+    loading: true
+  });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setIsLoggedIn(true);
-      fetchData(token);
-    }
+    fetchDashboardData();
   }, []);
 
-  const fetchData = async (token: string) => {
+  const fetchDashboardData = async () => {
     try {
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const [inqRes, vehRes] = await Promise.all([
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/inquiries`, config),
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/vehicles`, config)
+      const token = localStorage.getItem('adminToken');
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      
+      const [vRes, iRes] = await Promise.all([
+        fetch(`${apiUrl}/vehicles`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch(`${apiUrl}/inquiries`, { headers: { 'Authorization': `Bearer ${token}` } })
       ]);
-      setInquiries(inqRes.data.data);
-      setVehicles(vehRes.data.data);
-    } catch (err) {
-      console.error('Fetch error:', err);
-      if (axios.isAxiosError(err) && err.response?.status === 401) {
-        handleLogout();
-      }
-    }
-  };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, { email, password });
-      localStorage.setItem('token', res.data.data.token);
-      setIsLoggedIn(true);
-      fetchData(res.data.data.token);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed');
-    } finally {
-      setLoading(false);
-    }
-  };
+      const [vData, iData] = await Promise.all([vRes.json(), iRes.json()]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-  };
-
-  const deleteVehicle = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this vehicle?')) return;
-    try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/vehicles/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      setData({
+        vehicles: vData.success ? vData.data : [],
+        inquiries: iData.success ? iData.data : [],
+        loading: false
       });
-      setVehicles(vehicles.filter((v: any) => v._id !== id));
     } catch (err) {
-      alert('Delete failed');
+      console.error('Failed to fetch dashboard data');
+      setData(prev => ({ ...prev, loading: false }));
     }
   };
 
-  if (!isLoggedIn) {
+  const stats = [
+    { label: 'Total Vehicles', value: data.vehicles.length.toString(), icon: Car, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Live Auctions', value: '0', icon: Gavel, color: 'text-orange-600', bg: 'bg-orange-50' }, // Auctions logic TBD
+    { label: 'Total Inquiries', value: data.inquiries.length.toString(), icon: Mail, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { label: 'Active Listings', value: data.vehicles.filter((v: any) => v.status === 'Available').length.toString(), icon: Users, color: 'text-purple-600', bg: 'bg-purple-50' },
+  ];
+
+  if (data.loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
-          <h1 className="text-2xl font-bold text-center mb-8">Admin Login</h1>
-          {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-6 text-sm">{error}</div>}
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-                placeholder="admin@ceylon.lk"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-                placeholder="••••••••"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2"
-            >
-              {loading ? <Loader2 className="animate-spin" /> : 'Sign In'}
-            </button>
-          </form>
-        </div>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <Loader2 className="w-12 h-12 text-orange-600 animate-spin" />
+        <p className="text-gray-400 font-black uppercase tracking-widest text-[10px]">Assembling Dashboard...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
-      <div className="w-64 bg-dark text-white p-6 flex flex-col">
-        <h2 className="text-xl font-bold mb-10 text-primary">Ceylon Admin</h2>
-        <nav className="space-y-4 flex-1">
-          <button
-            onClick={() => setActiveTab('inquiries')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'inquiries' ? 'bg-primary text-white' : 'hover:bg-white/10'}`}
-          >
-            <Users size={20} /> Inquiries
-          </button>
-          <button
-            onClick={() => setActiveTab('vehicles')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'vehicles' ? 'bg-primary text-white' : 'hover:bg-white/10'}`}
-          >
-            <Car size={20} /> Vehicles
-          </button>
-        </nav>
-        <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 hover:bg-red-500/20 text-red-400 rounded-xl transition-colors mt-auto">
-          <LogOut size={20} /> Logout
-        </button>
+    <div className="space-y-10">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-black text-gray-900 mb-2 uppercase tracking-tighter">Dashboard Overview</h1>
+          <p className="text-gray-500 font-medium">Real-time metrics and operational status.</p>
+        </div>
+        <div className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-100 rounded-2xl shadow-sm">
+           <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
+           <span className="text-xs font-black uppercase tracking-widest text-gray-400">System Online</span>
+        </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-10">
-        <header className="flex justify-between items-center mb-10">
-          <h1 className="text-3xl font-bold text-dark capitalize">{activeTab} Management</h1>
-        </header>
-
-        {activeTab === 'inquiries' ? (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <table className="w-full text-left">
-              <thead className="bg-gray-50 border-b border-gray-100">
-                <tr>
-                  <th className="px-6 py-4 font-semibold">Name</th>
-                  <th className="px-6 py-4 font-semibold">Phone</th>
-                  <th className="px-6 py-4 font-semibold">Vehicle</th>
-                  <th className="px-6 py-4 font-semibold">Message</th>
-                  <th className="px-6 py-4 font-semibold">Date</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {inquiries.map((inq: any) => (
-                  <tr key={inq._id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-medium">{inq.name}</td>
-                    <td className="px-6 py-4">{inq.phone}</td>
-                    <td className="px-6 py-4"><span className="bg-primary/10 text-primary px-2 py-1 rounded-md text-xs font-bold">{inq.vehicle}</span></td>
-                    <td className="px-6 py-4 text-gray-500 text-sm max-w-xs truncate">{inq.message}</td>
-                    <td className="px-6 py-4 text-gray-400 text-sm">{new Date(inq.createdAt).toLocaleDateString()}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {stats.map((stat) => (
+          <div key={stat.label} className="bg-white border border-gray-100 p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-500 group">
+            <div className="flex items-center justify-between mb-6">
+              <div className={`${stat.bg} ${stat.color} p-4 rounded-2xl group-hover:scale-110 transition-transform duration-500`}>
+                <stat.icon size={24} />
+              </div>
+            </div>
+            <h3 className="text-4xl font-black text-gray-900 mb-1 tracking-tighter">{stat.value}</h3>
+            <p className="text-gray-400 text-xs font-black uppercase tracking-widest">{stat.label}</p>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {vehicles.map((veh: any) => (
-              <div key={veh._id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="relative h-40">
-                  <img src={veh.image} alt={veh.name} className="w-full h-full object-cover" />
-                  <button onClick={() => deleteVehicle(veh._id)} className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                    <Trash2 size={16} />
-                  </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        {/* Recent Inquiries */}
+        <div className="bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden shadow-sm flex flex-col">
+          <div className="p-8 border-b border-gray-50 flex items-center justify-between">
+            <h3 className="text-xl font-black text-gray-900 uppercase tracking-tighter">Recent Inquiries</h3>
+            <Link href="/admin/inquiries" className="text-orange-600 text-xs font-black uppercase tracking-widest hover:underline flex items-center gap-2">
+              View All <ArrowRight size={14} />
+            </Link>
+          </div>
+          <div className="divide-y divide-gray-50 flex-grow">
+            {data.inquiries.slice(0, 5).map((inq: any) => (
+              <div key={inq._id} className="p-8 flex items-center gap-6 hover:bg-gray-50 transition-colors">
+                <div className="w-12 h-12 bg-black text-white rounded-2xl flex items-center justify-center font-black text-sm shadow-lg">
+                  {inq.name.charAt(0).toUpperCase()}
                 </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-lg mb-1">{veh.name}</h3>
-                  <p className="text-primary font-bold">LKR {veh.price}</p>
+                <div className="flex-grow">
+                  <h4 className="text-gray-900 font-black text-sm uppercase tracking-tight">{inq.name}</h4>
+                  <p className="text-gray-400 text-[11px] font-bold uppercase truncate max-w-[200px]">Interest: {inq.vehicle}</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest block mb-1">
+                    {new Date(inq.createdAt).toLocaleDateString()}
+                  </span>
+                  <span className="px-3 py-1 bg-orange-600/5 text-orange-600 text-[9px] uppercase font-black tracking-widest rounded-lg border border-orange-600/10">New</span>
                 </div>
               </div>
             ))}
+            {data.inquiries.length === 0 && (
+              <div className="p-20 text-center text-gray-400 font-black uppercase tracking-widest text-[10px]">
+                No recent inquiries.
+              </div>
+            )}
           </div>
-        )}
+        </div>
+
+        {/* Live Auctions Placeholder */}
+        <div className="bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden shadow-sm">
+          <div className="p-8 border-b border-gray-50 flex items-center justify-between">
+            <h3 className="text-xl font-black text-gray-900 uppercase tracking-tighter">Inventory Status</h3>
+            <Link href="/admin/vehicles" className="text-orange-600 text-xs font-black uppercase tracking-widest hover:underline flex items-center gap-2">
+              Manage <ArrowRight size={14} />
+            </Link>
+          </div>
+          <div className="p-10 space-y-8">
+            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100">
+               <div className="flex items-center justify-between mb-4">
+                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Stock Level</span>
+                  <span className="text-sm font-black text-gray-900">{data.vehicles.length} Units</span>
+               </div>
+               <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                  <div className="bg-orange-600 h-full w-[65%]" />
+               </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+               <div className="bg-blue-50/50 p-6 rounded-3xl border border-blue-100">
+                  <p className="text-[9px] font-black text-blue-400 uppercase tracking-widest mb-1">Sold</p>
+                  <p className="text-2xl font-black text-blue-600">{data.vehicles.filter((v: any) => v.status === 'Sold').length}</p>
+               </div>
+               <div className="bg-amber-50/50 p-6 rounded-3xl border border-amber-100">
+                  <p className="text-[9px] font-black text-amber-400 uppercase tracking-widest mb-1">Reserved</p>
+                  <p className="text-2xl font-black text-amber-600">{data.vehicles.filter((v: any) => v.status === 'Reserved').length}</p>
+               </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

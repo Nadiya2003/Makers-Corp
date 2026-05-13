@@ -8,6 +8,8 @@ const inquiryRoutes = require('./routes/inquiryRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const authRoutes = require('./routes/authRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
+const mediaRoutes = require('./routes/mediaRoutes');
 
 const app = express();
 
@@ -15,12 +17,15 @@ const app = express();
 app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000' }));
 app.use(express.json());
 app.use(morgan('dev'));
+app.use('/public', express.static('public'));
 
 // ─── Routes ──────────────────────────────────────────────────────────────────
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/media', mediaRoutes);
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {

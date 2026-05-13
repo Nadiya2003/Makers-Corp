@@ -1,0 +1,63 @@
+const mongoose = require('mongoose');
+
+const siteSettingsSchema = new mongoose.Schema({
+  siteName: { type: String, default: 'Makers Ceylon' },
+  logo: { type: String, default: '' },
+  favicon: { type: String, default: '' },
+  
+  // Header Management
+  header: {
+    navLinks: [
+      { label: { type: String }, url: { type: String } }
+    ],
+    showSearch: { type: Boolean, default: true },
+    contactNumber: { type: String, default: '' }
+  },
+
+  // Footer Management
+  footer: {
+    aboutText: { type: String, default: '' },
+    address: { type: String, default: '' },
+    email: { type: String, default: '' },
+    phone: { type: String, default: '' },
+    socialLinks: [
+      { platform: { type: String }, url: { type: String }, icon: { type: String } }
+    ],
+    copyrightText: { type: String, default: '© 2024 Makers Ceylon. All rights reserved.' }
+  },
+
+  // Homepage Content
+  homepage: {
+    hero: {
+      title: { type: String, default: '' },
+      subtitle: { type: String, default: '' },
+      backgroundImage: { type: String, default: '' },
+      ctaText: { type: String, default: '' },
+      ctaLink: { type: String, default: '' }
+    },
+    about: {
+      title: { type: String, default: '' },
+      description: { type: String, default: '' },
+      image: { type: String, default: '' }
+    },
+    services: [
+      { title: { type: String }, description: { type: String }, icon: { type: String } }
+    ]
+  },
+
+  // SEO Settings
+  seo: {
+    metaTitle: { type: String, default: '' },
+    metaDescription: { type: String, default: '' },
+    keywords: { type: String, default: '' }
+  },
+
+  // Theme Colors
+  theme: {
+    primaryColor: { type: String, default: '#000000' },
+    secondaryColor: { type: String, default: '#ffffff' },
+    accentColor: { type: String, default: '#fbbf24' }
+  }
+}, { timestamps: true });
+
+module.exports = mongoose.model('SiteSettings', siteSettingsSchema);

@@ -1,0 +1,238 @@
+'use client';
+
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  X, 
+  Calendar, 
+  Fuel, 
+  Gauge, 
+  Settings, 
+  Users, 
+  Palette, 
+  Zap,
+  Info,
+  CheckCircle2,
+  Phone,
+  MessageCircle,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react';
+import Image from 'next/image';
+
+interface Vehicle {
+  _id: string;
+  name: string;
+  image: string;
+  images?: string[];
+  year: string;
+  fuel: string;
+  mileage: string;
+  price: string;
+  engine: string;
+  transmission: string;
+  drive: string;
+  seats: number;
+  color: string;
+  description: string;
+  status: string;
+}
+
+interface VehicleDetailModalProps {
+  vehicle: Vehicle | null;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailModalProps) {
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  if (!vehicle) return null;
+
+  const allImages = [vehicle.image, ...(vehicle.images || [])].filter(Boolean);
+
+  const nextImage = () => {
+    setActiveImageIndex((prev) => (prev + 1) % allImages.length);
+  };
+
+  const prevImage = () => {
+    setActiveImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+  };
+
+  const specItems = [
+    { icon: Calendar, label: 'Year', value: vehicle.year },
+    { icon: Fuel, label: 'Fuel', value: vehicle.fuel },
+    { icon: Settings, label: 'Transmission', value: vehicle.transmission },
+    { icon: Zap, label: 'Engine', value: vehicle.engine },
+    { icon: Gauge, label: 'Mileage', value: vehicle.mileage },
+    { icon: Info, label: 'Drive', value: vehicle.drive },
+    { icon: Users, label: 'Seats', value: vehicle.seats },
+    { icon: Palette, label: 'Color', value: vehicle.color || 'N/A' },
+  ];
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-black/90 backdrop-blur-md"
+          />
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="bg-white w-full max-w-6xl rounded-[3rem] overflow-hidden relative z-10 shadow-2xl max-h-[95vh] overflow-y-auto custom-scrollbar"
+          >
+            <button
+              onClick={onClose}
+              className="absolute top-6 right-6 p-4 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full z-[60] transition-colors group"
+            >
+              <X size={24} className="text-white lg:text-dark group-hover:rotate-90 transition-transform" />
+            </button>
+
+            <div className="grid lg:grid-cols-2">
+              {/* Image Section - Interactive Gallery */}
+              <div className="relative h-[450px] lg:h-auto min-h-[450px] bg-gray-900 group">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeImageIndex}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="relative w-full h-full"
+                  >
+                    <Image
+                      src={allImages[activeImageIndex]}
+                      alt={`${vehicle.name} - Image ${activeImageIndex + 1}`}
+                      fill
+                      className="object-contain lg:object-cover"
+                      priority
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {allImages.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-all opacity-0 group-hover:opacity-100"
+                    >
+                      <ChevronLeft size={24} />
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-all opacity-0 group-hover:opacity-100"
+                    >
+                      <ChevronRight size={24} />
+                    </button>
+
+                    {/* Thumbnails Overlay */}
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-black/20 backdrop-blur-md rounded-2xl max-w-[90%] overflow-x-auto no-scrollbar">
+                      {allImages.map((img, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setActiveImageIndex(idx)}
+                          className={`relative w-16 h-12 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${
+                            activeImageIndex === idx ? 'border-primary scale-110 shadow-lg' : 'border-transparent opacity-50 hover:opacity-100'
+                          }`}
+                        >
+                          <Image src={img} alt="Thumbnail" fill className="object-cover" />
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+                
+                <div className="absolute top-6 left-6 flex gap-2 z-10">
+                  <span className="px-5 py-2 bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-2xl">
+                    {vehicle.status}
+                  </span>
+                </div>
+              </div>
+
+              {/* Content Section */}
+              <div className="p-8 lg:p-16">
+                <div className="mb-10">
+                  <div className="flex flex-col mb-4">
+                    <span className="text-primary font-black text-xs uppercase tracking-[0.3em] mb-2">Premium Selection</span>
+                    <h2 className="text-4xl sm:text-5xl font-display font-black text-dark uppercase tracking-tighter leading-none">
+                      {vehicle.name}
+                    </h2>
+                  </div>
+                  <div className="flex items-end gap-4">
+                    <div className="flex flex-col">
+                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Estimated Price</span>
+                       <span className="text-4xl font-black text-primary leading-none">LKR {vehicle.price}</span>
+                    </div>
+                    <span className="text-lg font-bold text-gray-300 line-through decoration-primary/30 mb-1">LKR {(parseInt(vehicle.price.replace(/,/g, '')) * 1.08).toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+                  {specItems.map((spec, idx) => (
+                    <div key={idx} className="bg-gray-50 p-5 rounded-[1.5rem] border border-gray-100 hover:border-primary/20 transition-colors">
+                      <spec.icon className="w-5 h-5 text-primary mb-3" />
+                      <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.15em] mb-1">{spec.label}</p>
+                      <p className="text-[13px] font-bold text-dark truncate">{spec.value}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mb-12">
+                  <h3 className="text-xs font-black text-dark uppercase tracking-[0.25em] mb-5 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                    Professional Overview
+                  </h3>
+                  <div className="relative">
+                    <div className="absolute -left-4 top-0 bottom-0 w-0.5 bg-gray-100" />
+                    <p className="text-gray-500 leading-relaxed font-medium pl-2 italic">
+                      {vehicle.description || 'This premium Japanese vehicle has been carefully inspected and is ready for import. Our team handles all documentation, auction bidding, and shipping directly to your doorstep in Sri Lanka.'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-5">
+                  <button
+                    onClick={() => {
+                      onClose();
+                      document.getElementById('inquiry')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="flex-grow flex items-center justify-center gap-3 bg-primary hover:bg-primary-hover text-white py-6 rounded-[1.25rem] font-black text-sm uppercase tracking-[0.2em] transition-all shadow-2xl shadow-primary/30 active:scale-95"
+                  >
+                    <CheckCircle2 size={20} />
+                    Reserve Vehicle
+                  </button>
+                  <a
+                    href={`https://wa.me/94771234567?text=Hi, I am interested in the ${vehicle.name}. Please send more details and auction sheets.`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-grow flex items-center justify-center gap-3 bg-dark hover:bg-black text-white py-6 rounded-[1.25rem] font-black text-sm uppercase tracking-[0.2em] transition-all shadow-2xl shadow-black/20 active:scale-95"
+                  >
+                    <MessageCircle size={20} className="text-green-500" />
+                    WhatsApp Us
+                  </a>
+                </div>
+
+                <div className="mt-10 flex items-center gap-8 justify-center py-6 border-t border-gray-100">
+                   <div className="flex items-center gap-3">
+                     <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
+                     <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Auction Verified</span>
+                   </div>
+                   <div className="flex items-center gap-3">
+                     <div className="w-2.5 h-2.5 rounded-full bg-orange-500" />
+                     <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Ready to Ship</span>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}

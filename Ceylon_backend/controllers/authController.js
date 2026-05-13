@@ -63,4 +63,52 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getMe };
+const crypto = require('crypto');
+
+const forgotPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 mins
+
+    await user.save();
+
+    // In a real app, send email here. For now, we'll return the token in response for testing/dev.
+    res.json({ success: true, message: 'Password reset token generated', token: resetToken });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const resetPasswordToken = crypto.createHash('sha256').update(req.params.resetToken).digest('hex');
+
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({ success: false, message: 'Invalid or expired token' });
+    }
+
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    res.json({ success: true, message: 'Password reset successful' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { register, login, getMe, forgotPassword, resetPassword };

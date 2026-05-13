@@ -1,5 +1,6 @@
 import { Hero } from '@/components/home/Hero';
 import { Features } from '@/components/home/Features';
+import { About } from '@/components/home/About';
 import { HowItWorks } from '@/components/home/HowItWorks';
 import { FeaturedVehicles } from '@/components/home/FeaturedVehicles';
 import { LiveAuction } from '@/components/home/LiveAuction';
@@ -15,6 +16,7 @@ export default function HomePage() {
       <FloatingActionButton />
       <Hero />
       <Features />
+      <About />
       <HowItWorks />
       <FeaturedVehicles />
       <LiveAuction />

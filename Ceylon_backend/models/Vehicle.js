@@ -10,6 +10,10 @@ const vehicleSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  images: {
+    type: [String],
+    default: []
+  },
   year: {
     type: String,
     required: true
@@ -25,6 +29,29 @@ const vehicleSchema = new mongoose.Schema({
   price: {
     type: String,
     required: true
+  },
+  engine: {
+    type: String,
+    required: true
+  },
+  transmission: {
+    type: String,
+    required: true,
+    enum: ['Auto', 'Manual', 'Tiptronic']
+  },
+  drive: {
+    type: String,
+    default: '2WD'
+  },
+  seats: {
+    type: Number,
+    default: 5
+  },
+  color: {
+    type: String
+  },
+  description: {
+    type: String
   },
   category: {
     type: String,

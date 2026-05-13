@@ -5,12 +5,24 @@ import { motion } from 'framer-motion';
 import { MessageCircle, Award, Ship, Landmark, Truck } from 'lucide-react';
 import Image from 'next/image';
 
+import { useSettings } from '@/context/SettingsContext';
+
 export function Hero() {
+  const { settings, loading } = useSettings();
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const heroData = settings?.homepage?.hero || {
+    title: 'IMPORT YOUR DREAM VEHICLE DIRECTLY FROM JAPAN',
+    subtitle: 'Better Prices. Trusted Process. Complete Peace of Mind.',
+    backgroundImage: 'https://pegasusels.com/wp-content/uploads/2023/03/81.jpg',
+    ctaText: 'Get a Quote',
+    ctaLink: 'inquiry'
   };
 
   const sideFeatures = [
@@ -25,7 +37,7 @@ export function Hero() {
       {/* Background Image - Mount Fuji & City Skyline */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://pegasusels.com/wp-content/uploads/2023/03/81.jpg"
+          src={heroData.backgroundImage}
           alt="Premium Japanese Vehicle Background"
           fill
           className="object-cover object-center opacity-40 blur-[5px] scale-105"
@@ -71,12 +83,9 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-5xl sm:text-6xl lg:text-7xl font-display font-black text-dark leading-[1.05] mb-6 uppercase"
-            >
-              IMPORT YOUR <br />
-              <span className="text-primary italic">DREAM VEHICLE</span> <br />
-              DIRECTLY FROM JAPAN
-            </motion.h1>
+              className="text-5xl sm:text-6xl lg:text-7xl font-display font-black text-dark leading-[1.05] mb-6 uppercase whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: heroData.title.replace('DREAM VEHICLE', '<span className="text-primary italic">DREAM VEHICLE</span>') }}
+            />
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -84,7 +93,7 @@ export function Hero() {
               transition={{ delay: 0.2 }}
               className="text-lg sm:text-xl font-bold text-gray-500 mb-10 tracking-wide max-w-xl"
             >
-              Better Prices. Trusted Process. Complete Peace of Mind.
+              {heroData.subtitle}
             </motion.p>
 
             <motion.div
@@ -94,10 +103,10 @@ export function Hero() {
               className="flex flex-col sm:flex-row gap-5"
             >
               <button
-                onClick={() => scrollToSection('inquiry')}
+                onClick={() => scrollToSection(heroData.ctaLink || 'inquiry')}
                 className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-12 py-5 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-2xl shadow-primary/30 group active:scale-95"
               >
-                Get a Quote
+                {heroData.ctaText}
               </button>
               <a
                 href="https://wa.me/94771234567"

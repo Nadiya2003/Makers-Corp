@@ -16,7 +16,9 @@ import {
   Gavel,
   Type,
   Search,
-  Layout
+  Layout,
+  Info,
+  Phone
 } from 'lucide-react';
 
 const menuItems = [
@@ -28,6 +30,8 @@ const menuItems = [
   { icon: Gavel, label: 'Auctions', href: '/admin/auctions' },
   { icon: Mail, label: 'Inquiries', href: '/admin/inquiries' },
   { icon: ImageIcon, label: 'Media Manager', href: '/admin/media' },
+  { icon: Info, label: 'About Page', href: '/admin/about' },
+  { icon: Phone, label: 'Contact Details', href: '/admin/contact-settings' },
   { icon: Type, label: 'SEO Settings', href: '/admin/seo' },
   { icon: Users, label: 'User Management', href: '/admin/users' },
 ];
@@ -43,7 +47,7 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="w-64 bg-black text-slate-300 h-screen sticky top-0 flex flex-col border-r border-white/10">
+    <aside className="w-72 bg-black text-slate-300 h-screen sticky top-0 flex flex-col border-r border-white/10 shrink-0">
       <div className="p-6">
         <h1 className="text-xl font-bold text-white flex items-center gap-2">
           <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white text-sm">M</div>

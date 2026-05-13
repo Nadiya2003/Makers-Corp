@@ -10,6 +10,7 @@ const vehicleRoutes = require('./routes/vehicleRoutes');
 const authRoutes = require('./routes/authRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 const mediaRoutes = require('./routes/mediaRoutes');
+const auctionRoutes = require('./routes/auctionRoutes');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/media', mediaRoutes);
+app.use('/api/auctions', auctionRoutes);
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {

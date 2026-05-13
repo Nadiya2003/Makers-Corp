@@ -57,6 +57,23 @@ const siteSettingsSchema = new mongoose.Schema({
     primaryColor: { type: String, default: '#000000' },
     secondaryColor: { type: String, default: '#ffffff' },
     accentColor: { type: String, default: '#fbbf24' }
+  },
+
+  // About Page
+  aboutPage: {
+    title: { type: String, default: 'About Makers Ceylon' },
+    content: { type: String, default: '' },
+    image: { type: String, default: '' },
+    mission: { type: String, default: '' },
+    vision: { type: String, default: '' }
+  },
+
+  // Contact Page
+  contactPage: {
+    title: { type: String, default: 'Contact Us' },
+    description: { type: String, default: '' },
+    workingHours: { type: String, default: 'Mon - Fri: 9:00 AM - 6:00 PM' },
+    googleMapUrl: { type: String, default: '' }
   }
 }, { timestamps: true });
 

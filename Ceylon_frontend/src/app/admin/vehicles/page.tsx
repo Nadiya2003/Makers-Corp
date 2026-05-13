@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Plus, 
   Search, 
@@ -13,7 +13,8 @@ import {
   X,
   Camera,
   Image as ImageIcon,
-  Grid
+  Grid,
+  Upload
 } from 'lucide-react';
 
 export default function VehiclesManagement() {
@@ -30,6 +31,8 @@ export default function VehiclesManagement() {
   const [mediaGallery, setMediaGallery] = useState([]);
   const [pickerLoading, setPickerLoading] = useState(false);
   const [targetField, setTargetField] = useState<{ type: 'main' | 'gallery', index?: number } | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Form State
   const [formData, setFormData] = useState({
@@ -54,6 +57,15 @@ export default function VehiclesManagement() {
   useEffect(() => {
     fetchVehicles();
   }, []);
+
+  useEffect(() => {
+    if (showModal || isPickerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [showModal, isPickerOpen]);
 
   const fetchVehicles = async () => {
     try {
@@ -93,6 +105,39 @@ export default function VehiclesManagement() {
     setTargetField({ type, index });
     setIsPickerOpen(true);
     fetchGallery();
+  };
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('photos', e.target.files[0]);
+    formData.append('category', 'Vehicles');
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const res = await fetch(`${apiUrl}/media`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      });
+      
+      const data = await res.json();
+      if (data.success && data.data && data.data.length > 0) {
+        const uploadedUrl = data.data[0].url;
+        await fetchGallery();
+        selectImage(uploadedUrl);
+        showStatus('success', 'Image uploaded and selected!');
+      } else {
+        showStatus('error', data.message || 'Upload failed');
+      }
+    } catch (err) {
+      showStatus('error', 'Network error during upload');
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const selectImage = (url: string) => {
@@ -257,7 +302,7 @@ export default function VehiclesManagement() {
 
       {/* Status Messages */}
       {statusMessage && (
-        <div className={`fixed top-6 right-6 z-[300] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl transition-all animate-in slide-in-from-right duration-500 ${
+        <div className={`fixed top-6 right-6 z-[1100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl transition-all animate-in slide-in-from-right duration-500 ${
           statusMessage.type === 'success' ? 'bg-black text-white' : 'bg-red-600 text-white'
         }`}>
           {statusMessage.type === 'success' ? <CheckCircle2 size={24} className="text-orange-500" /> : <AlertCircle size={24} />}
@@ -294,46 +339,46 @@ export default function VehiclesManagement() {
           <p className="text-gray-400 font-black uppercase tracking-widest text-[10px]">Synchronizing Inventory...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredVehicles.map((vehicle: any) => (
-            <div key={vehicle._id} className="bg-white border border-gray-200 rounded-3xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
-              <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+            <div key={vehicle._id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden group shadow-sm hover:shadow-lg transition-all duration-500 flex flex-col">
+              <div className="relative aspect-video overflow-hidden bg-gray-100">
                 <img 
                   src={vehicle.image || 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=600'} 
                   alt={vehicle.name} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                  <button onClick={() => handleEdit(vehicle)} className="p-3 bg-white text-gray-900 rounded-xl hover:bg-orange-600 hover:text-white transition-all shadow-2xl scale-90 group-hover:scale-100 duration-300">
-                    <Edit2 size={20} />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                  <button onClick={() => handleEdit(vehicle)} className="p-2.5 bg-white text-gray-900 rounded-lg hover:bg-orange-600 hover:text-white transition-all shadow-2xl scale-90 group-hover:scale-100 duration-300">
+                    <Edit2 size={16} />
                   </button>
-                  <button onClick={() => handleDelete(vehicle._id)} className="p-3 bg-white text-gray-900 rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-2xl scale-90 group-hover:scale-100 duration-300 delay-75">
-                    <Trash2 size={20} />
+                  <button onClick={() => handleDelete(vehicle._id)} className="p-2.5 bg-white text-gray-900 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-2xl scale-90 group-hover:scale-100 duration-300 delay-75">
+                    <Trash2 size={16} />
                   </button>
                 </div>
-                <div className="absolute top-4 left-4 flex flex-col gap-2">
-                   <div className={`text-white text-[9px] font-black px-3 py-1.5 rounded-lg uppercase tracking-[0.2em] shadow-lg ${
+                <div className="absolute top-3 left-3">
+                   <div className={`text-white text-[8px] font-black px-2 py-1 rounded-md uppercase tracking-[0.2em] shadow-lg ${
                     vehicle.status === 'Sold' ? 'bg-red-600' : vehicle.status === 'Reserved' ? 'bg-amber-600' : 'bg-black'
                    }`}>
                     {vehicle.status || 'Available'}
                   </div>
                 </div>
               </div>
-              <div className="p-6 flex-grow flex flex-col">
-                <h3 className="text-gray-900 font-bold text-lg mb-1 truncate leading-tight group-hover:text-orange-600 transition-colors uppercase tracking-tight">{vehicle.name}</h3>
-                <p className="text-gray-400 font-bold text-xs uppercase tracking-widest mb-4">LKR {vehicle.price}</p>
-                <div className="mt-auto grid grid-cols-3 gap-2 pt-4 border-t border-gray-100">
-                  <div className="flex flex-col items-center p-2 bg-gray-50 rounded-xl">
-                    <span className="text-[9px] font-black text-gray-400 uppercase">Year</span>
-                    <span className="text-[11px] font-bold text-gray-700">{vehicle.year}</span>
+              <div className="p-4 flex-grow flex flex-col">
+                <h3 className="text-gray-900 font-bold text-base mb-0.5 truncate leading-tight group-hover:text-orange-600 transition-colors uppercase tracking-tight">{vehicle.name}</h3>
+                <p className="text-gray-400 font-bold text-[10px] uppercase tracking-widest mb-3">LKR {vehicle.price}</p>
+                <div className="mt-auto grid grid-cols-3 gap-1.5 pt-3 border-t border-gray-100">
+                  <div className="flex flex-col items-center p-1.5 bg-gray-50 rounded-lg">
+                    <span className="text-[8px] font-black text-gray-400 uppercase">Year</span>
+                    <span className="text-[10px] font-bold text-gray-700">{vehicle.year}</span>
                   </div>
-                  <div className="flex flex-col items-center p-2 bg-gray-50 rounded-xl">
-                    <span className="text-[9px] font-black text-gray-400 uppercase">Fuel</span>
-                    <span className="text-[11px] font-bold text-gray-700">{vehicle.fuel}</span>
+                  <div className="flex flex-col items-center p-1.5 bg-gray-50 rounded-lg">
+                    <span className="text-[8px] font-black text-gray-400 uppercase">Fuel</span>
+                    <span className="text-[10px] font-bold text-gray-700">{vehicle.fuel}</span>
                   </div>
-                  <div className="flex flex-col items-center p-2 bg-gray-50 rounded-xl">
-                    <span className="text-[9px] font-black text-gray-400 uppercase">Trans</span>
-                    <span className="text-[11px] font-bold text-gray-700">{vehicle.transmission}</span>
+                  <div className="flex flex-col items-center p-1.5 bg-gray-50 rounded-lg">
+                    <span className="text-[8px] font-black text-gray-400 uppercase">Trans</span>
+                    <span className="text-[10px] font-bold text-gray-700">{vehicle.transmission}</span>
                   </div>
                 </div>
               </div>
@@ -344,10 +389,11 @@ export default function VehiclesManagement() {
 
       {/* Modal for Add/Edit */}
       {showModal && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setShowModal(false)} />
-          <div className="bg-white border border-gray-200 w-full max-w-5xl rounded-[2.5rem] p-10 relative z-10 max-h-[92vh] overflow-y-auto custom-scrollbar shadow-2xl">
-            <div className="flex items-center justify-between mb-10">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-2xl" onClick={() => setShowModal(false)} />
+          <div className="bg-white border border-gray-200 w-full max-w-5xl rounded-[2.5rem] relative z-10 max-h-[92vh] flex flex-col overflow-hidden shadow-2xl animate-in zoom-in duration-300">
+            {/* Sticky Header */}
+            <div className="flex items-center justify-between p-10 pb-6 bg-white z-20">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-orange-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-orange-600/20">
                   {editingVehicle ? <Edit2 size={24} /> : <Plus size={24} />}
@@ -362,6 +408,9 @@ export default function VehiclesManagement() {
                 <X size={28} className="text-gray-400 group-hover:rotate-90 transition-transform" />
               </button>
             </div>
+
+            {/* Scrollable Content */}
+            <div className="flex-grow overflow-y-auto p-10 pt-4 custom-scrollbar">
 
             <form onSubmit={handleSubmit} className="space-y-10">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -578,14 +627,15 @@ export default function VehiclesManagement() {
                 </button>
               </div>
             </form>
+            </div>
           </div>
         </div>
       )}
 
       {/* Gallery Picker Modal */}
       {isPickerOpen && (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={() => setIsPickerOpen(false)} />
+        <div className="fixed inset-0 top-0 left-0 w-screen h-screen z-[10000] flex items-center justify-center p-6">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-2xl w-full h-full" onClick={() => setIsPickerOpen(false)} />
           <div className="bg-white w-full max-w-4xl rounded-[2.5rem] p-10 relative z-10 max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
              <div className="flex items-center justify-between mb-8">
                 <div>
@@ -597,7 +647,7 @@ export default function VehiclesManagement() {
                 </button>
              </div>
 
-             {pickerLoading ? (
+              {pickerLoading ? (
                <div className="flex-grow flex flex-col items-center justify-center py-20">
                   <Loader2 className="w-10 h-10 text-orange-600 animate-spin mb-4" />
                   <p className="text-xs font-black text-gray-400 uppercase tracking-widest">Loading Library...</p>
@@ -605,6 +655,29 @@ export default function VehiclesManagement() {
              ) : (
                <div className="flex-grow overflow-y-auto custom-scrollbar pr-2 pb-6">
                   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                     {/* Upload Button Card */}
+                     <button 
+                       onClick={() => fileInputRef.current?.click()}
+                       disabled={isUploading}
+                       className="group relative aspect-square rounded-2xl overflow-hidden border-2 border-dashed border-orange-600/30 hover:border-orange-600 hover:bg-orange-50 transition-all flex flex-col items-center justify-center gap-2 bg-gray-50 shadow-sm"
+                     >
+                        {isUploading ? (
+                          <Loader2 className="w-8 h-8 text-orange-600 animate-spin" />
+                        ) : (
+                          <>
+                            <Upload className="w-8 h-8 text-orange-600 group-hover:scale-110 transition-transform" />
+                            <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest">Upload New</span>
+                          </>
+                        )}
+                        <input 
+                          type="file" 
+                          ref={fileInputRef} 
+                          onChange={handleUpload} 
+                          className="hidden" 
+                          accept="image/*"
+                        />
+                     </button>
+
                      {mediaGallery.map((item: any) => (
                        <button 
                         key={item._id}
@@ -617,11 +690,6 @@ export default function VehiclesManagement() {
                           </div>
                        </button>
                      ))}
-                     {mediaGallery.length === 0 && (
-                       <div className="col-span-full py-20 text-center">
-                          <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No media found in library.</p>
-                       </div>
-                     )}
                   </div>
                </div>
              )}

@@ -17,6 +17,8 @@ export default function AdminDashboard() {
   const [data, setData] = useState({
     vehicles: [],
     inquiries: [],
+    auctions: [],
+    users: [],
     loading: true
   });
 
@@ -29,16 +31,25 @@ export default function AdminDashboard() {
       const token = localStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       
-      const [vRes, iRes] = await Promise.all([
+      const [vRes, iRes, aRes, uRes] = await Promise.all([
         fetch(`${apiUrl}/vehicles`, { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch(`${apiUrl}/inquiries`, { headers: { 'Authorization': `Bearer ${token}` } })
+        fetch(`${apiUrl}/inquiries`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch(`${apiUrl}/auctions`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch(`${apiUrl}/auth`, { headers: { 'Authorization': `Bearer ${token}` } })
       ]);
 
-      const [vData, iData] = await Promise.all([vRes.json(), iRes.json()]);
+      const [vData, iData, aData, uData] = await Promise.all([
+        vRes.json(), 
+        iRes.json(),
+        aRes.json(),
+        uRes.json()
+      ]);
 
       setData({
         vehicles: vData.success ? vData.data : [],
         inquiries: iData.success ? iData.data : [],
+        auctions: aData.success ? aData.data : [],
+        users: uData.success ? uData.data : [],
         loading: false
       });
     } catch (err) {
@@ -49,9 +60,9 @@ export default function AdminDashboard() {
 
   const stats = [
     { label: 'Total Vehicles', value: data.vehicles.length.toString(), icon: Car, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Live Auctions', value: '0', icon: Gavel, color: 'text-orange-600', bg: 'bg-orange-50' }, // Auctions logic TBD
+    { label: 'Live Auctions', value: data.auctions.length.toString(), icon: Gavel, color: 'text-orange-600', bg: 'bg-orange-50' },
     { label: 'Total Inquiries', value: data.inquiries.length.toString(), icon: Mail, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { label: 'Active Listings', value: data.vehicles.filter((v: any) => v.status === 'Available').length.toString(), icon: Users, color: 'text-purple-600', bg: 'bg-purple-50' },
+    { label: 'System Admins', value: data.users.length.toString(), icon: Users, color: 'text-purple-600', bg: 'bg-purple-50' },
   ];
 
   if (data.loading) {

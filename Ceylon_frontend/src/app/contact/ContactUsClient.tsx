@@ -2,13 +2,24 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, MessageCircle, Send, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail, MessageCircle, Send, Clock, Loader2 } from 'lucide-react';
 import axios from 'axios';
 
 export function ContactUsClient() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const [loadingContent, setLoadingContent] = useState(true);
+  const [contactInfo, setContactInfo] = useState({
+    footer: {
+      address: '123 Import Avenue, Colombo 03, Sri Lanka',
+      email: 'info@ceylonimports.lk',
+      phone: '+94 77 123 4567'
+    },
+    contactPage: {
+      title: 'Contact Us',
+      description: 'Have a question or ready to import? Our team is here to help you every step of the way.',
+      workingHours: 'Mon - Sat: 9:00 AM - 6:00 PM',
+      googleMapUrl: ''
+    }
+  });
 
   const [formData, setFormData] = useState({
     name: '',
@@ -21,6 +32,38 @@ export function ContactUsClient() {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetchContactContent();
+  }, []);
+
+  const fetchContactContent = async () => {
+    try {
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const res = await fetch(`${apiUrl}/settings`);
+      const data = await res.json();
+      if (data.success && data.data) {
+        setContactInfo({
+          footer: {
+            address: data.data.footer?.address || contactInfo.footer.address,
+            email: data.data.footer?.email || contactInfo.footer.email,
+            phone: data.data.footer?.phone || contactInfo.footer.phone
+          },
+          contactPage: {
+            title: data.data.contactPage?.title || contactInfo.contactPage.title,
+            description: data.data.contactPage?.description || contactInfo.contactPage.description,
+            workingHours: data.data.contactPage?.workingHours || contactInfo.contactPage.workingHours,
+            googleMapUrl: data.data.contactPage?.googleMapUrl || ''
+          }
+        });
+      }
+    } catch (err) {
+      console.error('Failed to fetch contact content');
+    } finally {
+      setLoadingContent(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -28,7 +71,8 @@ export function ContactUsClient() {
     setError('');
 
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/contact`, formData);
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const response = await axios.post(`${apiUrl}/contact`, formData);
       setSuccess('Thank you for your message! We will get back to you soon.');
       setFormData({
         name: '',
@@ -52,6 +96,14 @@ export function ContactUsClient() {
     });
   };
 
+  if (loadingContent) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <main className="w-full pt-20">
       {/* Header */}
@@ -62,7 +114,11 @@ export function ContactUsClient() {
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-5xl font-display font-bold mb-4"
           >
-            Contact <span className="text-primary">Us</span>
+            {contactInfo.contactPage.title.split(' ').map((word, i) => (
+              <span key={i} className={i === contactInfo.contactPage.title.split(' ').length - 1 ? "text-primary" : ""}>
+                {word}{' '}
+              </span>
+            ))}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -70,7 +126,7 @@ export function ContactUsClient() {
             transition={{ delay: 0.1 }}
             className="text-gray-400 max-w-2xl mx-auto"
           >
-            Have a question or ready to import? Our team is here to help you every step of the way.
+            {contactInfo.contactPage.description}
           </motion.p>
         </div>
       </div>
@@ -96,8 +152,7 @@ export function ContactUsClient() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Phone</p>
-                      <p className="font-semibold text-dark text-lg">+94 77 123 4567</p>
-                      <p className="font-semibold text-dark text-lg">+94 11 234 5678</p>
+                      <p className="font-semibold text-dark text-lg whitespace-pre-wrap">{contactInfo.footer.phone}</p>
                     </div>
                   </div>
 
@@ -107,8 +162,7 @@ export function ContactUsClient() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Email</p>
-                      <p className="font-semibold text-dark text-lg">info@ceylonimports.lk</p>
-                      <p className="font-semibold text-dark text-lg">sales@ceylonimports.lk</p>
+                      <p className="font-semibold text-dark text-lg">{contactInfo.footer.email}</p>
                     </div>
                   </div>
 
@@ -118,12 +172,8 @@ export function ContactUsClient() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Office Address</p>
-                      <p className="font-semibold text-dark text-lg leading-relaxed">
-                        123 Import Avenue,
-                        <br />
-                        Colombo 03,
-                        <br />
-                        Sri Lanka
+                      <p className="font-semibold text-dark text-lg leading-relaxed whitespace-pre-wrap">
+                        {contactInfo.footer.address}
                       </p>
                     </div>
                   </div>
@@ -135,16 +185,15 @@ export function ContactUsClient() {
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Business Hours</p>
                       <p className="font-semibold text-dark text-lg">
-                        Mon - Sat: 9:00 AM - 6:00 PM
+                        {contactInfo.contactPage.workingHours}
                       </p>
-                      <p className="text-gray-500">Sunday: Closed</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="mt-8 pt-8 border-t border-gray-100">
                   <a
-                    href="https://wa.me/94771234567"
+                    href={`https://wa.me/${contactInfo.footer.phone.replace(/[^0-9]/g, '')}`}
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-xl font-bold transition-colors w-full text-lg shadow-lg shadow-green-500/20"
@@ -155,13 +204,25 @@ export function ContactUsClient() {
                 </div>
               </div>
 
-              {/* Map Placeholder */}
-              <div className="bg-gray-200 rounded-3xl h-64 flex items-center justify-center border border-gray-300 overflow-hidden relative">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')] bg-cover bg-center opacity-40 grayscale mix-blend-multiply" />
-                <div className="relative z-10 flex flex-col items-center text-gray-600 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-sm">
-                  <MapPin className="w-8 h-8 mb-2 text-primary" />
-                  <span className="font-medium">Interactive Map Placeholder</span>
-                </div>
+              {/* Map */}
+              <div className="bg-gray-200 rounded-3xl h-80 flex items-center justify-center border border-gray-300 overflow-hidden relative shadow-inner">
+                {contactInfo.contactPage.googleMapUrl ? (
+                  <iframe 
+                    src={contactInfo.contactPage.googleMapUrl} 
+                    className="w-full h-full border-0"
+                    allowFullScreen 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')] bg-cover bg-center opacity-40 grayscale mix-blend-multiply" />
+                    <div className="relative z-10 flex flex-col items-center text-gray-600 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-sm">
+                      <MapPin className="w-8 h-8 mb-2 text-primary" />
+                      <span className="font-medium text-xs uppercase tracking-widest font-black">Map not configured</span>
+                    </div>
+                  </>
+                )}
               </div>
             </motion.div>
 

@@ -28,6 +28,15 @@ export default function InquiriesManagement() {
     fetchInquiries();
   }, []);
 
+  useEffect(() => {
+    if (selectedInquiry) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [selectedInquiry]);
+
   const fetchInquiries = async () => {
     try {
       const token = localStorage.getItem('adminToken');
@@ -202,10 +211,11 @@ export default function InquiriesManagement() {
 
       {/* Inquiry Detail Modal */}
       {selectedInquiry && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={() => setSelectedInquiry(null)} />
-          <div className="bg-white w-full max-w-2xl rounded-[3rem] p-12 relative z-10 shadow-2xl animate-in zoom-in duration-300">
-            <div className="flex items-center justify-between mb-12">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-2xl" onClick={() => setSelectedInquiry(null)} />
+          <div className="bg-white w-full max-w-2xl rounded-[3rem] relative z-10 shadow-2xl animate-in zoom-in duration-300 max-h-[90vh] flex flex-col overflow-hidden">
+            {/* Sticky Header */}
+            <div className="flex items-center justify-between p-12 pb-6 bg-white z-20">
               <div className="flex items-center gap-4">
                  <div className="w-14 h-14 bg-orange-600 rounded-[1.5rem] flex items-center justify-center text-white shadow-xl shadow-orange-600/20">
                     <Mail size={28} />
@@ -220,56 +230,59 @@ export default function InquiriesManagement() {
               </button>
             </div>
 
-            <div className="space-y-10">
-               <div className="grid grid-cols-2 gap-8">
-                  <div className="space-y-2">
-                     <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2">
-                        <User size={12} /> Full Name
-                     </label>
-                     <p className="text-lg font-black text-gray-900 uppercase">{selectedInquiry.name}</p>
-                  </div>
-                  <div className="space-y-2">
-                     <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2">
-                        <Car size={12} /> Interested Vehicle
-                     </label>
-                     <div className="inline-block px-4 py-2 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-widest">
-                        {selectedInquiry.vehicle}
-                     </div>
-                  </div>
-               </div>
+            {/* Scrollable Content */}
+            <div className="flex-grow overflow-y-auto p-12 pt-4 custom-scrollbar">
+              <div className="space-y-10">
+                <div className="grid grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2">
+                          <User size={12} /> Full Name
+                      </label>
+                      <p className="text-lg font-black text-gray-900 uppercase">{selectedInquiry.name}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2">
+                          <Car size={12} /> Interested Vehicle
+                      </label>
+                      <div className="inline-block px-4 py-2 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-widest">
+                          {selectedInquiry.vehicle}
+                      </div>
+                    </div>
+                </div>
 
-               <div className="grid grid-cols-2 gap-8">
-                  <div className="space-y-2 text-wrap break-words">
-                     <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2">
-                        <Mail size={12} /> Email Address
-                     </label>
-                     <p className="text-sm font-bold text-gray-600">{selectedInquiry.email || 'N/A'}</p>
-                  </div>
-                  <div className="space-y-2">
-                     <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2">
-                        <Phone size={12} /> Phone Number
-                     </label>
-                     <p className="text-sm font-bold text-gray-600">{selectedInquiry.phone}</p>
-                  </div>
-               </div>
+                <div className="grid grid-cols-2 gap-8">
+                    <div className="space-y-2 text-wrap break-words">
+                      <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2">
+                          <Mail size={12} /> Email Address
+                      </label>
+                      <p className="text-sm font-bold text-gray-600">{selectedInquiry.email || 'N/A'}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2">
+                          <Phone size={12} /> Phone Number
+                      </label>
+                      <p className="text-sm font-bold text-gray-600">{selectedInquiry.phone}</p>
+                    </div>
+                </div>
 
-               <div className="pt-8 border-t border-gray-100">
-                  <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2 mb-4">
-                     <MessageSquare size={14} /> Message Content
-                  </label>
-                  <div className="bg-gray-50 rounded-[2rem] p-8 border border-gray-100 italic text-gray-700 leading-relaxed font-medium">
-                     "{selectedInquiry.message}"
-                  </div>
-               </div>
+                <div className="pt-8 border-t border-gray-100">
+                    <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2 mb-4">
+                      <MessageSquare size={14} /> Message Content
+                    </label>
+                    <div className="bg-gray-50 rounded-[2rem] p-8 border border-gray-100 italic text-gray-700 leading-relaxed font-medium">
+                      "{selectedInquiry.message}"
+                    </div>
+                </div>
 
-               <div className="pt-10 flex justify-end">
-                  <button 
-                    onClick={() => setSelectedInquiry(null)}
-                    className="bg-black hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all shadow-xl"
-                  >
-                    Mark as Read & Close
-                  </button>
-               </div>
+                <div className="pt-10 flex justify-end">
+                    <button 
+                      onClick={() => setSelectedInquiry(null)}
+                      className="bg-black hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all shadow-xl"
+                    >
+                      Mark as Read & Close
+                    </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

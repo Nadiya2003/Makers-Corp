@@ -47,8 +47,10 @@ export default function AdminLayout({
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       <Sidebar />
-      <main className="flex-grow p-8 overflow-y-scroll">
-        {children}
+      <main className="flex-grow overflow-y-auto relative">
+        <div className="p-8">
+          {children}
+        </div>
       </main>
     </div>
   );

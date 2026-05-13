@@ -1,17 +1,57 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Target, Award, ArrowRight } from 'lucide-react';
+import { Shield, Target, Award, ArrowRight, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 export function AboutUsClient() {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [content, setContent] = useState({
+    title: 'About Makers Ceylon',
+    content: 'Ceylon Imports was founded with a single mission: to revolutionize the vehicle import process in Sri Lanka. We believe that importing a car from Japan should be transparent, cost-effective, and completely stress-free.',
+    image: 'https://images.unsplash.com/photo-1562426509-5044a121aa49?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+    mission: 'To provide a seamless, transparent, and highly reliable vehicle import service that empowers our customers to purchase their dream cars directly from Japan.',
+    vision: 'To be the most trusted and preferred vehicle import partner in Sri Lanka, known for our integrity and customer-centric approach.'
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchAboutContent();
   }, []);
+
+  const fetchAboutContent = async () => {
+    try {
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const res = await fetch(`${apiUrl}/settings`);
+      const data = await res.json();
+      if (data.success && data.data && data.data.aboutPage) {
+        // Only update if content exists, otherwise use defaults
+        const page = data.data.aboutPage;
+        setContent({
+          title: page.title || content.title,
+          content: page.content || content.content,
+          image: page.image || content.image,
+          mission: page.mission || content.mission,
+          vision: page.vision || content.vision
+        });
+      }
+    } catch (err) {
+      console.error('Failed to fetch about content');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <main className="w-full pt-20">
@@ -19,13 +59,13 @@ export function AboutUsClient() {
       <section className="relative h-[40vh] min-h-[400px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1562426509-5044a121aa49?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            src={content.image}
             alt="About Us Banner"
             fill
             className="object-cover object-center"
             priority
           />
-          <div className="absolute inset-0 bg-dark/80" />
+          <div className="absolute inset-0 bg-black/70" />
         </div>
         <div className="relative z-10 text-center px-4">
           <motion.h1
@@ -33,7 +73,11 @@ export function AboutUsClient() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-6xl font-display font-bold text-white mb-4"
           >
-            About <span className="text-primary">Us</span>
+            {content.title.split(' ').map((word, i) => (
+              <span key={i} className={i === content.title.split(' ').length - 1 ? "text-primary" : ""}>
+                {word}{' '}
+              </span>
+            ))}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -50,12 +94,8 @@ export function AboutUsClient() {
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-display font-bold text-3xl text-dark mb-6">Who We Are</h2>
-          <p className="text-lg text-gray-600 leading-relaxed mb-8">
-            Ceylon Imports was founded with a single mission: to revolutionize the vehicle import
-            process in Sri Lanka. We believe that importing a car from Japan should be transparent,
-            cost-effective, and completely stress-free. With years of experience and direct
-            partnerships with major Japanese auction houses, we cut out the middlemen to bring you
-            the best possible prices.
+          <p className="text-lg text-gray-600 leading-relaxed mb-8 whitespace-pre-wrap">
+            {content.content}
           </p>
           <div className="w-24 h-1 bg-primary mx-auto rounded-full" />
         </div>
@@ -76,9 +116,7 @@ export function AboutUsClient() {
               </div>
               <h3 className="font-display font-bold text-2xl text-dark mb-4">Our Mission</h3>
               <p className="text-gray-600 leading-relaxed">
-                To provide a seamless, transparent, and highly reliable vehicle import service that
-                empowers our customers to purchase their dream cars directly from Japan without the
-                traditional hassles and hidden costs.
+                {content.mission}
               </p>
             </motion.div>
 
@@ -93,9 +131,7 @@ export function AboutUsClient() {
               </div>
               <h3 className="font-display font-bold text-2xl text-dark mb-4">Our Vision</h3>
               <p className="text-gray-600 leading-relaxed">
-                To be the most trusted and preferred vehicle import partner in Sri Lanka, known for
-                our integrity, customer-centric approach, and unparalleled access to the Japanese
-                automotive market.
+                {content.vision}
               </p>
             </motion.div>
           </div>
@@ -107,7 +143,7 @@ export function AboutUsClient() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="font-display font-bold text-3xl text-dark mb-4">
-              The Ceylon Imports Difference
+              The Makers Ceylon Difference
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               We don&apos;t just import cars; we deliver peace of mind.

@@ -40,9 +40,16 @@ exports.updateSettings = async (req, res) => {
     if (!settings) {
       settings = await SiteSettings.create(req.body);
     } else {
+      // Strip read-only database fields to prevent cast or modification errors
+      const updateData = { ...req.body };
+      delete updateData._id;
+      delete updateData.__v;
+      delete updateData.createdAt;
+      delete updateData.updatedAt;
+
       // Use $set with dot-notation so only sent fields are updated.
       // This prevents saving contact info from wiping homepage/seo/theme data.
-      const flatBody = flattenObject(req.body);
+      const flatBody = flattenObject(updateData);
       settings = await SiteSettings.findOneAndUpdate(
         {},
         { $set: flatBody },

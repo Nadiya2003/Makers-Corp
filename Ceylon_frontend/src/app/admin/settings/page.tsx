@@ -168,6 +168,16 @@ export default function SettingsPage() {
                   {isUploading ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} />}
                 </label>
               </div>
+              {settings.logo && (
+                <div className="mt-3 p-3 bg-gray-950 border border-gray-800 rounded-lg flex items-center gap-4">
+                  <span className="text-xs font-semibold text-gray-400">Preview:</span>
+                  <img
+                    src={settings.logo}
+                    alt="Logo Preview"
+                    className="h-10 w-auto object-contain bg-white/5 p-1 rounded"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </section>

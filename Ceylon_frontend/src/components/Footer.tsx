@@ -19,9 +19,9 @@ export function Footer() {
   const siteName = settings?.siteName || 'Makers Ceylon';
 
   return (
-    <footer className="bg-[#020617] text-gray-300 py-16 border-t border-white/5">
+    <footer className="bg-[#020617] text-gray-300 py-10 sm:py-14 lg:py-16 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12">
           {/* Brand */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-2">
@@ -91,7 +91,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-white/5 text-center text-sm text-gray-500">
+        <div className="mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-white/5 text-center text-sm text-gray-500">
           <p>{footerData.copyrightText}</p>
         </div>
       </div>

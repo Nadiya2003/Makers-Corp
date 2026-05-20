@@ -202,21 +202,54 @@ export default function ContactSettings() {
                </div>
 
                <div>
-                  <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Google Maps Embed URL</label>
-                  <div className="relative">
-                    <MapIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600" size={18} />
-                    <input 
-                      type="text" 
-                      value={contactData.contactPage.googleMapUrl}
-                      onChange={(e) => setContactData({
-                        ...contactData, 
-                        contactPage: { ...contactData.contactPage, googleMapUrl: e.target.value }
-                      })}
-                      placeholder="Paste google maps share URL here"
-                      className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
-                    />
-                  </div>
-               </div>
+                   <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Google Maps Embed URL</label>
+                   
+                   {/* Instructions */}
+                   <div className="bg-orange-50 border border-orange-100 rounded-2xl p-4 mb-3 text-xs text-orange-700 space-y-1.5">
+                     <p className="font-black uppercase tracking-wide text-orange-600">How to get the correct URL:</p>
+                     <ol className="list-decimal list-inside space-y-1 font-medium">
+                       <li>Open <strong>Google Maps</strong> and search your location</li>
+                       <li>Click <strong>Share</strong> → <strong>Embed a map</strong> tab</li>
+                       <li>Copy the URL inside <code className="bg-orange-100 px-1 rounded">src="..."</code> of the iframe code</li>
+                       <li>Paste that URL below (starts with <code className="bg-orange-100 px-1 rounded">https://www.google.com/maps/embed</code>)</li>
+                     </ol>
+                   </div>
+
+                   <div className="relative">
+                     <MapIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600" size={18} />
+                     <input 
+                       type="text" 
+                       value={contactData.contactPage.googleMapUrl}
+                       onChange={(e) => setContactData({
+                         ...contactData, 
+                         contactPage: { ...contactData.contactPage, googleMapUrl: e.target.value }
+                       })}
+                       placeholder="https://www.google.com/maps/embed?pb=..."
+                       className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
+                     />
+                   </div>
+
+                   {/* URL Warning */}
+                   {contactData.contactPage.googleMapUrl && !contactData.contactPage.googleMapUrl.includes('google.com/maps/embed') && (
+                     <div className="mt-2 bg-red-50 border border-red-100 rounded-xl p-3 text-xs text-red-600 font-bold flex items-center gap-2">
+                       <span>⚠️</span>
+                       <span>This doesn't look like a Maps embed URL. Make sure to use the embed src URL, not a share link.</span>
+                     </div>
+                   )}
+
+                   {/* Live Preview */}
+                   {contactData.contactPage.googleMapUrl && contactData.contactPage.googleMapUrl.includes('google.com/maps/embed') && (
+                     <div className="mt-3 rounded-2xl overflow-hidden border border-gray-100 h-48">
+                       <iframe
+                         src={contactData.contactPage.googleMapUrl}
+                         className="w-full h-full border-0"
+                         allowFullScreen
+                         loading="lazy"
+                         referrerPolicy="no-referrer-when-downgrade"
+                       />
+                     </div>
+                   )}
+                </div>
 
                <div>
                   <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Contact Page Intro Text</label>

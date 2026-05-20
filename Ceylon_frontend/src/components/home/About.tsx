@@ -15,7 +15,7 @@ export function About() {
   };
 
   return (
-    <section id="about" className="py-24 bg-gray-50 overflow-hidden">
+    <section id="about" className="py-12 sm:py-16 lg:py-24 bg-gray-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -47,23 +47,23 @@ export function About() {
             <h2 className="text-primary font-semibold tracking-wider uppercase text-sm mb-3">
               Who We Are
             </h2>
-            <h3 className="font-display font-bold text-4xl sm:text-5xl text-dark mb-8 uppercase leading-tight">
+            <h3 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-dark mb-6 sm:mb-8 uppercase leading-tight">
               {aboutData.title}
             </h3>
             <div className="space-y-6">
-              <p className="text-gray-500 text-lg leading-relaxed whitespace-pre-line">
+              <p className="text-gray-500 text-base sm:text-lg leading-relaxed whitespace-pre-line">
                 {aboutData.description}
               </p>
             </div>
 
-            <div className="mt-10 flex flex-wrap gap-4">
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex-1 min-w-[200px]">
-                <p className="text-primary font-black text-3xl mb-1">10+</p>
-                <p className="text-gray-600 font-bold text-sm uppercase tracking-wider">Years Experience</p>
+            <div className="mt-8 sm:mt-10 flex flex-wrap gap-4">
+              <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex-1 min-w-[140px]">
+                <p className="text-primary font-black text-2xl sm:text-3xl mb-1">10+</p>
+                <p className="text-gray-600 font-bold text-xs sm:text-sm uppercase tracking-wider">Years Experience</p>
               </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex-1 min-w-[200px]">
-                <p className="text-primary font-black text-3xl mb-1">500+</p>
-                <p className="text-gray-600 font-bold text-sm uppercase tracking-wider">Vehicles Imported</p>
+              <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex-1 min-w-[140px]">
+                <p className="text-primary font-black text-2xl sm:text-3xl mb-1">500+</p>
+                <p className="text-gray-600 font-bold text-xs sm:text-sm uppercase tracking-wider">Vehicles Imported</p>
               </div>
             </div>
           </motion.div>

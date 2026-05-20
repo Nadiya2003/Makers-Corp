@@ -23,6 +23,16 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileMenuOpen]);
+
   const handleNavClick = (hash: string) => {
     setMobileMenuOpen(false);
     if (pathname !== '/') {
@@ -137,7 +147,7 @@ export function Header() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 md:hidden"
+            className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 md:hidden max-h-[calc(100vh-64px)] overflow-y-auto"
           >
             <div className="flex flex-col px-4 py-6 gap-4">
               {navLinks.map((link) =>
@@ -146,7 +156,7 @@ export function Header() {
                     key={link.name}
                     href={link.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`text-base font-bold tracking-wide p-2 rounded-lg ${
+                    className={`text-base font-bold tracking-wide px-3 py-3 min-h-[44px] flex items-center rounded-lg ${
                       pathname === link.path ? 'bg-primary-light text-primary' : 'text-gray-800'
                     }`}
                   >
@@ -156,7 +166,7 @@ export function Header() {
                   <button
                     key={link.name}
                     onClick={() => handleNavClick(link.hash!)}
-                    className="text-base font-bold tracking-wide p-2 text-left text-gray-800 hover:bg-primary-light hover:text-primary rounded-lg"
+                    className="text-base font-bold tracking-wide px-3 py-3 min-h-[44px] flex items-center w-full text-left text-gray-800 hover:bg-primary-light hover:text-primary rounded-lg"
                   >
                     {link.name}
                   </button>

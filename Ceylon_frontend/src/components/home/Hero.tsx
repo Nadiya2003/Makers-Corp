@@ -33,7 +33,7 @@ export function Hero() {
   ];
 
   return (
-    <section className="relative min-h-screen lg:min-h-[90vh] flex flex-col pt-32 lg:pt-36 bg-white overflow-hidden">
+    <section className="relative min-h-screen lg:min-h-[90vh] flex flex-col pt-24 sm:pt-28 lg:pt-36 bg-white overflow-hidden">
       {/* Background Image - Mount Fuji & City Skyline */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -83,15 +83,15 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-5xl sm:text-6xl lg:text-7xl font-display font-black text-dark leading-[1.05] mb-6 uppercase whitespace-pre-line"
-              dangerouslySetInnerHTML={{ __html: heroData.title.replace('DREAM VEHICLE', '<span className="text-primary italic">DREAM VEHICLE</span>') }}
+              className="text-3xl sm:text-5xl lg:text-7xl font-display font-black text-dark leading-[1.05] mb-4 sm:mb-6 uppercase whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: heroData.title.replace('DREAM VEHICLE', '<span style="color:#ea580c;font-style:italic;">DREAM VEHICLE</span>') }}
             />
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-lg sm:text-xl font-bold text-gray-500 mb-10 tracking-wide max-w-xl"
+              className="text-base sm:text-xl font-bold text-gray-500 mb-8 sm:mb-10 tracking-wide max-w-xl"
             >
               {heroData.subtitle}
             </motion.p>
@@ -100,11 +100,11 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-5"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-5 w-full sm:w-auto"
             >
               <button
                 onClick={() => scrollToSection(heroData.ctaLink || 'inquiry')}
-                className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-12 py-5 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-2xl shadow-primary/30 group active:scale-95"
+                className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-8 sm:px-12 py-4 sm:py-5 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-2xl shadow-primary/30 group active:scale-95 w-full sm:w-auto"
               >
                 {heroData.ctaText}
               </button>
@@ -112,11 +112,30 @@ export function Hero() {
                 href="https://wa.me/94771234567"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center gap-3 bg-white/40 backdrop-blur-md hover:bg-white/60 text-dark border-2 border-white/40 px-10 py-5 rounded-xl font-black text-sm uppercase tracking-widest transition-all hover:border-primary/20 active:scale-95 shadow-lg shadow-black/5"
+                className="flex items-center justify-center gap-3 bg-white/40 backdrop-blur-md hover:bg-white/60 text-dark border-2 border-white/40 px-8 sm:px-10 py-4 sm:py-5 rounded-xl font-black text-sm uppercase tracking-widest transition-all hover:border-primary/20 active:scale-95 shadow-lg shadow-black/5 w-full sm:w-auto"
               >
                 Contact via WhatsApp <MessageCircle className="w-5 h-5 text-green-500" />
               </a>
             </motion.div>
+
+            {/* Mobile Feature Icons Row */}
+            <div className="flex lg:hidden justify-center flex-wrap gap-3 mt-8">
+              {sideFeatures.map((item, idx) => (
+                <motion.button
+                  key={idx}
+                  onClick={() => scrollToSection(item.section)}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 + idx * 0.1 }}
+                  className="flex flex-col items-center justify-center w-20 h-20 bg-white/50 backdrop-blur-md rounded-2xl shadow-lg border border-white/30 hover:bg-white/70 transition-all"
+                >
+                  <item.icon className="w-6 h-6 text-primary mb-1.5" />
+                  <span className="text-[8px] font-black text-dark text-center px-1 leading-tight uppercase tracking-tighter">
+                    {item.label}
+                  </span>
+                </motion.button>
+              ))}
+            </div>
           </div>
 
           {/* Right Spacer for Layout Balance */}

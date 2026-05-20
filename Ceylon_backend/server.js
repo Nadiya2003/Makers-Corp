@@ -49,15 +49,30 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/ceylon_imports';
 
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
-    console.log('✅  MongoDB connected');
+const MAX_RETRIES = 5;
+const RETRY_DELAY_MS = 5000;
+
+async function connectWithRetry(attempt = 1) {
+  try {
+    await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 10000 });
+    console.log('✅  MongoDB connected successfully');
     app.listen(PORT, () => {
       console.log(`🚀  Ceylon Backend running on http://localhost:${PORT}`);
     });
-  })
-  .catch((err) => {
-    console.error('❌  MongoDB connection failed:', err.message);
-    process.exit(1);
-  });
+  } catch (err) {
+    console.error(`❌  MongoDB connection failed (attempt ${attempt}/${MAX_RETRIES}): ${err.message}`);
+    if (err.message.includes('ETIMEDOUT') || err.message.includes('ECONNREFUSED')) {
+      console.error('💡  Fix: Go to MongoDB Atlas → Security → Network Access → Add your current IP or allow 0.0.0.0/0');
+      console.error('💡  Also check: Is the Atlas cluster paused? (Free tier auto-pauses after inactivity)');
+    }
+    if (attempt < MAX_RETRIES) {
+      console.log(`⏳  Retrying in ${RETRY_DELAY_MS / 1000}s...`);
+      setTimeout(() => connectWithRetry(attempt + 1), RETRY_DELAY_MS);
+    } else {
+      console.error('🔴  Max retries reached. Exiting.');
+      process.exit(1);
+    }
+  }
+}
+
+connectWithRetry();

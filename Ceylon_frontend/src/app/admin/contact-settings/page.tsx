@@ -13,10 +13,12 @@ import {
   Globe,
   Map as MapIcon
 } from 'lucide-react';
+import { convertMapUrl } from '@/lib/mapUtils';
 
 export default function ContactSettings() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [isResolvingUrl, setIsResolvingUrl] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   
   const [contactData, setContactData] = useState({
@@ -69,14 +71,60 @@ export default function ContactSettings() {
     setTimeout(() => setStatusMessage(null), 4000);
   };
 
+  /** Auto-resolve short links (maps.app.goo.gl / goo.gl/maps) via backend proxy */
+  const resolveShortLink = async (shortUrl: string) => {
+    setIsResolvingUrl(true);
+    try {
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const res = await fetch(`${apiUrl}/map-resolve?url=${encodeURIComponent(shortUrl)}`);
+      const data = await res.json();
+      if (data.success && data.resolvedUrl) {
+        // Update the field with the resolved full URL
+        setContactData(prev => ({
+          ...prev,
+          contactPage: { ...prev.contactPage, googleMapUrl: data.resolvedUrl }
+        }));
+      } else {
+        showStatus('error', 'Could not resolve the short link. Please paste the full Google Maps share URL.');
+      }
+    } catch {
+      showStatus('error', 'Network error while resolving the map link.');
+    } finally {
+      setIsResolvingUrl(false);
+    }
+  };
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate and convert the map URL before saving
+    const rawMapUrl = contactData.contactPage.googleMapUrl;
+    let resolvedMapUrl = rawMapUrl;
+
+    if (rawMapUrl) {
+      const mapResult = convertMapUrl(rawMapUrl);
+      if (mapResult.status === 'shortlink') {
+        // Should not happen — the onChange already resolves short links.
+        // As a safety net, try resolving again and abort this submit.
+        resolveShortLink(rawMapUrl);
+        showStatus('error', 'Please wait for the link to resolve, then save again.');
+        return;
+      }
+      if (mapResult.status === 'invalid') {
+        showStatus('error', 'The map URL is not a valid Google Maps link. Please check and try again.');
+        return;
+      }
+      if (mapResult.embedUrl) {
+        resolvedMapUrl = mapResult.embedUrl;
+      }
+    }
+
     setSubmitting(true);
     try {
       const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       
-      // Update both footer and contactPage objects
       const res = await fetch(`${apiUrl}/settings`, {
         method: 'PUT',
         headers: { 
@@ -84,14 +132,20 @@ export default function ContactSettings() {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ 
-          footer: {
-            ...contactData.footer
-          },
-          contactPage: contactData.contactPage 
+          footer: { ...contactData.footer },
+          contactPage: {
+            ...contactData.contactPage,
+            googleMapUrl: resolvedMapUrl
+          }
         })
       });
       const data = await res.json();
       if (data.success) {
+        // Update local state to show the resolved URL
+        setContactData(prev => ({
+          ...prev,
+          contactPage: { ...prev.contactPage, googleMapUrl: resolvedMapUrl }
+        }));
         showStatus('success', 'Contact details updated successfully.');
       } else {
         showStatus('error', data.message || 'Update failed.');
@@ -101,6 +155,7 @@ export default function ContactSettings() {
     } finally {
       setSubmitting(false);
     }
+
   };
 
   return (
@@ -126,7 +181,7 @@ export default function ContactSettings() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             
             {/* Direct Contact Info */}
             <div className="bg-white border border-gray-200 rounded-[2.5rem] p-10 shadow-sm space-y-8">
@@ -202,53 +257,83 @@ export default function ContactSettings() {
                </div>
 
                <div>
-                   <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Google Maps Embed URL</label>
-                   
+                   <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Google Maps URL</label>
+
                    {/* Instructions */}
-                   <div className="bg-orange-50 border border-orange-100 rounded-2xl p-4 mb-3 text-xs text-orange-700 space-y-1.5">
-                     <p className="font-black uppercase tracking-wide text-orange-600">How to get the correct URL:</p>
-                     <ol className="list-decimal list-inside space-y-1 font-medium">
+                   <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-3 text-xs text-blue-700 space-y-1.5">
+                     <p className="font-black uppercase tracking-wide text-blue-600">How to add your map (any method works):</p>
+                     <ol className="list-decimal list-inside space-y-1 font-medium text-blue-600">
                        <li>Open <strong>Google Maps</strong> and search your location</li>
-                       <li>Click <strong>Share</strong> → <strong>Embed a map</strong> tab</li>
-                       <li>Copy the URL inside <code className="bg-orange-100 px-1 rounded">src="..."</code> of the iframe code</li>
-                       <li>Paste that URL below (starts with <code className="bg-orange-100 px-1 rounded">https://www.google.com/maps/embed</code>)</li>
+                       <li>Click <strong>Share</strong> → <strong>Copy link</strong></li>
+                       <li>Paste it below — the system will convert it automatically ✨</li>
                      </ol>
+                     <p className="text-blue-500 font-medium pt-1 border-t border-blue-100">All Google Maps formats are supported (share links, embed URLs, short links).</p>
                    </div>
 
                    <div className="relative">
                      <MapIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600" size={18} />
+                     {isResolvingUrl && (
+                       <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 text-orange-600 animate-spin" size={18} />
+                     )}
                      <input 
-                       type="text" 
+                       type="text"
                        value={contactData.contactPage.googleMapUrl}
-                       onChange={(e) => setContactData({
-                         ...contactData, 
-                         contactPage: { ...contactData.contactPage, googleMapUrl: e.target.value }
-                       })}
-                       placeholder="https://www.google.com/maps/embed?pb=..."
-                       className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
+                       onChange={(e) => {
+                         const val = e.target.value;
+                         setContactData({
+                           ...contactData,
+                           contactPage: { ...contactData.contactPage, googleMapUrl: val }
+                         });
+                         // Auto-resolve short links immediately on paste
+                         if (val.includes('goo.gl/maps/') || val.includes('maps.app.goo.gl/')) {
+                           resolveShortLink(val);
+                         }
+                       }}
+                       placeholder="Paste any Google Maps link..."
+                       disabled={isResolvingUrl}
+                       className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-12 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all disabled:opacity-60"
                      />
                    </div>
 
-                   {/* URL Warning */}
-                   {contactData.contactPage.googleMapUrl && !contactData.contactPage.googleMapUrl.includes('google.com/maps/embed') && (
-                     <div className="mt-2 bg-red-50 border border-red-100 rounded-xl p-3 text-xs text-red-600 font-bold flex items-center gap-2">
-                       <span>⚠️</span>
-                       <span>This doesn't look like a Maps embed URL. Make sure to use the embed src URL, not a share link.</span>
+                   {/* Status Feedback */}
+                   {isResolvingUrl ? (
+                     <div className="mt-2 border rounded-xl p-3 text-xs font-bold bg-blue-50 border-blue-100 text-blue-700 flex items-center gap-2">
+                       <Loader2 size={14} className="animate-spin shrink-0" />
+                       Resolving short link — please wait...
                      </div>
-                   )}
+                   ) : (() => {
+                     const result = convertMapUrl(contactData.contactPage.googleMapUrl);
+                     if (result.status === 'empty') return null;
+                     const colorMap = {
+                       embed:     'bg-green-50 border-green-100 text-green-700',
+                       share:     'bg-green-50 border-green-100 text-green-700',
+                       shortlink: 'bg-amber-50 border-amber-100 text-amber-700',
+                       invalid:   'bg-red-50 border-red-100 text-red-600',
+                     };
+                     const cls = colorMap[result.status] || colorMap.invalid;
+                     return (
+                       <div className={`mt-2 border rounded-xl p-3 text-xs font-bold ${cls}`}>
+                         {result.message}
+                       </div>
+                     );
+                   })()}
 
                    {/* Live Preview */}
-                   {contactData.contactPage.googleMapUrl && contactData.contactPage.googleMapUrl.includes('google.com/maps/embed') && (
-                     <div className="mt-3 rounded-2xl overflow-hidden border border-gray-100 h-48">
-                       <iframe
-                         src={contactData.contactPage.googleMapUrl}
-                         className="w-full h-full border-0"
-                         allowFullScreen
-                         loading="lazy"
-                         referrerPolicy="no-referrer-when-downgrade"
-                       />
-                     </div>
-                   )}
+                   {(() => {
+                     const result = convertMapUrl(contactData.contactPage.googleMapUrl);
+                     if (!result.embedUrl) return null;
+                     return (
+                       <div className="mt-3 rounded-2xl overflow-hidden border border-gray-100 h-48">
+                         <iframe
+                           src={result.embedUrl}
+                           className="w-full h-full border-0"
+                           allowFullScreen
+                           loading="lazy"
+                           referrerPolicy="no-referrer-when-downgrade"
+                         />
+                       </div>
+                     );
+                   })()}
                 </div>
 
                <div>
@@ -270,8 +355,8 @@ export default function ContactSettings() {
 
           <div className="flex justify-end">
              <button 
-               type="submit" disabled={submitting}
-               className="bg-black hover:bg-orange-600 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all flex items-center gap-3 shadow-xl"
+               type="submit" disabled={submitting || isResolvingUrl}
+               className="bg-black hover:bg-orange-600 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all flex items-center gap-3 shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
              >
                {submitting ? <Loader2 size={16} className="animate-spin" /> : <><Save size={16} /> Save Business Details</>}
              </button>

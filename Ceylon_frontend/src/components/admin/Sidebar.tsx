@@ -18,8 +18,14 @@ import {
   Search,
   Layout,
   Info,
-  Phone
+  Phone,
+  X
 } from 'lucide-react';
+
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/admin' },
@@ -36,7 +42,7 @@ const menuItems = [
   { icon: Users, label: 'User Management', href: '/admin/users' },
 ];
 
-export function Sidebar() {
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -47,15 +53,30 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="w-72 bg-black text-slate-300 h-screen sticky top-0 flex flex-col border-r border-white/10 shrink-0">
-      <div className="p-6">
-        <h1 className="text-xl font-bold text-white flex items-center gap-2">
-          <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white text-sm">M</div>
-          Makers Admin
-        </h1>
-      </div>
+    <>
+      {/* Backdrop for mobile/tablet */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-[100] lg:hidden"
+          onClick={onClose}
+        />
+      )}
 
-      <nav className="flex-grow px-4 space-y-1 overflow-y-auto custom-scrollbar">
+      {/* Sidebar */}
+      <aside className={`fixed inset-y-0 left-0 z-[110] w-72 bg-black text-slate-300 flex flex-col border-r border-white/10 shrink-0 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:h-screen lg:z-auto ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}>
+        <div className="p-6 flex items-center justify-between">
+          <h1 className="text-xl font-bold text-white flex items-center gap-2">
+            <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white text-sm">M</div>
+            Makers Admin
+          </h1>
+          <button onClick={onClose} className="lg:hidden text-gray-400 hover:text-white transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <nav className="flex-grow px-4 space-y-1 overflow-y-auto custom-scrollbar">
         {menuItems.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -67,6 +88,9 @@ export function Sidebar() {
                   ? 'bg-orange-600/10 text-orange-500 border-orange-600/20' 
                   : 'border-transparent hover:bg-white/5 hover:text-white'
               }`}
+              onClick={() => {
+                if (window.innerWidth < 1024) onClose();
+              }}
             >
               <item.icon size={20} />
               <span className="font-medium">{item.label}</span>
@@ -84,6 +108,7 @@ export function Sidebar() {
           <span className="font-medium">Logout</span>
         </button>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

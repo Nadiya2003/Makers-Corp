@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Save, Loader2, Layout, Info, Upload } from 'lucide-react';
+import { Save, Loader2, Layout, Info, Upload, Plus, Trash2, Star } from 'lucide-react';
 
 export default function HomepageManagement() {
   const [loading, setLoading] = useState(true);
@@ -19,7 +19,16 @@ export default function HomepageManagement() {
       about: {
         title: '',
         description: '',
-        image: ''
+        image: '',
+        stats: [
+          { value: '10+', label: 'Years Experience' },
+          { value: '500+', label: 'Vehicles Imported' }
+        ] as { value: string; label: string }[]
+      },
+      whyChooseUs: {
+        subtitle: 'The Ceylon Advantage',
+        title: 'Why Choose Us',
+        reasons: [] as { icon: string; title: string; desc: string }[]
       }
     }
   });
@@ -78,7 +87,38 @@ export default function HomepageManagement() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/settings`);
       const data = await res.json();
       if (data.success) {
-        setSettings(data.data);
+        const fetched = data.data;
+
+        // If no stats saved in DB yet, pre-populate with the live defaults
+        if (
+          !fetched?.homepage?.about?.stats ||
+          fetched.homepage.about.stats.length === 0
+        ) {
+          if (fetched?.homepage?.about) {
+            fetched.homepage.about.stats = [
+              { value: '10+', label: 'Years Experience' },
+              { value: '500+', label: 'Vehicles Imported' },
+            ];
+          }
+        }
+
+        // Pre-populate Why Choose Us if empty
+        if (!fetched?.homepage?.whyChooseUs || !fetched.homepage.whyChooseUs.reasons || fetched.homepage.whyChooseUs.reasons.length === 0) {
+          if (!fetched.homepage) fetched.homepage = {};
+          fetched.homepage.whyChooseUs = {
+            subtitle: 'The Ceylon Advantage',
+            title: 'Why Choose Us',
+            reasons: [
+              { icon: 'DollarSign', title: 'Competitive Pricing', desc: 'Direct access means no hidden markups.' },
+              { icon: 'Search', title: 'Transparent Process', desc: 'Clear breakdown of all costs and fees.' },
+              { icon: 'Zap', title: 'Fast Documentation', desc: 'Quick processing of all legal paperwork.' },
+              { icon: 'Globe', title: 'Strong Japan Network', desc: 'Partnerships with top auction houses.' },
+              { icon: 'HeadphonesIcon', title: 'After-Sales Support', desc: 'Dedicated support even after delivery.' },
+            ]
+          };
+        }
+
+        setSettings(fetched);
       }
     } catch (err) {
       console.error('Failed to fetch settings');
@@ -249,6 +289,204 @@ export default function HomepageManagement() {
                   <input type="file" className="hidden" accept="image/*" onChange={(e) => handleDirectUpload(e, 'about', 'image')} disabled={isUploading} />
                   {isUploading ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} />}
                 </label>
+              </div>
+            </div>
+
+            {/* Stats Editor */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-medium text-gray-700">Stat Cards</label>
+                <button
+                  type="button"
+                  onClick={() => setSettings({
+                    ...settings,
+                    homepage: {
+                      ...settings.homepage,
+                      about: {
+                        ...settings.homepage.about,
+                        stats: [...(settings.homepage.about.stats || []), { value: '', label: '' }]
+                      }
+                    }
+                  })}
+                  className="flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-all border border-orange-200"
+                >
+                  <Plus size={14} /> Add Stat
+                </button>
+              </div>
+              <div className="space-y-3">
+                {(settings.homepage.about.stats || []).map((stat: { value: string; label: string }, idx: number) => (
+                  <div key={idx} className="flex gap-3 items-center bg-gray-50 border border-gray-200 rounded-xl p-3">
+                    <div className="flex-1">
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Value</label>
+                      <input
+                        type="text"
+                        value={stat.value}
+                        onChange={(e) => {
+                          const newStats = [...(settings.homepage.about.stats || [])];
+                          newStats[idx] = { ...newStats[idx], value: e.target.value };
+                          setSettings({ ...settings, homepage: { ...settings.homepage, about: { ...settings.homepage.about, stats: newStats } } });
+                        }}
+                        placeholder="e.g. 10+"
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
+                      />
+                    </div>
+                    <div className="flex-[2]">
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Label</label>
+                      <input
+                        type="text"
+                        value={stat.label}
+                        onChange={(e) => {
+                          const newStats = [...(settings.homepage.about.stats || [])];
+                          newStats[idx] = { ...newStats[idx], label: e.target.value };
+                          setSettings({ ...settings, homepage: { ...settings.homepage, about: { ...settings.homepage.about, stats: newStats } } });
+                        }}
+                        placeholder="e.g. Years Experience"
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newStats = (settings.homepage.about.stats || []).filter((_: any, i: number) => i !== idx);
+                        setSettings({ ...settings, homepage: { ...settings.homepage, about: { ...settings.homepage.about, stats: newStats } } });
+                      }}
+                      className="mt-5 p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+                {(settings.homepage.about.stats || []).length === 0 && (
+                  <p className="text-xs text-gray-400 font-medium text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                    No stat cards yet. Click "Add Stat" to create one.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose Us Section */}
+        <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-6">
+            <Star className="text-orange-600" size={20} />
+            <h2 className="text-lg font-bold text-gray-900">Why Choose Us Section</h2>
+          </div>
+          
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Section Subtitle</label>
+                <input
+                  type="text"
+                  value={settings.homepage.whyChooseUs?.subtitle || ''}
+                  onChange={(e) => setSettings({ ...settings, homepage: { ...settings.homepage, whyChooseUs: { ...settings.homepage.whyChooseUs, subtitle: e.target.value } } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="e.g. The Ceylon Advantage"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Section Title</label>
+                <input
+                  type="text"
+                  value={settings.homepage.whyChooseUs?.title || ''}
+                  onChange={(e) => setSettings({ ...settings, homepage: { ...settings.homepage, whyChooseUs: { ...settings.homepage.whyChooseUs, title: e.target.value } } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="e.g. Why Choose Us"
+                />
+              </div>
+            </div>
+
+            {/* Reasons Editor */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-medium text-gray-700">Reason Cards</label>
+                <button
+                  type="button"
+                  onClick={() => setSettings({
+                    ...settings,
+                    homepage: {
+                      ...settings.homepage,
+                      whyChooseUs: {
+                        ...settings.homepage.whyChooseUs,
+                        reasons: [...(settings.homepage.whyChooseUs?.reasons || []), { icon: 'CheckCircle', title: '', desc: '' }]
+                      }
+                    }
+                  })}
+                  className="flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-all border border-orange-200"
+                >
+                  <Plus size={14} /> Add Reason
+                </button>
+              </div>
+              <div className="space-y-3">
+                {(settings.homepage.whyChooseUs?.reasons || []).map((reason: any, idx: number) => (
+                  <div key={idx} className="flex gap-3 items-start bg-gray-50 border border-gray-200 rounded-xl p-3">
+                    <div className="w-32">
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Icon</label>
+                      <select
+                        value={reason.icon}
+                        onChange={(e) => {
+                          const newReasons = [...(settings.homepage.whyChooseUs?.reasons || [])];
+                          newReasons[idx] = { ...newReasons[idx], icon: e.target.value };
+                          setSettings({ ...settings, homepage: { ...settings.homepage, whyChooseUs: { ...settings.homepage.whyChooseUs, reasons: newReasons } } });
+                        }}
+                        className="w-full bg-white border border-gray-200 rounded-lg px-2 py-2 text-sm font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
+                      >
+                        <option value="DollarSign">DollarSign</option>
+                        <option value="Search">Search</option>
+                        <option value="Zap">Zap</option>
+                        <option value="Globe">Globe</option>
+                        <option value="HeadphonesIcon">Headphones</option>
+                        <option value="CheckCircle">CheckCircle</option>
+                        <option value="Star">Star</option>
+                        <option value="Shield">Shield</option>
+                        <option value="Truck">Truck</option>
+                        <option value="ThumbsUp">ThumbsUp</option>
+                      </select>
+                    </div>
+                    <div className="flex-[1]">
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Title</label>
+                      <input
+                        type="text"
+                        value={reason.title}
+                        onChange={(e) => {
+                          const newReasons = [...(settings.homepage.whyChooseUs?.reasons || [])];
+                          newReasons[idx] = { ...newReasons[idx], title: e.target.value };
+                          setSettings({ ...settings, homepage: { ...settings.homepage, whyChooseUs: { ...settings.homepage.whyChooseUs, reasons: newReasons } } });
+                        }}
+                        placeholder="Title..."
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all mb-2"
+                      />
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Description</label>
+                      <textarea
+                        value={reason.desc}
+                        onChange={(e) => {
+                          const newReasons = [...(settings.homepage.whyChooseUs?.reasons || [])];
+                          newReasons[idx] = { ...newReasons[idx], desc: e.target.value };
+                          setSettings({ ...settings, homepage: { ...settings.homepage, whyChooseUs: { ...settings.homepage.whyChooseUs, reasons: newReasons } } });
+                        }}
+                        rows={2}
+                        placeholder="Description..."
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newReasons = (settings.homepage.whyChooseUs?.reasons || []).filter((_: any, i: number) => i !== idx);
+                        setSettings({ ...settings, homepage: { ...settings.homepage, whyChooseUs: { ...settings.homepage.whyChooseUs, reasons: newReasons } } });
+                      }}
+                      className="mt-5 p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+                {(settings.homepage.whyChooseUs?.reasons || []).length === 0 && (
+                  <p className="text-xs text-gray-400 font-medium text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                    No reason cards yet. Click "Add Reason" to create one.
+                  </p>
+                )}
               </div>
             </div>
           </div>

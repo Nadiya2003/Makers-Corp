@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Sidebar } from '@/components/admin/Sidebar';
+import { Menu } from 'lucide-react';
 
 // Routes that don't require authentication
 const PUBLIC_ADMIN_ROUTES = ['/admin/login', '/admin/register'];
@@ -16,6 +17,7 @@ export default function AdminLayout({
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isPublicRoute = PUBLIC_ADMIN_ROUTES.includes(pathname);
 
@@ -60,12 +62,27 @@ export default function AdminLayout({
   // Authenticated — render dashboard layout with sidebar
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
-      <Sidebar />
-      <main className="flex-grow overflow-y-auto relative">
-        <div className="p-8">
-          {children}
-        </div>
-      </main>
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Mobile/Tablet Topbar */}
+        <header className="lg:hidden bg-white border-b border-gray-200 h-16 flex items-center px-4 shrink-0">
+          <button 
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 -ml-2 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-600 rounded-md"
+          >
+            <span className="sr-only">Open sidebar</span>
+            <Menu size={24} />
+          </button>
+          <span className="ml-4 font-bold text-gray-900">Makers Admin</span>
+        </header>
+
+        <main className="flex-1 overflow-y-auto overflow-x-hidden">
+          <div className="p-4 md:p-6 lg:p-8">
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

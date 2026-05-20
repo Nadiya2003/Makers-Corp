@@ -14,7 +14,8 @@ export function AboutUsClient() {
     content: 'Ceylon Imports was founded with a single mission: to revolutionize the vehicle import process in Sri Lanka. We believe that importing a car from Japan should be transparent, cost-effective, and completely stress-free.',
     image: 'https://images.unsplash.com/photo-1562426509-5044a121aa49?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
     mission: 'To provide a seamless, transparent, and highly reliable vehicle import service that empowers our customers to purchase their dream cars directly from Japan.',
-    vision: 'To be the most trusted and preferred vehicle import partner in Sri Lanka, known for our integrity and customer-centric approach.'
+    vision: 'To be the most trusted and preferred vehicle import partner in Sri Lanka, known for our integrity and customer-centric approach.',
+    directors: [] as { name: string; role: string; bio: string; image: string; }[]
   });
 
   useEffect(() => {
@@ -35,7 +36,8 @@ export function AboutUsClient() {
           content: page.content || content.content,
           image: page.image || content.image,
           mission: page.mission || content.mission,
-          vision: page.vision || content.vision
+          vision: page.vision || content.vision,
+          directors: page.directors || content.directors
         });
       }
     } catch (err) {
@@ -137,6 +139,55 @@ export function AboutUsClient() {
           </div>
         </div>
       </section>
+
+      {/* Board of Directors */}
+      {content.directors && content.directors.length > 0 && (
+        <section className="py-12 sm:py-16 lg:py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="font-display font-bold text-3xl text-dark mb-4">
+                Board of Directors
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Meet the visionary leaders behind Makers Ceylon.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
+              {content.directors.map((director, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-gray-50 rounded-3xl overflow-hidden shadow-soft border border-gray-100 flex flex-col group"
+                >
+                  <div className="relative aspect-square overflow-hidden bg-gray-200">
+                    {director.image ? (
+                      <Image
+                        src={director.image}
+                        alt={director.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        No Image
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6 sm:p-8 flex flex-col flex-1">
+                    <h3 className="font-display font-bold text-xl text-dark mb-1">{director.name}</h3>
+                    <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{director.role}</p>
+                    <p className="text-gray-600 leading-relaxed text-sm flex-1">{director.bio}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Detailed Why Choose Us */}
       <section className="py-12 sm:py-16 lg:py-20 bg-white">

@@ -38,11 +38,28 @@ const siteSettingsSchema = new mongoose.Schema({
     about: {
       title: { type: String, default: '' },
       description: { type: String, default: '' },
-      image: { type: String, default: '' }
+      image: { type: String, default: '' },
+      stats: [
+        {
+          value: { type: String, default: '' },
+          label: { type: String, default: '' }
+        }
+      ]
     },
     services: [
       { title: { type: String }, description: { type: String }, icon: { type: String } }
-    ]
+    ],
+    whyChooseUs: {
+      subtitle: { type: String, default: 'The Ceylon Advantage' },
+      title: { type: String, default: 'Why Choose Us' },
+      reasons: [
+        {
+          icon: { type: String, default: 'CheckCircle' },
+          title: { type: String, default: '' },
+          desc: { type: String, default: '' }
+        }
+      ]
+    }
   },
 
   // SEO Settings
@@ -65,7 +82,15 @@ const siteSettingsSchema = new mongoose.Schema({
     content: { type: String, default: '' },
     image: { type: String, default: '' },
     mission: { type: String, default: '' },
-    vision: { type: String, default: '' }
+    vision: { type: String, default: '' },
+    directors: [
+      {
+        name: { type: String, default: '' },
+        role: { type: String, default: '' },
+        bio: { type: String, default: '' },
+        image: { type: String, default: '' }
+      }
+    ]
   },
 
   // Contact Page

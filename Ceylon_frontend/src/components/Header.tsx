@@ -89,7 +89,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-4 lg:gap-8">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-8">
             {navLinks.map((link) =>
               link.path ? (
                 <Link
@@ -132,7 +132,7 @@ export function Header() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden z-50 p-2 -mr-2 flex items-center justify-center text-dark hover:bg-gray-100 rounded-lg transition-all focus:outline-none active:scale-95"
+            className="lg:hidden z-50 p-2 -mr-2 flex items-center justify-center text-dark hover:bg-gray-100 rounded-lg transition-all focus:outline-none active:scale-95"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
@@ -149,7 +149,7 @@ export function Header() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 md:hidden max-h-[calc(100vh-60px)] overflow-y-auto rounded-b-2xl safe-bottom"
+            className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 lg:hidden max-h-[calc(100vh-60px)] overflow-y-auto rounded-b-2xl safe-bottom"
           >
             <div className="flex flex-col px-4 py-4 gap-1 sm:gap-2">
               {navLinks.map((link) =>

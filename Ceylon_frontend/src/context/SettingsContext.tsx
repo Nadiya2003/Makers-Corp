@@ -12,6 +12,7 @@ interface Settings {
     contactNumber: string;
   };
   footer: {
+    logo?: string;
     aboutText: string;
     address: string;
     email: string;

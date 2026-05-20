@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Save, Loader2, Layout, Mail, Phone, MapPin, Share2 } from 'lucide-react';
+import { Save, Loader2, Layout, Mail, Phone, MapPin, Share2, Upload } from 'lucide-react';
 
 export default function AppearanceManagement() {
   const [loading, setLoading] = useState(true);
@@ -9,6 +9,7 @@ export default function AppearanceManagement() {
   const [message, setMessage] = useState('');
   const [settings, setSettings] = useState({
     footer: {
+      logo: '',
       aboutText: '',
       address: '',
       email: '',
@@ -17,6 +18,46 @@ export default function AppearanceManagement() {
       socialLinks: []
     }
   });
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleDirectUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    setIsUploading(true);
+    const formDataObj = new FormData();
+    formDataObj.append('photos', e.target.files[0]);
+    formDataObj.append('category', 'FooterLogo');
+
+    try {
+      const token = sessionStorage.getItem('adminToken');
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const res = await fetch(`${apiUrl}/media`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formDataObj
+      });
+      
+      const data = await res.json();
+      if (data.success && data.data && data.data.length > 0) {
+        const uploadedUrl = data.data[0].url;
+        setSettings({
+          ...settings,
+          footer: {
+            ...settings.footer,
+            logo: uploadedUrl
+          }
+        });
+        setMessage('Logo uploaded successfully! Click Save Changes to apply.');
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        setMessage('Upload failed: ' + (data.message || 'Unknown error'));
+      }
+    } catch (error) {
+      setMessage('Network error during upload');
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   useEffect(() => {
     fetchSettings();
@@ -140,6 +181,32 @@ export default function AppearanceManagement() {
             <h2 className="text-lg font-bold text-gray-900">Footer Content</h2>
           </div>
           <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Footer Logo URL</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={settings.footer.logo || ''}
+                  onChange={(e) => setSettings({ ...settings, footer: { ...settings.footer, logo: e.target.value } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="https://example.com/logo.png"
+                />
+                <label className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 rounded-lg cursor-pointer transition-colors border border-gray-200" title="Upload Logo">
+                  <input type="file" className="hidden" accept="image/*" onChange={handleDirectUpload} disabled={isUploading} />
+                  {isUploading ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} />}
+                </label>
+              </div>
+              {settings.footer.logo && (
+                <div className="mt-3 p-3 bg-gray-950 border border-gray-800 rounded-lg flex items-center gap-4">
+                  <span className="text-xs font-semibold text-gray-400">Preview:</span>
+                  <img
+                    src={settings.footer.logo}
+                    alt="Footer Logo Preview"
+                    className="h-10 w-auto object-contain bg-white/5 p-1 rounded"
+                  />
+                </div>
+              )}
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">About Footer Text</label>
               <textarea

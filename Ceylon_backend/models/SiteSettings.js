@@ -16,6 +16,7 @@ const siteSettingsSchema = new mongoose.Schema({
 
   // Footer Management
   footer: {
+    logo: { type: String, default: '' },
     aboutText: { type: String, default: '' },
     address: { type: String, default: '' },
     email: { type: String, default: '' },

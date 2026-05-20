@@ -9,6 +9,7 @@ export function Footer() {
   const { settings } = useSettings();
 
   const footerData = settings?.footer || {
+    logo: '',
     aboutText: 'Your trusted partner for importing premium Japanese vehicles directly to Sri Lanka. Better prices, transparent process, and complete peace of mind.',
     address: '123 Import Avenue, Colombo 03, Sri Lanka',
     phone: '+94 77 123 4567',
@@ -17,6 +18,7 @@ export function Footer() {
   };
 
   const siteName = settings?.siteName || 'Makers Ceylon';
+  const footerLogo = footerData.logo || settings?.logo;
 
   return (
     <footer className="bg-[#020617] text-gray-300 py-8 sm:py-14 lg:py-16 border-t border-white/5">
@@ -25,12 +27,22 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-display font-bold text-xl">
-                {siteName.charAt(0)}
-              </div>
-              <span className="font-display font-bold text-xl tracking-tight text-white uppercase">
-                {siteName}
-              </span>
+              {footerLogo ? (
+                <img
+                  src={footerLogo}
+                  alt={siteName}
+                  className="h-12 w-auto object-contain object-left"
+                />
+              ) : (
+                <>
+                  <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-display font-bold text-xl">
+                    {siteName.charAt(0)}
+                  </div>
+                  <span className="font-display font-bold text-xl tracking-tight text-white uppercase">
+                    {siteName}
+                  </span>
+                </>
+              )}
             </Link>
             <p className="text-sm leading-relaxed text-gray-400">
               {footerData.aboutText}

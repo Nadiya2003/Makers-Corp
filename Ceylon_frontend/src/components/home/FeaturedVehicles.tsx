@@ -61,9 +61,9 @@ export function FeaturedVehicles() {
   };
 
   return (
-    <section id="vehicles" className="py-32 bg-white">
+    <section id="vehicles" className="py-16 sm:py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 lg:mb-16 gap-4 sm:gap-8">
           <div className="max-w-2xl">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
@@ -73,7 +73,7 @@ export function FeaturedVehicles() {
             >
               <Sparkles className="w-3 h-3" /> Hand-Picked Quality
             </motion.div>
-            <h2 className="font-display font-black text-5xl sm:text-6xl text-dark leading-none uppercase tracking-tighter">
+            <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-dark leading-none uppercase tracking-tighter">
               Featured <span className="text-primary italic">Inventory</span>
             </h2>
             <p className="mt-4 text-gray-500 font-medium text-lg">
@@ -118,14 +118,14 @@ export function FeaturedVehicles() {
                 transition={{ delay: index * 0.1, duration: 0.6 }}
                 className="group relative"
               >
-                <div className="relative h-[320px] rounded-[2.5rem] overflow-hidden shadow-2xl mb-6 bg-gray-100">
+                <div className="relative h-[200px] sm:h-[320px] rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-2xl mb-4 sm:mb-6 bg-gray-100">
                   <Image
                     src={vehicle.image}
                     alt={vehicle.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4 sm:p-8">
                      <button 
                        onClick={() => openDetails(vehicle)}
                        className="w-full bg-white text-dark py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-primary hover:text-white transition-all shadow-xl"
@@ -140,9 +140,9 @@ export function FeaturedVehicles() {
                   </div>
                 </div>
 
-                <div className="px-2">
+                <div className="px-1 sm:px-2">
                   <div className="flex justify-between items-start mb-3">
-                    <h4 className="font-display font-black text-xl text-dark leading-tight uppercase group-hover:text-primary transition-colors">
+                    <h4 className="font-display font-black text-lg sm:text-xl text-dark leading-tight uppercase group-hover:text-primary transition-colors">
                       {vehicle.name}
                     </h4>
                   </div>
@@ -162,7 +162,7 @@ export function FeaturedVehicles() {
                   <div className="flex items-center justify-between py-4 border-t border-gray-100">
                     <div className="flex flex-col">
                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Starting From</span>
-                       <span className="text-xl font-black text-primary">LKR {vehicle.price}</span>
+                       <span className="text-lg sm:text-xl font-black text-primary">LKR {vehicle.price}</span>
                     </div>
                     <button
                       onClick={() => openDetails(vehicle)}

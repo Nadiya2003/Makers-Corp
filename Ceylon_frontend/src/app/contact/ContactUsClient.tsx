@@ -107,12 +107,12 @@ export function ContactUsClient() {
   return (
     <main className="w-full pt-20">
       {/* Header */}
-      <div className="bg-dark text-white py-16">
+      <div className="bg-dark text-white py-10 sm:py-14 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-display font-bold mb-4"
+            className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-3 sm:mb-4"
           >
             {contactInfo.contactPage.title.split(' ').map((word, i) => (
               <span key={i} className={i === contactInfo.contactPage.title.split(' ').length - 1 ? "text-primary" : ""}>
@@ -131,16 +131,16 @@ export function ContactUsClient() {
         </div>
       </div>
 
-      <section className="py-20 bg-gray-50">
+      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Contact Details & Map */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              className="space-y-8"
+              className="space-y-6 sm:space-y-8"
             >
-              <div className="bg-white p-8 rounded-3xl shadow-soft border border-gray-100">
+              <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-soft border border-gray-100">
                 <h3 className="font-display font-bold text-2xl text-dark mb-6">
                   Contact Information
                 </h3>
@@ -230,7 +230,7 @@ export function ContactUsClient() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white p-8 lg:p-10 rounded-3xl shadow-soft border border-gray-100"
+              className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl shadow-soft border border-gray-100"
             >
               <h3 className="font-display font-bold text-2xl text-dark mb-8">Send us a Message</h3>
 

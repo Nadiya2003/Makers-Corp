@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Sidebar } from '@/components/admin/Sidebar';
 
+// Routes that don't require authentication
+const PUBLIC_ADMIN_ROUTES = ['/admin/login', '/admin/register'];
+
 export default function AdminLayout({
   children,
 }: {
@@ -12,38 +15,49 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [checking, setChecking] = useState(true);
+
+  const isPublicRoute = PUBLIC_ADMIN_ROUTES.includes(pathname);
 
   useEffect(() => {
-    // Skip auth check for login page
-    if (pathname === '/admin/login') {
-      setLoading(false);
+    // Skip auth check for public routes (login, register)
+    if (isPublicRoute) {
+      setChecking(false);
       return;
     }
 
     const token = localStorage.getItem('adminToken');
     if (!token) {
-      router.push('/admin/login');
+      // No token — redirect to login immediately
+      router.replace('/admin/login');
     } else {
       setIsAuthorized(true);
-      setLoading(false);
+      setChecking(false);
     }
-  }, [pathname, router]);
+  }, [pathname, router, isPublicRoute]);
 
-  if (pathname === '/admin/login') {
+  // Public routes (login/register): render without sidebar
+  if (isPublicRoute) {
     return <>{children}</>;
   }
 
-  if (loading) {
+  // While we're verifying the token, show a full-screen loader
+  // This prevents any dashboard flash before the redirect happens
+  if (checking || !isAuthorized) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-600"></div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white gap-4">
+        <div className="relative w-16 h-16">
+          <div className="absolute inset-0 rounded-full border-4 border-gray-100" />
+          <div className="absolute inset-0 rounded-full border-4 border-t-orange-600 animate-spin" />
+        </div>
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">
+          Verifying Access...
+        </p>
       </div>
     );
   }
 
-  if (!isAuthorized) return null;
-
+  // Authenticated — render dashboard layout with sidebar
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       <Sidebar />

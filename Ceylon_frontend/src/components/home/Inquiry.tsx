@@ -59,12 +59,12 @@ export function Inquiry() {
   };
 
   return (
-    <section id="inquiry" className="py-24 bg-gray-50">
+    <section id="inquiry" className="py-12 sm:py-16 lg:py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-          <div className="grid lg:grid-cols-5">
+          <div className="grid grid-cols-1 lg:grid-cols-5">
             {/* Left: Contact Info */}
-            <div className="lg:col-span-2 bg-dark text-white p-10 lg:p-12 relative overflow-hidden">
+            <div className="lg:col-span-2 bg-dark text-white p-7 sm:p-10 lg:p-12 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
               <div className="relative z-10">
@@ -120,7 +120,7 @@ export function Inquiry() {
             </div>
 
             {/* Right: Form */}
-            <div className="lg:col-span-3 p-10 lg:p-12">
+            <div className="lg:col-span-3 p-7 sm:p-10 lg:p-12">
               <h3 className="font-display font-bold text-2xl text-dark mb-8">Send an Inquiry</h3>
 
               {success && (

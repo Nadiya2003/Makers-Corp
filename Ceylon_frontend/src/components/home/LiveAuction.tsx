@@ -38,7 +38,7 @@ export function LiveAuction() {
   */
 
   return (
-    <section id="live-auction" className="py-24 bg-dark relative overflow-hidden">
+    <section id="live-auction" className="py-12 sm:py-16 lg:py-24 bg-dark relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
       
@@ -59,11 +59,11 @@ export function LiveAuction() {
             NEW FEATURE
           </div>
           
-          <h2 className="font-display font-bold text-4xl sm:text-6xl text-white mb-8 leading-tight">
+          <h2 className="font-display font-bold text-2xl sm:text-4xl lg:text-6xl text-white mb-6 sm:mb-8 leading-tight">
             Live Auctions <span className="text-primary">Coming Soon</span>
           </h2>
           
-          <p className="text-gray-400 text-xl mb-12 leading-relaxed">
+          <p className="text-gray-400 text-base sm:text-xl mb-10 sm:mb-12 leading-relaxed">
             Our state-of-the-art live auction system is currently under development. 
             Soon, you'll be able to bid on premium Japanese vehicles in real-time 
             directly from our platform.

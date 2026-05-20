@@ -56,7 +56,7 @@ export function AboutUsClient() {
   return (
     <main className="w-full pt-20">
       {/* Hero Section */}
-      <section className="relative h-[40vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[30vh] sm:h-[40vh] min-h-[280px] sm:min-h-[400px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
             src={content.image}
@@ -71,7 +71,7 @@ export function AboutUsClient() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-6xl font-display font-bold text-white mb-4"
+            className="text-3xl sm:text-5xl md:text-6xl font-display font-bold text-white mb-3 sm:mb-4"
           >
             {content.title.split(' ').map((word, i) => (
               <span key={i} className={i === content.title.split(' ').length - 1 ? "text-primary" : ""}>
@@ -83,7 +83,7 @@ export function AboutUsClient() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-xl text-gray-300 max-w-2xl mx-auto"
+            className="text-base sm:text-xl text-gray-300 max-w-2xl mx-auto"
           >
             Your trusted partner in importing premium Japanese vehicles.
           </motion.p>
@@ -91,7 +91,7 @@ export function AboutUsClient() {
       </section>
 
       {/* Intro Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-16 lg:py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-display font-bold text-3xl text-dark mb-6">Who We Are</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-8 whitespace-pre-wrap">
@@ -102,14 +102,14 @@ export function AboutUsClient() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-white p-10 rounded-3xl shadow-soft border border-gray-100"
+              className="bg-white p-7 sm:p-10 rounded-3xl shadow-soft border border-gray-100"
             >
               <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
                 <Target className="w-8 h-8 text-primary" />
@@ -124,7 +124,7 @@ export function AboutUsClient() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-white p-10 rounded-3xl shadow-soft border border-gray-100"
+              className="bg-white p-7 sm:p-10 rounded-3xl shadow-soft border border-gray-100"
             >
               <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
                 <Shield className="w-8 h-8 text-primary" />
@@ -139,7 +139,7 @@ export function AboutUsClient() {
       </section>
 
       {/* Detailed Why Choose Us */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="font-display font-bold text-3xl text-dark mb-4">
@@ -150,7 +150,7 @@ export function AboutUsClient() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {[
               {
                 title: 'Direct Auction Access',

@@ -86,18 +86,18 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-white w-full max-w-6xl rounded-[3rem] overflow-hidden relative z-10 shadow-2xl max-h-[95vh] overflow-y-auto custom-scrollbar"
+            className="bg-white w-full max-w-6xl rounded-[2rem] sm:rounded-[3rem] overflow-hidden relative z-10 shadow-2xl max-h-[95vh] overflow-y-auto custom-scrollbar"
           >
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 p-4 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full z-[60] transition-colors group"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 p-3 sm:p-4 bg-white/80 hover:bg-white backdrop-blur-md rounded-full z-[60] transition-colors group shadow-md"
             >
-              <X size={24} className="text-white lg:text-dark group-hover:rotate-90 transition-transform" />
+              <X size={20} className="text-dark group-hover:rotate-90 transition-transform" />
             </button>
 
-            <div className="grid lg:grid-cols-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* Image Section - Interactive Gallery */}
-              <div className="relative h-[450px] lg:h-auto min-h-[450px] bg-gray-900 group">
+              <div className="relative h-[280px] sm:h-[380px] lg:h-auto min-h-[280px] sm:min-h-[380px] lg:min-h-[450px] bg-gray-900 group">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeImageIndex}
@@ -120,13 +120,13 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
                   <>
                     <button
                       onClick={prevImage}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-all opacity-0 group-hover:opacity-100"
+                      className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/20 hover:bg-white/40 backdrop-blur-md rounded-full text-white transition-all"
                     >
                       <ChevronLeft size={24} />
                     </button>
                     <button
                       onClick={nextImage}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-all opacity-0 group-hover:opacity-100"
+                      className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/20 hover:bg-white/40 backdrop-blur-md rounded-full text-white transition-all"
                     >
                       <ChevronRight size={24} />
                     </button>
@@ -156,11 +156,11 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
               </div>
 
               {/* Content Section */}
-              <div className="p-8 lg:p-16">
+              <div className="p-6 sm:p-10 lg:p-16">
                 <div className="mb-10">
                   <div className="flex flex-col mb-4">
                     <span className="text-primary font-black text-xs uppercase tracking-[0.3em] mb-2">Premium Selection</span>
-                    <h2 className="text-4xl sm:text-5xl font-display font-black text-dark uppercase tracking-tighter leading-none">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-dark uppercase tracking-tighter leading-none">
                       {vehicle.name}
                     </h2>
                   </div>
@@ -173,7 +173,7 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8 sm:mb-12">
                   {specItems.map((spec, idx) => (
                     <div key={idx} className="bg-gray-50 p-5 rounded-[1.5rem] border border-gray-100 hover:border-primary/20 transition-colors">
                       <spec.icon className="w-5 h-5 text-primary mb-3" />

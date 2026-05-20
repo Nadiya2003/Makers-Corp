@@ -55,7 +55,7 @@ export function PopupModal() {
             className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden border border-white/20"
           >
             {/* Header Image Area */}
-            <div className="h-48 relative group overflow-hidden">
+            <div className="h-36 sm:h-48 relative group overflow-hidden">
               <Image
                 src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
                 alt="Japan Auction Preview"
@@ -90,7 +90,7 @@ export function PopupModal() {
             </div>
 
             {/* Body */}
-            <div className="p-8">
+            <div className="p-5 sm:p-8">
               <div className="space-y-4 mb-8">
                 <p className="text-gray-600 leading-relaxed font-medium">
                   We've just integrated <span className="text-dark font-bold">Live Auction Access</span>.
@@ -120,7 +120,7 @@ export function PopupModal() {
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="px-8 bg-gray-100 hover:bg-gray-200 text-gray-500 font-black text-xs uppercase tracking-widest py-4 rounded-xl transition-all active:scale-[0.98]"
+                  className="flex-1 sm:flex-none px-6 sm:px-8 bg-gray-100 hover:bg-gray-200 text-gray-500 font-black text-xs uppercase tracking-widest py-4 rounded-xl transition-all active:scale-[0.98]"
                 >
                   Maybe Later
                 </button>

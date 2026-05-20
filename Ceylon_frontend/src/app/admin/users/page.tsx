@@ -28,7 +28,7 @@ export default function UserManagement() {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/auth`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -50,7 +50,7 @@ export default function UserManagement() {
   };
 
   const handleDelete = async (id: string) => {
-    const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+    const adminUser = JSON.parse(sessionStorage.getItem('adminUser') || '{}');
     if (adminUser._id === id) {
       showStatus('error', "You cannot delete your own account.");
       return;
@@ -58,7 +58,7 @@ export default function UserManagement() {
 
     if (!confirm('Are you sure you want to remove this user?')) return;
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/auth/${id}`, {
         method: 'DELETE',

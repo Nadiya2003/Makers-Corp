@@ -62,7 +62,7 @@ export default function AboutUsSettings() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/settings`, {
         method: 'PUT',

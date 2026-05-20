@@ -12,7 +12,7 @@ export default function AdminLogin() {
 
   // Redirect already-authenticated users straight to the dashboard
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
+    const token = sessionStorage.getItem('adminToken');
     if (token) {
       router.replace('/admin');
     }
@@ -33,8 +33,8 @@ export default function AdminLogin() {
       const data = await res.json();
 
       if (data.success) {
-        localStorage.setItem('adminToken', data.data.token);
-        localStorage.setItem('adminUser', JSON.stringify(data.data));
+        sessionStorage.setItem('adminToken', data.data.token);
+        sessionStorage.setItem('adminUser', JSON.stringify(data.data));
         router.push('/admin');
       } else {
         setError(data.message || 'Login failed');

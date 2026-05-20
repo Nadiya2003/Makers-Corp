@@ -35,7 +35,7 @@ export default function MediaGallery() {
 
   const fetchMedia = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/media`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -99,7 +99,7 @@ export default function MediaGallery() {
     formData.append('category', category);
 
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/media`, {
         method: 'POST',
@@ -121,7 +121,7 @@ export default function MediaGallery() {
         if (res.status === 401) {
           showStatus('error', 'Session expired. Please log in again.');
           setTimeout(() => {
-            localStorage.removeItem('adminToken');
+            sessionStorage.removeItem('adminToken');
             window.location.href = '/admin/login';
           }, 2000);
         } else {
@@ -138,7 +138,7 @@ export default function MediaGallery() {
   const handleDelete = async (id: string) => {
     if (!confirm('Permanently delete this image?')) return;
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/media/${id}`, {
         method: 'DELETE',

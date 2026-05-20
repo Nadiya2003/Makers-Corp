@@ -39,7 +39,7 @@ export default function InquiriesManagement() {
 
   const fetchInquiries = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/inquiries`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -64,7 +64,7 @@ export default function InquiriesManagement() {
     e.stopPropagation();
     if (!confirm('Are you sure you want to delete this inquiry?')) return;
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/inquiries/${id}`, {
         method: 'DELETE',

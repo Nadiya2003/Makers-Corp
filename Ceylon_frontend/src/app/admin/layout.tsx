@@ -26,7 +26,7 @@ export default function AdminLayout({
       return;
     }
 
-    const token = localStorage.getItem('adminToken');
+    const token = sessionStorage.getItem('adminToken');
     if (!token) {
       // No token — redirect to login immediately
       router.replace('/admin/login');

@@ -69,7 +69,7 @@ export default function AuctionManagement() {
   const fetchGallery = async () => {
     setPickerLoading(true);
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/media`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -94,7 +94,7 @@ export default function AuctionManagement() {
     formDataObj.append('category', 'Auctions');
 
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/media`, {
         method: 'POST',
@@ -116,6 +116,42 @@ export default function AuctionManagement() {
       showStatus('error', 'Network error during upload');
     } finally {
       setIsUploading(false);
+      e.target.value = '';
+    }
+  };
+
+  const [directUploadProgress, setDirectUploadProgress] = useState(false);
+
+  const handleDirectUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    setDirectUploadProgress(true);
+    const formDataObj = new FormData();
+    formDataObj.append('photos', e.target.files[0]);
+    formDataObj.append('category', 'Auctions');
+
+    try {
+      const token = sessionStorage.getItem('adminToken');
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const res = await fetch(`${apiUrl}/media`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formDataObj
+      });
+      
+      const data = await res.json();
+      if (data.success && data.data && data.data.length > 0) {
+        const uploadedUrl = data.data[0].url;
+        setFormData({ ...formData, image: uploadedUrl });
+        showStatus('success', 'Image uploaded successfully!');
+      } else {
+        showStatus('error', data.message || 'Upload failed');
+      }
+    } catch (err) {
+      showStatus('error', 'Network error during upload');
+    } finally {
+      setDirectUploadProgress(false);
+      e.target.value = '';
     }
   };
 
@@ -137,7 +173,7 @@ export default function AuctionManagement() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this auction?')) return;
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/auctions/${id}`, {
         method: 'DELETE',
@@ -156,7 +192,7 @@ export default function AuctionManagement() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    const token = localStorage.getItem('adminToken');
+    const token = sessionStorage.getItem('adminToken');
     const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
     
     const url = editingAuction ? `${apiUrl}/auctions/${editingAuction._id}` : `${apiUrl}/auctions`;
@@ -353,15 +389,33 @@ export default function AuctionManagement() {
                     <div className="md:col-span-2">
                        <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Cover Image</label>
                        <div className="flex flex-col md:flex-row gap-6">
-                          <div className="w-full md:w-1/3 aspect-video rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 relative group">
+                          <label className="w-full md:w-1/3 aspect-video rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 relative group cursor-pointer block hover:border-orange-600 transition-colors">
+                             <input
+                               type="file"
+                               accept="image/*"
+                               className="hidden"
+                               onChange={handleDirectUpload}
+                             />
+                             {directUploadProgress ? (
+                               <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
+                                 <Loader2 size={32} className="text-orange-600 animate-spin mb-2" />
+                                 <span className="text-[10px] font-black uppercase tracking-widest text-orange-600">Uploading...</span>
+                               </div>
+                             ) : null}
                              {formData.image ? (
-                               <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
+                               <>
+                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
+                                   <Upload size={24} className="text-white" />
+                                 </div>
+                                 <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
+                               </>
                              ) : (
-                               <div className="absolute inset-0 flex items-center justify-center text-gray-300">
-                                  <ImageIcon size={32} />
+                               <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:text-orange-500 transition-colors">
+                                  <Upload size={32} className="mb-2" />
+                                  <span className="text-[10px] font-bold uppercase tracking-widest">Click to Upload</span>
                                </div>
                              )}
-                          </div>
+                          </label>
                           <div className="flex-grow space-y-4">
                              <div className="relative">
                                 <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />

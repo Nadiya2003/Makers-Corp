@@ -85,7 +85,7 @@ export default function VehiclesManagement() {
   const fetchGallery = async () => {
     setPickerLoading(true);
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/media`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -111,17 +111,17 @@ export default function VehiclesManagement() {
     if (!e.target.files || e.target.files.length === 0) return;
     
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append('photos', e.target.files[0]);
-    formData.append('category', 'Vehicles');
+    const formDataUpload = new FormData();
+    formDataUpload.append('photos', e.target.files[0]);
+    formDataUpload.append('category', 'Vehicles');
 
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/media`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
-        body: formData
+        body: formDataUpload
       });
       
       const data = await res.json();
@@ -137,6 +137,50 @@ export default function VehiclesManagement() {
       showStatus('error', 'Network error during upload');
     } finally {
       setIsUploading(false);
+      e.target.value = '';
+    }
+  };
+
+  const [directUploadProgress, setDirectUploadProgress] = useState<{ type: 'main' | 'gallery', index?: number } | null>(null);
+
+  const handleDirectUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'main' | 'gallery', index?: number) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    setDirectUploadProgress({ type, index });
+    const formDataUpload = new FormData();
+    formDataUpload.append('photos', e.target.files[0]);
+    formDataUpload.append('category', 'Vehicles');
+
+    try {
+      const token = sessionStorage.getItem('adminToken');
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const res = await fetch(`${apiUrl}/media`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formDataUpload
+      });
+      
+      const data = await res.json();
+      if (data.success && data.data && data.data.length > 0) {
+        const uploadedUrl = data.data[0].url;
+        if (type === 'main') {
+          setFormData(prev => ({ ...prev, image: uploadedUrl }));
+        } else if (type === 'gallery' && index !== undefined) {
+          setFormData(prev => {
+            const newImages = [...prev.images];
+            newImages[index] = uploadedUrl;
+            return { ...prev, images: newImages };
+          });
+        }
+        showStatus('success', 'Image uploaded successfully!');
+      } else {
+        showStatus('error', data.message || 'Upload failed');
+      }
+    } catch (err) {
+      showStatus('error', 'Network error during upload');
+    } finally {
+      setDirectUploadProgress(null);
+      e.target.value = '';
     }
   };
 
@@ -159,7 +203,7 @@ export default function VehiclesManagement() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this vehicle?')) return;
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/vehicles/${id}`, {
         method: 'DELETE',
@@ -182,7 +226,7 @@ export default function VehiclesManagement() {
     setSubmitting(true);
     console.log('Submitting form data:', formData);
     
-    const token = localStorage.getItem('adminToken');
+    const token = sessionStorage.getItem('adminToken');
     const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
     
     const url = editingVehicle 
@@ -219,7 +263,7 @@ export default function VehiclesManagement() {
         if (res.status === 401) {
           showStatus('error', 'Session expired. Please log in again.');
           setTimeout(() => {
-            localStorage.removeItem('adminToken');
+            sessionStorage.removeItem('adminToken');
             window.location.href = '/admin/login';
           }, 2000);
         } else {
@@ -441,16 +485,37 @@ export default function VehiclesManagement() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                   <label className="block text-xs font-black text-gray-400 uppercase tracking-[0.2em]">Main Preview</label>
-                   <div className="aspect-[4/3] rounded-[2rem] overflow-hidden bg-gray-100 border-2 border-dashed border-gray-200 relative group">
+                   <label className="block text-xs font-black text-gray-400 uppercase tracking-[0.2em] cursor-pointer hover:text-orange-600 transition-colors">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handleDirectUpload(e, 'main')}
+                      />
+                      Main Preview
+                   </label>
+                   <label className="aspect-[4/3] rounded-[2rem] overflow-hidden bg-gray-100 border-2 border-dashed border-gray-200 relative group cursor-pointer block hover:border-orange-600/50 transition-colors">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handleDirectUpload(e, 'main')}
+                      />
+                      {directUploadProgress?.type === 'main' ? (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
+                          <Loader2 size={40} className="text-orange-600 animate-spin mb-2" />
+                          <span className="text-xs font-black uppercase tracking-widest text-orange-600">Uploading...</span>
+                        </div>
+                      ) : null}
                       {formData.image ? (
                         <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
                       ) : (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-300">
-                          <Camera size={40} className="mb-2" />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:text-orange-500 transition-colors">
+                          <Upload size={40} className="mb-2" />
+                          <span className="text-xs font-bold uppercase tracking-widest">Click to Upload</span>
                         </div>
                       )}
-                   </div>
+                   </label>
                 </div>
               </div>
 
@@ -478,21 +543,32 @@ export default function VehiclesManagement() {
                           <Grid size={10} /> Choose from Gallery
                         </button>
                       </div>
-                      <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-orange-600/20 bg-white shadow-inner">
+                      <label className="relative aspect-video rounded-2xl overflow-hidden border-2 border-orange-600/20 bg-white shadow-inner group cursor-pointer block hover:border-orange-600 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleDirectUpload(e, 'main')}
+                        />
+                        {directUploadProgress?.type === 'main' ? (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
+                            <Loader2 size={24} className="text-orange-600 animate-spin mb-2" />
+                            <span className="text-[9px] font-black uppercase tracking-widest text-orange-600">Uploading...</span>
+                          </div>
+                        ) : (
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
+                            <Upload size={24} className="text-white" />
+                          </div>
+                        )}
                         <img 
-                          src={formData.image || 'https://via.placeholder.com/400x300?text=No+Image'} 
+                          src={formData.image || 'https://via.placeholder.com/400x300?text=Upload+Image'} 
                           alt="Main" 
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Invalid+Image+URL';
                           }}
                         />
-                        {!formData.image && (
-                          <div className="absolute inset-0 flex items-center justify-center text-gray-300">
-                            <ImageIcon size={24} />
-                          </div>
-                        )}
-                      </div>
+                      </label>
                       <div className="relative">
                         <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
                         <input
@@ -522,16 +598,31 @@ export default function VehiclesManagement() {
                             </button>
                           </div>
                         </div>
-                        <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-100 bg-white">
+                        <label className="relative aspect-video rounded-2xl overflow-hidden border border-gray-200 bg-white group cursor-pointer block hover:border-orange-600 transition-colors">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => handleDirectUpload(e, 'gallery', idx)}
+                          />
+                          {directUploadProgress?.type === 'gallery' && directUploadProgress.index === idx ? (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
+                              <Loader2 size={24} className="text-orange-600 animate-spin mb-2" />
+                            </div>
+                          ) : (
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
+                              <Upload size={24} className="text-white" />
+                            </div>
+                          )}
                           <img 
-                            src={img || 'https://via.placeholder.com/400x300?text=Add+Photo'} 
+                            src={img || 'https://via.placeholder.com/400x300?text=Upload+Photo'} 
                             alt={`Gallery ${idx}`} 
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Invalid+Image+URL';
                             }}
                           />
-                        </div>
+                        </label>
                         <div className="relative">
                            <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
                            <input

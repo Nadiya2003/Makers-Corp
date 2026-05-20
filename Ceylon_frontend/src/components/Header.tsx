@@ -132,10 +132,11 @@ export function Header() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden z-50 p-2 text-gray-600"
+            className="md:hidden z-50 p-2 -mr-2 flex items-center justify-center text-dark hover:bg-gray-100 rounded-lg transition-all focus:outline-none active:scale-95"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
           </button>
         </div>
       </div>
@@ -144,20 +145,21 @@ export function Header() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 md:hidden max-h-[calc(100vh-64px)] overflow-y-auto"
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 md:hidden max-h-[calc(100vh-60px)] overflow-y-auto rounded-b-2xl safe-bottom"
           >
-            <div className="flex flex-col px-4 py-6 gap-4">
+            <div className="flex flex-col px-4 py-4 gap-1 sm:gap-2">
               {navLinks.map((link) =>
                 link.path ? (
                   <Link
                     key={link.name}
                     href={link.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`text-base font-bold tracking-wide px-3 py-3 min-h-[44px] flex items-center rounded-lg ${
-                      pathname === link.path ? 'bg-primary-light text-primary' : 'text-gray-800'
+                    className={`text-[13px] sm:text-sm font-bold tracking-wider px-4 py-3 min-h-[44px] flex items-center rounded-xl transition-all active:scale-[0.98] ${
+                      pathname === link.path ? 'bg-primary/10 text-primary' : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
                     {link.name}
@@ -166,23 +168,26 @@ export function Header() {
                   <button
                     key={link.name}
                     onClick={() => handleNavClick(link.hash!)}
-                    className="text-base font-bold tracking-wide px-3 py-3 min-h-[44px] flex items-center w-full text-left text-gray-800 hover:bg-primary-light hover:text-primary rounded-lg"
+                    className="text-[13px] sm:text-sm font-bold tracking-wider px-4 py-3 min-h-[44px] flex items-center w-full text-left transition-all active:scale-[0.98] rounded-xl text-gray-700 hover:bg-gray-50 hover:text-primary"
                   >
                     {link.name}
                   </button>
                 )
               )}
               <div className="h-px bg-gray-100 my-2" />
-              <div className="flex items-center justify-between p-2">
-                <span className="font-bold text-dark">{contactNumber}</span>
+              <div className="flex flex-col gap-3 p-3 bg-gray-50 rounded-xl mb-2">
+                <div className="flex items-center justify-center gap-2 text-dark font-bold">
+                  <Phone className="w-4 h-4 text-primary" />
+                  <span className="text-[13px] tracking-wide">{contactNumber}</span>
+                </div>
                 <a
                   href={`https://wa.me/94${contactNumber.replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold"
+                  className="flex items-center justify-center w-full gap-2 bg-primary text-white px-4 py-3 rounded-lg text-[13px] font-bold shadow-sm active:scale-95 transition-all uppercase"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  WHATSAPP US
+                  WhatsApp Us
                 </a>
               </div>
             </div>

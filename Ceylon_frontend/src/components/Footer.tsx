@@ -19,9 +19,9 @@ export function Footer() {
   const siteName = settings?.siteName || 'Makers Ceylon';
 
   return (
-    <footer className="bg-[#020617] text-gray-300 py-10 sm:py-14 lg:py-16 border-t border-white/5">
+    <footer className="bg-[#020617] text-gray-300 py-8 sm:py-14 lg:py-16 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 lg:gap-12">
           {/* Brand */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-2">
@@ -39,8 +39,8 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-display font-semibold mb-6 text-lg">Quick Links</h3>
-            <ul className="space-y-4">
+            <h3 className="text-white font-display font-semibold mb-4 sm:mb-6 text-base sm:text-lg">Quick Links</h3>
+            <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base">
               <li>
                 <Link href="/" className="hover:text-primary transition-colors">Home</Link>
               </li>
@@ -61,8 +61,8 @@ export function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="text-white font-display font-semibold mb-6 text-lg">Our Services</h3>
-            <ul className="space-y-4">
+            <h3 className="text-white font-display font-semibold mb-4 sm:mb-6 text-base sm:text-lg">Our Services</h3>
+            <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base">
               <li className="text-gray-400">Direct Japan Sourcing</li>
               <li className="text-gray-400">Live Auction Bidding</li>
               <li className="text-gray-400">Bank Loan Assistance</li>
@@ -73,25 +73,25 @@ export function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-white font-display font-semibold mb-6 text-lg">Contact Info</h3>
-            <ul className="space-y-4">
+            <h3 className="text-white font-display font-semibold mb-4 sm:mb-6 text-base sm:text-lg">Contact Info</h3>
+            <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0 mt-0.5" />
                 <span className="text-gray-400">{footerData.address}</span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-primary shrink-0" />
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
                 <span className="text-gray-400">{footerData.phone}</span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-primary shrink-0" />
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
                 <span className="text-gray-400">{footerData.email}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-white/5 text-center text-sm text-gray-500">
+        <div className="mt-8 sm:mt-16 pt-6 sm:pt-8 border-t border-white/5 text-center text-xs sm:text-sm text-gray-500">
           <p>{footerData.copyrightText}</p>
         </div>
       </div>

@@ -34,8 +34,8 @@ export default function AdminRegister() {
       const data = await res.json();
 
       if (data.success) {
-        localStorage.setItem('adminToken', data.data.token);
-        localStorage.setItem('adminUser', JSON.stringify(data.data));
+        sessionStorage.setItem('adminToken', data.data.token);
+        sessionStorage.setItem('adminUser', JSON.stringify(data.data));
         router.push('/admin');
       } else {
         setError(data.message || 'Registration failed');

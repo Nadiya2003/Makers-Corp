@@ -107,12 +107,12 @@ export function ContactUsClient() {
   return (
     <main className="w-full pt-20">
       {/* Header */}
-      <div className="bg-dark text-white py-10 sm:py-14 lg:py-16">
+      <div className="bg-dark text-white py-8 sm:py-14 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-3 sm:mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-3 sm:mb-4"
           >
             {contactInfo.contactPage.title.split(' ').map((word, i) => (
               <span key={i} className={i === contactInfo.contactPage.title.split(' ').length - 1 ? "text-primary" : ""}>
@@ -124,14 +124,14 @@ export function ContactUsClient() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-gray-400 max-w-2xl mx-auto"
+            className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base px-2 sm:px-0"
           >
             {contactInfo.contactPage.description}
           </motion.p>
         </div>
       </div>
 
-      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+      <section className="py-8 sm:py-16 lg:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Contact Details & Map */}
@@ -140,72 +140,72 @@ export function ContactUsClient() {
               animate={{ opacity: 1, x: 0 }}
               className="space-y-6 sm:space-y-8"
             >
-              <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-soft border border-gray-100">
-                <h3 className="font-display font-bold text-2xl text-dark mb-6">
+              <div className="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-soft border border-gray-100">
+                <h3 className="font-display font-bold text-xl sm:text-2xl text-dark mb-5 sm:mb-6">
                   Contact Information
                 </h3>
 
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                      <Phone className="w-6 h-6 text-primary" />
+                <div className="space-y-5 sm:space-y-6">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                      <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Phone</p>
-                      <p className="font-semibold text-dark text-lg whitespace-pre-wrap">{contactInfo.footer.phone}</p>
+                      <p className="text-xs sm:text-sm text-gray-500 mb-0.5 sm:mb-1">Phone</p>
+                      <p className="font-semibold text-dark text-base sm:text-lg whitespace-pre-wrap">{contactInfo.footer.phone}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                      <Mail className="w-6 h-6 text-primary" />
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                      <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Email</p>
-                      <p className="font-semibold text-dark text-lg">{contactInfo.footer.email}</p>
+                      <p className="text-xs sm:text-sm text-gray-500 mb-0.5 sm:mb-1">Email</p>
+                      <p className="font-semibold text-dark text-base sm:text-lg break-all sm:break-normal">{contactInfo.footer.email}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                      <MapPin className="w-6 h-6 text-primary" />
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                      <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Office Address</p>
-                      <p className="font-semibold text-dark text-lg leading-relaxed whitespace-pre-wrap">
+                      <p className="text-xs sm:text-sm text-gray-500 mb-0.5 sm:mb-1">Office Address</p>
+                      <p className="font-semibold text-dark text-base sm:text-lg leading-snug sm:leading-relaxed whitespace-pre-wrap">
                         {contactInfo.footer.address}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                      <Clock className="w-6 h-6 text-primary" />
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                      <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Business Hours</p>
-                      <p className="font-semibold text-dark text-lg">
+                      <p className="text-xs sm:text-sm text-gray-500 mb-0.5 sm:mb-1">Business Hours</p>
+                      <p className="font-semibold text-dark text-base sm:text-lg">
                         {contactInfo.contactPage.workingHours}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-gray-100">
+                <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-100">
                   <a
                     href={`https://wa.me/${contactInfo.footer.phone.replace(/[^0-9]/g, '')}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-xl font-bold transition-colors w-full text-lg shadow-lg shadow-green-500/20"
+                    className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-3 sm:px-6 sm:py-4 rounded-xl font-bold transition-colors w-full text-base sm:text-lg shadow-lg shadow-green-500/20 active:scale-95"
                   >
-                    <MessageCircle className="w-6 h-6" />
+                    <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
                     Quick Chat on WhatsApp
                   </a>
                 </div>
               </div>
 
               {/* Map */}
-              <div className="bg-gray-200 rounded-3xl h-80 flex items-center justify-center border border-gray-300 overflow-hidden relative shadow-inner">
+              <div className="bg-gray-200 rounded-2xl sm:rounded-3xl h-64 sm:h-80 flex items-center justify-center border border-gray-300 overflow-hidden relative shadow-inner">
                 {contactInfo.contactPage.googleMapUrl ? (
                   <iframe 
                     src={contactInfo.contactPage.googleMapUrl} 
@@ -230,9 +230,9 @@ export function ContactUsClient() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl shadow-soft border border-gray-100"
+              className="bg-white p-5 sm:p-8 lg:p-10 rounded-2xl sm:rounded-3xl shadow-soft border border-gray-100"
             >
-              <h3 className="font-display font-bold text-2xl text-dark mb-8">Send us a Message</h3>
+              <h3 className="font-display font-bold text-xl sm:text-2xl text-dark mb-6 sm:mb-8">Send us a Message</h3>
 
               {success && (
                 <div className="bg-green-50 text-green-700 p-4 rounded-xl mb-6">{success}</div>
@@ -241,9 +241,9 @@ export function ContactUsClient() {
                 <div className="bg-red-50 text-red-700 p-4 rounded-xl mb-6">{error}</div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                     Full Name
                   </label>
                   <input
@@ -253,13 +253,13 @@ export function ContactUsClient() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white"
+                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white text-base"
                     placeholder="John Doe"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                     Phone Number
                   </label>
                   <input
@@ -269,13 +269,13 @@ export function ContactUsClient() {
                     value={formData.phone}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white"
+                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white text-base"
                     placeholder="+94 7X XXX XXXX"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="vehicle" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="vehicle" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                     Interested Vehicle Brand
                   </label>
                   <select
@@ -284,7 +284,7 @@ export function ContactUsClient() {
                     value={formData.vehicle}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white appearance-none"
+                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white appearance-none text-base"
                   >
                     <option value="" disabled>
                       Select a brand
@@ -299,7 +299,7 @@ export function ContactUsClient() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
                     Message
                   </label>
                   <textarea
@@ -307,8 +307,8 @@ export function ContactUsClient() {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    rows={5}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white resize-none"
+                    rows={4}
+                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white resize-none text-base"
                     placeholder="How can we help you?"
                   />
                 </div>
@@ -316,9 +316,9 @@ export function ContactUsClient() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-primary hover:bg-primary-hover disabled:bg-primary/50 text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+                  className="w-full bg-primary hover:bg-primary-hover disabled:bg-primary/50 text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 text-base active:scale-[0.98]"
                 >
-                  <Send className="w-5 h-5" />
+                  <Send className="w-4 h-4 sm:w-5 sm:h-5" />
                   {loading ? 'Sending...' : 'Send Message'}
                 </button>
               </form>

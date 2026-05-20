@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, MessageCircle, Send, Clock, Loader2 } from 'lucide-react';
 import axios from 'axios';
+import { convertMapUrl } from '@/lib/mapUtils';
 
 export function ContactUsClient() {
   const [loadingContent, setLoadingContent] = useState(true);
@@ -206,23 +207,29 @@ export function ContactUsClient() {
 
               {/* Map */}
               <div className="bg-gray-200 rounded-2xl sm:rounded-3xl h-64 sm:h-80 flex items-center justify-center border border-gray-300 overflow-hidden relative shadow-inner">
-                {contactInfo.contactPage.googleMapUrl ? (
-                  <iframe 
-                    src={contactInfo.contactPage.googleMapUrl} 
-                    className="w-full h-full border-0"
-                    allowFullScreen 
-                    loading="lazy" 
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                ) : (
-                  <>
-                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')] bg-cover bg-center opacity-40 grayscale mix-blend-multiply" />
-                    <div className="relative z-10 flex flex-col items-center text-gray-600 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-sm">
-                      <MapPin className="w-8 h-8 mb-2 text-primary" />
-                      <span className="font-medium text-xs uppercase tracking-widest font-black">Map not configured</span>
-                    </div>
-                  </>
-                )}
+                {(() => {
+                  const mapResult = convertMapUrl(contactInfo.contactPage.googleMapUrl);
+                  if (mapResult.embedUrl) {
+                    return (
+                      <iframe 
+                        src={mapResult.embedUrl} 
+                        className="w-full h-full border-0"
+                        allowFullScreen 
+                        loading="lazy" 
+                        referrerPolicy="no-referrer-when-downgrade"
+                      />
+                    );
+                  }
+                  return (
+                    <>
+                      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')] bg-cover bg-center opacity-40 grayscale mix-blend-multiply" />
+                      <div className="relative z-10 flex flex-col items-center text-gray-600 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-sm">
+                        <MapPin className="w-8 h-8 mb-2 text-primary" />
+                        <span className="font-medium text-xs uppercase tracking-widest font-black">Map not configured</span>
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
             </motion.div>
 

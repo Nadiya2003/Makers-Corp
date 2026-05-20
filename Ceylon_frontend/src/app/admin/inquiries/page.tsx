@@ -233,7 +233,7 @@ export default function InquiriesManagement() {
             {/* Scrollable Content */}
             <div className="flex-grow overflow-y-auto p-12 pt-4 custom-scrollbar">
               <div className="space-y-10">
-                <div className="grid grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2">
                           <User size={12} /> Full Name
@@ -250,7 +250,7 @@ export default function InquiriesManagement() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-2 text-wrap break-words">
                       <label className="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] flex items-center gap-2">
                           <Mail size={12} /> Email Address

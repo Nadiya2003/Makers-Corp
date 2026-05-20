@@ -69,7 +69,7 @@ export function LiveAuction() {
             directly from our platform.
           </p>
 
-          <div className="grid sm:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
             {[
               { icon: TrendingUp, label: "Real-time Bidding" },
               { icon: Gavel, label: "Direct Auction Access" },

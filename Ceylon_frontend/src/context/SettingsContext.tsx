@@ -32,6 +32,13 @@ interface Settings {
       title: string;
       description: string;
       image: string;
+      stats?: Array<{ value: string; label: string }>;
+    };
+    services?: Array<{ title: string; description: string; icon: string }>;
+    whyChooseUs?: {
+      subtitle: string;
+      title: string;
+      reasons: Array<{ icon: string; title: string; desc: string }>;
     };
   };
   seo: {
@@ -43,6 +50,25 @@ interface Settings {
     primaryColor: string;
     secondaryColor: string;
     accentColor: string;
+  };
+  aboutPage?: {
+    title: string;
+    content: string;
+    image: string;
+    mission: string;
+    vision: string;
+    directors: Array<{
+      name: string;
+      role: string;
+      bio: string;
+      image: string;
+    }>;
+  };
+  contactPage?: {
+    title: string;
+    description: string;
+    workingHours: string;
+    googleMapUrl: string;
   };
 }
 

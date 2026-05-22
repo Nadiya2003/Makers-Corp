@@ -18,24 +18,36 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
 }
 
-/* Premium custom scrollbar */
+/* Brand-colored text selection */
+::selection {
+  background-color: #ff6a0030;
+  color: #111111;
+}
+
+/* Consistent focus-visible ring using brand primary */
+:focus-visible {
+  outline: 2px solid #ff6a00;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Premium custom scrollbar ────────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-  border-radius: 4px;
+  border-radius: 99px;
+  border: 2px solid #f1f5f9;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #ff6a00;
 }
 
-/* ─── Mobile Responsive Utilities (max-width: 768px) ──────────────────────── */
-
-/* Prevent horizontal overflow on mobile */
+/* ─── Mobile Responsive Utilities ─────────────────────────────────────────── */
 @media (max-width: 768px) {
   html, body {
     overflow-x: hidden;
@@ -60,4 +72,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Custom scrollbar for modals */
 .custom-scrollbar::-webkit-scrollbar { width: 4px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 99px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #ff6a00; }
+

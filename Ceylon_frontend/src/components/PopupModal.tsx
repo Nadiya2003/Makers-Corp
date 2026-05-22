@@ -96,14 +96,14 @@ export function PopupModal() {
                   We've just integrated <span className="text-dark font-bold">Live Auction Access</span>.
                   Now you can bid on thousands of premium vehicles directly from Japan's most exclusive auction houses in real-time.
                 </p>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   {[
-                    /*  { label: 'Real-time Bidding', icon: '⚡' },
-                      { label: 'Full History Reports', icon: '📋' },
-                      { label: 'Direct Import', icon: '🚢' },
-                      { label: 'Verified Condition', icon: '✅' },*/
+                    { label: 'Real-time Bidding', icon: '⚡' },
+                    { label: 'Full History Reports', icon: '📋' },
+                    { label: 'Direct Import', icon: '🚢' },
+                    { label: 'Verified Condition', icon: '✅' },
                   ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2 text-[11px] font-bold text-gray-400 bg-gray-50 px-3 py-2 rounded-lg">
+                    <div key={i} className="flex items-center gap-2 text-[11px] font-bold text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
                       <span>{item.icon}</span>
                       <span>{item.label}</span>
                     </div>

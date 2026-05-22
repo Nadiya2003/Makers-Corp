@@ -55,7 +55,10 @@ export function Header() {
   ];
 
   const siteName = settings?.siteName || 'MAKERS CEYLON';
-  const contactNumber = settings?.footer?.phone || '077 123 4567';
+  const contactNumber =
+    settings?.header?.contactNumber ||
+    settings?.footer?.phone ||
+    '077 123 4567';
 
   return (
     <header

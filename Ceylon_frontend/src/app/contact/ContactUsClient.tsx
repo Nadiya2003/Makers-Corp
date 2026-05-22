@@ -296,12 +296,28 @@ export function ContactUsClient() {
                     <option value="" disabled>
                       Select a brand
                     </option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="Honda">Honda</option>
-                    <option value="Nissan">Nissan</option>
-                    <option value="Suzuki">Suzuki</option>
-                    <option value="Mazda">Mazda</option>
-                    <option value="Other">Other</option>
+                    <optgroup label="Japanese Brands">
+                      <option value="Toyota">Toyota</option>
+                      <option value="Honda">Honda</option>
+                      <option value="Nissan">Nissan</option>
+                      <option value="Mazda">Mazda</option>
+                      <option value="Suzuki">Suzuki</option>
+                      <option value="Mitsubishi">Mitsubishi</option>
+                      <option value="Subaru">Subaru</option>
+                      <option value="Lexus">Lexus</option>
+                      <option value="Daihatsu">Daihatsu</option>
+                      <option value="Isuzu">Isuzu</option>
+                    </optgroup>
+                    <optgroup label="Korean Brands">
+                      <option value="Hyundai">Hyundai</option>
+                      <option value="Kia">Kia</option>
+                    </optgroup>
+                    <optgroup label="European / Other">
+                      <option value="BMW">BMW</option>
+                      <option value="Mercedes-Benz">Mercedes-Benz</option>
+                      <option value="Volkswagen">Volkswagen</option>
+                    </optgroup>
+                    <option value="Other">Other / Not Listed</option>
                   </select>
                 </div>
 

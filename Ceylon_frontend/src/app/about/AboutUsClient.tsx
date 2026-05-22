@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Shield, Target, Award, ArrowRight, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { DirectorsCarousel } from '@/components/about/DirectorsCarousel';
 
 export function AboutUsClient() {
   const router = useRouter();
@@ -142,9 +143,9 @@ export function AboutUsClient() {
 
       {/* Board of Directors */}
       {content.directors && content.directors.length > 0 && (
-        <section className="py-12 sm:py-16 lg:py-20 bg-white">
+        <section className="py-12 sm:py-16 lg:py-20 bg-white overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12">
               <h2 className="font-display font-bold text-3xl text-dark mb-4">
                 Board of Directors
               </h2>
@@ -153,38 +154,7 @@ export function AboutUsClient() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
-              {content.directors.map((director, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="bg-gray-50 rounded-3xl overflow-hidden shadow-soft border border-gray-100 flex flex-col group"
-                >
-                  <div className="relative aspect-square overflow-hidden bg-gray-200">
-                    {director.image ? (
-                      <Image
-                        src={director.image}
-                        alt={director.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        No Image
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6 sm:p-8 flex flex-col flex-1">
-                    <h3 className="font-display font-bold text-xl text-dark mb-1">{director.name}</h3>
-                    <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{director.role}</p>
-                    <p className="text-gray-600 leading-relaxed text-sm flex-1">{director.bio}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            <DirectorsCarousel directors={content.directors} />
           </div>
         </section>
       )}

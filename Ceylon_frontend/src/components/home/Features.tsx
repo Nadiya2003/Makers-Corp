@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Ship, FileCheck, ShieldCheck, Handshake, Search, BadgeCheck, Briefcase } from 'lucide-react';
+import { FileCheck, BadgeCheck, Briefcase, Search } from 'lucide-react';
 
 export function Features() {
   const features = [

@@ -1,48 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Gavel, Clock, TrendingUp, Sparkles } from 'lucide-react';
-// import Image from 'next/image';
 
 export function LiveAuction() {
-  /* 
-  // --- AUCTION LOGIC PRESERVED FOR FUTURE USE ---
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 2,
-    minutes: 45,
-    seconds: 30,
-  });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        }
-        return prev;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (val: number) => val.toString().padStart(2, '0');
-
-  const scrollToInquiry = () => {
-    document.getElementById('inquiry')?.scrollIntoView({ behavior: 'smooth' });
-  };
-  */
-
   return (
     <section id="live-auction" className="py-12 sm:py-16 lg:py-24 bg-dark relative overflow-hidden">
-      {/* Background Pattern */}
+      {/* Background glow elements */}
       <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
-      
-      {/* Dynamic Background Elements */}
       <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary/10 rounded-full blur-[100px]" />
       <div className="absolute bottom-1/4 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px]" />
 
@@ -58,27 +24,35 @@ export function LiveAuction() {
             <Sparkles className="w-4 h-4" />
             NEW FEATURE
           </div>
-          
+
           <h2 className="font-display font-bold text-2xl sm:text-4xl lg:text-6xl text-white mb-6 sm:mb-8 leading-tight">
             Live Auctions <span className="text-primary">Coming Soon</span>
           </h2>
-          
+
           <p className="text-gray-400 text-base sm:text-xl mb-10 sm:mb-12 leading-relaxed">
-            Our state-of-the-art live auction system is currently under development. 
-            Soon, you'll be able to bid on premium Japanese vehicles in real-time 
+            Our state-of-the-art live auction system is currently under development.
+            Soon, you&apos;ll be able to bid on premium Japanese vehicles in real-time
             directly from our platform.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
             {[
-              { icon: TrendingUp, label: "Real-time Bidding" },
-              { icon: Gavel, label: "Direct Auction Access" },
-              { icon: Clock, label: "Instant Notifications" }
+              { icon: TrendingUp, label: 'Real-time Bidding', desc: 'Watch live bids update instantly' },
+              { icon: Gavel, label: 'Direct Auction Access', desc: 'Connect to top Japan auction houses' },
+              { icon: Clock, label: 'Instant Notifications', desc: 'Never miss your target vehicle' },
             ].map((item, index) => (
-              <div key={index} className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors"
+              >
                 <item.icon className="w-8 h-8 text-primary mx-auto mb-4" />
-                <p className="text-white font-semibold">{item.label}</p>
-              </div>
+                <p className="text-white font-bold mb-1">{item.label}</p>
+                <p className="text-gray-500 text-sm">{item.desc}</p>
+              </motion.div>
             ))}
           </div>
 
@@ -93,21 +67,6 @@ export function LiveAuction() {
           </div>
         </motion.div>
       </div>
-
-      {/* 
-      // --- ORIGINAL AUCTION UI PRESERVED FOR FUTURE USE ---
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 hidden">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="text-content">
-            <h2 className="font-display font-bold text-4xl sm:text-5xl text-white mb-6">Experience Live Japan Auction Bidding</h2>
-            ... (Refer to previous version for full content)
-          </div>
-          <div className="auction-card">
-            ... (Refer to previous version for full content)
-          </div>
-        </div>
-      </div>
-      */}
     </section>
   );
 }

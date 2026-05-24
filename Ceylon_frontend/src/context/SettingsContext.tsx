@@ -17,7 +17,7 @@ interface Settings {
     address: string;
     email: string;
     phone: string;
-    socialLinks: Array<{ platform: string, url: string, icon: string }>;
+    socialLinks: Array<{ platform: string, url: string, icon: string, visible?: boolean }>;
     copyrightText: string;
   };
   homepage: {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { MapPin, Phone, Mail } from 'lucide-react';
+import { MapPin, Phone, Mail, Facebook, Instagram, Youtube, Video } from 'lucide-react';
 import { useSettings } from '@/context/SettingsContext';
 
 export function Footer() {
@@ -14,11 +14,40 @@ export function Footer() {
     address: '123 Import Avenue, Colombo 03, Sri Lanka',
     phone: '+94 77 123 4567',
     email: 'info@ceylonimports.lk',
-    copyrightText: `© ${new Date().getFullYear()} Makers Ceylon. All rights reserved.`
+    copyrightText: `© ${new Date().getFullYear()} Makers Ceylon. All rights reserved.`,
+    socialLinks: [] as Array<{ platform: string; url: string; visible?: boolean }>
   };
 
   const siteName = settings?.siteName || 'Makers Ceylon';
   const footerLogo = footerData.logo || settings?.logo;
+
+  const renderSocialIcon = (platform: string) => {
+    switch (platform.toLowerCase()) {
+      case 'facebook': return <Facebook className="w-5 h-5" />;
+      case 'instagram': return <Instagram className="w-5 h-5" />;
+      case 'youtube': return <Youtube className="w-5 h-5" />;
+      case 'tiktok': return (
+        <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 2.78-1.15 5.54-3.11 7.47-1.87 1.83-4.52 2.84-7.1 2.63-2.69-.17-5.24-1.61-6.68-3.95-1.39-2.22-1.66-5.06-.69-7.46 1.05-2.58 3.39-4.51 6.13-5.06 1.04-.21 2.1-.22 3.14-.15v4.11c-.52-.08-1.04-.15-1.57-.13-1.09.03-2.18.52-2.88 1.34-.84.97-1.15 2.37-.8 3.63.32 1.19 1.25 2.16 2.39 2.58 1.4.52 3.03.38 4.29-.44 1.11-.74 1.76-1.97 1.85-3.32.06-2.55.02-5.11.03-7.66l.01-10.42z" />
+        </svg>
+      );
+      default: return <Video className="w-5 h-5" />;
+    }
+  };
+
+  let socialLinks = footerData.socialLinks;
+  if (!socialLinks || socialLinks.length === 0) {
+    socialLinks = [
+      { platform: 'Facebook', url: '#', visible: true },
+      { platform: 'Instagram', url: '#', visible: true },
+      { platform: 'TikTok', url: '#', visible: true },
+      { platform: 'YouTube', url: '#', visible: true }
+    ];
+  }
+
+  const visibleSocialLinks = socialLinks.filter(
+    (link: any) => link.visible !== false && link.url
+  );
 
   return (
     <footer className="bg-[#020617] text-gray-300 py-8 sm:py-14 lg:py-16 border-t border-white/5">
@@ -47,6 +76,24 @@ export function Footer() {
             <p className="text-sm leading-relaxed text-gray-400">
               {footerData.aboutText}
             </p>
+            
+            {/* Social Links */}
+            {visibleSocialLinks.length > 0 && (
+              <div className="flex items-center gap-4 pt-2">
+                {visibleSocialLinks.map((link: any, index: number) => (
+                  <a
+                    key={index}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 bg-white/5 hover:bg-primary text-gray-400 hover:text-white rounded-full flex items-center justify-center transition-all duration-300"
+                    aria-label={link.platform}
+                  >
+                    {renderSocialIcon(link.platform)}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Quick Links */}

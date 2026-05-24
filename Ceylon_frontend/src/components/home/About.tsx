@@ -140,6 +140,7 @@ export function About() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            className="text-center lg:text-left flex flex-col items-center lg:items-start"
           >
             <h2 className="text-primary font-semibold tracking-wider uppercase text-sm mb-3">
               Who We Are
@@ -154,7 +155,7 @@ export function About() {
             </div>
 
             {stats.length > 0 && (
-              <div ref={statsRef} className="mt-8 sm:mt-10 flex flex-wrap gap-4">
+              <div ref={statsRef} className="mt-8 sm:mt-10 flex flex-wrap justify-center lg:justify-start gap-4">
                 {stats.map((stat, i) => (
                   <StatCard
                     key={i}

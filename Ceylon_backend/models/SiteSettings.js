@@ -22,7 +22,7 @@ const siteSettingsSchema = new mongoose.Schema({
     email: { type: String, default: '' },
     phone: { type: String, default: '' },
     socialLinks: [
-      { platform: { type: String }, url: { type: String }, icon: { type: String } }
+      { platform: { type: String }, url: { type: String }, icon: { type: String }, visible: { type: Boolean, default: true } }
     ],
     copyrightText: { type: String, default: '© 2024 Makers Ceylon. All rights reserved.' }
   },

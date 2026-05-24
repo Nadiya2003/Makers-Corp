@@ -18,9 +18,9 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
 }
 
-/* Brand-colored text selection */
+/* Light blue text selection */
 ::selection {
-  background-color: #ff6a0030;
+  background-color: #bae6fd;
   color: #111111;
 }
 

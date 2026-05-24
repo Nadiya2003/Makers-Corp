@@ -76,28 +76,28 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-10">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-black text-gray-900 mb-2 uppercase tracking-tighter">Dashboard Overview</h1>
-          <p className="text-gray-500 font-medium">Real-time metrics and operational status.</p>
+          <h1 className="text-xl sm:text-3xl font-black text-gray-900 mb-1 sm:mb-2 uppercase tracking-tighter">Dashboard Overview</h1>
+          <p className="text-gray-500 font-medium text-sm sm:text-base">Real-time metrics and operational status.</p>
         </div>
-        <div className="flex items-center gap-2 px-6 py-3 bg-white border border-gray-100 rounded-2xl shadow-sm">
+        <div className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-white border border-gray-100 rounded-2xl shadow-sm">
            <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
            <span className="text-xs font-black uppercase tracking-widest text-gray-400">System Online</span>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
         {stats.map((stat) => (
-          <div key={stat.label} className="bg-white border border-gray-100 p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-500 group">
-            <div className="flex items-center justify-between mb-6">
-              <div className={`${stat.bg} ${stat.color} p-4 rounded-2xl group-hover:scale-110 transition-transform duration-500`}>
-                <stat.icon size={24} />
+          <div key={stat.label} className="bg-white border border-gray-100 p-4 sm:p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-500 group">
+            <div className="flex items-center justify-between mb-3 sm:mb-6">
+              <div className={`${stat.bg} ${stat.color} p-3 sm:p-4 rounded-2xl group-hover:scale-110 transition-transform duration-500`}>
+                <stat.icon size={20} />
               </div>
             </div>
-            <h3 className="text-4xl font-black text-gray-900 mb-1 tracking-tighter">{stat.value}</h3>
-            <p className="text-gray-400 text-xs font-black uppercase tracking-widest">{stat.label}</p>
+            <h3 className="text-2xl sm:text-4xl font-black text-gray-900 mb-1 tracking-tighter">{stat.value}</h3>
+            <p className="text-gray-400 text-[9px] sm:text-xs font-black uppercase tracking-widest">{stat.label}</p>
           </div>
         ))}
       </div>
@@ -105,23 +105,23 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Recent Inquiries */}
         <div className="bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden shadow-sm flex flex-col">
-          <div className="p-8 border-b border-gray-50 flex items-center justify-between">
-            <h3 className="text-xl font-black text-gray-900 uppercase tracking-tighter">Recent Inquiries</h3>
+          <div className="p-4 sm:p-8 border-b border-gray-50 flex items-center justify-between">
+            <h3 className="text-base sm:text-xl font-black text-gray-900 uppercase tracking-tighter">Recent Inquiries</h3>
             <Link href="/admin/inquiries" className="text-orange-600 text-xs font-black uppercase tracking-widest hover:underline flex items-center gap-2">
               View All <ArrowRight size={14} />
             </Link>
           </div>
           <div className="divide-y divide-gray-50 flex-grow">
             {data.inquiries.slice(0, 5).map((inq: any) => (
-              <div key={inq._id} className="p-8 flex items-center gap-6 hover:bg-gray-50 transition-colors">
-                <div className="w-12 h-12 bg-black text-white rounded-2xl flex items-center justify-center font-black text-sm shadow-lg">
+              <div key={inq._id} className="p-4 sm:p-8 flex items-center gap-3 sm:gap-6 hover:bg-gray-50 transition-colors">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 bg-black text-white rounded-2xl flex items-center justify-center font-black text-sm shadow-lg shrink-0">
                   {inq.name.charAt(0).toUpperCase()}
                 </div>
-                <div className="flex-grow">
-                  <h4 className="text-gray-900 font-black text-sm uppercase tracking-tight">{inq.name}</h4>
-                  <p className="text-gray-400 text-[11px] font-bold uppercase truncate max-w-[200px]">Interest: {inq.vehicle}</p>
+                <div className="flex-grow min-w-0">
+                  <h4 className="text-gray-900 font-black text-sm uppercase tracking-tight truncate">{inq.name}</h4>
+                  <p className="text-gray-400 text-[11px] font-bold uppercase truncate">Interest: {inq.vehicle}</p>
                 </div>
-                <div className="text-right">
+                <div className="text-right shrink-0">
                   <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest block mb-1">
                     {new Date(inq.createdAt).toLocaleDateString()}
                   </span>
@@ -139,13 +139,13 @@ export default function AdminDashboard() {
 
         {/* Live Auctions Placeholder */}
         <div className="bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden shadow-sm">
-          <div className="p-8 border-b border-gray-50 flex items-center justify-between">
-            <h3 className="text-xl font-black text-gray-900 uppercase tracking-tighter">Inventory Status</h3>
+          <div className="p-4 sm:p-8 border-b border-gray-50 flex items-center justify-between">
+            <h3 className="text-base sm:text-xl font-black text-gray-900 uppercase tracking-tighter">Inventory Status</h3>
             <Link href="/admin/vehicles" className="text-orange-600 text-xs font-black uppercase tracking-widest hover:underline flex items-center gap-2">
               Manage <ArrowRight size={14} />
             </Link>
           </div>
-          <div className="p-10 space-y-8">
+          <div className="p-4 sm:p-10 space-y-6 sm:space-y-8">
             <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100">
                <div className="flex items-center justify-between mb-4">
                   <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Stock Level</span>

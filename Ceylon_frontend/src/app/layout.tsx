@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Makers Ceylon — Premium Japanese Vehicles Direct to Sri Lanka',
+  title: 'Ceylon Imports — Premium Japanese Vehicles Direct to Sri Lanka',
   description:
     'Import premium Japanese vehicles directly to Sri Lanka with transparent pricing, live auction access, and end-to-end handling. Better prices. Trusted process.',
-  keywords: 'Japan car import, Sri Lanka, JDM, vehicle import, Makers Ceylon, Japanese car importer',
+  keywords: 'Japan car import, Sri Lanka, JDM, vehicle import, Ceylon Imports, Makers Ceylon, Japanese car importer',
   openGraph: {
-    title: 'Makers Ceylon — Premium Japanese Vehicles',
+    title: 'Ceylon Imports — Premium Japanese Vehicles',
     description: 'Your trusted partner for importing premium Japanese vehicles to Sri Lanka.',
     type: 'website',
   },

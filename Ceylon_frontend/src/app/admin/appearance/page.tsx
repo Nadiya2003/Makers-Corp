@@ -77,6 +77,24 @@ export default function AppearanceManagement() {
     }
   };
 
+  const handleSocialLinkChange = (platform: string, field: 'url' | 'visible', value: any) => {
+    const existingLinks = settings.footer.socialLinks || [];
+    const index = existingLinks.findIndex((link: any) => link.platform === platform);
+    
+    if (index >= 0) {
+      const updatedLinks = [...existingLinks];
+      updatedLinks[index] = { ...updatedLinks[index], [field]: value };
+      setSettings({ ...settings, footer: { ...settings.footer, socialLinks: updatedLinks } });
+    } else {
+      const newLink = { platform, url: field === 'url' ? value : '', icon: platform, visible: field === 'visible' ? value : true };
+      setSettings({ ...settings, footer: { ...settings.footer, socialLinks: [...existingLinks, newLink] } });
+    }
+  };
+
+  const getSocialLink = (platform: string) => {
+    return (settings.footer.socialLinks || []).find((link: any) => link.platform === platform) || { url: '', visible: true };
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setMessage('');
@@ -235,14 +253,30 @@ export default function AppearanceManagement() {
             <h2 className="text-lg font-bold text-gray-900">Social Media Links</h2>
           </div>
           <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <span className="w-24 text-sm text-gray-500">Facebook</span>
-              <input type="text" className="flex-grow bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-gray-900" placeholder="https://facebook.com/..." />
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="w-24 text-sm text-gray-500">Instagram</span>
-              <input type="text" className="flex-grow bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-gray-900" placeholder="https://instagram.com/..." />
-            </div>
+            {['Facebook', 'Instagram', 'TikTok', 'YouTube'].map((platform) => {
+              const link = getSocialLink(platform);
+              return (
+                <div key={platform} className="flex items-center gap-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                  <span className="w-24 text-sm font-semibold text-gray-700">{platform}</span>
+                  <input
+                    type="text"
+                    value={link.url}
+                    onChange={(e) => handleSocialLinkChange(platform, 'url', e.target.value)}
+                    className="flex-grow bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600"
+                    placeholder={`https://${platform.toLowerCase()}.com/...`}
+                  />
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <span className="text-sm text-gray-600">Show</span>
+                    <input
+                      type="checkbox"
+                      checked={link.visible !== false}
+                      onChange={(e) => handleSocialLinkChange(platform, 'visible', e.target.checked)}
+                      className="w-4 h-4 text-orange-600 rounded focus:ring-orange-600"
+                    />
+                  </label>
+                </div>
+              );
+            })}
           </div>
         </section>
       </div>

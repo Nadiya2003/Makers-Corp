@@ -76,11 +76,14 @@ export function AboutUsClient() {
             animate={{ opacity: 1, y: 0 }}
             className="text-3xl sm:text-5xl md:text-6xl font-display font-bold text-white mb-3 sm:mb-4"
           >
-            {content.title.split(' ').map((word, i) => (
-              <span key={i} className={i === content.title.split(' ').length - 1 ? "text-primary" : ""}>
-                {word}{' '}
-              </span>
-            ))}
+            {content.title.split(' ').map((word, i) => {
+              const isBrand = word.toLowerCase().includes('makers') || word.toLowerCase().includes('ceylon');
+              return (
+                <span key={i} className={isBrand ? "text-primary" : ""}>
+                  {word}{' '}
+                </span>
+              );
+            })}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}

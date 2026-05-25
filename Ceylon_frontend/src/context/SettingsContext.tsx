@@ -70,6 +70,16 @@ interface Settings {
     workingHours: string;
     googleMapUrl: string;
   };
+  popupAd?: {
+    enabled: boolean;
+    title: string;
+    description: string;
+    image: string;
+    badgeText: string;
+    buttonText: string;
+    buttonLink: string;
+    dismissText: string;
+  };
 }
 
 const SettingsContext = createContext<{

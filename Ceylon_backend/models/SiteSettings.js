@@ -102,6 +102,18 @@ const siteSettingsSchema = new mongoose.Schema({
     googleMapUrl: { type: String, default: '' }
   },
 
+  // Popup Ad Settings
+  popupAd: {
+    enabled:     { type: Boolean, default: false },
+    title:       { type: String, default: 'Special Offer!' },
+    description: { type: String, default: '' },
+    image:       { type: String, default: '' },
+    badgeText:   { type: String, default: 'New Feature' },
+    buttonText:  { type: String, default: 'Learn More' },
+    buttonLink:  { type: String, default: '/' },
+    dismissText: { type: String, default: 'Maybe Later' }
+  },
+
   // Vehicle Specifications Settings
   vehicleSpecs: {
     type: [

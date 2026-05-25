@@ -8,6 +8,16 @@ export default function HomepageManagement() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [settings, setSettings] = useState({
+    popupAd: {
+      enabled: false,
+      title: 'Special Offer!',
+      description: '',
+      image: '',
+      badgeText: 'New Feature',
+      buttonText: 'Learn More',
+      buttonLink: '/',
+      dismissText: 'Maybe Later'
+    },
     homepage: {
       hero: {
         title: '',
@@ -35,7 +45,7 @@ export default function HomepageManagement() {
 
   const [isUploading, setIsUploading] = useState(false);
 
-  const handleDirectUpload = async (e: React.ChangeEvent<HTMLInputElement>, section: 'hero' | 'about', field: string) => {
+  const handleDirectUpload = async (e: React.ChangeEvent<HTMLInputElement>, section: 'hero' | 'about' | 'popupAd', field: string) => {
     if (!e.target.files || e.target.files.length === 0) return;
     
     setIsUploading(true);
@@ -55,16 +65,26 @@ export default function HomepageManagement() {
       const data = await res.json();
       if (data.success && data.data && data.data.length > 0) {
         const uploadedUrl = data.data[0].url;
-        setSettings({
-          ...settings,
-          homepage: {
-            ...settings.homepage,
-            [section]: {
-              ...(settings.homepage as any)[section],
+        if (section === 'popupAd') {
+          setSettings({
+            ...settings,
+            popupAd: {
+              ...settings.popupAd,
               [field]: uploadedUrl
             }
-          }
-        });
+          });
+        } else {
+          setSettings({
+            ...settings,
+            homepage: {
+              ...settings.homepage,
+              [section]: {
+                ...(settings.homepage as any)[section],
+                [field]: uploadedUrl
+              }
+            }
+          });
+        }
         setMessage('Image uploaded successfully!');
         setTimeout(() => setMessage(''), 3000);
       } else {
@@ -187,6 +207,105 @@ export default function HomepageManagement() {
       )}
 
       <div className="space-y-8">
+        {/* Startup Popup Ad Section */}
+        <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <Star className="text-orange-600" size={20} />
+              <h2 className="text-lg font-bold text-gray-900">Startup Popup Ad</h2>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                className="sr-only peer" 
+                checked={settings.popupAd?.enabled || false}
+                onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, enabled: e.target.checked } })}
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
+              <span className="ml-3 text-sm font-medium text-gray-700">Enable Popup Ad</span>
+            </label>
+          </div>
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Popup Title</label>
+                <input
+                  type="text"
+                  value={settings.popupAd?.title || ''}
+                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, title: e.target.value } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="e.g. Special Offer!"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Badge Text</label>
+                <input
+                  type="text"
+                  value={settings.popupAd?.badgeText || ''}
+                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, badgeText: e.target.value } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="e.g. New Feature"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Popup Description</label>
+              <textarea
+                value={settings.popupAd?.description || ''}
+                onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, description: e.target.value } })}
+                rows={3}
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                placeholder="Description for the popup..."
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Popup Image URL</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={settings.popupAd?.image || ''}
+                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, image: e.target.value } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="https://example.com/popup-image.jpg"
+                />
+                <label className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 rounded-lg cursor-pointer transition-colors border border-gray-200" title="Upload Image">
+                  <input type="file" className="hidden" accept="image/*" onChange={(e) => handleDirectUpload(e, 'popupAd', 'image')} disabled={isUploading} />
+                  {isUploading ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} />}
+                </label>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
+                <input
+                  type="text"
+                  value={settings.popupAd?.buttonText || ''}
+                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, buttonText: e.target.value } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Button Link</label>
+                <input
+                  type="text"
+                  value={settings.popupAd?.buttonLink || ''}
+                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, buttonLink: e.target.value } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Dismiss Text</label>
+                <input
+                  type="text"
+                  value={settings.popupAd?.dismissText || ''}
+                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, dismissText: e.target.value } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Hero Section */}
         <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-6">

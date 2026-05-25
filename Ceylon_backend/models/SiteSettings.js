@@ -100,6 +100,30 @@ const siteSettingsSchema = new mongoose.Schema({
     description: { type: String, default: '' },
     workingHours: { type: String, default: 'Mon - Fri: 9:00 AM - 6:00 PM' },
     googleMapUrl: { type: String, default: '' }
+  },
+
+  // Vehicle Specifications Settings
+  vehicleSpecs: {
+    type: [
+      {
+        key: { type: String, required: true },
+        label: { type: String, required: true },
+        icon: { type: String, default: 'Info' },
+        visible: { type: Boolean, default: true },
+        isDefault: { type: Boolean, default: false },
+        order: { type: Number, default: 0 }
+      }
+    ],
+    default: [
+      { key: 'year',         label: 'Year',         icon: 'Calendar', visible: true,  isDefault: true,  order: 0 },
+      { key: 'fuel',         label: 'Fuel Type',    icon: 'Fuel',     visible: true,  isDefault: true,  order: 1 },
+      { key: 'transmission', label: 'Transmission', icon: 'Settings', visible: true,  isDefault: true,  order: 2 },
+      { key: 'engine',       label: 'Engine',       icon: 'Zap',      visible: true,  isDefault: true,  order: 3 },
+      { key: 'mileage',      label: 'Mileage',      icon: 'Gauge',    visible: true,  isDefault: true,  order: 4 },
+      { key: 'drive',        label: 'Drive Type',   icon: 'Info',     visible: true,  isDefault: true,  order: 5 },
+      { key: 'seats',        label: 'Seats',        icon: 'Users',    visible: true,  isDefault: true,  order: 6 },
+      { key: 'color',        label: 'Color',        icon: 'Palette',  visible: true,  isDefault: true,  order: 7 }
+    ]
   }
 }, { timestamps: true });
 

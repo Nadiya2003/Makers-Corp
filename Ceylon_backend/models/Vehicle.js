@@ -15,29 +15,24 @@ const vehicleSchema = new mongoose.Schema({
     default: []
   },
   year: {
-    type: String,
-    required: true
+    type: String
   },
   fuel: {
-    type: String,
-    required: true
+    type: String
   },
   mileage: {
-    type: String,
-    required: true
+    type: String
   },
   price: {
     type: String,
     required: true
   },
   engine: {
-    type: String,
-    required: true
+    type: String
   },
   transmission: {
     type: String,
-    required: true,
-    enum: ['Auto', 'Manual', 'Tiptronic']
+    enum: ['Auto', 'Manual', 'Tiptronic', 'N/A', 'Other']
   },
   drive: {
     type: String,
@@ -66,9 +61,14 @@ const vehicleSchema = new mongoose.Schema({
     type: String,
     enum: ['Available', 'Sold', 'Reserved'],
     default: 'Available'
+  },
+  hiddenSpecs: {
+    type: [String],
+    default: []
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  strict: false
 });
 
 module.exports = mongoose.model('Vehicle', vehicleSchema);

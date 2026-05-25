@@ -113,7 +113,7 @@ export function FeaturedVehicles() {
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/vehicles?featured=true`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/vehicles?featured=true`);
         if (response.data.success) {
           setVehicles(response.data.data);
         }

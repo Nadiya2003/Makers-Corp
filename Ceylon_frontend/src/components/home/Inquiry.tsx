@@ -34,7 +34,7 @@ export function Inquiry() {
     setError('');
 
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/inquiries`, formData);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/inquiries`, formData);
       setSuccess('Thank you for your inquiry! We will contact you shortly.');
       setFormData({
         name: '',

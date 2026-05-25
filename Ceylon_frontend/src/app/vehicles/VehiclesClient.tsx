@@ -38,7 +38,7 @@ export function VehiclesClient() {
     const fetchVehicles = async () => {
       try {
         // Fetch all vehicles (no featured=true flag)
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/vehicles`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/vehicles`);
         if (response.data.success) {
           setVehicles(response.data.data);
         }

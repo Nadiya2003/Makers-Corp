@@ -15,6 +15,17 @@ function flattenObject(obj, prefix = '') {
   }, {});
 }
 
+const DEFAULT_SPECS = [
+  { key: 'year',         label: 'Year',         icon: 'Calendar', visible: true,  isDefault: true,  order: 0 },
+  { key: 'fuel',         label: 'Fuel Type',    icon: 'Fuel',     visible: true,  isDefault: true,  order: 1 },
+  { key: 'transmission', label: 'Transmission', icon: 'Settings', visible: true,  isDefault: true,  order: 2 },
+  { key: 'engine',       label: 'Engine',       icon: 'Zap',      visible: true,  isDefault: true,  order: 3 },
+  { key: 'mileage',      label: 'Mileage',      icon: 'Gauge',    visible: true,  isDefault: true,  order: 4 },
+  { key: 'drive',        label: 'Drive Type',   icon: 'Info',     visible: true,  isDefault: true,  order: 5 },
+  { key: 'seats',        label: 'Seats',        icon: 'Users',    visible: true,  isDefault: true,  order: 6 },
+  { key: 'color',        label: 'Color',        icon: 'Palette',  visible: true,  isDefault: true,  order: 7 }
+];
+
 // @desc    Get site settings
 // @route   GET /api/settings
 // @access  Public
@@ -57,6 +68,51 @@ exports.updateSettings = async (req, res) => {
       );
     }
     res.status(200).json({ success: true, data: settings });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Get vehicle spec settings
+// @route   GET /api/settings/vehicle-specs
+// @access  Public
+exports.getVehicleSpecs = async (req, res) => {
+  try {
+    let settings = await SiteSettings.findOne();
+    if (!settings) {
+      settings = await SiteSettings.create({});
+    }
+    // Return stored specs or fall back to defaults
+    const specs = (settings.vehicleSpecs && settings.vehicleSpecs.length > 0)
+      ? settings.vehicleSpecs
+      : DEFAULT_SPECS;
+    res.status(200).json({ success: true, data: specs });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Update vehicle spec settings
+// @route   PUT /api/settings/vehicle-specs
+// @access  Private/Admin
+exports.updateVehicleSpecs = async (req, res) => {
+  try {
+    const { specs } = req.body;
+    if (!Array.isArray(specs)) {
+      return res.status(400).json({ success: false, message: 'specs must be an array' });
+    }
+
+    let settings = await SiteSettings.findOne();
+    if (!settings) {
+      settings = await SiteSettings.create({ vehicleSpecs: specs });
+    } else {
+      settings = await SiteSettings.findOneAndUpdate(
+        {},
+        { $set: { vehicleSpecs: specs } },
+        { new: true, runValidators: true }
+      );
+    }
+    res.status(200).json({ success: true, data: settings.vehicleSpecs });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

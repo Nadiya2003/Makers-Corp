@@ -51,7 +51,7 @@ export function Header() {
     { name: 'HOW IT WORKS', hash: '#how-it-works' },
     { name: 'WHY US', hash: '#why-us' },
     { name: 'ABOUT US', path: '/about' },
-    { name: 'CONTACT US', path: '/contact' },
+    { name: 'CONTACT US', hash: '#inquiry' },
   ];
 
   const siteName = settings?.siteName || 'MAKERS CEYLON';

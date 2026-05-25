@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, 
@@ -13,12 +13,31 @@ import {
   Zap,
   Info,
   CheckCircle2,
-  Phone,
   MessageCircle,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Star,
+  Shield,
+  Award,
+  Layers,
+  Cpu,
+  Disc,
+  Radio,
+  Compass,
+  Activity,
+  Tag,
+  Box,
+  Package,
+  Loader2
 } from 'lucide-react';
 import Image from 'next/image';
+
+// ─── Icon name → lucide component map ──────────────────────────────────────
+const ICON_MAP: Record<string, any> = {
+  Calendar, Fuel, Settings, Zap, Gauge, Info, Users, Palette,
+  Star, Shield, Award, Layers, Cpu, Disc, Radio, Compass,
+  Activity, Tag, Box, Package
+};
 
 interface Vehicle {
   _id: string;
@@ -36,6 +55,16 @@ interface Vehicle {
   color: string;
   description: string;
   status: string;
+  [key: string]: any; // allows custom spec keys
+}
+
+interface SpecSetting {
+  key: string;
+  label: string;
+  icon: string;
+  visible: boolean;
+  isDefault: boolean;
+  order: number;
 }
 
 interface VehicleDetailModalProps {
@@ -44,8 +73,49 @@ interface VehicleDetailModalProps {
   onClose: () => void;
 }
 
+// Default specs used as fallback if API call fails
+const FALLBACK_SPECS: SpecSetting[] = [
+  { key: 'year',         label: 'Year',         icon: 'Calendar', visible: true, isDefault: true, order: 0 },
+  { key: 'fuel',         label: 'Fuel Type',    icon: 'Fuel',     visible: true, isDefault: true, order: 1 },
+  { key: 'transmission', label: 'Transmission', icon: 'Settings', visible: true, isDefault: true, order: 2 },
+  { key: 'engine',       label: 'Engine',       icon: 'Zap',      visible: true, isDefault: true, order: 3 },
+  { key: 'mileage',      label: 'Mileage',      icon: 'Gauge',    visible: true, isDefault: true, order: 4 },
+  { key: 'drive',        label: 'Drive Type',   icon: 'Info',     visible: true, isDefault: true, order: 5 },
+  { key: 'seats',        label: 'Seats',        icon: 'Users',    visible: true, isDefault: true, order: 6 },
+  { key: 'color',        label: 'Color',        icon: 'Palette',  visible: true, isDefault: true, order: 7 },
+];
+
+// Cache the spec settings for the lifetime of the page session
+let cachedSpecs: SpecSetting[] | null = null;
+
 export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailModalProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [specSettings, setSpecSettings] = useState<SpecSetting[]>(cachedSpecs || FALLBACK_SPECS);
+  const [specsLoaded, setSpecsLoaded] = useState(!!cachedSpecs);
+
+  // Reset image index when vehicle changes
+  useEffect(() => {
+    setActiveImageIndex(0);
+  }, [vehicle?._id]);
+
+  // Fetch spec visibility settings once (cached)
+  useEffect(() => {
+    if (cachedSpecs) return;
+    const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+    fetch(`${apiUrl}/settings/vehicle-specs`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.success && Array.isArray(data.data)) {
+          const sorted = [...data.data].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+          cachedSpecs = sorted;
+          setSpecSettings(sorted);
+        }
+      })
+      .catch(() => {
+        // silently fall back to defaults
+      })
+      .finally(() => setSpecsLoaded(true));
+  }, []);
 
   if (!vehicle) return null;
 
@@ -59,16 +129,16 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
     setActiveImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
-  const specItems = [
-    { icon: Calendar, label: 'Year', value: vehicle.year },
-    { icon: Fuel, label: 'Fuel', value: vehicle.fuel },
-    { icon: Settings, label: 'Transmission', value: vehicle.transmission },
-    { icon: Zap, label: 'Engine', value: vehicle.engine },
-    { icon: Gauge, label: 'Mileage', value: vehicle.mileage },
-    { icon: Info, label: 'Drive', value: vehicle.drive },
-    { icon: Users, label: 'Seats', value: vehicle.seats },
-    { icon: Palette, label: 'Color', value: vehicle.color || 'N/A' },
-  ];
+  // Build visible spec items dynamically from admin settings
+  const visibleSpecs = specSettings
+    .filter(s => s.visible && !(vehicle.hiddenSpecs || []).includes(s.key))
+    .map(s => {
+      const IconComponent = ICON_MAP[s.icon] || Info;
+      const value = vehicle[s.key];
+      // Format value: undefined/null/empty → 'N/A'
+      const displayValue = (value !== undefined && value !== null && value !== '') ? String(value) : 'N/A';
+      return { icon: IconComponent, label: s.label, value: displayValue };
+    });
 
   return (
     <AnimatePresence>
@@ -167,21 +237,40 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
                   <div className="flex items-end gap-4">
                     <div className="flex flex-col">
                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Estimated Price</span>
-                       <span className="text-4xl font-black text-primary leading-none">LKR {vehicle.price}</span>
+                       <span className="text-4xl font-black text-primary leading-none">
+                         {vehicle.price.toUpperCase().includes('LKR') ? vehicle.price : `LKR ${vehicle.price}`}
+                       </span>
                     </div>
-                    <span className="text-lg font-bold text-gray-300 line-through decoration-primary/30 mb-1">LKR {(parseInt(vehicle.price.replace(/,/g, '')) * 1.08).toLocaleString()}</span>
+                    {/^\d+(,\d+)*$/.test(vehicle.price.trim()) && (
+                      <span className="text-lg font-bold text-gray-300 line-through decoration-primary/30 mb-1">
+                        LKR {(parseInt(vehicle.price.replace(/,/g, '')) * 1.08).toLocaleString()}
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8 sm:mb-12">
-                  {specItems.map((spec, idx) => (
-                    <div key={idx} className="bg-gray-50 p-5 rounded-[1.5rem] border border-gray-100 hover:border-primary/20 transition-colors">
-                      <spec.icon className="w-5 h-5 text-primary mb-3" />
-                      <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.15em] mb-1">{spec.label}</p>
-                      <p className="text-[13px] font-bold text-dark truncate">{spec.value}</p>
-                    </div>
-                  ))}
-                </div>
+                {/* Dynamic spec grid — respects admin visibility settings */}
+                {visibleSpecs.length > 0 ? (
+                  <div className={`grid gap-3 sm:gap-4 mb-8 sm:mb-12 ${
+                    visibleSpecs.length <= 4
+                      ? 'grid-cols-2'
+                      : visibleSpecs.length <= 6
+                      ? 'grid-cols-2 sm:grid-cols-3'
+                      : 'grid-cols-2 sm:grid-cols-4'
+                  }`}>
+                    {visibleSpecs.map((spec, idx) => (
+                      <div key={idx} className="bg-gray-50 p-5 rounded-[1.5rem] border border-gray-100 hover:border-primary/20 transition-colors">
+                        <spec.icon className="w-5 h-5 text-primary mb-3" />
+                        <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.15em] mb-1">{spec.label}</p>
+                        <p className="text-[13px] font-bold text-dark truncate">{spec.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="mb-8 py-6 text-center text-gray-300 text-xs font-black uppercase tracking-widest">
+                    No specifications configured
+                  </div>
+                )}
 
                 <div className="mb-12">
                   <h3 className="text-xs font-black text-dark uppercase tracking-[0.25em] mb-5 flex items-center gap-2">

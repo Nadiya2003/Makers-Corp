@@ -13,6 +13,7 @@ interface Vehicle {
   name: string;
   image: string;
   images?: string[];
+  category: string;
   year: string;
   fuel: string;
   mileage: string;

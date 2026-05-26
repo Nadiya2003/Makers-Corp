@@ -1,0 +1,11 @@
+name = "ceylon-backend"
+main = "server.js"
+compatibility_date = "2026-05-26"
+compatibility_flags = [ 
+  "nodejs_compat", 
+  "enable_nodejs_http_modules", 
+  "enable_nodejs_http_server_modules" 
+]
+
+[vars]
+MONGO_URI="mongodb+srv://markersCeylon:markersCeylon43234Dfdsdf@main-cluster.vqngjf9.mongodb.net/markersCeylon"

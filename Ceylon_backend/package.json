@@ -20,6 +20,7 @@
     "nodemailer": "^6.9.13"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "wrangler": "^4.86.0"
   }
 }

@@ -19,7 +19,8 @@ import {
   Layout,
   Info,
   Phone,
-  X
+  X,
+  MessageSquare
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -36,6 +37,7 @@ const menuItems = [
   { icon: Gavel, label: 'Auctions', href: '/admin/auctions' },
   { icon: Mail, label: 'Inquiries', href: '/admin/inquiries' },
   { icon: ImageIcon, label: 'Media Manager', href: '/admin/media' },
+  { icon: MessageSquare, label: 'Popup Ad', href: '/admin/popup' },
   { icon: Info, label: 'About Page', href: '/admin/about' },
   { icon: Phone, label: 'Contact Details', href: '/admin/contact-settings' },
   { icon: Type, label: 'SEO Settings', href: '/admin/seo' },

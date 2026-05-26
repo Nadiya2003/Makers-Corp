@@ -10,6 +10,8 @@ export function Footer() {
 
   const footerData = settings?.footer || {
     logo: '',
+    image: '',
+    imageVisible: true,
     aboutText: 'Your trusted partner for importing premium Japanese vehicles directly to Sri Lanka. Better prices, transparent process, and complete peace of mind.',
     address: '123 Import Avenue, Colombo 03, Sri Lanka',
     phone: '+94 77 123 4567',
@@ -92,6 +94,13 @@ export function Footer() {
                     {renderSocialIcon(link.platform)}
                   </a>
                 ))}
+              </div>
+            )}
+
+            {/* Footer Photo */}
+            {footerData.imageVisible && footerData.image && (
+              <div className="pt-4">
+                <img src={footerData.image} alt="Footer graphic" className="w-full max-w-[240px] h-auto rounded-lg shadow-sm" />
               </div>
             )}
           </div>

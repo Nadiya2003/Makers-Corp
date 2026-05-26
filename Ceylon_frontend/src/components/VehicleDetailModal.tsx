@@ -55,6 +55,7 @@ interface Vehicle {
   color: string;
   description: string;
   status: string;
+  category?: string;
   [key: string]: any; // allows custom spec keys
 }
 

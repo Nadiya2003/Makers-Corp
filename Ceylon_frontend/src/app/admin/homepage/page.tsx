@@ -8,16 +8,6 @@ export default function HomepageManagement() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [settings, setSettings] = useState({
-    popupAd: {
-      enabled: false,
-      title: 'Special Offer!',
-      description: '',
-      image: '',
-      badgeText: 'New Feature',
-      buttonText: 'Learn More',
-      buttonLink: '/',
-      dismissText: 'Maybe Later'
-    },
     homepage: {
       hero: {
         title: '',
@@ -39,13 +29,20 @@ export default function HomepageManagement() {
         subtitle: 'The Ceylon Advantage',
         title: 'Why Choose Us',
         reasons: [] as { icon: string; title: string; desc: string }[]
+      },
+      howItWorks: {
+        subtitle: 'Simple Process',
+        title: 'How It Works',
+        description: "Importing a vehicle doesn't have to be complicated. We've streamlined the process into 4 simple steps.",
+        backgroundImage: '',
+        steps: [] as { icon: string; title: string; description: string }[]
       }
     }
   });
 
   const [isUploading, setIsUploading] = useState(false);
 
-  const handleDirectUpload = async (e: React.ChangeEvent<HTMLInputElement>, section: 'hero' | 'about' | 'popupAd', field: string) => {
+  const handleDirectUpload = async (e: React.ChangeEvent<HTMLInputElement>, section: 'hero' | 'about', field: string) => {
     if (!e.target.files || e.target.files.length === 0) return;
     
     setIsUploading(true);
@@ -65,32 +62,52 @@ export default function HomepageManagement() {
       const data = await res.json();
       if (data.success && data.data && data.data.length > 0) {
         const uploadedUrl = data.data[0].url;
-        if (section === 'popupAd') {
-          setSettings({
-            ...settings,
-            popupAd: {
-              ...settings.popupAd,
+        setSettings({
+          ...settings,
+          homepage: {
+            ...settings.homepage,
+            [section]: {
+              ...(settings.homepage as any)[section],
               [field]: uploadedUrl
             }
-          });
-        } else {
-          setSettings({
-            ...settings,
-            homepage: {
-              ...settings.homepage,
-              [section]: {
-                ...(settings.homepage as any)[section],
-                [field]: uploadedUrl
-              }
-            }
-          });
-        }
+          }
+        });
         setMessage('Image uploaded successfully!');
         setTimeout(() => setMessage(''), 3000);
       } else {
         setMessage('Upload failed: ' + (data.message || 'Unknown error'));
       }
     } catch (err) {
+      setMessage('Network error during upload');
+    } finally {
+      setIsUploading(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleHowItWorksBgUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    setIsUploading(true);
+    const formDataObj = new FormData();
+    formDataObj.append('photos', e.target.files[0]);
+    formDataObj.append('category', 'Homepage');
+    try {
+      const token = sessionStorage.getItem('adminToken');
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const res = await fetch(`${apiUrl}/media`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formDataObj
+      });
+      const data = await res.json();
+      if (data.success && data.data && data.data.length > 0) {
+        setSettings(s => ({ ...s, homepage: { ...s.homepage, howItWorks: { ...s.homepage.howItWorks, backgroundImage: data.data[0].url } } }));
+        setMessage('Background image uploaded! Click Save Changes to apply.');
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        setMessage('Upload failed: ' + (data.message || 'Unknown error'));
+      }
+    } catch {
       setMessage('Network error during upload');
     } finally {
       setIsUploading(false);
@@ -134,6 +151,23 @@ export default function HomepageManagement() {
               { icon: 'Zap', title: 'Fast Documentation', desc: 'Quick processing of all legal paperwork.' },
               { icon: 'Globe', title: 'Strong Japan Network', desc: 'Partnerships with top auction houses.' },
               { icon: 'HeadphonesIcon', title: 'After-Sales Support', desc: 'Dedicated support even after delivery.' },
+            ]
+          };
+        }
+
+        // Pre-populate How It Works if empty
+        if (!fetched?.homepage?.howItWorks || !fetched.homepage.howItWorks.steps || fetched.homepage.howItWorks.steps.length === 0) {
+          if (!fetched.homepage) fetched.homepage = {};
+          fetched.homepage.howItWorks = {
+            subtitle: fetched?.homepage?.howItWorks?.subtitle || 'Simple Process',
+            title: fetched?.homepage?.howItWorks?.title || 'How It Works',
+            description: fetched?.homepage?.howItWorks?.description || "Importing a vehicle doesn't have to be complicated. We've streamlined the process into 4 simple steps.",
+            backgroundImage: fetched?.homepage?.howItWorks?.backgroundImage || '',
+            steps: [
+              { icon: 'Search', title: 'Choose Vehicle', description: 'Select from our inventory or live auctions.' },
+              { icon: 'CreditCard', title: 'Confirm & Payment', description: 'Secure your vehicle with an initial deposit.' },
+              { icon: 'Ship', title: 'Import & Shipping', description: 'We handle shipping and customs clearance.' },
+              { icon: 'MapPin', title: 'Delivery in Sri Lanka', description: 'Receive your vehicle right at your doorstep.' },
             ]
           };
         }
@@ -207,104 +241,6 @@ export default function HomepageManagement() {
       )}
 
       <div className="space-y-8">
-        {/* Startup Popup Ad Section */}
-        <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <Star className="text-orange-600" size={20} />
-              <h2 className="text-lg font-bold text-gray-900">Startup Popup Ad</h2>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                className="sr-only peer" 
-                checked={settings.popupAd?.enabled || false}
-                onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, enabled: e.target.checked } })}
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
-              <span className="ml-3 text-sm font-medium text-gray-700">Enable Popup Ad</span>
-            </label>
-          </div>
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Popup Title</label>
-                <input
-                  type="text"
-                  value={settings.popupAd?.title || ''}
-                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, title: e.target.value } })}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
-                  placeholder="e.g. Special Offer!"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Badge Text</label>
-                <input
-                  type="text"
-                  value={settings.popupAd?.badgeText || ''}
-                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, badgeText: e.target.value } })}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
-                  placeholder="e.g. New Feature"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Popup Description</label>
-              <textarea
-                value={settings.popupAd?.description || ''}
-                onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, description: e.target.value } })}
-                rows={3}
-                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
-                placeholder="Description for the popup..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Popup Image URL</label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={settings.popupAd?.image || ''}
-                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, image: e.target.value } })}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
-                  placeholder="https://example.com/popup-image.jpg"
-                />
-                <label className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 rounded-lg cursor-pointer transition-colors border border-gray-200" title="Upload Image">
-                  <input type="file" className="hidden" accept="image/*" onChange={(e) => handleDirectUpload(e, 'popupAd', 'image')} disabled={isUploading} />
-                  {isUploading ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} />}
-                </label>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
-                <input
-                  type="text"
-                  value={settings.popupAd?.buttonText || ''}
-                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, buttonText: e.target.value } })}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Button Link</label>
-                <input
-                  type="text"
-                  value={settings.popupAd?.buttonLink || ''}
-                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, buttonLink: e.target.value } })}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Dismiss Text</label>
-                <input
-                  type="text"
-                  value={settings.popupAd?.dismissText || ''}
-                  onChange={(e) => setSettings({ ...settings, popupAd: { ...settings.popupAd, dismissText: e.target.value } })}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Hero Section */}
         <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
@@ -604,6 +540,160 @@ export default function HomepageManagement() {
                 {(settings.homepage.whyChooseUs?.reasons || []).length === 0 && (
                   <p className="text-xs text-gray-400 font-medium text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                     No reason cards yet. Click "Add Reason" to create one.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works Section */}
+        <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-6">
+            <Layout className="text-orange-600" size={20} />
+            <h2 className="text-lg font-bold text-gray-900">How It Works Section</h2>
+          </div>
+
+          <div className="space-y-6">
+            {/* Text Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Section Subtitle</label>
+                <input
+                  type="text"
+                  value={settings.homepage.howItWorks?.subtitle || ''}
+                  onChange={(e) => setSettings({ ...settings, homepage: { ...settings.homepage, howItWorks: { ...settings.homepage.howItWorks, subtitle: e.target.value } } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="e.g. Simple Process"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Section Title</label>
+                <input
+                  type="text"
+                  value={settings.homepage.howItWorks?.title || ''}
+                  onChange={(e) => setSettings({ ...settings, homepage: { ...settings.homepage, howItWorks: { ...settings.homepage.howItWorks, title: e.target.value } } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="e.g. How It Works"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Section Description</label>
+              <textarea
+                value={settings.homepage.howItWorks?.description || ''}
+                onChange={(e) => setSettings({ ...settings, homepage: { ...settings.homepage, howItWorks: { ...settings.homepage.howItWorks, description: e.target.value } } })}
+                rows={3}
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                placeholder="Brief description of the process..."
+              />
+            </div>
+
+            {/* Background Image */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Background Image</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={settings.homepage.howItWorks?.backgroundImage || ''}
+                  onChange={(e) => setSettings({ ...settings, homepage: { ...settings.homepage, howItWorks: { ...settings.homepage.howItWorks, backgroundImage: e.target.value } } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="https://example.com/bg.jpg"
+                />
+                <label className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 rounded-lg cursor-pointer transition-colors border border-gray-200" title="Upload Image">
+                  <input type="file" className="hidden" accept="image/*" onChange={handleHowItWorksBgUpload} disabled={isUploading} />
+                  {isUploading ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} />}
+                </label>
+              </div>
+              {settings.homepage.howItWorks?.backgroundImage && (
+                <div className="mt-3 p-3 bg-gray-950 border border-gray-800 rounded-lg">
+                  <span className="text-xs font-semibold text-gray-400 block mb-2">Preview:</span>
+                  <img src={settings.homepage.howItWorks.backgroundImage} alt="BG Preview" className="h-20 w-full object-cover rounded opacity-60" />
+                </div>
+              )}
+            </div>
+
+            {/* Steps Editor */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-sm font-medium text-gray-700">Process Steps</label>
+                <button
+                  type="button"
+                  onClick={() => setSettings(s => ({ ...s, homepage: { ...s.homepage, howItWorks: { ...s.homepage.howItWorks, steps: [...(s.homepage.howItWorks?.steps || []), { icon: 'Search', title: '', description: '' }] } } }))}
+                  className="flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-all border border-orange-200"
+                >
+                  <Plus size={14} /> Add Step
+                </button>
+              </div>
+              <div className="space-y-3">
+                {(settings.homepage.howItWorks?.steps || []).map((step: any, idx: number) => (
+                  <div key={idx} className="flex gap-3 items-start bg-gray-50 border border-gray-200 rounded-xl p-3">
+                    <div className="w-32">
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Icon</label>
+                      <select
+                        value={step.icon}
+                        onChange={(e) => {
+                          const newSteps = [...(settings.homepage.howItWorks?.steps || [])];
+                          newSteps[idx] = { ...newSteps[idx], icon: e.target.value };
+                          setSettings(s => ({ ...s, homepage: { ...s.homepage, howItWorks: { ...s.homepage.howItWorks, steps: newSteps } } }));
+                        }}
+                        className="w-full bg-white border border-gray-200 rounded-lg px-2 py-2 text-sm font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
+                      >
+                        <option value="Search">Search</option>
+                        <option value="CreditCard">CreditCard</option>
+                        <option value="Ship">Ship</option>
+                        <option value="MapPin">MapPin</option>
+                        <option value="CheckCircle">CheckCircle</option>
+                        <option value="Star">Star</option>
+                        <option value="Truck">Truck</option>
+                        <option value="Globe">Globe</option>
+                        <option value="Zap">Zap</option>
+                        <option value="Phone">Phone</option>
+                        <option value="DollarSign">DollarSign</option>
+                      </select>
+                    </div>
+                    <div className="flex-[2]">
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Step Title</label>
+                      <input
+                        type="text"
+                        value={step.title}
+                        onChange={(e) => {
+                          const newSteps = [...(settings.homepage.howItWorks?.steps || [])];
+                          newSteps[idx] = { ...newSteps[idx], title: e.target.value };
+                          setSettings(s => ({ ...s, homepage: { ...s.homepage, howItWorks: { ...s.homepage.howItWorks, steps: newSteps } } }));
+                        }}
+                        placeholder="e.g. Choose Vehicle"
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all mb-2"
+                      />
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Step Description</label>
+                      <textarea
+                        value={step.description}
+                        onChange={(e) => {
+                          const newSteps = [...(settings.homepage.howItWorks?.steps || [])];
+                          newSteps[idx] = { ...newSteps[idx], description: e.target.value };
+                          setSettings(s => ({ ...s, homepage: { ...s.homepage, howItWorks: { ...s.homepage.howItWorks, steps: newSteps } } }));
+                        }}
+                        rows={2}
+                        placeholder="e.g. Select from our inventory or live auctions."
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newSteps = (settings.homepage.howItWorks?.steps || []).filter((_: any, i: number) => i !== idx);
+                        setSettings(s => ({ ...s, homepage: { ...s.homepage, howItWorks: { ...s.homepage.howItWorks, steps: newSteps } } }));
+                      }}
+                      className="mt-5 p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+                {(settings.homepage.howItWorks?.steps || []).length === 0 && (
+                  <p className="text-xs text-gray-400 font-medium text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                    No steps yet. Click "Add Step" to create one.
                   </p>
                 )}
               </div>

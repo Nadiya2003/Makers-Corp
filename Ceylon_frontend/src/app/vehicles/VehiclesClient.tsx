@@ -24,6 +24,7 @@ interface Vehicle {
   color: string;
   description: string;
   status: string;
+  category?: string;
 }
 
 export function VehiclesClient() {

@@ -17,6 +17,8 @@ const siteSettingsSchema = new mongoose.Schema({
   // Footer Management
   footer: {
     logo: { type: String, default: '' },
+    image: { type: String, default: '' },
+    imageVisible: { type: Boolean, default: true },
     aboutText: { type: String, default: '' },
     address: { type: String, default: '' },
     email: { type: String, default: '' },
@@ -60,6 +62,19 @@ const siteSettingsSchema = new mongoose.Schema({
           desc: { type: String, default: '' }
         }
       ]
+    },
+    howItWorks: {
+      subtitle: { type: String, default: 'Simple Process' },
+      title: { type: String, default: 'How It Works' },
+      description: { type: String, default: "Importing a vehicle doesn't have to be complicated. We've streamlined the process into 4 simple steps." },
+      backgroundImage: { type: String, default: '' },
+      steps: [
+        {
+          icon: { type: String, default: 'Search' },
+          title: { type: String, default: '' },
+          description: { type: String, default: '' }
+        }
+      ]
     }
   },
 
@@ -84,6 +99,7 @@ const siteSettingsSchema = new mongoose.Schema({
     image: { type: String, default: '' },
     mission: { type: String, default: '' },
     vision: { type: String, default: '' },
+    galleryImages: [{ type: String }],
     directors: [
       {
         name: { type: String, default: '' },

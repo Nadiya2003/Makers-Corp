@@ -29,6 +29,7 @@ export default function AboutUsSettings() {
     image: 'https://images.unsplash.com/photo-1562426509-5044a121aa49?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
     mission: 'To provide a seamless, transparent, and highly reliable vehicle import service that empowers our customers to purchase their dream cars directly from Japan.',
     vision: 'To be the most trusted and preferred vehicle import partner in Sri Lanka, known for our integrity and customer-centric approach.',
+    galleryImages: [] as string[],
     directors: [] as { name: string; role: string; bio: string; image: string; }[]
   });
 
@@ -43,12 +44,22 @@ export default function AboutUsSettings() {
       const data = await res.json();
       if (data.success && data.data && data.data.aboutPage) {
         const page = data.data.aboutPage;
+        const DEFAULT_GALLERY = [
+          'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1553440569-bcc63803a83d?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1580274455191-1c62238fa333?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1200&auto=format&fit=crop',
+        ];
+        
         setAboutData(prev => ({
           title: page.title || prev.title,
           content: page.content || prev.content,
           image: page.image || prev.image,
           mission: page.mission || prev.mission,
           vision: page.vision || prev.vision,
+          galleryImages: page.galleryImages && page.galleryImages.length > 0 ? page.galleryImages : DEFAULT_GALLERY,
           directors: page.directors || prev.directors
         }));
       }
@@ -362,6 +373,51 @@ export default function AboutUsSettings() {
                   <p className="text-xs text-gray-400 font-medium text-center py-6 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
                     No directors added yet. Click "Add Director" to create one.
                   </p>
+                )}
+              </div>
+            </div>
+
+            {/* Photo Gallery */}
+            <div className="pt-6 border-t border-gray-50 space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <ImageIcon className="text-pink-600" size={20} />
+                  <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest">Photo Gallery</h3>
+                </div>
+                <label className="flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-all border border-orange-200 cursor-pointer">
+                  {isUploading ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
+                  Add Photo
+                  <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, (url) => {
+                    setAboutData({ ...aboutData, galleryImages: [...aboutData.galleryImages, url] });
+                  })} disabled={isUploading} />
+                </label>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                {aboutData.galleryImages.map((imgUrl, idx) => (
+                  <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50 border border-gray-200 group">
+                    <img src={imgUrl} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newImages = aboutData.galleryImages.filter((_, i) => i !== idx);
+                          setAboutData({ ...aboutData, galleryImages: newImages });
+                        }}
+                        className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                
+                {aboutData.galleryImages.length === 0 && (
+                  <div className="col-span-full">
+                    <p className="text-xs text-gray-400 font-medium text-center py-6 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                      No gallery photos added yet. Click "Add Photo" to upload some.
+                    </p>
+                  </div>
                 )}
               </div>
             </div>

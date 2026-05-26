@@ -2,53 +2,70 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Search, CreditCard, Ship, MapPin } from 'lucide-react';
+import Image from 'next/image';
+import {
+  Search, CreditCard, Ship, MapPin,
+  CheckCircle, Star, Truck, Globe, Zap, Phone, DollarSign,
+} from 'lucide-react';
+import { useSettings } from '@/context/SettingsContext';
+
+// Map icon name strings to actual components
+const ICON_MAP: Record<string, React.ElementType> = {
+  Search, CreditCard, Ship, MapPin, CheckCircle,
+  Star, Truck, Globe, Zap, Phone, DollarSign,
+};
+
+const DEFAULT_STEPS = [
+  { icon: 'Search',     title: 'Choose Vehicle',        description: 'Select from our inventory or live auctions.' },
+  { icon: 'CreditCard', title: 'Confirm & Payment',     description: 'Secure your vehicle with an initial deposit.' },
+  { icon: 'Ship',       title: 'Import & Shipping',     description: 'We handle shipping and customs clearance.' },
+  { icon: 'MapPin',     title: 'Delivery in Sri Lanka', description: 'Receive your vehicle right at your doorstep.' },
+];
 
 export function HowItWorks() {
-  const steps = [
-    {
-      icon: Search,
-      title: 'Choose Vehicle',
-      description: 'Select from our inventory or live auctions.',
-    },
-    {
-      icon: CreditCard,
-      title: 'Confirm & Payment',
-      description: 'Secure your vehicle with an initial deposit.',
-    },
-    {
-      icon: Ship,
-      title: 'Import & Shipping',
-      description: 'We handle shipping and customs clearance.',
-    },
-    {
-      icon: MapPin,
-      title: 'Delivery in Sri Lanka',
-      description: 'Receive your vehicle right at your doorstep.',
-    },
-  ];
+  const { settings } = useSettings();
+
+  const raw = (settings as any)?.homepage?.howItWorks;
+
+  const subtitle         = raw?.subtitle         || 'Simple Process';
+  const title            = raw?.title            || 'How It Works';
+  const description      = raw?.description      || "Importing a vehicle doesn't have to be complicated. We've streamlined the process into 4 simple steps.";
+  const backgroundImage  = raw?.backgroundImage  || '';
+  const steps: { icon: string; title: string; description: string }[] =
+    raw?.steps && raw.steps.length > 0 ? raw.steps : DEFAULT_STEPS;
 
   return (
-    <section id="how-it-works" className="py-12 sm:py-16 lg:py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="how-it-works" className="relative py-12 sm:py-16 lg:py-24 bg-gray-50 overflow-hidden">
+
+      {/* Background image with low opacity */}
+      {backgroundImage && (
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <Image
+            src={backgroundImage}
+            alt="How It Works background"
+            fill
+            className="object-cover opacity-[0.07]"
+            priority={false}
+          />
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-primary font-semibold tracking-wider uppercase text-sm mb-3">
-            Simple Process
+            {subtitle}
           </h2>
-          <h3 className="font-display font-bold text-3xl sm:text-4xl text-dark mb-6">How It Works</h3>
-          <p className="text-gray-600 text-lg">
-            Importing a vehicle doesn&apos;t have to be complicated. We&apos;ve streamlined the process into
-            4 simple steps.
-          </p>
+          <h3 className="font-display font-bold text-3xl sm:text-4xl text-dark mb-6">{title}</h3>
+          <p className="text-gray-600 text-lg">{description}</p>
         </div>
 
-          <div className="relative pt-4 sm:pt-6">
-            {/* Connecting Line (Desktop) */}
-            <div className="hidden lg:block absolute top-[4rem] sm:top-[5rem] left-[12.5%] right-[12.5%] h-0.5 bg-gray-200 z-0" />
+        <div className="relative pt-4 sm:pt-6">
+          {/* Connecting Line (Desktop) */}
+          <div className="hidden lg:block absolute top-[4rem] sm:top-[5rem] left-[12.5%] right-[12.5%] h-0.5 bg-gray-200 z-0" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 relative z-10">
             {steps.map((step, index) => {
-              const Icon = step.icon;
+              const Icon = ICON_MAP[step.icon] || Search;
               return (
                 <motion.div
                   key={index}

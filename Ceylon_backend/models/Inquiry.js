@@ -15,7 +15,6 @@ const inquirySchema = new mongoose.Schema(
     vehicle: {
       type: String,
       required: [true, 'Vehicle brand is required'],
-      enum: ['Toyota', 'Honda', 'Nissan', 'Suzuki', 'Mazda', 'Other'],
     },
     message: {
       type: String,

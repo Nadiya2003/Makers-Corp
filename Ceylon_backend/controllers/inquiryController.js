@@ -8,7 +8,6 @@ const validateInquiry = [
   body('phone').trim().notEmpty().withMessage('Phone is required'),
   body('vehicle')
     .notEmpty()
-    .isIn(['Toyota', 'Honda', 'Nissan', 'Suzuki', 'Mazda', 'Other'])
     .withMessage('Invalid vehicle brand'),
   body('message').optional().trim(),
 ];
@@ -39,7 +38,7 @@ const submitInquiry = async (req, res) => {
         });
         await transporter.sendMail({
           from: process.env.EMAIL_USER,
-          to: process.env.EMAIL_USER,
+          to: 'nadiyanmk2003@gmail.com',
           subject: `New Inquiry from ${name}`,
           html: `
             <h2>New Vehicle Inquiry</h2>

@@ -120,7 +120,7 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             <div className="flex items-center gap-2 text-dark font-bold">
               <Phone className="w-4 h-4 text-primary" />
-              <span className="text-sm">{contactNumber}</span>
+              <a href={`tel:${contactNumber}`} className="text-sm hover:text-primary transition-colors">{contactNumber}</a>
             </div>
             <a
               href={`https://wa.me/94${contactNumber.replace(/\s/g, '').replace(/^0/, '')}`}
@@ -181,7 +181,7 @@ export function Header() {
               <div className="flex flex-col gap-3 p-3 bg-gray-50 rounded-xl mb-2">
                 <div className="flex items-center justify-center gap-2 text-dark font-bold">
                   <Phone className="w-4 h-4 text-primary" />
-                  <span className="text-[13px] tracking-wide">{contactNumber}</span>
+                  <a href={`tel:${contactNumber}`} className="text-[13px] tracking-wide hover:text-primary transition-colors">{contactNumber}</a>
                 </div>
                 <a
                   href={`https://wa.me/94${contactNumber.replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`}

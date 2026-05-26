@@ -73,7 +73,7 @@ export function ContactUsClient() {
 
     try {
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
-      const response = await axios.post(`${apiUrl}/contact`, formData);
+      const response = await axios.post(`${apiUrl}/inquiries`, formData);
       setSuccess('Thank you for your message! We will get back to you soon.');
       setFormData({
         name: '',
@@ -82,7 +82,11 @@ export function ContactUsClient() {
         message: '',
       });
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Something went wrong. Please try again later.');
+      if (err.response?.data?.errors && err.response.data.errors.length > 0) {
+        setError(err.response.data.errors[0].msg);
+      } else {
+        setError(err.response?.data?.message || 'Something went wrong. Please try again later.');
+      }
     } finally {
       setLoading(false);
     }

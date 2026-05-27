@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { 
   Globe, 
   Search, 
@@ -12,11 +12,14 @@ import {
   Type,
   FileText
 } from 'lucide-react';
+import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
 
 export default function SeoSettings() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const savedRef = useRef<string>('');
   
   const [seoData, setSeoData] = useState({
     metaTitle: '',
@@ -35,6 +38,8 @@ export default function SeoSettings() {
       const data = await res.json();
       if (data.success && data.data && data.data.seo) {
         setSeoData(data.data.seo);
+        savedRef.current = JSON.stringify(data.data.seo);
+        setIsDirty(false);
       }
     } catch (err) {
       console.error('Failed to fetch SEO settings');
@@ -43,13 +48,20 @@ export default function SeoSettings() {
     }
   };
 
+  // Track dirty state whenever seoData changes
+  useEffect(() => {
+    if (savedRef.current) {
+      setIsDirty(JSON.stringify(seoData) !== savedRef.current);
+    }
+  }, [seoData]);
+
   const showStatus = (type: 'success' | 'error', text: string) => {
     setStatusMessage({ type, text });
     setTimeout(() => setStatusMessage(null), 4000);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     setSubmitting(true);
     try {
       const token = sessionStorage.getItem('adminToken');
@@ -64,6 +76,8 @@ export default function SeoSettings() {
       });
       const data = await res.json();
       if (data.success) {
+        savedRef.current = JSON.stringify(seoData);
+        setIsDirty(false);
         showStatus('success', 'SEO configuration updated successfully.');
       } else {
         showStatus('error', data.message || 'Update failed.');
@@ -73,7 +87,9 @@ export default function SeoSettings() {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [seoData]);
+
+  useUnsavedChanges(isDirty, handleSubmit);
 
   return (
     <div className="space-y-8 max-w-4xl">

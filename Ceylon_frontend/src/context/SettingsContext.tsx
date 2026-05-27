@@ -13,6 +13,8 @@ interface Settings {
   };
   footer: {
     logo?: string;
+    image?: string;
+    imageVisible?: boolean;
     aboutText: string;
     address: string;
     email: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { 
   Info, 
   Save, 
@@ -17,11 +17,14 @@ import {
   Trash2,
   Upload
 } from 'lucide-react';
+import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
 
 export default function AboutUsSettings() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const savedRef = useRef<string>('');
   
   const [aboutData, setAboutData] = useState({
     title: 'About Makers Ceylon',
@@ -53,15 +56,18 @@ export default function AboutUsSettings() {
           'https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1200&auto=format&fit=crop',
         ];
         
-        setAboutData(prev => ({
-          title: page.title || prev.title,
-          content: page.content || prev.content,
-          image: page.image || prev.image,
-          mission: page.mission || prev.mission,
-          vision: page.vision || prev.vision,
+        const merged = {
+          title: page.title || aboutData.title,
+          content: page.content || aboutData.content,
+          image: page.image || aboutData.image,
+          mission: page.mission || aboutData.mission,
+          vision: page.vision || aboutData.vision,
           galleryImages: page.galleryImages && page.galleryImages.length > 0 ? page.galleryImages : DEFAULT_GALLERY,
-          directors: page.directors || prev.directors
-        }));
+          directors: page.directors || aboutData.directors
+        };
+        setAboutData(merged);
+        savedRef.current = JSON.stringify(merged);
+        setIsDirty(false);
       }
     } catch (err) {
       console.error('Failed to fetch About Us settings');
@@ -69,6 +75,13 @@ export default function AboutUsSettings() {
       setLoading(false);
     }
   };
+
+  // Track dirty state whenever aboutData changes
+  useEffect(() => {
+    if (savedRef.current) {
+      setIsDirty(JSON.stringify(aboutData) !== savedRef.current);
+    }
+  }, [aboutData]);
 
   const showStatus = (type: 'success' | 'error', text: string) => {
     setStatusMessage({ type, text });
@@ -109,8 +122,8 @@ export default function AboutUsSettings() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     setSubmitting(true);
     try {
       const token = sessionStorage.getItem('adminToken');
@@ -125,6 +138,8 @@ export default function AboutUsSettings() {
       });
       const data = await res.json();
       if (data.success) {
+        savedRef.current = JSON.stringify(aboutData);
+        setIsDirty(false);
         showStatus('success', 'About Us content updated successfully.');
       } else {
         showStatus('error', data.message || 'Update failed.');
@@ -134,7 +149,9 @@ export default function AboutUsSettings() {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [aboutData]);
+
+  useUnsavedChanges(isDirty, handleSubmit);
 
   return (
     <div className="space-y-8 max-w-5xl">

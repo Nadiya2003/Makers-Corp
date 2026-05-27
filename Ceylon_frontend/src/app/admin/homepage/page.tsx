@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Save, Loader2, Layout, Info, Upload, Plus, Trash2, Star } from 'lucide-react';
+import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
 
 export default function HomepageManagement() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+  const [isDirty, setIsDirty] = useState(false);
+  const savedRef = useRef<string>('');
   const [settings, setSettings] = useState({
     homepage: {
       hero: {
@@ -173,6 +176,8 @@ export default function HomepageManagement() {
         }
 
         setSettings(fetched);
+        savedRef.current = JSON.stringify(fetched);
+        setIsDirty(false);
       }
     } catch (err) {
       console.error('Failed to fetch settings');
@@ -181,7 +186,14 @@ export default function HomepageManagement() {
     }
   };
 
-  const handleSave = async () => {
+  // Track dirty state whenever settings change
+  useEffect(() => {
+    if (savedRef.current) {
+      setIsDirty(JSON.stringify(settings) !== savedRef.current);
+    }
+  }, [settings]);
+
+  const handleSave = useCallback(async () => {
     setSaving(true);
     setMessage('');
     try {
@@ -197,6 +209,8 @@ export default function HomepageManagement() {
 
       const data = await res.json();
       if (data.success) {
+        savedRef.current = JSON.stringify(settings);
+        setIsDirty(false);
         setMessage('Homepage updated successfully!');
         setTimeout(() => setMessage(''), 3000);
       } else {
@@ -207,7 +221,9 @@ export default function HomepageManagement() {
     } finally {
       setSaving(false);
     }
-  };
+  }, [settings]);
+
+  useUnsavedChanges(isDirty, handleSave);
 
   if (loading) {
     return (

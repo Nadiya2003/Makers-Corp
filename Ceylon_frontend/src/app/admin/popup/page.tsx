@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Save, Loader2, Upload, Star, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
 
 export default function PopupAdManagement() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const savedRef = useRef<string>('');
   const [settings, setSettings] = useState({
     popupAd: {
       enabled: false,
@@ -37,6 +40,8 @@ export default function PopupAdManagement() {
       const data = await res.json();
       if (data.success && data.data && data.data.popupAd) {
         setSettings({ popupAd: data.data.popupAd });
+        savedRef.current = JSON.stringify({ popupAd: data.data.popupAd });
+        setIsDirty(false);
       }
     } catch (err) {
       console.error('Failed to fetch settings', err);
@@ -44,6 +49,13 @@ export default function PopupAdManagement() {
       setLoading(false);
     }
   };
+
+  // Track dirty state whenever settings change
+  useEffect(() => {
+    if (savedRef.current) {
+      setIsDirty(JSON.stringify(settings) !== savedRef.current);
+    }
+  }, [settings]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -82,7 +94,7 @@ export default function PopupAdManagement() {
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     setSaving(true);
     try {
       const token = sessionStorage.getItem('adminToken');
@@ -98,6 +110,8 @@ export default function PopupAdManagement() {
 
       const data = await res.json();
       if (data.success) {
+        savedRef.current = JSON.stringify(settings);
+        setIsDirty(false);
         showStatus('success', 'Popup Ad settings updated successfully!');
       } else {
         showStatus('error', 'Error saving settings: ' + data.message);
@@ -107,7 +121,9 @@ export default function PopupAdManagement() {
     } finally {
       setSaving(false);
     }
-  };
+  }, [settings]);
+
+  useUnsavedChanges(isDirty, handleSave);
 
   if (loading) {
     return (

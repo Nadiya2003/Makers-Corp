@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { 
   Phone, 
   Mail, 
@@ -14,12 +14,15 @@ import {
   Map as MapIcon
 } from 'lucide-react';
 import { convertMapUrl } from '@/lib/mapUtils';
+import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
 
 export default function ContactSettings() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [isResolvingUrl, setIsResolvingUrl] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const savedRef = useRef<string>('');
   
   const [contactData, setContactData] = useState({
     header: {
@@ -64,6 +67,23 @@ export default function ContactSettings() {
             googleMapUrl: data.data.contactPage?.googleMapUrl || prev.contactPage.googleMapUrl
           }
         }));
+        // snapshot for dirty tracking (build from actual data, not the merged prev)
+        const snapshot = {
+          header: { contactNumber: data.data.header?.contactNumber || '' },
+          footer: {
+            address: data.data.footer?.address || '',
+            email: data.data.footer?.email || '',
+            phone: data.data.footer?.phone || ''
+          },
+          contactPage: {
+            title: data.data.contactPage?.title || '',
+            description: data.data.contactPage?.description || '',
+            workingHours: data.data.contactPage?.workingHours || '',
+            googleMapUrl: data.data.contactPage?.googleMapUrl || ''
+          }
+        };
+        savedRef.current = JSON.stringify(snapshot);
+        setIsDirty(false);
       }
     } catch (err) {
       console.error('Failed to fetch contact settings');
@@ -71,6 +91,13 @@ export default function ContactSettings() {
       setLoading(false);
     }
   };
+
+  // Track dirty state whenever contactData changes
+  useEffect(() => {
+    if (savedRef.current) {
+      setIsDirty(JSON.stringify(contactData) !== savedRef.current);
+    }
+  }, [contactData]);
 
   const showStatus = (type: 'success' | 'error', text: string) => {
     setStatusMessage({ type, text });
@@ -101,8 +128,8 @@ export default function ContactSettings() {
   };
 
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
 
     // Validate and convert the map URL before saving
     const rawMapUrl = contactData.contactPage.googleMapUrl;
@@ -153,6 +180,11 @@ export default function ContactSettings() {
           ...prev,
           contactPage: { ...prev.contactPage, googleMapUrl: resolvedMapUrl }
         }));
+        savedRef.current = JSON.stringify({
+          ...contactData,
+          contactPage: { ...contactData.contactPage, googleMapUrl: resolvedMapUrl }
+        });
+        setIsDirty(false);
         showStatus('success', 'Contact details updated successfully.');
       } else {
         showStatus('error', data.message || 'Update failed.');
@@ -163,7 +195,9 @@ export default function ContactSettings() {
       setSubmitting(false);
     }
 
-  };
+  }, [contactData]);
+
+  useUnsavedChanges(isDirty, handleSubmit);
 
   return (
     <div className="space-y-8 max-w-5xl">

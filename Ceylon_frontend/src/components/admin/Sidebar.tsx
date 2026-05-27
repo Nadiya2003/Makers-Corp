@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useUnsavedChangesContext } from '@/context/UnsavedChangesContext';
 import { 
   LayoutDashboard, 
   Settings, 
@@ -47,11 +47,39 @@ const menuItems = [
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { requestNavigation, isDirty } = useUnsavedChangesContext();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const ok = await requestNavigation('/admin/login');
+    if (!ok) return;
     sessionStorage.removeItem('adminToken');
     sessionStorage.removeItem('adminUser');
     router.push('/admin/login');
+  };
+
+  const handleNavClick = async (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    // If already on this page, do nothing special
+    if (pathname === href) {
+      if (window.innerWidth < 1024) onClose();
+      return;
+    }
+
+    // Intercept only when there are unsaved changes
+    if (isDirty) {
+      e.preventDefault();
+      const ok = await requestNavigation(href);
+      if (ok) {
+        if (window.innerWidth < 1024) onClose();
+        router.push(href);
+      }
+      return;
+    }
+
+    // No unsaved changes — let it navigate normally
+    if (window.innerWidth < 1024) onClose();
   };
 
   return (
@@ -82,7 +110,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         {menuItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <Link
+            <a
               key={item.label}
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all border ${
@@ -90,13 +118,15 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   ? 'bg-orange-600/10 text-orange-500 border-orange-600/20' 
                   : 'border-transparent hover:bg-white/5 hover:text-white'
               }`}
-              onClick={() => {
-                if (window.innerWidth < 1024) onClose();
-              }}
+              onClick={(e) => handleNavClick(e, item.href)}
             >
               <item.icon size={20} />
               <span className="font-medium">{item.label}</span>
-            </Link>
+              {/* Subtle dot indicator when this page is dirty and active */}
+              {isActive && isDirty && (
+                <span className="ml-auto w-2 h-2 rounded-full bg-amber-400 shrink-0" title="Unsaved changes" />
+              )}
+            </a>
           );
         })}
       </nav>

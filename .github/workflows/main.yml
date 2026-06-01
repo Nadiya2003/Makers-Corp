@@ -72,7 +72,7 @@ jobs:
             cd "$SERVER_PATH/Ceylon_frontend"
 
             echo "Writing .env file..."
-            echo "NEXT_PUBLIC_API_URL=https://makersceylon.com/api" | base64 -d > .env
+            echo "NEXT_PUBLIC_API_URL=https://makersceylon.com/api" > .env
 
             echo "Installing dependencies..."
             npm install
@@ -90,9 +90,9 @@ jobs:
             echo "Building the application..."
             echo "Writing backend .env..."
             {
-                echo "MONGO_URI=$(echo "$MONGO_URI" | base64 -d)"
-                echo "PORT=$(echo "$PORT" | base64 -d)"
-                echo "FRONTEND_URL=$(echo "$FRONTEND_URL" | base64 -d)"
+                echo "MONGO_URI=$MONGO_URI"
+                echo "PORT=$PORT"
+                echo "FRONTEND_URL=$FRONTEND_URL"
             } > .env
             chmod 600 .env
             pm2 describe makers-backend >/dev/null 2>&1 && pm2 restart authenticweb-backend --update-env || pm2 start npm --name makers-backend -- start

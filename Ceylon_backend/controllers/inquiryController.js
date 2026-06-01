@@ -74,4 +74,18 @@ const getAllInquiries = async (req, res) => {
   }
 };
 
-module.exports = { submitInquiry, getAllInquiries, validateInquiry };
+// ─── DELETE /api/inquiries/:id ────────────────────────────────────────────────
+const deleteInquiry = async (req, res) => {
+  try {
+    const inquiry = await Inquiry.findByIdAndDelete(req.params.id);
+    if (!inquiry) {
+      return res.status(404).json({ success: false, message: 'Inquiry not found' });
+    }
+    return res.json({ success: true, message: 'Inquiry deleted successfully' });
+  } catch (err) {
+    console.error('deleteInquiry error:', err);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+module.exports = { submitInquiry, getAllInquiries, validateInquiry, deleteInquiry };

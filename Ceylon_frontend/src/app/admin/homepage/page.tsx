@@ -17,7 +17,9 @@ export default function HomepageManagement() {
         subtitle: '',
         backgroundImage: '',
         ctaText: '',
-        ctaLink: ''
+        ctaLink: '',
+        noticeTitle: 'LIMITED AUCTION SLOTS WEEKLY!',
+        noticeSubtitle: 'Secure your vehicle before the next auction cycle.'
       },
       about: {
         title: '',
@@ -282,6 +284,26 @@ export default function HomepageManagement() {
                 rows={2}
                 className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
               />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-orange-50/50 p-4 rounded-xl border border-orange-100">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Notice Title (Floating Badge)</label>
+                <input
+                  type="text"
+                  value={settings.homepage.hero.noticeTitle || ''}
+                  onChange={(e) => setSettings({ ...settings, homepage: { ...settings.homepage, hero: { ...settings.homepage.hero, noticeTitle: e.target.value } } })}
+                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Notice Subtitle</label>
+                <input
+                  type="text"
+                  value={settings.homepage.hero.noticeSubtitle || ''}
+                  onChange={(e) => setSettings({ ...settings, homepage: { ...settings.homepage, hero: { ...settings.homepage.hero, noticeSubtitle: e.target.value } } })}
+                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                />
+              </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>

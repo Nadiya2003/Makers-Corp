@@ -1,8 +1,10 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useUnsavedChangesContext } from '@/context/UnsavedChangesContext';
+import { useSettings } from '@/context/SettingsContext';
 import { 
   LayoutDashboard, 
   Settings, 
@@ -48,6 +50,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { requestNavigation, isDirty } = useUnsavedChangesContext();
+  const { settings } = useSettings();
 
   const handleLogout = async () => {
     const ok = await requestNavigation('/admin/login');
@@ -98,8 +101,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       }`}>
         <div className="p-6 flex items-center justify-between">
           <h1 className="text-xl font-bold text-white flex items-center gap-2">
-            <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white text-sm">M</div>
-            Makers Admin
+            {settings?.logo ? (
+              <img src={settings.logo} alt="Site Logo" className="h-8 w-auto object-contain rounded" />
+            ) : (
+              <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white text-sm">M</div>
+            )}
+            {settings?.siteName || 'Makers Admin'}
           </h1>
           <button onClick={onClose} className="lg:hidden text-gray-400 hover:text-white transition-colors">
             <X size={24} />
@@ -110,7 +117,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         {menuItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <a
+            <Link
               key={item.label}
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all border ${
@@ -126,7 +133,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               {isActive && isDirty && (
                 <span className="ml-auto w-2 h-2 rounded-full bg-amber-400 shrink-0" title="Unsaved changes" />
               )}
-            </a>
+            </Link>
           );
         })}
       </nav>

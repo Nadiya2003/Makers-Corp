@@ -60,6 +60,9 @@ export function Header() {
     settings?.footer?.phone ||
     '077 123 4567';
 
+  const whatsappRaw = settings?.header?.whatsappNumber || contactNumber;
+  const whatsappUrl = `https://wa.me/94${whatsappRaw.replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`;
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
@@ -86,7 +89,7 @@ export function Header() {
                 {siteName}
               </span>
               <span className="text-[10px] font-bold text-gray-500 tracking-[0.1em]">
-                IMPORT YOUR DREAM
+                {settings?.header?.tagline || 'IMPORT YOUR DREAM'}
               </span>
             </div>
           </Link>
@@ -123,7 +126,7 @@ export function Header() {
               <a href={`tel:${contactNumber}`} className="text-sm hover:text-primary transition-colors">{contactNumber}</a>
             </div>
             <a
-              href={`https://wa.me/94${contactNumber.replace(/\s/g, '').replace(/^0/, '')}`}
+              href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 xl:px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20 uppercase"
@@ -184,7 +187,7 @@ export function Header() {
                   <a href={`tel:${contactNumber}`} className="text-[13px] tracking-wide hover:text-primary transition-colors">{contactNumber}</a>
                 </div>
                 <a
-                  href={`https://wa.me/94${contactNumber.replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`}
+                  href={whatsappUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center justify-center w-full gap-2 bg-primary text-white px-4 py-3 rounded-lg text-[13px] font-bold shadow-sm active:scale-95 transition-all uppercase"

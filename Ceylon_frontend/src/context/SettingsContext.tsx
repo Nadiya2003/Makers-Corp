@@ -10,6 +10,8 @@ interface Settings {
     navLinks: Array<{ label: string, url: string }>;
     showSearch: boolean;
     contactNumber: string;
+    whatsappNumber?: string;
+    tagline?: string;
   };
   footer: {
     logo?: string;
@@ -29,6 +31,8 @@ interface Settings {
       backgroundImage: string;
       ctaText: string;
       ctaLink: string;
+      noticeTitle?: string;
+      noticeSubtitle?: string;
     };
     about: {
       title: string;
@@ -94,9 +98,9 @@ const SettingsContext = createContext<{
   refreshSettings: async () => {},
 });
 
-export function SettingsProvider({ children }: { children: React.ReactNode }) {
-  const [settings, setSettings] = useState<Settings | null>(null);
-  const [loading, setLoading] = useState(true);
+export function SettingsProvider({ children, initialSettings = null }: { children: React.ReactNode, initialSettings?: Settings | null }) {
+  const [settings, setSettings] = useState<Settings | null>(initialSettings);
+  const [loading, setLoading] = useState(!initialSettings);
 
   const fetchSettings = async () => {
     try {
@@ -104,6 +108,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       const data = await res.json();
       if (data.success) {
         setSettings(data.data);
+        // Save to cache so next page load is instant (no flash)
+        try { localStorage.setItem('mc_site_settings', JSON.stringify(data.data)); } catch {}
       }
     } catch (err) {
       console.error('Failed to fetch settings');
@@ -113,8 +119,18 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    fetchSettings();
-  }, []);
+    // If we didn't get initial settings from the server, or we want to fetch fresh data
+    if (!initialSettings) {
+      try {
+        const cached = localStorage.getItem('mc_site_settings');
+        if (cached) {
+          setSettings(JSON.parse(cached));
+          setLoading(false);
+        }
+      } catch {}
+      fetchSettings();
+    }
+  }, [initialSettings]);
 
   return (
     <SettingsContext.Provider value={{ settings, loading, refreshSettings: fetchSettings }}>

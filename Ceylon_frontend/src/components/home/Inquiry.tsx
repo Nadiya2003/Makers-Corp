@@ -80,7 +80,7 @@ export function Inquiry() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-400 mb-1">Call Us</p>
-                      <p className="font-medium text-lg">{contactData.phone}</p>
+                      <p className="font-medium text-lg">{settings?.header?.contactNumber || contactData.phone}</p>
                     </div>
                   </div>
 
@@ -108,7 +108,7 @@ export function Inquiry() {
                 </div>
 
                 <a
-                  href={`https://wa.me/94${contactData.phone.replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`}
+                  href={`https://wa.me/94${(settings?.header?.whatsappNumber || settings?.header?.contactNumber || contactData.phone).replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl font-medium transition-colors w-full justify-center"

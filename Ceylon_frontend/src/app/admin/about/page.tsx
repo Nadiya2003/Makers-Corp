@@ -89,6 +89,7 @@ export default function AboutUsSettings() {
   };
 
   const [isUploading, setIsUploading] = useState(false);
+  const [confirmDeleteIdx, setConfirmDeleteIdx] = useState<number | null>(null);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, onSuccess: (url: string) => void) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -289,109 +290,100 @@ export default function AboutUsSettings() {
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
                 {aboutData.directors.map((director, idx) => (
-                  <div key={idx} className="flex gap-4 items-start bg-gray-50 border border-gray-200 rounded-2xl p-4">
-                    <div className="w-24 h-24 rounded-xl overflow-hidden bg-white border border-gray-100 shrink-0 flex items-center justify-center relative">
+                  <div key={idx} className="relative group bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+                    {/* Photo */}
+                    <div className="relative aspect-square bg-gray-100 flex items-center justify-center">
                       {director.image ? (
                         <img src={director.image} alt={director.name || 'Director'} className="w-full h-full object-cover" />
                       ) : (
-                        <ImageIcon size={24} className="text-gray-300" />
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-14 h-14 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </div>
                       )}
-                    </div>
-                    
-                    <div className="flex-[1] space-y-3">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Name</label>
-                          <input
-                            type="text"
-                            value={director.name}
-                            onChange={(e) => {
-                              const newDirectors = [...aboutData.directors];
-                              newDirectors[idx] = { ...newDirectors[idx], name: e.target.value };
-                              setAboutData({ ...aboutData, directors: newDirectors });
+                      {/* Photo overlay on hover */}
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                        <label className="flex items-center gap-1.5 bg-white text-gray-800 text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer hover:bg-orange-50 transition-colors">
+                          <Upload size={13} />
+                          {director.image ? 'Change' : 'Upload'}
+                          <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, (url) => {
+                            const d = [...aboutData.directors];
+                            d[idx] = { ...d[idx], image: url };
+                            setAboutData({ ...aboutData, directors: d });
+                          })} disabled={isUploading} />
+                        </label>
+                        {director.image && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const d = [...aboutData.directors];
+                              d[idx] = { ...d[idx], image: '' };
+                              setAboutData({ ...aboutData, directors: d });
                             }}
-                            placeholder="John Doe"
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Role / Designation</label>
-                          <input
-                            type="text"
-                            value={director.role}
-                            onChange={(e) => {
-                              const newDirectors = [...aboutData.directors];
-                              newDirectors[idx] = { ...newDirectors[idx], role: e.target.value };
-                              setAboutData({ ...aboutData, directors: newDirectors });
-                            }}
-                            placeholder="Managing Director"
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Image URL</label>
-                        <div className="flex gap-2">
-                          <input
-                            type="text"
-                            value={director.image}
-                            onChange={(e) => {
-                              const newDirectors = [...aboutData.directors];
-                              newDirectors[idx] = { ...newDirectors[idx], image: e.target.value };
-                              setAboutData({ ...aboutData, directors: newDirectors });
-                            }}
-                            placeholder="https://..."
-                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
-                          />
-                          <label className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 rounded-lg cursor-pointer transition-colors border border-gray-200 shrink-0" title="Upload Image">
-                            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, (url) => {
-                              const newDirectors = [...aboutData.directors];
-                              newDirectors[idx] = { ...newDirectors[idx], image: url };
-                              setAboutData({ ...aboutData, directors: newDirectors });
-                            })} disabled={isUploading} />
-                            {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-                          </label>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Short Bio</label>
-                        <textarea
-                          value={director.bio}
-                          onChange={(e) => {
-                            const newDirectors = [...aboutData.directors];
-                            newDirectors[idx] = { ...newDirectors[idx], bio: e.target.value };
-                            setAboutData({ ...aboutData, directors: newDirectors });
-                          }}
-                          rows={2}
-                          placeholder="Short description..."
-                          className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
-                        />
+                            className="flex items-center gap-1.5 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-red-600 transition-colors"
+                          >
+                            <Trash2 size={13} /> Remove
+                          </button>
+                        )}
                       </div>
                     </div>
-                    
+
+                    {/* Info */}
+                    <div className="p-3 space-y-2">
+                      <input
+                        type="text"
+                        value={director.name}
+                        onChange={(e) => {
+                          const d = [...aboutData.directors];
+                          d[idx] = { ...d[idx], name: e.target.value };
+                          setAboutData({ ...aboutData, directors: d });
+                        }}
+                        placeholder="Name"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
+                      />
+                      <input
+                        type="text"
+                        value={director.role}
+                        onChange={(e) => {
+                          const d = [...aboutData.directors];
+                          d[idx] = { ...d[idx], role: e.target.value };
+                          setAboutData({ ...aboutData, directors: d });
+                        }}
+                        placeholder="Role / Title"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-orange-600 font-semibold focus:outline-none focus:border-orange-600 transition-all"
+                      />
+                      <textarea
+                        value={director.bio}
+                        onChange={(e) => {
+                          const d = [...aboutData.directors];
+                          d[idx] = { ...d[idx], bio: e.target.value };
+                          setAboutData({ ...aboutData, directors: d });
+                        }}
+                        rows={5}
+                        placeholder="Short Bio..."
+                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 focus:outline-none focus:border-orange-600 transition-all resize-none"
+                      />
+                    </div>
+
+                    {/* Delete button */}
                     <button
                       type="button"
-                      onClick={() => {
-                        const newDirectors = aboutData.directors.filter((_, i) => i !== idx);
-                        setAboutData({ ...aboutData, directors: newDirectors });
-                      }}
-                      className="mt-6 p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all shrink-0"
+                      onClick={() => setConfirmDeleteIdx(idx)}
+                      className="absolute top-2 right-2 p-1.5 bg-white/90 text-red-400 hover:text-red-600 hover:bg-white rounded-lg shadow transition-all opacity-0 group-hover:opacity-100"
+                      title="Remove director"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 ))}
-                
-                {aboutData.directors.length === 0 && (
-                  <p className="text-xs text-gray-400 font-medium text-center py-6 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-                    No directors added yet. Click "Add Director" to create one.
-                  </p>
-                )}
               </div>
+
+              {aboutData.directors.length === 0 && (
+                <p className="text-xs text-gray-400 font-medium text-center py-6 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                  No directors added yet. Click "Add Director" to create one.
+                </p>
+              )}
             </div>
 
             {/* Photo Gallery */}
@@ -450,6 +442,51 @@ export default function AboutUsSettings() {
              </button>
           </div>
         </form>
+      )}
+
+      {/* ── Confirm Delete Director Dialog ─────────── */}
+      {confirmDeleteIdx !== null && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setConfirmDeleteIdx(null)}
+          />
+          {/* Dialog */}
+          <div className="relative bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center z-10 animate-in zoom-in-95 duration-150">
+            <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Trash2 className="text-red-500" size={26} />
+            </div>
+            <h3 className="text-lg font-black text-gray-900 mb-2">Remove Director?</h3>
+            <p className="text-sm text-gray-500 mb-6">
+              Are you sure you want to remove{' '}
+              <span className="font-bold text-gray-800">
+                {aboutData.directors[confirmDeleteIdx]?.name || 'this director'}
+              </span>
+              ? This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <button
+                type="button"
+                onClick={() => setConfirmDeleteIdx(null)}
+                className="flex-1 px-5 py-2.5 rounded-xl border border-gray-200 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const newDirectors = aboutData.directors.filter((_, i) => i !== confirmDeleteIdx);
+                  setAboutData({ ...aboutData, directors: newDirectors });
+                  setConfirmDeleteIdx(null);
+                }}
+                className="flex-1 px-5 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold text-sm transition-colors"
+              >
+                Yes, Remove
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -11,7 +11,9 @@ const siteSettingsSchema = new mongoose.Schema({
       { label: { type: String }, url: { type: String } }
     ],
     showSearch: { type: Boolean, default: true },
-    contactNumber: { type: String, default: '' }
+    contactNumber: { type: String, default: '' },
+    whatsappNumber: { type: String, default: '' },
+    tagline: { type: String, default: 'IMPORT YOUR DREAM' }
   },
 
   // Footer Management
@@ -36,7 +38,9 @@ const siteSettingsSchema = new mongoose.Schema({
       subtitle: { type: String, default: '' },
       backgroundImage: { type: String, default: '' },
       ctaText: { type: String, default: '' },
-      ctaLink: { type: String, default: '' }
+      ctaLink: { type: String, default: '' },
+      noticeTitle: { type: String, default: 'LIMITED AUCTION SLOTS WEEKLY!' },
+      noticeSubtitle: { type: String, default: 'Secure your vehicle before the next auction cycle.' }
     },
     about: {
       title: { type: String, default: '' },

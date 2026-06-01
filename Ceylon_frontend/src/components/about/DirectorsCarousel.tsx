@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Linkedin, Mail, Globe, Twitter, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Linkedin, Mail, Globe, Twitter, X, User } from 'lucide-react';
 
 interface Director {
   name: string;
@@ -44,8 +44,8 @@ function DirectorCard({ director, onClick }: { director: Director; onClick: () =
             draggable={false}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-            <span className="text-gray-400 font-medium text-sm">No Photo</span>
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 text-gray-300">
+            <User size={64} className="opacity-50" />
           </div>
         )}
         {/* Gradient Overlay */}
@@ -427,8 +427,8 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
                      className="object-cover" 
                    />
                  ) : (
-                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                     <span className="text-gray-400 font-medium">No Photo</span>
+                   <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 text-gray-300">
+                     <User size={80} className="opacity-50" />
                    </div>
                  )}
                  <div className="absolute inset-0 bg-gradient-to-t from-dark/50 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-black/10" />

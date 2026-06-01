@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Save, Loader2, Globe, Shield, Palette, Upload } from 'lucide-react';
+import { Save, Loader2, Globe, Shield, Palette, Upload, Phone } from 'lucide-react';
 import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
 
 export default function SettingsPage() {
@@ -18,6 +18,10 @@ export default function SettingsPage() {
       metaTitle: '',
       metaDescription: '',
       keywords: ''
+    },
+    header: {
+      contactNumber: '',
+      whatsappNumber: ''
     },
     theme: {
       primaryColor: '#000000',
@@ -235,49 +239,7 @@ export default function SettingsPage() {
           </div>
         </section>
 
-        {/* Appearance Settings */}
-        <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center gap-2 mb-6">
-            <Palette className="text-orange-600" size={20} />
-            <h2 className="text-lg font-bold text-gray-900">Theme & Colors</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Primary Color</label>
-              <div className="flex gap-3">
-                <input
-                  type="color"
-                  value={settings.theme.primaryColor}
-                  onChange={(e) => setSettings({ ...settings, theme: { ...settings.theme, primaryColor: e.target.value } })}
-                  className="w-10 h-10 rounded cursor-pointer bg-transparent border-none"
-                />
-                <input
-                  type="text"
-                  value={settings.theme.primaryColor}
-                  onChange={(e) => setSettings({ ...settings, theme: { ...settings.theme, primaryColor: e.target.value } })}
-                  className="flex-grow bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-gray-900 text-sm"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Accent Color</label>
-              <div className="flex gap-3">
-                <input
-                  type="color"
-                  value={settings.theme.accentColor}
-                  onChange={(e) => setSettings({ ...settings, theme: { ...settings.theme, accentColor: e.target.value } })}
-                  className="w-10 h-10 rounded cursor-pointer bg-transparent border-none"
-                />
-                <input
-                  type="text"
-                  value={settings.theme.accentColor}
-                  onChange={(e) => setSettings({ ...settings, theme: { ...settings.theme, accentColor: e.target.value } })}
-                  className="flex-grow bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-gray-900 text-sm"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
+
       </div>
     </div>
   );

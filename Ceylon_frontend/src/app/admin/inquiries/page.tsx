@@ -23,6 +23,7 @@ export default function InquiriesManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedInquiry, setSelectedInquiry] = useState<any>(null);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchInquiries();
@@ -60,9 +61,15 @@ export default function InquiriesManagement() {
     setTimeout(() => setStatusMessage(null), 4000);
   };
 
-  const handleDelete = async (e: React.MouseEvent, id: string) => {
+  const requestDelete = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    if (!confirm('Are you sure you want to delete this inquiry?')) return;
+    setConfirmDeleteId(id);
+  };
+
+  const executeDelete = async () => {
+    const id = confirmDeleteId;
+    if (!id) return;
+    setConfirmDeleteId(null);
     try {
       const token = sessionStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
@@ -72,9 +79,11 @@ export default function InquiriesManagement() {
       });
       const data = await res.json();
       if (data.success) {
-        setInquiries(inquiries.filter((inq: any) => inq._id !== id));
+        setInquiries((prev: any[]) => prev.filter((inq: any) => inq._id !== id));
         showStatus('success', 'Inquiry deleted successfully.');
         if (selectedInquiry?._id === id) setSelectedInquiry(null);
+      } else {
+        showStatus('error', data.message || 'Failed to delete inquiry.');
       }
     } catch (err) {
       showStatus('error', 'Failed to delete inquiry.');
@@ -88,6 +97,7 @@ export default function InquiriesManagement() {
   );
 
   return (
+    <>
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -101,9 +111,9 @@ export default function InquiriesManagement() {
 
       {/* Status Messages */}
       {statusMessage && (
-        <div className={`fixed top-6 right-6 z-[300] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl transition-all animate-in slide-in-from-right ${
+        <div className={`fixed top-6 right-6 z-[3000] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl ${
           statusMessage.type === 'success' ? 'bg-black text-white' : 'bg-red-600 text-white'
-        }`}>
+        }`} style={{ animation: 'slideInRight 0.3s ease-out' }}>
           {statusMessage.type === 'success' ? <CheckCircle2 size={24} className="text-orange-500" /> : <AlertCircle size={24} />}
           <span className="font-bold">{statusMessage.text}</span>
         </div>
@@ -185,7 +195,7 @@ export default function InquiriesManagement() {
                              <Eye size={18} />
                            </button>
                            <button 
-                             onClick={(e) => handleDelete(e, inq._id)}
+                             onClick={(e) => requestDelete(e, inq._id)}
                              className="p-2.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all shadow-sm border border-transparent hover:border-red-100"
                              title="Delete"
                            >
@@ -288,5 +298,34 @@ export default function InquiriesManagement() {
         </div>
       )}
     </div>
+
+      {/* ── Delete Confirmation Dialog ──────────────────────────────────────── */}
+      {confirmDeleteId && (
+        <div className="fixed inset-0 z-[9998] flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setConfirmDeleteId(null)} />
+          <div className="bg-white rounded-3xl p-8 max-w-sm w-full relative z-10 shadow-2xl">
+            <div className="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Trash2 size={24} className="text-red-600" />
+            </div>
+            <h3 className="text-xl font-black text-gray-900 text-center mb-2 uppercase tracking-tighter">Delete Inquiry?</h3>
+            <p className="text-gray-500 text-sm text-center mb-8 font-medium">This inquiry will be permanently deleted and cannot be recovered.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmDeleteId(null)}
+                className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-gray-200 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={executeDelete}
+                className="flex-1 py-3 px-4 bg-red-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-red-700 transition-all shadow-lg shadow-red-600/20"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

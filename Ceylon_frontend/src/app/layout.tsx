@@ -23,15 +23,35 @@ export const viewport = {
 import { MainLayout } from '@/components/MainLayout';
 import { SettingsProvider } from '@/context/SettingsContext';
 
-export default function RootLayout({
+async function fetchInitialSettings() {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+    const res = await fetch(`${apiUrl}/settings`, { 
+      cache: 'no-store'
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.success ? data.data : null;
+  } catch (err) {
+    return null;
+  }
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const initialSettings = await fetchInitialSettings();
+
+
   return (
     <html lang="en">
+      <head>
+        {initialSettings?.logo && <link rel="icon" href={initialSettings.logo} />}
+      </head>
       <body className="min-h-screen flex flex-col font-sans bg-gray-50">
-        <SettingsProvider>
+        <SettingsProvider initialSettings={initialSettings}>
           <MainLayout>{children}</MainLayout>
         </SettingsProvider>
       </body>

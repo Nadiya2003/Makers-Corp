@@ -108,7 +108,14 @@ export function Inquiry() {
                 </div>
 
                 <a
-                  href={`https://wa.me/94${(settings?.header?.whatsappNumber || settings?.header?.contactNumber || contactData.phone).replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`}
+                  href={`https://wa.me/${(() => {
+                    const numStr = settings?.header?.whatsappNumber || settings?.header?.contactNumber || contactData.phone;
+                    let cleanNum = numStr.replace(/\D/g, '');
+                    if (cleanNum.startsWith('0')) {
+                      cleanNum = '94' + cleanNum.substring(1);
+                    }
+                    return cleanNum;
+                  })()}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl font-medium transition-colors w-full justify-center"

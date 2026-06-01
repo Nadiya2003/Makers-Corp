@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { convertMapUrl } from '@/lib/mapUtils';
 import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 export default function ContactSettings() {
   const [loading, setLoading] = useState(true);
@@ -235,32 +237,32 @@ export default function ContactSettings() {
                
                <div>
                   <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Primary Contact Number (Calls)</label>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600" size={18} />
-                    <input 
-                      type="text" 
+                  <div className="bg-gray-50 border border-gray-100 rounded-2xl focus-within:border-orange-600 transition-all p-3 custom-phone-wrapper">
+                    <PhoneInput
+                      defaultCountry="LK"
+                      international
                       value={contactData.header.contactNumber}
-                      onChange={(e) => setContactData({
+                      onChange={(value) => setContactData({
                         ...contactData, 
-                        header: { ...contactData.header, contactNumber: e.target.value }
+                        header: { ...contactData.header, contactNumber: value || '' }
                       })}
-                      className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
+                      className="w-full bg-transparent px-2 text-sm font-bold outline-none"
                     />
                   </div>
                </div>
 
                <div>
                   <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">WhatsApp Number</label>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600" size={18} />
-                    <input 
-                      type="text" 
+                  <div className="bg-gray-50 border border-gray-100 rounded-2xl focus-within:border-orange-600 transition-all p-3 custom-phone-wrapper">
+                    <PhoneInput
+                      defaultCountry="LK"
+                      international
                       value={contactData.header.whatsappNumber}
-                      onChange={(e) => setContactData({
+                      onChange={(value) => setContactData({
                         ...contactData, 
-                        header: { ...contactData.header, whatsappNumber: e.target.value }
+                        header: { ...contactData.header, whatsappNumber: value || '' }
                       })}
-                      className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
+                      className="w-full bg-transparent px-2 text-sm font-bold outline-none"
                     />
                   </div>
                </div>

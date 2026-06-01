@@ -86,3 +86,29 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1;
   }
 }
+
+/* ─── PhoneInput Custom Styling ────────────────────────────────────────────── */
+.custom-phone-wrapper .PhoneInput {
+  display: flex;
+  align-items: center;
+}
+.custom-phone-wrapper .PhoneInputCountry {
+  margin-right: 0.75rem;
+  padding-right: 0.75rem;
+  border-right: 1px solid #e5e7eb; /* gray-200 */
+}
+.custom-phone-wrapper .PhoneInputInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-weight: 700; /* font-bold */
+  font-size: 0.875rem; /* text-sm */
+  color: #111827; /* gray-900 */
+}
+.custom-phone-wrapper .PhoneInputInput:focus {
+  outline: none;
+}
+.custom-phone-wrapper .PhoneInputCountrySelectArrow {
+  opacity: 0.5;
+}

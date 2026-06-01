@@ -95,7 +95,7 @@ jobs:
                 echo "FRONTEND_URL=$FRONTEND_URL"
             } > .env
             chmod 600 .env
-            pm2 describe makers-backend >/dev/null 2>&1 && pm2 restart authenticweb-backend --update-env || pm2 start npm --name makers-backend -- start
+            pm2 describe makers-backend >/dev/null 2>&1 && pm2 restart makers-backend --update-env || pm2 start npm --name makers-backend -- start
             pm2 save
             # rm -f .env .env.production
 

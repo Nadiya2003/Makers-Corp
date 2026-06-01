@@ -60,12 +60,12 @@ jobs:
             mkdir -p "$SERVER_PATH/public"
 
             if [ -d "$UPLOADS_BACKUP_DIR/uploads" ]; then
-              rm -rf "$SERVER_PATH/admin/public/uploads"
-              mv "$UPLOADS_BACKUP_DIR/uploads" "$SERVER_PATH/admin/public/uploads"
+              rm -rf "$SERVER_PATH/Ceylon_backend/public/uploads"
+              mv "$UPLOADS_BACKUP_DIR/uploads" "$SERVER_PATH/Ceylon_backend/public/uploads"
               rm -rf "$UPLOADS_BACKUP_DIR"
               echo "Uploads restored successfully."
             else
-              mkdir -p "$SERVER_PATH/admin/public/uploads"
+              mkdir -p "$SERVER_PATH/Ceylon_backend/public/uploads"
               echo "Fresh uploads folder created."
             fi
 

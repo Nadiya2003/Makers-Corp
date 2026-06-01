@@ -86,7 +86,7 @@ jobs:
 
             cd "$SERVER_PATH/Ceylon_backend"
             
-            yarn install --production=false
+            npm install --production=false
             echo "Building the application..."
             echo "Writing backend .env..."
             {

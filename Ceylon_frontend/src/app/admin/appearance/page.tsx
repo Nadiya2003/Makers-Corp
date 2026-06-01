@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Save, Loader2, Layout, Mail, Phone, MapPin, Share2, Upload } from 'lucide-react';
+import { Save, Loader2, Layout, Mail, Phone, MapPin, Share2, Upload, Type, Globe } from 'lucide-react';
 import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
 
 export default function AppearanceManagement() {
@@ -11,6 +11,13 @@ export default function AppearanceManagement() {
   const [isDirty, setIsDirty] = useState(false);
   const savedRef = useRef<string>('');
   const [settings, setSettings] = useState({
+    siteName: '',
+    logo: '',
+    header: {
+      contactNumber: '',
+      whatsappNumber: '',
+      tagline: 'IMPORT YOUR DREAM'
+    },
     footer: {
       logo: '',
       image: '',
@@ -62,6 +69,32 @@ export default function AppearanceManagement() {
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const handleSiteLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    setIsUploading(true);
+    const formDataObj = new FormData();
+    formDataObj.append('photos', e.target.files[0]);
+    formDataObj.append('category', 'Settings');
+    try {
+      const token = sessionStorage.getItem('adminToken');
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const res = await fetch(`${apiUrl}/media`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formDataObj
+      });
+      const data = await res.json();
+      if (data.success && data.data && data.data.length > 0) {
+        setSettings({ ...settings, logo: data.data[0].url });
+        setMessage('Logo uploaded! Click Save Changes to apply.');
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        setMessage('Upload failed: ' + (data.message || 'Unknown error'));
+      }
+    } catch { setMessage('Network error during upload'); }
+    finally { setIsUploading(false); }
   };
 
   const handleFooterImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -212,44 +245,69 @@ export default function AppearanceManagement() {
       )}
 
       <div className="space-y-8">
-        {/* Contact Info */}
+
+        {/* ── Header Section ─────────────────────────── */}
         <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-6">
-            <Phone className="text-orange-600" size={20} />
-            <h2 className="text-lg font-bold text-gray-900">Contact Information</h2>
+            <Globe className="text-orange-600" size={20} />
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">Header & Branding</h2>
+              <p className="text-sm text-gray-500">Site logo, name and tagline shown in the header.</p>
+            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Site Logo */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-              <input
-                type="text"
-                value={settings.footer.phone}
-                onChange={(e) => setSettings({ ...settings, footer: { ...settings.footer, phone: e.target.value } })}
-                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
-              />
+              <label className="block text-sm font-medium text-gray-700 mb-2">Site Logo</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={(settings as any).logo || ''}
+                  onChange={(e) => setSettings({ ...settings, logo: e.target.value } as any)}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="https://example.com/logo.png"
+                />
+                <label className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 rounded-lg cursor-pointer transition-colors border border-gray-200" title="Upload Logo">
+                  <input type="file" className="hidden" accept="image/*" onChange={handleSiteLogoUpload} disabled={isUploading} />
+                  {isUploading ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} />}
+                </label>
+              </div>
+              {(settings as any).logo && (
+                <div className="mt-3 p-3 bg-gray-950 border border-gray-800 rounded-lg flex items-center gap-4">
+                  <span className="text-xs font-semibold text-gray-400">Preview:</span>
+                  <img src={(settings as any).logo} alt="Logo" className="h-10 w-auto object-contain bg-white/5 p-1 rounded" />
+                </div>
+              )}
             </div>
+
+            {/* Site Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-              <input
-                type="email"
-                value={settings.footer.email}
-                onChange={(e) => setSettings({ ...settings, footer: { ...settings.footer, email: e.target.value } })}
-                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
-              />
+              <label className="block text-sm font-medium text-gray-700 mb-2">Site Name</label>
+              <div className="relative">
+                <Type className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                <input
+                  type="text"
+                  value={(settings as any).siteName || ''}
+                  onChange={(e) => setSettings({ ...settings, siteName: e.target.value } as any)}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-10 pr-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="Makers Ceylon"
+                />
+              </div>
             </div>
+
+            {/* Tagline */}
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Physical Address</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Header Tagline <span className="text-gray-400 text-xs font-normal">(shown below the site name in the header)</span></label>
               <input
                 type="text"
-                value={settings.footer.address}
-                onChange={(e) => setSettings({ ...settings, footer: { ...settings.footer, address: e.target.value } })}
+                value={settings.header?.tagline || 'IMPORT YOUR DREAM'}
+                onChange={(e) => setSettings({ ...settings, header: { ...settings.header, tagline: e.target.value } })}
                 className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                placeholder="IMPORT YOUR DREAM"
               />
             </div>
           </div>
         </section>
-
-        {/* Footer Settings */}
         <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-6">
             <Layout className="text-orange-600" size={20} />
@@ -342,35 +400,76 @@ export default function AppearanceManagement() {
 
         {/* Social Links */}
         <section className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center gap-2 mb-6">
-            <Share2 className="text-orange-600" size={20} />
-            <h2 className="text-lg font-bold text-gray-900">Social Media Links</h2>
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-2">
+              <Share2 className="text-orange-600" size={20} />
+              <h2 className="text-lg font-bold text-gray-900">Social Media Links</h2>
+            </div>
+            <button
+              onClick={() => {
+                const updatedLinks = [...(settings.footer?.socialLinks || []), { platform: '', url: '', icon: '', visible: true }];
+                setSettings({ ...settings, footer: { ...settings.footer, socialLinks: updatedLinks } });
+              }}
+              className="bg-orange-100 hover:bg-orange-200 text-orange-700 px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
+            >
+              + Add Social Link
+            </button>
           </div>
           <div className="space-y-4">
-            {['Facebook', 'Instagram', 'TikTok', 'YouTube'].map((platform) => {
-              const link = getSocialLink(platform);
-              return (
-                <div key={platform} className="flex items-center gap-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                  <span className="w-24 text-sm font-semibold text-gray-700">{platform}</span>
-                  <input
-                    type="text"
-                    value={link.url}
-                    onChange={(e) => handleSocialLinkChange(platform, 'url', e.target.value)}
-                    className="flex-grow bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600"
-                    placeholder={`https://${platform.toLowerCase()}.com/...`}
-                  />
+            {(settings.footer?.socialLinks || []).map((link: any, index: number) => (
+              <div key={index} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <input
+                  type="text"
+                  value={link.platform}
+                  onChange={(e) => {
+                    const updatedLinks = [...settings.footer.socialLinks];
+                    updatedLinks[index].platform = e.target.value;
+                    updatedLinks[index].icon = e.target.value;
+                    setSettings({ ...settings, footer: { ...settings.footer, socialLinks: updatedLinks } });
+                  }}
+                  placeholder="Platform (e.g. Facebook)"
+                  className="w-full sm:w-40 bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600"
+                />
+                <input
+                  type="text"
+                  value={link.url}
+                  onChange={(e) => {
+                    const updatedLinks = [...settings.footer.socialLinks];
+                    updatedLinks[index].url = e.target.value;
+                    setSettings({ ...settings, footer: { ...settings.footer, socialLinks: updatedLinks } });
+                  }}
+                  className="flex-grow w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600"
+                  placeholder="https://..."
+                />
+                <div className="flex items-center gap-4 w-full sm:w-auto justify-end">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <span className="text-sm text-gray-600">Show</span>
                     <input
                       type="checkbox"
                       checked={link.visible !== false}
-                      onChange={(e) => handleSocialLinkChange(platform, 'visible', e.target.checked)}
+                      onChange={(e) => {
+                        const updatedLinks = [...settings.footer.socialLinks];
+                        updatedLinks[index].visible = e.target.checked;
+                        setSettings({ ...settings, footer: { ...settings.footer, socialLinks: updatedLinks } });
+                      }}
                       className="w-4 h-4 text-orange-600 rounded focus:ring-orange-600"
                     />
                   </label>
+                  <button
+                    onClick={() => {
+                      const updatedLinks = settings.footer.socialLinks.filter((_, i) => i !== index);
+                      setSettings({ ...settings, footer: { ...settings.footer, socialLinks: updatedLinks } });
+                    }}
+                    className="text-red-500 hover:text-red-700 text-sm font-semibold transition-colors"
+                  >
+                    Remove
+                  </button>
                 </div>
-              );
-            })}
+              </div>
+            ))}
+            {(!settings.footer?.socialLinks || settings.footer.socialLinks.length === 0) && (
+              <p className="text-sm text-gray-500 text-center py-4">No social media links added yet.</p>
+            )}
           </div>
         </section>
       </div>

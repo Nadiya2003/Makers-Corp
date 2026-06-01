@@ -26,7 +26,8 @@ export default function ContactSettings() {
   
   const [contactData, setContactData] = useState({
     header: {
-      contactNumber: '077 123 4567'
+      contactNumber: '077 123 4567',
+      whatsappNumber: ''
     },
     footer: {
       address: '123 Import Avenue, Colombo 03, Sri Lanka',
@@ -53,7 +54,8 @@ export default function ContactSettings() {
       if (data.success && data.data) {
         setContactData(prev => ({
           header: {
-            contactNumber: data.data.header?.contactNumber || prev.header.contactNumber
+            contactNumber: data.data.header?.contactNumber || prev.header.contactNumber,
+            whatsappNumber: data.data.header?.whatsappNumber || prev.header.whatsappNumber
           },
           footer: {
             address: data.data.footer?.address || prev.footer.address,
@@ -69,7 +71,10 @@ export default function ContactSettings() {
         }));
         // snapshot for dirty tracking (build from actual data, not the merged prev)
         const snapshot = {
-          header: { contactNumber: data.data.header?.contactNumber || '' },
+          header: { 
+            contactNumber: data.data.header?.contactNumber || '',
+            whatsappNumber: data.data.header?.whatsappNumber || ''
+          },
           footer: {
             address: data.data.footer?.address || '',
             email: data.data.footer?.email || '',
@@ -229,23 +234,7 @@ export default function ContactSettings() {
                <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Core Contact Channels</h3>
                
                <div>
-                  <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Office Phone Number</label>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600" size={18} />
-                    <input 
-                      type="text" 
-                      value={contactData.footer.phone}
-                      onChange={(e) => setContactData({
-                        ...contactData, 
-                        footer: { ...contactData.footer, phone: e.target.value }
-                      })}
-                      className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
-                    />
-                  </div>
-               </div>
-
-               <div>
-                  <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Header Phone Number</label>
+                  <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Primary Contact Number (Calls)</label>
                   <div className="relative">
                     <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600" size={18} />
                     <input 
@@ -254,6 +243,22 @@ export default function ContactSettings() {
                       onChange={(e) => setContactData({
                         ...contactData, 
                         header: { ...contactData.header, contactNumber: e.target.value }
+                      })}
+                      className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
+                    />
+                  </div>
+               </div>
+
+               <div>
+                  <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">WhatsApp Number</label>
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600" size={18} />
+                    <input 
+                      type="text" 
+                      value={contactData.header.whatsappNumber}
+                      onChange={(e) => setContactData({
+                        ...contactData, 
+                        header: { ...contactData.header, whatsappNumber: e.target.value }
                       })}
                       className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
                     />

@@ -325,6 +325,16 @@ export function FeaturedVehicles() {
             </button>
           </div>
         ) : mounted ? (
+          // When vehicles fit in the visible area, show a simple static grid (no clones/carousel)
+          n <= visibleCount ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 py-4">
+              {vehicles.map((vehicle) => (
+                <div key={vehicle._id} className="flex flex-col">
+                  <VehicleCard vehicle={vehicle} onQuickView={() => openDetails(vehicle)} />
+                </div>
+              ))}
+            </div>
+          ) : (
           <div
             className="relative w-full py-4"
             onMouseEnter={() => setIsHovered(true)}
@@ -404,7 +414,24 @@ export function FeaturedVehicles() {
               </div>
             )}
           </div>
-        ) : null}
+          )
+        ) : (
+          // Hydration-safe fallback before mount: pure CSS responsive grid matching carousel slots
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 py-4">
+            {vehicles.slice(0, 4).map((vehicle, index) => (
+              <div 
+                key={vehicle._id} 
+                className={`flex flex-col ${
+                  index === 1 ? 'hidden sm:flex' : 
+                  index === 2 ? 'hidden lg:flex' : 
+                  index === 3 ? 'hidden xl:flex' : ''
+                }`}
+              >
+                <VehicleCard vehicle={vehicle} onQuickView={() => openDetails(vehicle)} />
+              </div>
+            ))}
+          </div>
+        )}
 
         <VehicleDetailModal
           vehicle={selectedVehicle}

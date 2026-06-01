@@ -44,6 +44,7 @@ export default function VehiclesManagement() {
   const [showModal, setShowModal] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState<any>(null);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   // ── Gallery Picker States ───────────────────────────────────────────────────
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -375,8 +376,14 @@ export default function VehiclesManagement() {
     setTimeout(() => setStatusMessage(null), 5000);
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this vehicle?')) return;
+  const requestDelete = (id: string) => {
+    setConfirmDeleteId(id);
+  };
+
+  const executeDelete = async () => {
+    const id = confirmDeleteId;
+    if (!id) return;
+    setConfirmDeleteId(null);
     try {
       const res = await fetch(`${apiUrl()}/vehicles/${id}`, {
         method: 'DELETE',
@@ -384,7 +391,7 @@ export default function VehiclesManagement() {
       });
       const data = await res.json();
       if (data.success) {
-        setVehicles(vehicles.filter((v: any) => v._id !== id));
+        setVehicles((prev: any[]) => prev.filter((v: any) => v._id !== id));
         showStatus('success', 'Vehicle removed from inventory.');
       } else {
         showStatus('error', data.message || 'Delete failed');
@@ -580,9 +587,9 @@ export default function VehiclesManagement() {
 
       {/* Status Messages */}
       {statusMessage && (
-        <div className={`fixed top-6 right-6 z-[1100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl transition-all animate-in slide-in-from-right duration-500 ${
+        <div className={`fixed top-6 right-6 z-[3000] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl ${
           statusMessage.type === 'success' ? 'bg-black text-white' : 'bg-red-600 text-white'
-        }`}>
+        }`} style={{ animation: 'slideInRight 0.3s ease-out' }}>
           {statusMessage.type === 'success' ? <CheckCircle2 size={24} className="text-orange-500" /> : <AlertCircle size={24} />}
           <div className="flex flex-col">
              <span className="text-xs font-black uppercase tracking-widest opacity-60">{statusMessage.type === 'success' ? 'Success' : 'Error'}</span>
@@ -660,7 +667,7 @@ export default function VehiclesManagement() {
                       <button onClick={() => handleEdit(vehicle)} className="p-2.5 bg-white text-gray-900 rounded-lg hover:bg-orange-600 hover:text-white transition-all shadow-2xl scale-90 group-hover:scale-100 duration-300">
                         <Edit2 size={16} />
                       </button>
-                      <button onClick={() => handleDelete(vehicle._id)} className="p-2.5 bg-white text-gray-900 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-2xl scale-90 group-hover:scale-100 duration-300 delay-75">
+                      <button onClick={() => requestDelete(vehicle._id)} className="p-2.5 bg-white text-gray-900 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-2xl scale-90 group-hover:scale-100 duration-300 delay-75">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -1382,6 +1389,34 @@ export default function VehiclesManagement() {
           </div>
         </div>
       )}
-    </div>
+
+      {/* ── Delete Confirmation Dialog ──────────────────────────────────────── */}
+      {confirmDeleteId && (
+        <div className="fixed inset-0 z-[4000] flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setConfirmDeleteId(null)} />
+          <div className="bg-white rounded-3xl p-8 max-w-sm w-full relative z-10 shadow-2xl">
+            <div className="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Trash2 size={24} className="text-red-600" />
+            </div>
+            <h3 className="text-xl font-black text-gray-900 text-center mb-2 uppercase tracking-tighter">Delete Vehicle?</h3>
+            <p className="text-gray-500 text-sm text-center mb-8 font-medium">This cannot be undone. The vehicle will be permanently removed from inventory.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmDeleteId(null)}
+                className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-gray-200 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={executeDelete}
+                className="flex-1 py-3 px-4 bg-red-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-red-700 transition-all shadow-lg shadow-red-600/20"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+     </div>
   );
 }

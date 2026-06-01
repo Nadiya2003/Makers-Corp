@@ -149,7 +149,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
-                <span className="text-gray-400">{footerData.phone}</span>
+                <span className="text-gray-400">{settings?.header?.contactNumber || footerData.phone}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />

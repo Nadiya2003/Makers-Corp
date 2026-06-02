@@ -177,7 +177,7 @@ export function About() {
             <div className="relative">
               {/* Decorative quote mark */}
               <span className="absolute -top-6 -left-6 text-6xl text-primary/10 font-serif font-black select-none pointer-events-none">"</span>
-              <p className="text-slate-600 text-lg sm:text-xl font-medium leading-relaxed whitespace-pre-line relative z-10">
+              <p className="text-slate-600 text-lg sm:text-xl font-medium leading-relaxed whitespace-pre-line text-justify relative z-10">
                 {aboutData.description}
               </p>
             </div>

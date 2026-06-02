@@ -209,7 +209,7 @@ export function AboutUsClient() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed text-justify sm:text-center sm:text-balance"
           >
             Your trusted partner in importing premium Japanese vehicles directly to Sri Lanka.
           </motion.p>
@@ -260,7 +260,7 @@ export function AboutUsClient() {
                 Our <span className="text-primary">Story</span>
               </h2>
               <div className="w-20 h-1.5 bg-gradient-to-r from-primary to-orange-300 rounded-full mb-8" />
-              <p className="text-lg sm:text-xl text-gray-500 font-medium leading-relaxed whitespace-pre-wrap">
+              <p className="text-lg sm:text-xl text-gray-500 font-medium leading-relaxed whitespace-pre-wrap text-justify">
                 {content.content}
               </p>
             </motion.div>

@@ -100,7 +100,7 @@ export function Footer() {
                 </>
               )}
             </Link>
-            <p className="text-sm leading-relaxed text-gray-400">
+            <p className="text-sm leading-relaxed text-gray-400 text-justify">
               {footerData.aboutText}
             </p>
             

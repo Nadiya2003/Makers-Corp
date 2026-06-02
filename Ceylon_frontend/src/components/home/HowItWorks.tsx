@@ -31,8 +31,16 @@ export function HowItWorks() {
   const title            = raw?.title            || 'How It Works';
   const description      = raw?.description      || "Importing a vehicle doesn't have to be complicated. We've streamlined the process into 4 simple steps.";
   const backgroundImage  = raw?.backgroundImage  || '';
-  const steps: { icon: string; title: string; description: string }[] =
+  let steps: { icon: string; title: string; description: string }[] =
     raw?.steps && raw.steps.length > 0 ? raw.steps : DEFAULT_STEPS;
+
+  // Ensure there are always 4 steps by filling missing ones from DEFAULT_STEPS
+  if (steps.length < 4) {
+    steps = [
+      ...steps,
+      ...DEFAULT_STEPS.slice(steps.length, 4)
+    ];
+  }
 
   return (
     <section id="how-it-works" className="relative py-16 sm:py-24 lg:py-32 bg-[#0A0A0A] overflow-hidden">

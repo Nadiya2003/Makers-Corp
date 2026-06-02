@@ -11,7 +11,8 @@ import {
   CheckCircle2, 
   X,
   Upload,
-  FileImage
+  FileImage,
+  Download
 } from 'lucide-react';
 
 export default function MediaGallery() {
@@ -60,6 +61,19 @@ export default function MediaGallery() {
     navigator.clipboard.writeText(url);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleDownload = (url: string, filename: string) => {
+    try {
+      const link = document.createElement('a');
+      link.href = `/api/download?url=${encodeURIComponent(url)}`;
+      link.download = filename || 'download';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      showStatus('error', 'Failed to download image.');
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -214,14 +228,23 @@ export default function MediaGallery() {
                 />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                   <button 
+                    onClick={() => handleDownload(item.url, item.name)}
+                    className="p-3 bg-white text-gray-900 rounded-xl hover:bg-orange-600 hover:text-white transition-all shadow-2xl"
+                    title="Download"
+                  >
+                    <Download size={20} />
+                  </button>
+                  <button 
                     onClick={() => handleCopy(item.url, item._id)}
                     className="p-3 bg-white text-gray-900 rounded-xl hover:bg-orange-600 hover:text-white transition-all shadow-2xl"
+                    title="Copy URL"
                   >
                     {copiedId === item._id ? <CheckCircle2 size={20} /> : <Copy size={20} />}
                   </button>
                   <button 
                     onClick={() => handleDelete(item._id)}
                     className="p-3 bg-white text-gray-900 rounded-xl hover:bg-red-600 hover:text-white transition-all shadow-2xl"
+                    title="Delete"
                   >
                     <Trash2 size={20} />
                   </button>

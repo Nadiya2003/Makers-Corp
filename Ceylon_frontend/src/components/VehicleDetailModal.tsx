@@ -128,6 +128,15 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
       return { icon: IconComponent, label: s.label, value: displayValue };
     });
 
+  // Append per-vehicle custom specs (added in the "Custom Specifications" card section)
+  const customSpecItems = (vehicle.customSpecs || []).map((cs: { label: string; value: string }) => ({
+    icon: Tag,
+    label: cs.label,
+    value: cs.value
+  }));
+
+  const allVisibleSpecs = [...visibleSpecs, ...customSpecItems];
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -243,22 +252,22 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
                   <div className="flex flex-col">
                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Estimated Price</span>
                     <span className="text-3xl sm:text-4xl font-black text-primary leading-none">
-                      {vehicle.price.toUpperCase().includes('LKR') ? vehicle.price : `LKR ${vehicle.price}`}
+                      {/^(USD|JPY|EUR|GBP|AUD|LKR)/i.test(vehicle.price.trim()) ? vehicle.price : `LKR ${vehicle.price}`}
                     </span>
                   </div>
                 </div>
               </div>
 
               {/* Spec grid */}
-              {visibleSpecs.length > 0 ? (
+              {allVisibleSpecs.length > 0 ? (
                 <div className={`grid gap-3 mb-8 ${
-                  visibleSpecs.length <= 4
+                  allVisibleSpecs.length <= 4
                     ? 'grid-cols-2'
-                    : visibleSpecs.length <= 6
+                    : allVisibleSpecs.length <= 6
                     ? 'grid-cols-2 sm:grid-cols-3'
                     : 'grid-cols-2 sm:grid-cols-3 xl:grid-cols-4'
                 }`}>
-                  {visibleSpecs.map((spec, idx) => (
+                  {allVisibleSpecs.map((spec, idx) => (
                     <div key={idx} className="bg-gray-50 p-4 rounded-2xl border border-gray-100 hover:border-primary/20 transition-colors">
                       <spec.icon className="w-5 h-5 text-primary mb-2.5" />
                       <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.15em] mb-1 truncate" title={spec.label}>

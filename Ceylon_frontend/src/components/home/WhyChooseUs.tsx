@@ -26,10 +26,11 @@ export function WhyChooseUs() {
     }
   };
 
-  const whyChooseUsData = settings?.homepage?.whyChooseUs || {
+  const whyChooseUsData: any = settings?.homepage?.whyChooseUs || {
     subtitle: 'The Ceylon Advantage',
     title: 'Why Choose Us',
-    reasons: []
+    reasons: [],
+    backgroundImage: ''
   };
 
   const defaultReasons = [

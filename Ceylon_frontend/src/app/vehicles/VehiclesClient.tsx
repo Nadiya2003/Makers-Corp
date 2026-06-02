@@ -327,7 +327,7 @@ export function VehiclesClient() {
                     <div className="flex flex-col">
                        <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Price</span>
                        <span className="text-lg font-black text-primary leading-none">
-                         {vehicle.price.toUpperCase().includes('LKR') ? vehicle.price : `LKR ${vehicle.price}`}
+                         {/^(USD|JPY|EUR|GBP|AUD|LKR)/i.test(vehicle.price.trim()) ? vehicle.price : `LKR ${vehicle.price}`}
                        </span>
                     </div>
                     <button

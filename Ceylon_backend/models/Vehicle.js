@@ -65,6 +65,14 @@ const vehicleSchema = new mongoose.Schema({
   hiddenSpecs: {
     type: [String],
     default: []
+  },
+  customSpecs: {
+    type: [{
+      key: String,
+      label: String,
+      value: String
+    }],
+    default: []
   }
 }, {
   timestamps: true,

@@ -72,8 +72,13 @@ export default function VehiclesManagement() {
     category: 'SUV',
     status: 'Available',
     isFeatured: false,
-    hiddenSpecs: [] as string[]
+    hiddenSpecs: [] as string[],
+    customSpecs: [] as { key: string; label: string; value: string }[]
   });
+
+  // ── Per-vehicle custom spec states ──────────────────────────────────────────
+  const [newCustomSpec, setNewCustomSpec] = useState({ label: '', value: '' });
+  const [showAddCustomSpec, setShowAddCustomSpec] = useState(false);
 
   // ── Price Range Generator States ──────────────────────────────────────────
   const [priceType, setPriceType] = useState<'fixed' | 'range'>('fixed');
@@ -87,29 +92,36 @@ export default function VehiclesManagement() {
     { value: 'Lakhs', label: 'Lakhs' },
     { value: 'M', label: 'M (Millions)' },
     { value: 'B', label: 'B (Billions)' },
-    { value: 'T', label: 'T (Thousands)' }
+    { value: 'T', label: 'T (Thousands)' },
+    { value: 'USD', label: 'USD ($)' },
+    { value: 'JPY', label: 'JPY (¥)' },
+    { value: 'EUR', label: 'EUR (€)' },
+    { value: 'GBP', label: 'GBP (£)' },
+    { value: 'AUD', label: 'AUD ($)' }
   ];
 
   const updatePriceField = (type: 'fixed' | 'range', min: string, max: string, fixed: string, unit: string) => {
     let priceStr = '';
+    const isIntl = ['USD', 'JPY', 'EUR', 'GBP', 'AUD'].includes(unit);
     if (type === 'fixed') {
-      if (unit === 'LKR') {
+      if (unit === 'LKR' || isIntl) {
         const rawNum = fixed.replace(/,/g, '');
         if (/^\d+$/.test(rawNum)) {
-          priceStr = parseInt(rawNum).toLocaleString('en-US');
+          const formatted = parseInt(rawNum).toLocaleString('en-US');
+          priceStr = isIntl ? `${unit} ${formatted}` : formatted;
         } else {
-          priceStr = fixed;
+          priceStr = isIntl ? `${unit} ${fixed}` : fixed;
         }
       } else {
         priceStr = `${fixed}${unit === 'Lakhs' ? ' Lakhs' : unit}`;
       }
     } else {
-      if (unit === 'LKR') {
+      if (unit === 'LKR' || isIntl) {
         const rawMin = min.replace(/,/g, '');
         const rawMax = max.replace(/,/g, '');
         const formattedMin = /^\d+$/.test(rawMin) ? parseInt(rawMin).toLocaleString('en-US') : min;
         const formattedMax = /^\d+$/.test(rawMax) ? parseInt(rawMax).toLocaleString('en-US') : max;
-        priceStr = `${formattedMin} - ${formattedMax}`;
+        priceStr = isIntl ? `${unit} ${formattedMin} - ${formattedMax}` : `${formattedMin} - ${formattedMax}`;
       } else {
         const suffix = unit === 'Lakhs' ? ' Lakhs' : unit;
         priceStr = `${min}${suffix} - ${max}${suffix}`;
@@ -451,13 +463,15 @@ export default function VehiclesManagement() {
       name: '', price: '', image: '', images: [], year: '', mileage: '', fuel: 'Petrol', 
       engine: '', transmission: 'Auto', drive: '2WD', seats: '5', 
       color: '', description: '', category: 'SUV', status: 'Available', isFeatured: false,
-      hiddenSpecs: []
+      hiddenSpecs: [], customSpecs: []
     });
     setPriceType('fixed');
     setPriceUnit('M');
     setFixedPrice('');
     setMinPrice('');
     setMaxPrice('');
+    setShowAddCustomSpec(false);
+    setNewCustomSpec({ label: '', value: '' });
   };
 
   const handleEdit = (vehicle: any) => {
@@ -480,16 +494,24 @@ export default function VehiclesManagement() {
       category: vehicle.category || 'SUV',
       status: vehicle.status || 'Available',
       isFeatured: vehicle.isFeatured || false,
-      hiddenSpecs: vehicle.hiddenSpecs || []
+      hiddenSpecs: vehicle.hiddenSpecs || [],
+      customSpecs: vehicle.customSpecs || []
     });
+    setShowAddCustomSpec(false);
+    setNewCustomSpec({ label: '', value: '' });
 
     const priceStr = vehicle.price || '';
     const parts = priceStr.split('-').map((s: string) => s.trim());
     if (parts.length > 1) {
       setPriceType('range');
       const secondPart = parts[1].toUpperCase();
+      const firstPart = parts[0].toUpperCase();
       let detectedUnit = 'LKR';
-      if (secondPart.includes('M') || secondPart.includes('MILLION')) {
+      
+      const intlMatch = (firstPart + secondPart).match(/(USD|JPY|EUR|GBP|AUD)/);
+      if (intlMatch) {
+        detectedUnit = intlMatch[0];
+      } else if (secondPart.includes('M') || secondPart.includes('MILLION')) {
         detectedUnit = 'M';
       } else if (secondPart.includes('LAKH') || secondPart.includes('LAKS') || secondPart.includes('LAK') || secondPart.includes('LAC')) {
         detectedUnit = 'Lakhs';
@@ -509,7 +531,11 @@ export default function VehiclesManagement() {
       setPriceType('fixed');
       const upperStr = priceStr.toUpperCase();
       let detectedUnit = 'LKR';
-      if (upperStr.includes('M') || upperStr.includes('MILLION')) {
+      
+      const intlMatch = upperStr.match(/(USD|JPY|EUR|GBP|AUD)/);
+      if (intlMatch) {
+        detectedUnit = intlMatch[0];
+      } else if (upperStr.includes('M') || upperStr.includes('MILLION')) {
         detectedUnit = 'M';
       } else if (upperStr.includes('LAKH') || upperStr.includes('LAKS') || upperStr.includes('LAK') || upperStr.includes('LAC')) {
         detectedUnit = 'Lakhs';
@@ -520,8 +546,9 @@ export default function VehiclesManagement() {
       }
       setPriceUnit(detectedUnit);
 
-      if (detectedUnit === 'LKR') {
-        setFixedPrice(priceStr);
+      if (detectedUnit === 'LKR' || ['USD', 'JPY', 'EUR', 'GBP', 'AUD'].includes(detectedUnit)) {
+        const rawNum = priceStr.replace(/(USD|JPY|EUR|GBP|AUD)/gi, '').trim();
+        setFixedPrice(rawNum);
       } else {
         const numMatch = priceStr.match(/\d+(?:\.\d+)?/);
         setFixedPrice(numMatch ? numMatch[0] : '');
@@ -1021,7 +1048,7 @@ export default function VehiclesManagement() {
                         <div className="col-span-2">
                           <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-[0.2em]">Listing Price</label>
                           <input
-                            type={priceUnit === 'LKR' ? "text" : "number"}
+                            type={['LKR', 'USD', 'JPY', 'EUR', 'GBP', 'AUD'].includes(priceUnit) ? "text" : "number"}
                             step="any"
                             required
                             value={fixedPrice}
@@ -1046,7 +1073,7 @@ export default function VehiclesManagement() {
                         <div>
                           <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-[0.2em]">Min Price</label>
                           <input
-                            type={priceUnit === 'LKR' ? "text" : "number"}
+                            type={['LKR', 'USD', 'JPY', 'EUR', 'GBP', 'AUD'].includes(priceUnit) ? "text" : "number"}
                             step="any"
                             required
                             value={minPrice}
@@ -1058,7 +1085,7 @@ export default function VehiclesManagement() {
                         <div>
                           <label className="block text-xs font-black text-gray-400 mb-2 uppercase tracking-[0.2em]">Max Price</label>
                           <input
-                            type={priceUnit === 'LKR' ? "text" : "number"}
+                            type={['LKR', 'USD', 'JPY', 'EUR', 'GBP', 'AUD'].includes(priceUnit) ? "text" : "number"}
                             step="any"
                             required
                             value={maxPrice}
@@ -1081,29 +1108,8 @@ export default function VehiclesManagement() {
                     )}
                   </div>
                 </div>
-                <div className="space-y-4">
-                   <label className="block text-xs font-black text-gray-400 uppercase tracking-[0.2em] cursor-pointer hover:text-orange-600 transition-colors">
-                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handleDirectUpload(e, 'main')} />
-                      Main Preview
-                   </label>
-                   <label className="aspect-[4/3] rounded-[2rem] overflow-hidden bg-gray-100 border-2 border-dashed border-gray-200 relative group cursor-pointer block hover:border-orange-600/50 transition-colors">
-                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handleDirectUpload(e, 'main')} />
-                      {directUploadProgress?.type === 'main' ? (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
-                          <Loader2 size={40} className="text-orange-600 animate-spin mb-2" />
-                          <span className="text-xs font-black uppercase tracking-widest text-orange-600">Uploading...</span>
-                        </div>
-                      ) : null}
-                      {formData.image ? (
-                        <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:text-orange-500 transition-colors">
-                          <Upload size={40} className="mb-2" />
-                          <span className="text-xs font-bold uppercase tracking-widest">Click to Upload</span>
-                        </div>
-                      )}
-                   </label>
-                </div>
+
+
               </div>
 
               {/* Images Manager */}
@@ -1113,120 +1119,115 @@ export default function VehiclesManagement() {
                        <Camera size={16} /> Visual Media Manager
                     </h3>
                     <button type="button" onClick={handleAddImage} className="px-4 py-2 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 transition-all flex items-center gap-2">
-                       <Plus size={14} /> Add Gallery Slot
+                       <Plus size={14} /> Add Photo
                     </button>
                  </div>
                  
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Primary Image */}
-                    <div className="space-y-3">
+                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {/* Primary Image card */}
+                    <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <label className="block text-[9px] font-black text-orange-600 uppercase tracking-widest">Main Thumbnail</label>
-                        <button 
-                          type="button" 
-                          onClick={() => openPicker('main')} 
-                          className="bg-orange-600/10 text-orange-600 px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-orange-600 hover:text-white transition-all flex items-center gap-1 border border-orange-600/20"
-                        >
-                          <Grid size={10} /> Choose from Gallery
-                        </button>
+                        <span className="text-[9px] font-black text-orange-600 uppercase tracking-widest">Main ★</span>
+                        <div className="flex gap-1">
+                          <button
+                            type="button"
+                            onClick={() => openPicker('main')}
+                            className="bg-orange-600/10 text-orange-600 px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest hover:bg-orange-600 hover:text-white transition-all border border-orange-600/20"
+                          >
+                            Gallery
+                          </button>
+                          {formData.image && (
+                            <button
+                              type="button"
+                              onClick={() => setFormData({ ...formData, image: '' })}
+                              className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-all"
+                              title="Remove main image"
+                            >
+                              <Trash2 size={10} />
+                            </button>
+                          )}
+                        </div>
                       </div>
-                      <label className="relative aspect-video rounded-2xl overflow-hidden border-2 border-orange-600/20 bg-white shadow-inner group cursor-pointer block hover:border-orange-600 transition-colors">
+                      <label className="relative aspect-video rounded-xl overflow-hidden border-2 border-orange-600/20 bg-white group cursor-pointer block hover:border-orange-600 transition-colors">
                         <input type="file" accept="image/*" className="hidden" onChange={(e) => handleDirectUpload(e, 'main')} />
                         {directUploadProgress?.type === 'main' ? (
                           <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
-                            <Loader2 size={24} className="text-orange-600 animate-spin mb-2" />
-                            <span className="text-[9px] font-black uppercase tracking-widest text-orange-600">Uploading...</span>
+                            <Loader2 size={20} className="text-orange-600 animate-spin mb-1" />
+                            <span className="text-[8px] font-black uppercase tracking-widest text-orange-600">Uploading...</span>
                           </div>
                         ) : (
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
-                            <Upload size={24} className="text-white" />
+                            <Upload size={18} className="text-white" />
                           </div>
                         )}
-                        <img 
-                          src={formData.image || 'https://via.placeholder.com/400x300?text=Upload+Image'} 
-                          alt="Main" 
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Invalid+Image+URL';
-                          }}
-                        />
+                        {formData.image ? (
+                          <img src={formData.image} alt="Main" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-300">
+                            <Upload size={22} className="mb-1" />
+                            <span className="text-[8px] font-bold uppercase tracking-widest">Upload / Select</span>
+                          </div>
+                        )}
                       </label>
-                      <div className="relative">
-                        <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                        <input
-                          type="text" required value={formData.image}
-                          onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                          className="w-full bg-white border border-gray-100 rounded-xl pl-9 pr-4 py-2 text-[11px] font-bold text-gray-600 focus:border-orange-600 transition-all"
-                          placeholder="Paste or Select URL"
-                        />
-                      </div>
                     </div>
 
                     {/* Gallery Images */}
-                    {formData.images.map((img, idx) => (
-                      <div key={idx} className="space-y-3">
+                    {formData.images.map((img: string, idx: number) => (
+                      <div key={idx} className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <label className="block text-[9px] font-black text-gray-400 uppercase tracking-widest">Gallery Photo #{idx + 1}</label>
-                          <div className="flex gap-2">
-                            <button 
-                              type="button" 
-                              onClick={() => openPicker('gallery', idx)} 
-                              className="bg-blue-50 text-blue-600 px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all border border-blue-100"
+                          <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Photo {idx + 1}</span>
+                          <div className="flex gap-1">
+                            <button
+                              type="button"
+                              onClick={() => openPicker('gallery', idx)}
+                              className="bg-gray-100 text-gray-500 px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest hover:bg-orange-600 hover:text-white transition-all"
                             >
                               Gallery
                             </button>
-                            <button type="button" onClick={() => handleRemoveImage(idx)} className="p-1 text-red-500 hover:bg-red-50 rounded-lg transition-all">
-                              <Trash2 size={12} />
+                            <button type="button" onClick={() => handleRemoveImage(idx)} className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-all">
+                              <Trash2 size={10} />
                             </button>
                           </div>
                         </div>
-                        <label className="relative aspect-video rounded-2xl overflow-hidden border border-gray-200 bg-white group cursor-pointer block hover:border-orange-600 transition-colors">
+                        <label className="relative aspect-video rounded-xl overflow-hidden border border-gray-200 bg-white group cursor-pointer block hover:border-orange-600 transition-colors">
                           <input type="file" accept="image/*" className="hidden" onChange={(e) => handleDirectUpload(e, 'gallery', idx)} />
                           {directUploadProgress?.type === 'gallery' && directUploadProgress.index === idx ? (
                             <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
-                              <Loader2 size={24} className="text-orange-600 animate-spin mb-2" />
+                              <Loader2 size={20} className="text-orange-600 animate-spin" />
                             </div>
                           ) : (
                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
-                              <Upload size={24} className="text-white" />
+                              <Upload size={18} className="text-white" />
                             </div>
                           )}
-                          <img 
-                            src={img || 'https://via.placeholder.com/400x300?text=Upload+Photo'} 
-                            alt={`Gallery ${idx}`} 
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Invalid+Image+URL';
-                            }}
-                          />
+                          {img ? (
+                            <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-300">
+                              <Upload size={22} className="mb-1" />
+                              <span className="text-[8px] font-bold uppercase tracking-widest">Upload / Select</span>
+                            </div>
+                          )}
                         </label>
-                        <div className="relative">
-                           <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                           <input
-                             type="text" value={img}
-                             onChange={(e) => handleImageChange(idx, e.target.value)}
-                             className="w-full bg-white border border-gray-100 rounded-xl pl-9 pr-4 py-2 text-[11px] font-bold text-gray-600 focus:border-orange-600 transition-all"
-                             placeholder="Paste or Select URL"
-                           />
-                        </div>
                       </div>
                     ))}
                  </div>
               </div>
 
               {/* Technical Specifications */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div className="md:col-span-4 flex items-center gap-4">
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
                    <div className="h-px bg-gray-100 flex-grow" />
-                   <h3 className="text-[10px] font-black text-gray-300 uppercase tracking-[0.4em]">Specifications</h3>
+                   <h3 className="text-[10px] font-black text-gray-300 uppercase tracking-[0.4em]">Standard Specifications</h3>
                    <div className="h-px bg-gray-100 flex-grow" />
                 </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {specs.map(spec => {
                   const isHidden = formData.hiddenSpecs?.includes(spec.key);
                   return (
-                    <div key={spec.key} className={`relative transition-opacity ${isHidden ? 'opacity-40' : ''}`}>
-                      <div className="flex items-center justify-between mb-2">
-                        <label className="block text-[10px] font-black text-gray-400 uppercase text-center flex-grow">
+                    <div key={spec.key} className={`relative bg-gray-50 border border-gray-100 rounded-2xl p-4 transition-opacity ${isHidden ? 'opacity-40' : ''}`}>
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="block text-[10px] font-black text-gray-400 uppercase">
                           {spec.label}
                         </label>
                         <button
@@ -1237,8 +1238,8 @@ export default function VehiclesManagement() {
                               : [...(formData.hiddenSpecs || []), spec.key];
                             setFormData({ ...formData, hiddenSpecs: newHidden });
                           }}
-                          className="text-gray-400 hover:text-orange-600 transition-colors bg-gray-100 p-1 rounded-md"
-                          title={isHidden ? "Show this spec for this vehicle" : "Hide this spec for this vehicle"}
+                          className="text-gray-300 hover:text-orange-600 transition-colors bg-white p-1 rounded-md shadow-sm"
+                          title={isHidden ? 'Show this spec for this vehicle' : 'Hide this spec for this vehicle'}
                         >
                           {isHidden ? <EyeOff size={12} /> : <Eye size={12} />}
                         </button>
@@ -1247,7 +1248,7 @@ export default function VehiclesManagement() {
                         <select 
                           value={formData[spec.key] || ''} 
                           onChange={(e) => setFormData({ ...formData, [spec.key]: e.target.value })} 
-                          className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 font-bold"
+                          className="w-full bg-white border border-gray-100 rounded-xl px-3 py-2.5 font-bold text-sm focus:border-orange-600 focus:outline-none transition-all"
                           disabled={isHidden}
                         >
                           <option value="">Select</option>
@@ -1260,7 +1261,7 @@ export default function VehiclesManagement() {
                         <select 
                           value={formData[spec.key] || ''} 
                           onChange={(e) => setFormData({ ...formData, [spec.key]: e.target.value })} 
-                          className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 font-bold"
+                          className="w-full bg-white border border-gray-100 rounded-xl px-3 py-2.5 font-bold text-sm focus:border-orange-600 focus:outline-none transition-all"
                           disabled={isHidden}
                         >
                           <option value="">Select</option>
@@ -1275,16 +1276,123 @@ export default function VehiclesManagement() {
                           type={spec.key === 'seats' ? 'number' : 'text'} 
                           value={formData[spec.key] || ''} 
                           onChange={(e) => setFormData({ ...formData, [spec.key]: e.target.value })} 
-                          className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-center font-bold"
+                          className="w-full bg-white border border-gray-100 rounded-xl px-3 py-2.5 font-bold text-sm focus:border-orange-600 focus:outline-none transition-all"
                           disabled={isHidden}
                         />
                       )}
                     </div>
                   );
                 })}
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              {/* Per-Vehicle Custom Specifications */}
+              <div className="bg-white border-2 border-dashed border-gray-200 rounded-[2rem] p-8 space-y-5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-orange-600/10 rounded-xl flex items-center justify-center">
+                      <Plus size={14} className="text-orange-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-black text-gray-800 uppercase tracking-widest">Custom Specifications</h3>
+                      <p className="text-[9px] text-gray-400 font-medium mt-0.5">Extra details unique to this vehicle (e.g. sunroof, warranty)</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddCustomSpec(true)}
+                    className="px-4 py-2 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-orange-600 transition-all flex items-center gap-2"
+                  >
+                    <Plus size={12} /> Add Spec
+                  </button>
+                </div>
+
+                {/* Existing custom specs as cards */}
+                {(formData.customSpecs || []).length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {(formData.customSpecs as { key: string; label: string; value: string }[]).map((cs, idx) => (
+                      <div key={idx} className="bg-gray-50 border border-gray-100 rounded-2xl p-4 flex items-start justify-between gap-3 group hover:border-orange-200 transition-colors">
+                        <div className="min-w-0">
+                          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest truncate">{cs.label}</p>
+                          <p className="text-sm font-bold text-gray-800 mt-1 truncate">{cs.value}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = [...(formData.customSpecs || [])];
+                            updated.splice(idx, 1);
+                            setFormData({ ...formData, customSpecs: updated });
+                          }}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg flex-shrink-0"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  !showAddCustomSpec && (
+                    <div className="text-center py-6 text-gray-300">
+                      <p className="text-[10px] font-black uppercase tracking-widest">No custom specs yet — click "Add Spec" above</p>
+                    </div>
+                  )
+                )}
+
+                {/* Add new custom spec form */}
+                {showAddCustomSpec && (
+                  <div className="bg-orange-50 border border-orange-100 rounded-2xl p-5 space-y-4">
+                    <p className="text-[9px] font-black text-orange-600 uppercase tracking-widest">New Specification</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Label (e.g. Sunroof)</label>
+                        <input
+                          type="text"
+                          value={newCustomSpec.label}
+                          onChange={e => setNewCustomSpec({ ...newCustomSpec, label: e.target.value })}
+                          placeholder="e.g. Sunroof, Warranty, Battery Range"
+                          className="w-full bg-white border border-orange-200 rounded-xl px-4 py-3 text-sm font-bold focus:border-orange-600 focus:outline-none transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1.5">Value (e.g. Panoramic)</label>
+                        <input
+                          type="text"
+                          value={newCustomSpec.value}
+                          onChange={e => setNewCustomSpec({ ...newCustomSpec, value: e.target.value })}
+                          placeholder="e.g. Panoramic, 3 Years, 600km"
+                          className="w-full bg-white border border-orange-200 rounded-xl px-4 py-3 text-sm font-bold focus:border-orange-600 focus:outline-none transition-all"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!newCustomSpec.label.trim() || !newCustomSpec.value.trim()) return;
+                          const key = newCustomSpec.label.trim().toLowerCase().replace(/\s+/g, '_');
+                          const updated = [...(formData.customSpecs || []), { key, label: newCustomSpec.label.trim(), value: newCustomSpec.value.trim() }];
+                          setFormData({ ...formData, customSpecs: updated });
+                          setNewCustomSpec({ label: '', value: '' });
+                          setShowAddCustomSpec(false);
+                        }}
+                        className="flex items-center gap-2 bg-orange-600 text-white px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-orange-700 transition-all"
+                      >
+                        <Plus size={14} /> Add
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setShowAddCustomSpec(false); setNewCustomSpec({ label: '', value: '' }); }}
+                        className="px-5 py-2.5 text-gray-400 text-xs font-black uppercase tracking-widest hover:text-gray-700 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Status & Description */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="space-y-6">
                   <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase">Status</label>
                   <div className="flex flex-wrap gap-4">
@@ -1302,13 +1410,14 @@ export default function VehiclesManagement() {
                      </div>
                   </div>
                 </div>
-                <div>
-                  <label className="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Description</label>
+                <div className="md:col-span-2">
+                  <label className="block text-[10px] font-black text-gray-400 mb-3 uppercase tracking-widest">Description</label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    rows={4}
-                    className="w-full bg-gray-50 border border-gray-100 rounded-[1.5rem] px-6 py-4 text-gray-900 font-medium focus:border-orange-600 transition-all"
+                    rows={12}
+                    placeholder="Write a detailed description of this vehicle — features, condition, history, extras..."
+                    className="w-full bg-gray-50 border border-gray-100 rounded-[1.5rem] px-6 py-5 text-gray-900 font-medium focus:border-orange-600 focus:outline-none transition-all text-sm leading-relaxed resize-y"
                   />
                 </div>
               </div>

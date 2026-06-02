@@ -59,6 +59,7 @@ const siteSettingsSchema = new mongoose.Schema({
     whyChooseUs: {
       subtitle: { type: String, default: 'The Ceylon Advantage' },
       title: { type: String, default: 'Why Choose Us' },
+      backgroundImage: { type: String, default: '' },
       reasons: [
         {
           icon: { type: String, default: 'CheckCircle' },

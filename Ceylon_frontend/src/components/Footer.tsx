@@ -51,9 +51,33 @@ export function Footer() {
     (link: any) => link.visible !== false && link.url
   );
 
+  const footerBgImage = footerData.image || 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1600&auto=format&fit=crop';
+
   return (
-    <footer className="bg-[#020617] text-gray-300 py-8 sm:py-14 lg:py-16 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="relative bg-[#020617] text-gray-300 py-8 sm:py-14 lg:py-16 border-t border-white/5 overflow-hidden">
+      {/* Creative Split Footer Background */}
+      {footerData.imageVisible && (
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          {/* Image on right half, visible and prominent */}
+          <div className="absolute right-0 top-0 w-full sm:w-[65%] h-full">
+            <img 
+              src={footerBgImage}
+              alt="Footer background" 
+              className="w-full h-full object-cover object-center opacity-40"
+            />
+            {/* Warm orange tint to brand the image */}
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-900/40 via-transparent to-blue-900/20" />
+          </div>
+          {/* Strong left-to-right fade so content is perfectly readable */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-[#020617]/90 sm:via-[#020617]/70 to-transparent" />
+          {/* Bottom fade for clean bottom edge */}
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#020617] to-transparent" />
+          {/* Top fade */}
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#020617] to-transparent" />
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 lg:gap-12">
           {/* Brand */}
           <div className="space-y-6">
@@ -94,13 +118,6 @@ export function Footer() {
                     {renderSocialIcon(link.platform)}
                   </a>
                 ))}
-              </div>
-            )}
-
-            {/* Footer Photo */}
-            {footerData.imageVisible && footerData.image && (
-              <div className="pt-4">
-                <img src={footerData.image} alt="Footer graphic" className="w-full max-w-[240px] h-auto rounded-lg shadow-sm" />
               </div>
             )}
           </div>

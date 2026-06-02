@@ -25,8 +25,14 @@ export function Hero() {
   const ctaLink = heroData?.ctaLink || '#inquiry';
 
   const contactNumber = settings?.header?.contactNumber || settings?.footer?.phone || '077 123 4567';
-  const whatsappRaw = settings?.header?.whatsappNumber || contactNumber;
-  const whatsappUrl = `https://wa.me/94${whatsappRaw.replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`;
+  const whatsappUrl = `https://wa.me/${(() => {
+    const numStr = settings?.header?.whatsappNumber || settings?.header?.contactNumber || settings?.footer?.phone || contactNumber;
+    let cleanNum = numStr.replace(/\D/g, '');
+    if (cleanNum.startsWith('0')) {
+      cleanNum = '94' + cleanNum.substring(1);
+    }
+    return cleanNum;
+  })()}`;
 
   // Helper to split title into two lines based on newline or default comma
   const rawTitle = heroTitle.replace(/\\n/g, '\n');
@@ -250,13 +256,17 @@ export function Hero() {
                 transition={{ delay: 0.4, duration: 0.6 }}
                 className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-4 lg:mb-3 w-full px-4"
               >
-                <button
-                  onClick={() => ctaLink.startsWith('#') ? scrollToSection(ctaLink.replace('#', '')) : window.location.href = ctaLink}
+                <a
+                  href="#inquiry"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection('inquiry');
+                  }}
                   className="bg-primary hover:bg-primary-hover text-white px-4 sm:px-5 xl:px-7 py-2 sm:py-3 xl:py-3.5 rounded-xl font-black text-[8px] sm:text-[10px] xl:text-[11px] uppercase tracking-widest shadow-xl shadow-primary/30 transition-all flex items-center justify-center gap-1.5 sm:gap-2 group active:scale-95"
                 >
                   {ctaText}
                   <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </a>
                 <a
                   href={whatsappUrl}
                   target="_blank"

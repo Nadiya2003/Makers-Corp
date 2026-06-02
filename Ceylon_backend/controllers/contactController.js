@@ -1,6 +1,6 @@
 const { body, validationResult } = require('express-validator');
 const Contact = require('../models/Contact');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
 // ─── Validation Rules ─────────────────────────────────────────────────────────
 const validateContact = [
@@ -25,19 +25,12 @@ const submitContact = async (req, res) => {
 
     const contact = await Contact.create({ name, phone, vehicle, message });
 
-    // Email notification
-    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    if (process.env.RESEND_API && process.env.RECEIVE_EMAIL && process.env.SEND_EMAIL) {
       try {
-        const transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
-          },
-        });
-        await transporter.sendMail({
-          from: process.env.EMAIL_USER,
-          to: process.env.EMAIL_USER,
+        const resend = new Resend(process.env.RESEND_API);
+        await resend.emails.send({
+          from: process.env.SEND_EMAIL,
+          to: process.env.RECEIVE_EMAIL,
           subject: `New Contact Message from ${name}`,
           html: `
             <h2>New Contact Form Submission</h2>

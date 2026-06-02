@@ -103,6 +103,13 @@ export function AboutUsClient() {
   const fetchAboutContent = async () => {
     try {
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const baseUrl = apiUrl.replace(/\/api$/, '');
+      const getImageUrl = (url: string) => {
+        if (!url) return '';
+        if (url.startsWith('http')) return url;
+        return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+      };
+
       const res = await fetch(`${apiUrl}/settings`);
       const data = await res.json();
       if (data.success && data.data && data.data.aboutPage) {
@@ -110,12 +117,12 @@ export function AboutUsClient() {
         setContent(prev => ({
           title: page.title || prev.title,
           content: page.content || prev.content,
-          image: page.image || prev.image,
+          image: page.image ? getImageUrl(page.image) : prev.image,
           mission: page.mission || prev.mission,
           vision: page.vision || prev.vision,
-          directorsBg: page.directorsBg || prev.directorsBg,
-          galleryImages: page.galleryImages?.length > 0 ? page.galleryImages : prev.galleryImages,
-          directors: page.directors || prev.directors
+          directorsBg: page.directorsBg ? getImageUrl(page.directorsBg) : prev.directorsBg,
+          galleryImages: page.galleryImages?.length > 0 ? page.galleryImages.map((img: string) => getImageUrl(img)) : prev.galleryImages,
+          directors: page.directors?.length > 0 ? page.directors.map((d: any) => ({ ...d, image: getImageUrl(d.image) })) : prev.directors
         }));
       }
     } catch (err) {

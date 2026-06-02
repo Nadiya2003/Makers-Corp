@@ -293,18 +293,20 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
 
   return (
     <>
-      {n === 1 ? (
-        // Single director view
-        <div className="flex justify-center py-4">
-          <div className="w-full max-w-sm">
-            <DirectorCard 
-              director={directors[0]} 
-              onClick={() => setSelectedDirector(directors[0])} 
-            />
-          </div>
+      {n <= 4 ? (
+        // Static Centered View (no loop, no duplication)
+        <div className="flex flex-wrap justify-center gap-6 py-8 px-4 max-w-7xl mx-auto">
+          {directors.map((director, index) => (
+            <div key={index} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] max-w-[320px] flex-shrink-0 flex flex-col h-full">
+              <DirectorCard 
+                director={director} 
+                onClick={() => setSelectedDirector(director)} 
+              />
+            </div>
+          ))}
         </div>
       ) : (
-        // Slider view
+        // Slider view for > 4 directors
         <div
           className="relative w-full py-4"
           onMouseEnter={() => setIsHovered(true)}

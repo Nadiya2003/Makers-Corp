@@ -103,6 +103,7 @@ const siteSettingsSchema = new mongoose.Schema({
     image: { type: String, default: '' },
     mission: { type: String, default: '' },
     vision: { type: String, default: '' },
+    directorsBg: { type: String, default: '' },
     galleryImages: [{ type: String }],
     directors: [
       {

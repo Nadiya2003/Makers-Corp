@@ -1,10 +1,8 @@
 name: Makers-Ceylon deploy 
-
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,14 +10,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup SSH Key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
       - name: Deploy to Server
         run: |
           ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
@@ -32,62 +28,58 @@ jobs:
             set -e
             echo "--- Starting Deployment ---"
 
+            UPLOADS_PATH="$SERVER_PATH/Ceylon_backend/public/uploads"
+            UPLOADS_BACKUP_DIR="/tmp/makers-uploads-backup-$(date +%s)"
+
+            # ── 1. Backup uploads to a SAFE location outside SERVER_PATH ──
+            echo "Backing up uploads folder..."
+            if [ -d "$UPLOADS_PATH" ]; then
+              mkdir -p "$UPLOADS_BACKUP_DIR"
+              cp -a "$UPLOADS_PATH/." "$UPLOADS_BACKUP_DIR/"
+              echo "Uploads backed up to $UPLOADS_BACKUP_DIR ($(ls "$UPLOADS_BACKUP_DIR" | wc -l) files)"
+            else
+              echo "No existing uploads folder found. Will create fresh one."
+            fi
+
+            # ── 2. Clone repo to temp dir ──
             TEMP_CLONE_DIR="/tmp/makersceylon-$(date +%s)"
             echo "Cloning repository into $TEMP_CLONE_DIR..."
             git clone "$REPO_URL" "$TEMP_CLONE_DIR"
 
-            # Backup persistent uploads before replacing code
-            UPLOADS_BACKUP_DIR="/tmp/makers-uploads-backup-$(date +%s)"
-            UPLOADS_PATH="$SERVER_PATH/Ceylon_backend/public/uploads"
-
-            echo "Backing up uploads folder..."
-            if [ -d "$UPLOADS_PATH" ]; then
-              mkdir -p "$UPLOADS_BACKUP_DIR"
-              cp -a "$UPLOADS_PATH" "$UPLOADS_BACKUP_DIR/uploads"
-              echo "Uploads backed up successfully."
-            else
-              echo "No existing uploads folder found. Creating fresh one later."
-            fi
-
+            # ── 3. Swap code (uploads are already backed up safely) ──
             echo "Updating application code in $SERVER_PATH..."
             rm -rf "$SERVER_PATH"
             mkdir -p "$SERVER_PATH"
             mv "$TEMP_CLONE_DIR"/* "$SERVER_PATH/"
             rm -rf "$TEMP_CLONE_DIR"
 
-            # Restore persistent uploads after replacing code
+            # ── 4. Restore uploads into correct path ──
             echo "Restoring uploads folder..."
-            mkdir -p "$SERVER_PATH/public"
-
-            if [ -d "$UPLOADS_BACKUP_DIR/uploads" ]; then
-              rm -rf "$SERVER_PATH/Ceylon_backend/public/uploads"
-              mv "$UPLOADS_BACKUP_DIR/uploads" "$SERVER_PATH/Ceylon_backend/public/uploads"
+            mkdir -p "$UPLOADS_PATH"
+            if [ -d "$UPLOADS_BACKUP_DIR" ]; then
+              cp -a "$UPLOADS_BACKUP_DIR/." "$UPLOADS_PATH/"
               rm -rf "$UPLOADS_BACKUP_DIR"
-              echo "Uploads restored successfully."
+              echo "Uploads restored successfully ($(ls "$UPLOADS_PATH" | wc -l) files)"
             else
-              mkdir -p "$SERVER_PATH/Ceylon_backend/public/uploads"
-              echo "Fresh uploads folder created."
+              echo "Fresh uploads folder created at $UPLOADS_PATH"
             fi
 
+            # ── 5. Frontend ──
             cd "$SERVER_PATH/Ceylon_frontend"
-
-            echo "Writing .env file..."
+            echo "Writing frontend .env file..."
             echo "NEXT_PUBLIC_API_URL=https://makersceylon.com/api" > .env
-
-            echo "Installing dependencies..."
+            echo "Installing frontend dependencies..."
             npm install
-
             echo "Building Next.js app..."
             npm run build
-
-            echo "Restarting PM2..."
+            echo "Restarting frontend PM2..."
             pm2 restart makers-frontend || pm2 start npm --name "makers-frontend" -- start
             pm2 save
 
+            # ── 6. Backend ──
             cd "$SERVER_PATH/Ceylon_backend"
-            
+            echo "Installing backend dependencies..."
             npm install --production=false
-            echo "Building the application..."
             echo "Writing backend .env..."
             {
                 echo "MONGO_URI=$MONGO_URI"
@@ -95,10 +87,13 @@ jobs:
                 echo "FRONTEND_URL=$FRONTEND_URL"
             } > .env
             chmod 600 .env
-            pm2 describe makers-backend >/dev/null 2>&1 && pm2 restart makers-backend --update-env || pm2 start npm --name makers-backend -- start
+            echo "Restarting backend PM2..."
+            pm2 describe makers-backend >/dev/null 2>&1 \
+              && pm2 restart makers-backend --update-env \
+              || pm2 start npm --name makers-backend -- start
             pm2 save
-            # rm -f .env .env.production
 
+            # ── 7. Nginx ──
             echo "Reloading Nginx..."
             sudo systemctl reload nginx
 

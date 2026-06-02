@@ -33,6 +33,7 @@ export default function HomepageManagement() {
       whyChooseUs: {
         subtitle: 'The Ceylon Advantage',
         title: 'Why Choose Us',
+        backgroundImage: '',
         reasons: [] as { icon: string; title: string; desc: string }[]
       },
       howItWorks: {
@@ -120,6 +121,36 @@ export default function HomepageManagement() {
     }
   };
 
+  const handleWhyChooseUsBgUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    setIsUploading(true);
+    const formDataObj = new FormData();
+    formDataObj.append('photos', e.target.files[0]);
+    formDataObj.append('category', 'Homepage');
+    try {
+      const token = sessionStorage.getItem('adminToken');
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const res = await fetch(`${apiUrl}/media`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formDataObj
+      });
+      const data = await res.json();
+      if (data.success && data.data && data.data.length > 0) {
+        setSettings(s => ({ ...s, homepage: { ...s.homepage, whyChooseUs: { ...s.homepage.whyChooseUs, backgroundImage: data.data[0].url } } }));
+        setMessage('Background image uploaded! Click Save Changes to apply.');
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        setMessage('Upload failed: ' + (data.message || 'Unknown error'));
+      }
+    } catch {
+      setMessage('Network error during upload');
+    } finally {
+      setIsUploading(false);
+      e.target.value = '';
+    }
+  };
+
   useEffect(() => {
     fetchSettings();
   }, []);
@@ -148,8 +179,9 @@ export default function HomepageManagement() {
         if (!fetched?.homepage?.whyChooseUs || !fetched.homepage.whyChooseUs.reasons || fetched.homepage.whyChooseUs.reasons.length === 0) {
           if (!fetched.homepage) fetched.homepage = {};
           fetched.homepage.whyChooseUs = {
-            subtitle: 'The Ceylon Advantage',
-            title: 'Why Choose Us',
+            subtitle: fetched?.homepage?.whyChooseUs?.subtitle || 'The Ceylon Advantage',
+            title: fetched?.homepage?.whyChooseUs?.title || 'Why Choose Us',
+            backgroundImage: fetched?.homepage?.whyChooseUs?.backgroundImage || '',
             reasons: [
               { icon: 'DollarSign', title: 'Competitive Pricing', desc: 'Direct access means no hidden markups.' },
               { icon: 'Search', title: 'Transparent Process', desc: 'Clear breakdown of all costs and fees.' },
@@ -488,6 +520,30 @@ export default function HomepageManagement() {
                   placeholder="e.g. Why Choose Us"
                 />
               </div>
+            </div>
+
+            {/* Background Image */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Background Image</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={settings.homepage.whyChooseUs?.backgroundImage || ''}
+                  onChange={(e) => setSettings({ ...settings, homepage: { ...settings.homepage, whyChooseUs: { ...settings.homepage.whyChooseUs, backgroundImage: e.target.value } } })}
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
+                  placeholder="https://example.com/bg.jpg"
+                />
+                <label className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 rounded-lg cursor-pointer transition-colors border border-gray-200" title="Upload Image">
+                  <input type="file" className="hidden" accept="image/*" onChange={handleWhyChooseUsBgUpload} disabled={isUploading} />
+                  {isUploading ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} />}
+                </label>
+              </div>
+              {settings.homepage.whyChooseUs?.backgroundImage && (
+                <div className="mt-3 p-3 bg-gray-950 border border-gray-800 rounded-lg">
+                  <span className="text-xs font-semibold text-gray-400 block mb-2">Preview:</span>
+                  <img src={settings.homepage.whyChooseUs.backgroundImage} alt="BG Preview" className="h-20 w-full object-cover rounded opacity-60" />
+                </div>
+              )}
             </div>
 
             {/* Reasons Editor */}

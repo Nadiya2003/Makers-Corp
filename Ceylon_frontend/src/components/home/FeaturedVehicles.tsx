@@ -31,7 +31,7 @@ interface Vehicle {
 // ─── Reusable Vehicle Card ────────────────────────────────────────────────────
 function VehicleCard({ vehicle, onQuickView }: { vehicle: Vehicle; onQuickView: () => void }) {
   return (
-    <div className="group relative h-full flex flex-col bg-white/40 hover:bg-white/60 backdrop-blur-xl rounded-[2.5rem] p-3 border border-white/50 hover:border-white/80 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+    <div className="group relative h-full flex flex-col bg-white/40 hover:bg-white/60 backdrop-blur-xl rounded-[2.5rem] p-3 border border-orange-300/30 hover:border-orange-400/60 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
       <div className="relative h-[220px] sm:h-[260px] rounded-[2rem] overflow-hidden bg-white/50 mb-4 flex-shrink-0">
         <Image
           src={vehicle.image}
@@ -277,7 +277,7 @@ export function FeaturedVehicles() {
               <Sparkles className="w-3 h-3" /> Premium Collection
             </motion.div>
             <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-dark leading-none uppercase tracking-tighter">
-              Featured <span className="text-primary italic">Inventory</span>
+              Featured <span className="text-primary">Inventory</span>
             </h2>
             <p className="mt-4 text-gray-500 font-medium text-lg max-w-xl">
               Swipe through our exclusive selection of premium Japanese vehicles, available for immediate import.

@@ -54,12 +54,12 @@ export function Footer() {
   const footerBgImage = footerData.image || 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1600&auto=format&fit=crop';
 
   return (
-    <footer className="relative bg-[#020617] text-gray-300 py-8 sm:py-14 lg:py-16 border-t border-white/5 overflow-hidden">
+    <footer className="relative bg-[#050505] text-gray-300 py-8 sm:py-14 lg:py-16 border-t border-white/5 overflow-hidden">
       {/* Creative Split Footer Background */}
       {footerData.imageVisible && (
         <div className="absolute inset-0 z-0 pointer-events-none">
-          {/* Image on right half, visible and prominent */}
-          <div className="absolute right-0 top-0 w-full sm:w-[65%] h-full">
+          {/* Image fills the container, avoiding any middle-screen cut-off line */}
+          <div className="absolute inset-0 w-full h-full">
             <img 
               src={footerBgImage}
               alt="Footer background" 
@@ -68,12 +68,13 @@ export function Footer() {
             {/* Warm orange tint to brand the image */}
             <div className="absolute inset-0 bg-gradient-to-br from-orange-900/40 via-transparent to-blue-900/20" />
           </div>
-          {/* Strong left-to-right fade so content is perfectly readable */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-[#020617]/90 sm:via-[#020617]/70 to-transparent" />
+          {/* Strong left-to-right fade so content is perfectly readable. 
+              Using multiple stops to create a seamless blend from solid black to transparent */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505] sm:via-[#050505]/80 to-transparent" />
           {/* Bottom fade for clean bottom edge */}
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#020617] to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#050505] to-transparent" />
           {/* Top fade */}
-          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#020617] to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#050505] to-transparent" />
         </div>
       )}
 

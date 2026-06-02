@@ -59,198 +59,206 @@ export function Inquiry() {
   };
 
   return (
-    <section id="inquiry" className="py-12 sm:py-16 lg:py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-          <div className="grid grid-cols-1 lg:grid-cols-5">
-            {/* Left: Contact Info */}
-            <div className="lg:col-span-2 bg-dark text-white p-7 sm:p-10 lg:p-12 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+    <section id="inquiry" className="py-12 sm:py-20 lg:py-24 bg-gray-50 flex justify-center">
+      <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        
+        {/* Main Container */}
+        <div className="bg-white rounded-[2rem] border border-primary/40 shadow-2xl shadow-orange-500/5 flex flex-col lg:flex-row overflow-hidden">
+          
+          {/* ── Left Column: Contact Details & Map ── */}
+          <div className="lg:w-[45%] bg-[#111] text-white p-8 sm:p-10 lg:p-12 relative flex flex-col">
+            {/* Subtle top-right glow */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
 
-              <div className="relative z-10">
-                <h3 className="font-display font-bold text-3xl mb-2">Get in Touch</h3>
-                <p className="text-gray-400 mb-10">
-                  Ready to import your dream vehicle? Fill out the form or contact us directly.
-                </p>
+            <h3 className="font-display font-bold text-3xl sm:text-4xl mb-3 relative z-10">
+              Get in Touch
+            </h3>
+            <p className="text-gray-400 text-sm sm:text-base mb-10 max-w-md relative z-10">
+              Ready to import your dream vehicle? Fill out the form or contact us directly.
+            </p>
 
-                <div className="space-y-8 mb-12">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                      <Phone className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400 mb-1">Call Us</p>
-                      <p className="font-medium text-lg">{settings?.header?.contactNumber || contactData.phone}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                      <Mail className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400 mb-1">Email Us</p>
-                      <p className="font-medium text-lg">{contactData.email}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                      <MapPin className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400 mb-1">Visit Us</p>
-                      <p className="font-medium text-lg leading-relaxed whitespace-pre-line">
-                        {contactData.address}
-                      </p>
-                    </div>
-                  </div>
+            <div className="space-y-8 flex-1 relative z-10">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
+                  <Phone className="w-4 h-4 text-primary" />
                 </div>
+                <div>
+                  <p className="text-xs text-gray-400 mb-1">Call Us</p>
+                  <p className="font-semibold text-white">{settings?.header?.contactNumber || contactData.phone}</p>
+                </div>
+              </div>
 
-                <a
-                  href={`https://wa.me/${(() => {
-                    const numStr = settings?.header?.whatsappNumber || settings?.header?.contactNumber || contactData.phone;
-                    let cleanNum = numStr.replace(/\D/g, '');
-                    if (cleanNum.startsWith('0')) {
-                      cleanNum = '94' + cleanNum.substring(1);
-                    }
-                    return cleanNum;
-                  })()}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl font-medium transition-colors w-full justify-center"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  Chat on WhatsApp
-                </a>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
+                  <Mail className="w-4 h-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 mb-1">Email Us</p>
+                  <p className="font-semibold text-white break-all sm:break-normal">{contactData.email}</p>
+                </div>
+              </div>
 
-                {settings?.contactPage?.googleMapUrl && (
-                  <div className="mt-8 rounded-xl overflow-hidden border border-white/10 h-48 w-full bg-white/5 relative z-10">
-                    <iframe
-                      src={settings.contactPage.googleMapUrl}
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      allowFullScreen={true}
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      className="absolute inset-0"
-                    ></iframe>
-                  </div>
-                )}
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
+                  <MapPin className="w-4 h-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400 mb-1">Visit Us</p>
+                  <p className="font-semibold text-white leading-snug max-w-[250px] whitespace-pre-line">
+                    {contactData.address}
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Right: Form */}
-            <div className="lg:col-span-3 p-7 sm:p-10 lg:p-12">
-              <h3 className="font-display font-bold text-2xl text-dark mb-8">Send an Inquiry</h3>
+            <div className="mt-10 space-y-6 relative z-10">
+              <a
+                href={`https://wa.me/${(() => {
+                  const numStr = settings?.header?.whatsappNumber || settings?.header?.contactNumber || contactData.phone;
+                  let cleanNum = numStr.replace(/\D/g, '');
+                  if (cleanNum.startsWith('0')) {
+                    cleanNum = '94' + cleanNum.substring(1);
+                  }
+                  return cleanNum;
+                })()}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white px-6 py-3.5 rounded-xl font-medium transition-colors w-full text-base"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Chat on WhatsApp
+              </a>
 
-              {success && (
-                <div className="bg-green-50 text-green-700 p-4 rounded-xl mb-6">{success}</div>
-              )}
-              {error && (
-                <div className="bg-red-50 text-red-700 p-4 rounded-xl mb-6">{error}</div>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white"
-                      placeholder="John Doe"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white"
-                      placeholder="+94 7X XXX XXXX"
-                    />
+              {settings?.contactPage?.googleMapUrl ? (
+                <div className="bg-[#222] rounded-xl h-48 flex items-center justify-center overflow-hidden relative">
+                  <iframe
+                    src={settings.contactPage.googleMapUrl}
+                    className="w-full h-full border-0 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+                    allowFullScreen={true}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </div>
+              ) : (
+                <div className="bg-[#222] rounded-xl h-48 flex items-center justify-center overflow-hidden relative">
+                  <div className="flex flex-col items-center text-gray-500">
+                    <MapPin className="w-6 h-6 mb-2" />
+                    <span className="text-xs font-medium">Map not configured</span>
                   </div>
                 </div>
+              )}
+            </div>
+          </div>
 
+          {/* ── Right Column: Contact Form ── */}
+          <div className="lg:w-[55%] p-8 sm:p-10 lg:p-12 bg-white">
+            <h3 className="font-display font-bold text-2xl sm:text-3xl text-dark mb-8">
+              Send an Inquiry
+            </h3>
+
+            {success && (
+              <div className="bg-green-50 text-green-700 p-4 rounded-xl mb-6 text-sm">{success}</div>
+            )}
+            {error && (
+              <div className="bg-red-50 text-red-700 p-4 rounded-xl mb-6 text-sm">{error}</div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="vehicle" className="block text-sm font-medium text-gray-700 mb-2">
-                    Interested Vehicle Brand
+                  <label htmlFor="name" className="block text-sm text-gray-600 mb-2">
+                    Full Name
                   </label>
-                  <select
-                    id="vehicle"
-                    name="vehicle"
-                    value={formData.vehicle}
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white appearance-none"
-                  >
-                    <option value="" disabled>
-                      Select a brand
-                    </option>
-                    <optgroup label="Japanese Brands">
-                      <option value="Toyota">Toyota</option>
-                      <option value="Honda">Honda</option>
-                      <option value="Nissan">Nissan</option>
-                      <option value="Mazda">Mazda</option>
-                      <option value="Suzuki">Suzuki</option>
-                      <option value="Mitsubishi">Mitsubishi</option>
-                      <option value="Subaru">Subaru</option>
-                      <option value="Lexus">Lexus</option>
-                      <option value="Daihatsu">Daihatsu</option>
-                      <option value="Isuzu">Isuzu</option>
-                    </optgroup>
-                    <optgroup label="Korean Brands">
-                      <option value="Hyundai">Hyundai</option>
-                      <option value="Kia">Kia</option>
-                    </optgroup>
-                    <optgroup label="European / Other">
-                      <option value="BMW">BMW</option>
-                      <option value="Mercedes-Benz">Mercedes-Benz</option>
-                      <option value="Volkswagen">Volkswagen</option>
-                    </optgroup>
-                    <option value="Other">Other / Not Listed</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    Message / Specific Requirements
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={4}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white resize-none"
-                    placeholder="Tell us about the specific model, year, or budget you have in mind..."
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm"
+                    placeholder="John Doe"
                   />
                 </div>
+                <div>
+                  <label htmlFor="phone" className="block text-sm text-gray-600 mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm"
+                    placeholder="+94 7X XXX XXXX"
+                  />
+                </div>
+              </div>
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-primary hover:bg-primary-hover disabled:bg-primary/50 text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+              <div>
+                <label htmlFor="vehicle" className="block text-sm text-gray-600 mb-2">
+                  Interested Vehicle Brand
+                </label>
+                <select
+                  id="vehicle"
+                  name="vehicle"
+                  value={formData.vehicle}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white appearance-none text-sm cursor-pointer"
                 >
-                  <Send className="w-5 h-5" />
-                  {loading ? 'Submitting...' : 'Submit Inquiry'}
-                </button>
-              </form>
-            </div>
+                  <option value="" disabled>Select a brand</option>
+                  <optgroup label="Japanese Brands">
+                    <option value="Toyota">Toyota</option>
+                    <option value="Honda">Honda</option>
+                    <option value="Nissan">Nissan</option>
+                    <option value="Mazda">Mazda</option>
+                    <option value="Suzuki">Suzuki</option>
+                    <option value="Mitsubishi">Mitsubishi</option>
+                    <option value="Subaru">Subaru</option>
+                    <option value="Lexus">Lexus</option>
+                    <option value="Daihatsu">Daihatsu</option>
+                    <option value="Isuzu">Isuzu</option>
+                  </optgroup>
+                  <optgroup label="Korean Brands">
+                    <option value="Hyundai">Hyundai</option>
+                    <option value="Kia">Kia</option>
+                  </optgroup>
+                  <optgroup label="European / Other">
+                    <option value="BMW">BMW</option>
+                    <option value="Mercedes-Benz">Mercedes-Benz</option>
+                    <option value="Volkswagen">Volkswagen</option>
+                  </optgroup>
+                  <option value="Other">Other / Not Listed</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm text-gray-600 mb-2">
+                  Message / Specific Requirements
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={4}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white resize-none text-sm"
+                  placeholder="Tell us about the specific model, year, or budget you have in mind..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-primary hover:bg-[#e66a00] disabled:bg-primary/50 text-white font-semibold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm mt-4"
+              >
+                <Send className="w-4 h-4" />
+                {loading ? 'Submitting...' : 'Submit Inquiry'}
+              </button>
+            </form>
           </div>
         </div>
       </div>

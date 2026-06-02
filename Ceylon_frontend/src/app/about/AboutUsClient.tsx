@@ -90,6 +90,7 @@ export function AboutUsClient() {
     image: 'https://images.unsplash.com/photo-1562426509-5044a121aa49?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
     mission: 'To provide a seamless, transparent, and highly reliable vehicle import service that empowers our customers to purchase their dream cars directly from Japan.',
     vision: 'To be the most trusted and preferred vehicle import partner in Sri Lanka, known for our integrity and customer-centric approach.',
+    directorsBg: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2000&auto=format&fit=crop',
     galleryImages: [] as string[],
     directors: [] as { name: string; role: string; bio: string; image: string; }[]
   });
@@ -112,6 +113,7 @@ export function AboutUsClient() {
           image: page.image || prev.image,
           mission: page.mission || prev.mission,
           vision: page.vision || prev.vision,
+          directorsBg: page.directorsBg || prev.directorsBg,
           galleryImages: page.galleryImages?.length > 0 ? page.galleryImages : prev.galleryImages,
           directors: page.directors || prev.directors
         }));
@@ -224,47 +226,69 @@ export function AboutUsClient() {
       </section>
 
       {/* ── Who We Are ────────────────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 bg-white relative overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="text-center"
-          >
-            <span className="text-primary font-semibold uppercase tracking-widest text-sm">Who We Are</span>
-            <h2 className="font-display font-black text-4xl sm:text-5xl text-dark mt-3 mb-6">Our Story</h2>
-            <div className="w-16 h-1 bg-primary mx-auto rounded-full mb-10" />
-            <p className="text-lg sm:text-xl text-gray-500 leading-relaxed max-w-3xl mx-auto whitespace-pre-wrap">
-              {content.content}
-            </p>
-          </motion.div>
+      <section className="py-20 sm:py-32 bg-gray-50 relative overflow-hidden">
+        {/* Decorative Grid Pattern */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+        
+        {/* Floating Gradient Orbs */}
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-orange-400/10 rounded-full blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
 
-          {/* Values Row */}
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {DEFAULT_VALUES.map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.12, duration: 0.6 }}
-                  whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
-                  className="group bg-white border border-gray-100 rounded-2xl p-6 text-center shadow-sm transition-all cursor-default"
-                >
-                  <div className="w-14 h-14 bg-primary/10 group-hover:bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 transition-colors">
-                    <Icon className="w-7 h-7 text-primary group-hover:text-white transition-colors" />
-                  </div>
-                  <h4 className="font-bold text-dark text-base mb-2">{item.title}</h4>
-                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
-                </motion.div>
-              );
-            })}
+        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            
+            {/* Left: Text Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="lg:col-span-5"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm mb-6">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <span className="text-primary font-black uppercase tracking-widest text-[10px]">Who We Are</span>
+              </div>
+              <h2 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-dark leading-tight mb-8">
+                Our <span className="text-primary">Story</span>
+              </h2>
+              <div className="w-20 h-1.5 bg-gradient-to-r from-primary to-orange-300 rounded-full mb-8" />
+              <p className="text-lg sm:text-xl text-gray-500 font-medium leading-relaxed whitespace-pre-wrap">
+                {content.content}
+              </p>
+            </motion.div>
+
+            {/* Right: Values Grid */}
+            <div className="lg:col-span-7">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {DEFAULT_VALUES.map((item, i) => {
+                  const Icon = item.icon;
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.05, duration: 0.25 }}
+                      whileHover={{ y: -8, scale: 1.02 }}
+                      className="group relative bg-white rounded-[2rem] p-8 shadow-lg hover:shadow-2xl border border-gray-100 hover:border-orange-300/50 transition-all duration-300 overflow-hidden"
+                    >
+                      {/* Hover Gradient Background */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                      
+                      <div className="relative z-10">
+                        <div className="w-16 h-16 bg-gray-50 group-hover:bg-primary rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300 shadow-sm group-hover:shadow-orange-500/30">
+                          <Icon className="w-8 h-8 text-dark group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
+                        </div>
+                        <h4 className="font-display font-black text-xl text-dark mb-3 group-hover:text-primary transition-colors duration-300">{item.title}</h4>
+                        <p className="text-gray-500 text-sm font-medium leading-relaxed">{item.desc}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -338,10 +362,19 @@ export function AboutUsClient() {
       </AnimatePresence>
 
       {/* ── Mission & Vision ──────────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 bg-gray-50 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none opacity-40"
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'0.02\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 sm:py-24 relative overflow-hidden">
+        {/* Background Image that blends into the white section below */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <Image 
+            src="https://images.unsplash.com/photo-1503375811461-9457fb1e52ee?q=80&w=2000&auto=format&fit=crop" 
+            alt="Mission background" 
+            fill 
+            className="object-cover opacity-20 object-center mix-blend-luminosity" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-white/80 to-white" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
             <span className="text-primary font-semibold uppercase tracking-widest text-sm">What drives us</span>
             <h2 className="font-display font-black text-4xl sm:text-5xl text-dark mt-3">Mission & Vision</h2>
@@ -377,12 +410,38 @@ export function AboutUsClient() {
 
       {/* ── Board of Directors ─────────────────────────────────────────────────── */}
       {content.directors && content.directors.length > 0 && (
-        <section className="py-16 sm:py-24 bg-white overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-              <span className="text-primary font-semibold uppercase tracking-widest text-sm">Leadership</span>
-              <h2 className="font-display font-black text-4xl sm:text-5xl text-dark mt-3 mb-4">Board of Directors</h2>
-              <p className="text-gray-500 max-w-2xl mx-auto text-lg">Meet the visionary leaders behind Makers Ceylon.</p>
+        <section className="py-20 sm:py-32 relative overflow-hidden">
+          {/* Vehicle Background Image - clearly visible on dark overlay */}
+          <div className="absolute inset-0 z-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src={content.directorsBg} 
+              alt="Directors background" 
+              className="w-full h-full object-cover object-center" 
+            />
+            {/* Dark dramatic overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-black/70 to-orange-950/80" />
+            {/* Subtle orange glow at bottom */}
+            <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-black/60 to-transparent" />
+            {/* Top fade */}
+            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/40 to-transparent" />
+          </div>
+
+          {/* Orange accent lines */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent z-10" />
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent z-10" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6">
+                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                <span className="text-orange-400 font-black tracking-[0.25em] uppercase text-xs">Leadership</span>
+              </div>
+              <h2 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-white mt-2 mb-4">
+                Board of <span className="text-orange-500">Directors</span>
+              </h2>
+              <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-orange-300 rounded-full mx-auto mb-4" />
+              <p className="text-gray-300 max-w-2xl mx-auto text-lg">Meet the visionary leaders behind Makers Ceylon.</p>
             </motion.div>
             <DirectorsCarousel directors={content.directors} />
           </div>

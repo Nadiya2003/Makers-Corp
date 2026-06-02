@@ -32,6 +32,7 @@ export default function AboutUsSettings() {
     image: 'https://images.unsplash.com/photo-1562426509-5044a121aa49?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
     mission: 'To provide a seamless, transparent, and highly reliable vehicle import service that empowers our customers to purchase their dream cars directly from Japan.',
     vision: 'To be the most trusted and preferred vehicle import partner in Sri Lanka, known for our integrity and customer-centric approach.',
+    directorsBg: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2000&auto=format&fit=crop',
     galleryImages: [] as string[],
     directors: [] as { name: string; role: string; bio: string; image: string; }[]
   });
@@ -62,6 +63,7 @@ export default function AboutUsSettings() {
           image: page.image || aboutData.image,
           mission: page.mission || aboutData.mission,
           vision: page.vision || aboutData.vision,
+          directorsBg: page.directorsBg || aboutData.directorsBg,
           galleryImages: page.galleryImages && page.galleryImages.length > 0 ? page.galleryImages : DEFAULT_GALLERY,
           directors: page.directors || aboutData.directors
         };
@@ -273,7 +275,7 @@ export default function AboutUsSettings() {
 
             {/* Board of Directors */}
             <div className="pt-6 border-t border-gray-50 space-y-6">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <Users className="text-purple-600" size={20} />
                   <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest">Board of Directors</h3>
@@ -284,10 +286,40 @@ export default function AboutUsSettings() {
                     ...aboutData,
                     directors: [...aboutData.directors, { name: '', role: '', bio: '', image: '' }]
                   })}
-                  className="flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-all border border-orange-200"
+                  className="flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-all border border-orange-200 whitespace-nowrap"
                 >
                   <Plus size={14} /> Add Director
                 </button>
+              </div>
+
+              {/* Directors Background Image */}
+              <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 space-y-3">
+                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Section Background Image</label>
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={16} />
+                    <input 
+                      type="text" 
+                      value={aboutData.directorsBg}
+                      onChange={(e) => setAboutData({...aboutData, directorsBg: e.target.value})}
+                      placeholder="Paste background image URL here..."
+                      className="w-full bg-white border border-gray-200 rounded-xl pl-11 pr-4 py-3 text-sm font-medium outline-none focus:border-orange-600 transition-all"
+                    />
+                  </div>
+                  <label className="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-5 rounded-xl cursor-pointer transition-colors font-bold text-xs whitespace-nowrap" title="Upload Background Image">
+                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, (url) => setAboutData({...aboutData, directorsBg: url}))} disabled={isUploading} />
+                    {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                    Upload
+                  </label>
+                </div>
+                {aboutData.directorsBg && (
+                  <div className="relative rounded-xl overflow-hidden h-28">
+                    <img src={aboutData.directorsBg} alt="Directors BG Preview" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center px-4">
+                      <span className="text-white text-xs font-bold">Background Preview</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">

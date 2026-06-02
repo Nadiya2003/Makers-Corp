@@ -66,22 +66,31 @@ export function WhyChooseUs() {
       : defaultReasons;
 
   const CARD_COLORS = [
-    { from: 'from-orange-400', to: 'to-red-500', shadow: 'shadow-orange-500/40', text: 'group-hover:text-orange-500' },
-    { from: 'from-blue-400', to: 'to-cyan-500', shadow: 'shadow-blue-500/40', text: 'group-hover:text-blue-500' },
-    { from: 'from-purple-500', to: 'to-pink-500', shadow: 'shadow-purple-500/40', text: 'group-hover:text-purple-500' },
-    { from: 'from-emerald-400', to: 'to-teal-500', shadow: 'shadow-emerald-500/40', text: 'group-hover:text-emerald-500' },
-    { from: 'from-amber-400', to: 'to-orange-500', shadow: 'shadow-amber-500/40', text: 'group-hover:text-amber-500' },
+    { from: 'from-orange-500', to: 'to-orange-600', shadow: 'shadow-orange-500/40', text: 'group-hover:text-orange-500' },
+    { from: 'from-black', to: 'to-gray-900', shadow: 'shadow-black/40', text: 'group-hover:text-white' },
+    { from: 'from-orange-400', to: 'to-orange-500', shadow: 'shadow-orange-500/40', text: 'group-hover:text-orange-400' },
+    { from: 'from-gray-900', to: 'to-black', shadow: 'shadow-black/40', text: 'group-hover:text-white' },
+    { from: 'from-orange-600', to: 'to-orange-700', shadow: 'shadow-orange-600/40', text: 'group-hover:text-orange-500' },
   ];
 
   return (
-    <section id="why-us" className="relative py-16 sm:py-24 lg:py-32 bg-slate-900 overflow-hidden">
+    <section id="why-us" className="relative py-16 sm:py-24 lg:py-32 bg-[#050505] overflow-hidden">
       
-      {/* Super Colorful Background Accents */}
+      {/* Orange & Black Vibe Background Image */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-[-10%] right-[-5%] w-[50%] h-[50%] bg-purple-600/30 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-600/30 rounded-full blur-[130px] animate-pulse delay-700" />
-        <div className="absolute top-[30%] left-[15%] w-[30%] h-[30%] bg-pink-500/20 rounded-full blur-[90px] animate-pulse delay-1000" />
-        <div className="absolute bottom-[20%] right-[10%] w-[40%] h-[40%] bg-emerald-500/20 rounded-full blur-[100px] animate-pulse delay-500" />
+        <img 
+          src={whyChooseUsData.backgroundImage || "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=2000&auto=format&fit=crop"} 
+          alt="Dark vehicle background" 
+          className="w-full h-full object-cover opacity-40"
+        />
+        {/* Subtle orange glow accents */}
+        <div className="absolute top-[-10%] right-[-5%] w-[50%] h-[50%] bg-orange-600/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-orange-700/10 rounded-full blur-[130px] animate-pulse delay-700" />
+        <div className="absolute top-[30%] left-[15%] w-[30%] h-[30%] bg-orange-500/10 rounded-full blur-[90px] animate-pulse delay-1000" />
+        
+        {/* Gradients to blend edges */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/50 via-transparent to-[#050505]/50" />
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.05] mix-blend-overlay" />
       </div>
 
@@ -91,7 +100,7 @@ export function WhyChooseUs() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 mb-6 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
           >
             <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-pink-500 to-orange-400 animate-bounce" />
             <span className="text-white font-black tracking-[0.25em] uppercase text-xs">
@@ -156,7 +165,7 @@ export function WhyChooseUs() {
                   <div className={`absolute inset-0 bg-gradient-to-br ${color.from} ${color.to} opacity-0 group-hover:opacity-20 blur-2xl transition-opacity duration-500 rounded-[2rem]`} />
                   
                   {/* Removed overflow-hidden so hover translate-y is not clipped */}
-                  <div className="relative h-full flex flex-col items-center sm:items-start text-center sm:text-left bg-white/5 backdrop-blur-xl rounded-[2rem] p-6 lg:p-8 shadow-2xl border border-white/10 hover:border-white/30 hover:-translate-y-2 transition-all duration-500 z-10">
+                  <div className="relative h-full flex flex-col items-center sm:items-start text-center sm:text-left bg-white/5 backdrop-blur-sm rounded-[2rem] p-6 lg:p-8 shadow-2xl border border-orange-300/20 hover:border-orange-400/50 hover:-translate-y-2 transition-all duration-500 z-10">
                     
                     {/* Smaller icon container (w-14 h-14) to save vertical space */}
                     <div className={`w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br ${color.from} ${color.to} rounded-2xl flex items-center justify-center mb-5 lg:mb-6 shadow-lg group-hover:${color.shadow} transition-all duration-500 relative overflow-hidden`}>

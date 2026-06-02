@@ -136,157 +136,145 @@ export function ContactUsClient() {
         </div>
       </div>
 
-      <section className="py-8 sm:py-16 lg:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            {/* Contact Details & Map */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="space-y-6 sm:space-y-8"
-            >
-              <div className="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-soft border border-gray-100">
-                <h3 className="font-display font-bold text-xl sm:text-2xl text-dark mb-5 sm:mb-6">
-                  Contact Information
-                </h3>
+      <section className="py-12 sm:py-20 lg:py-24 bg-gray-50 flex justify-center">
+        <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          
+          {/* Main Container */}
+          <div className="bg-white rounded-[2rem] border border-primary/40 shadow-2xl shadow-orange-500/5 flex flex-col lg:flex-row overflow-hidden">
+            
+            {/* ── Left Column: Contact Details & Map ── */}
+            <div className="lg:w-[45%] bg-[#111] text-white p-8 sm:p-10 lg:p-12 relative flex flex-col">
+              {/* Subtle top-right glow */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
 
-                <div className="space-y-5 sm:space-y-6">
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                      <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-500 mb-0.5 sm:mb-1">Phone</p>
-                      <p className="font-semibold text-dark text-base sm:text-lg whitespace-pre-wrap">{contactInfo.footer.phone}</p>
-                    </div>
+              <h3 className="font-display font-bold text-3xl sm:text-4xl mb-3 relative z-10">
+                Get in Touch
+              </h3>
+              <p className="text-gray-400 text-sm sm:text-base mb-10 max-w-md relative z-10">
+                Ready to import your dream vehicle? Fill out the form or contact us directly.
+              </p>
+
+              <div className="space-y-8 flex-1 relative z-10">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
+                    <Phone className="w-4 h-4 text-primary" />
                   </div>
-
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                      <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-500 mb-0.5 sm:mb-1">Email</p>
-                      <p className="font-semibold text-dark text-base sm:text-lg break-all sm:break-normal">{contactInfo.footer.email}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                      <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-500 mb-0.5 sm:mb-1">Office Address</p>
-                      <p className="font-semibold text-dark text-base sm:text-lg leading-snug sm:leading-relaxed whitespace-pre-wrap">
-                        {contactInfo.footer.address}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                      <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-500 mb-0.5 sm:mb-1">Business Hours</p>
-                      <p className="font-semibold text-dark text-base sm:text-lg">
-                        {contactInfo.contactPage.workingHours}
-                      </p>
-                    </div>
+                  <div>
+                    <p className="text-xs text-gray-400 mb-1">Call Us</p>
+                    <p className="font-semibold text-white">{contactInfo.footer.phone}</p>
                   </div>
                 </div>
 
-                <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-100">
-                  <a
-                    href={`https://wa.me/${contactInfo.footer.phone.replace(/[^0-9]/g, '')}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-3 sm:px-6 sm:py-4 rounded-xl font-bold transition-colors w-full text-base sm:text-lg shadow-lg shadow-green-500/20 active:scale-95"
-                  >
-                    <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
-                    Quick Chat on WhatsApp
-                  </a>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
+                    <Mail className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 mb-1">Email Us</p>
+                    <p className="font-semibold text-white break-all sm:break-normal">{contactInfo.footer.email}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
+                    <MapPin className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 mb-1">Visit Us</p>
+                    <p className="font-semibold text-white leading-snug max-w-[250px]">
+                      {contactInfo.footer.address}
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              {/* Map */}
-              <div className="bg-gray-200 rounded-2xl sm:rounded-3xl h-64 sm:h-80 flex items-center justify-center border border-gray-300 overflow-hidden relative shadow-inner">
-                {(() => {
-                  const mapResult = convertMapUrl(contactInfo.contactPage.googleMapUrl);
-                  if (mapResult.embedUrl) {
+              <div className="mt-10 space-y-6 relative z-10">
+                <a
+                  href={`https://wa.me/${contactInfo.footer.phone.replace(/[^0-9]/g, '')}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white px-6 py-3.5 rounded-xl font-medium transition-colors w-full text-base"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  Chat on WhatsApp
+                </a>
+
+                {/* Map */}
+                <div className="bg-[#222] rounded-xl h-48 flex items-center justify-center overflow-hidden relative">
+                  {(() => {
+                    const mapResult = convertMapUrl(contactInfo.contactPage.googleMapUrl);
+                    if (mapResult.embedUrl) {
+                      return (
+                        <iframe 
+                          src={mapResult.embedUrl} 
+                          className="w-full h-full border-0 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+                          allowFullScreen 
+                          loading="lazy" 
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+                      );
+                    }
                     return (
-                      <iframe 
-                        src={mapResult.embedUrl} 
-                        className="w-full h-full border-0"
-                        allowFullScreen 
-                        loading="lazy" 
-                        referrerPolicy="no-referrer-when-downgrade"
-                      />
-                    );
-                  }
-                  return (
-                    <>
-                      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')] bg-cover bg-center opacity-40 grayscale mix-blend-multiply" />
-                      <div className="relative z-10 flex flex-col items-center text-gray-600 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-sm">
-                        <MapPin className="w-8 h-8 mb-2 text-primary" />
-                        <span className="font-medium text-xs uppercase tracking-widest font-black">Map not configured</span>
+                      <div className="flex flex-col items-center text-gray-500">
+                        <MapPin className="w-6 h-6 mb-2" />
+                        <span className="text-xs font-medium">Map not configured</span>
                       </div>
-                    </>
-                  );
-                })()}
+                    );
+                  })()}
+                </div>
               </div>
-            </motion.div>
+            </div>
 
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="bg-white p-5 sm:p-8 lg:p-10 rounded-2xl sm:rounded-3xl shadow-soft border border-gray-100"
-            >
-              <h3 className="font-display font-bold text-xl sm:text-2xl text-dark mb-6 sm:mb-8">Send us a Message</h3>
+            {/* ── Right Column: Contact Form ── */}
+            <div className="lg:w-[55%] p-8 sm:p-10 lg:p-12 bg-white">
+              <h3 className="font-display font-bold text-2xl sm:text-3xl text-dark mb-8">
+                Send an Inquiry
+              </h3>
 
               {success && (
-                <div className="bg-green-50 text-green-700 p-4 rounded-xl mb-6">{success}</div>
+                <div className="bg-green-50 text-green-700 p-4 rounded-xl mb-6 text-sm">{success}</div>
               )}
               {error && (
-                <div className="bg-red-50 text-red-700 p-4 rounded-xl mb-6">{error}</div>
+                <div className="bg-red-50 text-red-700 p-4 rounded-xl mb-6 text-sm">{error}</div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white text-base"
-                    placeholder="John Doe"
-                  />
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm text-gray-600 mb-2">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm"
+                      placeholder="John Doe"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="phone" className="block text-sm text-gray-600 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm"
+                      placeholder="+94 7X XXX XXXX"
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white text-base"
-                    placeholder="+94 7X XXX XXXX"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="vehicle" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
+                  <label htmlFor="vehicle" className="block text-sm text-gray-600 mb-2">
                     Interested Vehicle Brand
                   </label>
                   <select
@@ -295,11 +283,9 @@ export function ContactUsClient() {
                     value={formData.vehicle}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white appearance-none text-base"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white appearance-none text-sm cursor-pointer"
                   >
-                    <option value="" disabled>
-                      Select a brand
-                    </option>
+                    <option value="" disabled>Select a brand</option>
                     <optgroup label="Japanese Brands">
                       <option value="Toyota">Toyota</option>
                       <option value="Honda">Honda</option>
@@ -326,8 +312,8 @@ export function ContactUsClient() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-                    Message
+                  <label htmlFor="message" className="block text-sm text-gray-600 mb-2">
+                    Message / Specific Requirements
                   </label>
                   <textarea
                     id="message"
@@ -335,21 +321,21 @@ export function ContactUsClient() {
                     value={formData.message}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-gray-50 focus:bg-white resize-none text-base"
-                    placeholder="How can we help you?"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white resize-none text-sm"
+                    placeholder="Tell us about the specific model, year, or budget you have in mind..."
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-primary hover:bg-primary-hover disabled:bg-primary/50 text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 text-base active:scale-[0.98]"
+                  className="w-full bg-primary hover:bg-[#e66a00] disabled:bg-primary/50 text-white font-semibold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm mt-4"
                 >
-                  <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                  {loading ? 'Sending...' : 'Send Message'}
+                  <Send className="w-4 h-4" />
+                  {loading ? 'Sending...' : 'Submit Inquiry'}
                 </button>
               </form>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>

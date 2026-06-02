@@ -114,7 +114,7 @@ export function HowItWorks() {
                     </div>
                     
                     {/* Icon Container */}
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-[#111111] rounded-3xl flex items-center justify-center border border-white/10 group-hover:border-primary/50 transition-all duration-500 relative z-10 overflow-hidden group-hover:-translate-y-2 shadow-2xl">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-[#111111] rounded-3xl flex items-center justify-center border border-orange-300/20 group-hover:border-orange-400/50 transition-all duration-500 relative z-10 overflow-hidden group-hover:-translate-y-2 shadow-2xl">
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <Icon className="w-8 h-8 sm:w-10 sm:h-10 text-gray-300 group-hover:text-primary transition-colors duration-500 relative z-10" strokeWidth={1.5} />
                     </div>
@@ -123,7 +123,7 @@ export function HowItWorks() {
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-primary/40 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0" />
                   </div>
                   
-                  <div className="bg-white/5 backdrop-blur-xl border border-white/5 rounded-3xl p-6 w-full h-full hover:bg-white/10 transition-colors duration-500 hover:border-white/10 shadow-xl group-hover:-translate-y-1">
+                  <div className="bg-white/5 backdrop-blur-sm border border-orange-300/20 rounded-3xl p-6 w-full h-full hover:bg-white/10 transition-colors duration-500 hover:border-orange-400/40 shadow-xl group-hover:-translate-y-1">
                     <h4 className="font-display font-black text-lg sm:text-xl text-white mb-3 tracking-tight group-hover:text-primary transition-colors duration-300">
                       {step.title}
                     </h4>

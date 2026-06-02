@@ -46,7 +46,7 @@ export function Features() {
                 {/* Glowing background on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-orange-400/0 rounded-[2rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 
-                <div className="relative h-full p-6 sm:p-8 flex flex-col items-center text-center bg-white/80 group-hover:bg-primary backdrop-blur-xl rounded-[2rem] shadow-xl border border-white/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden z-10">
+                <div className="relative h-full p-6 sm:p-8 flex flex-col items-center text-center bg-white/80 group-hover:bg-primary backdrop-blur-xl rounded-[2rem] shadow-xl border border-orange-300/40 group-hover:border-orange-400/60 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 overflow-hidden z-10">
                   {/* Subtle inner decorative gradient */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl -mr-10 -mt-10 transition-transform duration-500 group-hover:scale-150" />
                   

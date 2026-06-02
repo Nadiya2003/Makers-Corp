@@ -130,7 +130,7 @@ export function About() {
             transition={{ duration: 0.8, type: "spring", stiffness: 40 }}
             className="relative order-2 lg:order-1"
           >
-            <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl z-10 border-8 border-white/50 backdrop-blur-sm group">
+            <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-10px_rgba(0,0,0,0.35)] z-10 border-8 border-white/50 backdrop-blur-sm group">
               <div className="absolute inset-0 bg-primary/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-20 pointer-events-none" />
               <Image
                 src={aboutData.image}
@@ -142,7 +142,7 @@ export function About() {
             
             {/* Decorative Elements */}
             <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-br from-primary to-orange-400 rounded-full blur-3xl opacity-30 animate-pulse" />
-            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full blur-3xl opacity-20 animate-pulse delay-1000" />
+            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-gradient-to-br from-orange-400 to-amber-300 rounded-full blur-3xl opacity-20 animate-pulse delay-1000" />
             
             <div className="hidden sm:block absolute -right-8 top-1/4 bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-xl border border-white/60 z-30 animate-bounce" style={{ animationDuration: '4s' }}>
               <div className="flex items-center gap-3">

@@ -57,10 +57,23 @@ export function VehiclesClient() {
     window.scrollTo(0, 0);
     const fetchVehicles = async () => {
       try {
+        const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+        const baseUrl = apiUrl.replace(/\/api$/, '');
+        const getImageUrl = (url: string) => {
+          if (!url) return '';
+          if (url.startsWith('http')) return url;
+          return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+        };
+
         // Fetch all vehicles (no featured=true flag)
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/vehicles`);
+        const response = await axios.get(`${apiUrl}/vehicles`);
         if (response.data.success) {
-          setVehicles(response.data.data);
+          const processedVehicles = response.data.data.map((v: any) => ({
+            ...v,
+            image: getImageUrl(v.image),
+            images: v.images ? v.images.map((img: string) => getImageUrl(img)) : []
+          }));
+          setVehicles(processedVehicles);
         }
       } catch (err) {
         console.error('Error fetching vehicles:', err);

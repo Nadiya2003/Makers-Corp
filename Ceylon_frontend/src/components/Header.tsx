@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { Menu, X, Phone, MessageCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, Phone, MessageCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-import { useSettings } from '@/context/SettingsContext';
+import { useSettings } from "@/context/SettingsContext";
 
 export function Header() {
   const { settings, loading } = useSettings();
@@ -19,54 +19,58 @@ export function Header() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileMenuOpen]);
 
   const handleNavClick = (hash: string) => {
     setMobileMenuOpen(false);
-    if (pathname !== '/') {
-      router.push('/' + hash);
+    if (pathname !== "/") {
+      router.push("/" + hash);
     } else {
       const element = document.querySelector(hash);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({ behavior: "smooth" });
       }
     }
   };
 
   const navLinks = [
-    { name: 'HOME', path: '/' },
-    { name: 'VEHICLES', hash: '#vehicles' },
-    { name: 'HOW IT WORKS', hash: '#how-it-works' },
-    { name: 'WHY US', hash: '#why-us' },
-    { name: 'ABOUT US', path: '/about' },
-    { name: 'CONTACT US', hash: '#inquiry' },
+    { name: "HOME", path: "/" },
+    { name: "VEHICLES", hash: "#vehicles" },
+    { name: "HOW IT WORKS", hash: "#how-it-works" },
+    { name: "WHY US", hash: "#why-us" },
+    { name: "ABOUT US", path: "/about" },
+    { name: "CONTACT US", hash: "#inquiry" },
   ];
 
-  const siteName = settings?.siteName || 'MAKERS CEYLON';
+  const siteName = settings?.siteName || "MAKERS CEYLON";
   const contactNumber =
     settings?.header?.contactNumber ||
     settings?.footer?.phone ||
-    '077 123 4567';
+    "077 123 4567";
 
   const whatsappRaw = settings?.header?.whatsappNumber || contactNumber;
-  const whatsappUrl = `https://wa.me/94${whatsappRaw.replace(/\s/g, '').replace(/^0/, '').replace(/^\+94/, '')}`;
+  const whatsappUrl = `https://wa.me/${whatsappRaw.replace(/\s/g, "").replace(/^\+/, "")}`;
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-lg py-2' : 'bg-white border-b border-gray-100 py-4'
+        isScrolled
+          ? "bg-white shadow-lg py-2"
+          : "bg-white border-b border-gray-100 py-4"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,7 +78,11 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 z-50">
             {settings?.logo ? (
-              <img src={settings.logo} alt={siteName} className="w-10 h-10 object-contain" />
+              <img
+                src={settings.logo}
+                alt={siteName}
+                className="w-10 h-10 object-contain"
+              />
             ) : (
               <div className="relative w-10 h-10 flex-shrink-0">
                 <div className="absolute inset-0 bg-primary rounded-full flex items-center justify-center">
@@ -89,7 +97,7 @@ export function Header() {
                 {siteName}
               </span>
               <span className="text-[10px] font-bold text-gray-500 tracking-[0.1em]">
-                {settings?.header?.tagline || 'IMPORT YOUR DREAM'}
+                {settings?.header?.tagline || "IMPORT YOUR DREAM"}
               </span>
             </div>
           </Link>
@@ -102,7 +110,7 @@ export function Header() {
                   key={link.name}
                   href={link.path}
                   className={`text-[11px] lg:text-[13px] font-bold tracking-wider transition-colors hover:text-primary ${
-                    pathname === link.path ? 'text-primary' : 'text-gray-700'
+                    pathname === link.path ? "text-primary" : "text-gray-700"
                   }`}
                 >
                   {link.name}
@@ -115,7 +123,7 @@ export function Header() {
                 >
                   {link.name}
                 </button>
-              )
+              ),
             )}
           </nav>
 
@@ -123,7 +131,12 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             <div className="flex items-center gap-2 text-dark font-bold">
               <Phone className="w-4 h-4 text-primary" />
-              <a href={`tel:${contactNumber}`} className="text-sm hover:text-primary transition-colors">{contactNumber}</a>
+              <a
+                href={`tel:${contactNumber}`}
+                className="text-sm hover:text-primary transition-colors"
+              >
+                {contactNumber}
+              </a>
             </div>
             <a
               href={whatsappUrl}
@@ -140,9 +153,13 @@ export function Header() {
           <button
             className="lg:hidden z-50 p-2 -mr-2 flex items-center justify-center text-dark hover:bg-gray-100 rounded-lg transition-all focus:outline-none active:scale-95"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
-            {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+            ) : (
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
+            )}
           </button>
         </div>
       </div>
@@ -154,7 +171,7 @@ export function Header() {
             initial={{ opacity: 0, y: -10, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 lg:hidden max-h-[calc(100vh-60px)] overflow-y-auto rounded-b-2xl safe-bottom"
           >
             <div className="flex flex-col px-4 py-4 gap-1 sm:gap-2">
@@ -165,7 +182,9 @@ export function Header() {
                     href={link.path}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`text-[13px] sm:text-sm font-bold tracking-wider px-4 py-3 min-h-[44px] flex items-center rounded-xl transition-all active:scale-[0.98] ${
-                      pathname === link.path ? 'bg-primary/10 text-primary' : 'text-gray-700 hover:bg-gray-50'
+                      pathname === link.path
+                        ? "bg-primary/10 text-primary"
+                        : "text-gray-700 hover:bg-gray-50"
                     }`}
                   >
                     {link.name}
@@ -178,13 +197,18 @@ export function Header() {
                   >
                     {link.name}
                   </button>
-                )
+                ),
               )}
               <div className="h-px bg-gray-100 my-2" />
               <div className="flex flex-col gap-3 p-3 bg-gray-50 rounded-xl mb-2">
                 <div className="flex items-center justify-center gap-2 text-dark font-bold">
                   <Phone className="w-4 h-4 text-primary" />
-                  <a href={`tel:${contactNumber}`} className="text-[13px] tracking-wide hover:text-primary transition-colors">{contactNumber}</a>
+                  <a
+                    href={`tel:${contactNumber}`}
+                    className="text-[13px] tracking-wide hover:text-primary transition-colors"
+                  >
+                    {contactNumber}
+                  </a>
                 </div>
                 <a
                   href={whatsappUrl}

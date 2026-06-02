@@ -2,8 +2,17 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import * as LucideIcons from 'lucide-react';
+import {
+  DollarSign, Search, Zap, Globe, Headphones,
+  CheckCircle, Star, Shield, Truck, ThumbsUp,
+} from 'lucide-react';
 import { useSettings } from '@/context/SettingsContext';
+
+const ICON_MAP: Record<string, React.ElementType> = {
+  DollarSign, Search, Zap, Globe,
+  HeadphonesIcon: Headphones,
+  CheckCircle, Star, Shield, Truck, ThumbsUp,
+};
 
 export function WhyChooseUs() {
   const { settings } = useSettings();
@@ -60,7 +69,7 @@ export function WhyChooseUs() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
           {reasons.map((reason, index) => {
             // Dynamically load the icon, defaulting to CheckCircle if not found
-            const Icon = (LucideIcons as any)[reason.icon] || LucideIcons.CheckCircle;
+            const Icon = ICON_MAP[reason.icon] || CheckCircle;
             return (
               <motion.div
                 key={index}

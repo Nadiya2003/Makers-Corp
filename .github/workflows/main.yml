@@ -24,6 +24,9 @@ jobs:
            MONGO_URI='${{ secrets.MONGO_URI }}' \
            PORT='${{ vars.PORT }}' \
            FRONTEND_URL='${{ vars.FRONTEND_URL }}' \
+           RESEND_API='${{ secrets.RESEND_API }}' \
+           RECEIVE_EMAIL='${{ vars.RECEIVE_EMAIL }}' \
+           SEND_EMAIL='${{ vars.SEND_EMAIL }}' \
            bash -s" << 'EOF'
             set -e
             echo "--- Starting Deployment ---"
@@ -85,6 +88,9 @@ jobs:
                 echo "MONGO_URI=$MONGO_URI"
                 echo "PORT=$PORT"
                 echo "FRONTEND_URL=$FRONTEND_URL"
+                echo "RESEND_API=$RESEND_API"
+                echo "RECEIVE_EMAIL=$RECEIVE_EMAIL"
+                echo "SEND_EMAIL=$SEND_EMAIL"
             } > .env
             chmod 600 .env
             echo "Restarting backend PM2..."

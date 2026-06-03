@@ -18,10 +18,10 @@ const DEFAULT_GALLERY = [
 ];
 
 const DEFAULT_VALUES = [
-  { icon: Users,        title: 'Customer First',      desc: 'Every decision we make starts with what\'s best for our customers.' },
-  { icon: Globe,        title: 'Global Reach',         desc: 'Extensive partnerships with Japan\'s top auction houses.' },
-  { icon: Star,         title: 'Proven Excellence',    desc: 'Years of experience delivering vehicles across Sri Lanka.' },
-  { icon: CheckCircle,  title: '100% Transparent',     desc: 'Full visibility into pricing, bidding, and customs processes.' },
+  { icon: Users, title: 'Customer First', desc: 'Every decision we make starts with what\'s best for our customers.' },
+  { icon: Globe, title: 'Global Reach', desc: 'Extensive partnerships with Japan\'s top auction houses.' },
+  { icon: Star, title: 'Proven Excellence', desc: 'Years of experience delivering vehicles across Sri Lanka.' },
+  { icon: CheckCircle, title: '100% Transparent', desc: 'Full visibility into pricing, bidding, and customs processes.' },
 ];
 
 // ─── Lightbox ─────────────────────────────────────────────────────────────────
@@ -236,14 +236,14 @@ export function AboutUsClient() {
       <section className="py-20 sm:py-32 bg-gray-50 relative overflow-hidden">
         {/* Decorative Grid Pattern */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-        
+
         {/* Floating Gradient Orbs */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-orange-400/10 rounded-full blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
 
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-            
+
             {/* Left: Text Content */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
@@ -282,7 +282,7 @@ export function AboutUsClient() {
                     >
                       {/* Hover Gradient Background */}
                       <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                      
+
                       <div className="relative z-10">
                         <div className="w-16 h-16 bg-gray-50 group-hover:bg-primary rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300 shadow-sm group-hover:shadow-orange-500/30">
                           <Icon className="w-8 h-8 text-dark group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
@@ -321,7 +321,7 @@ export function AboutUsClient() {
               let gridClass = 'col-span-1 row-span-1';
               if (i === 0) gridClass = 'col-span-2 md:col-span-2 row-span-2';
               if (i === 5) gridClass = 'col-span-2 md:col-span-1 row-span-1';
-              
+
               return (
                 <motion.div
                   key={i}
@@ -334,22 +334,22 @@ export function AboutUsClient() {
                   className={`relative overflow-hidden rounded-2xl cursor-pointer group ${gridClass}`}
                 >
                   <Image src={img} alt={`Gallery ${i + 1}`} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileHover={{ opacity: 1, scale: 1 }}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/20 backdrop-blur-sm rounded-full p-3"
-                  >
-                    <ChevronRight className="w-6 h-6 text-white" />
-                  </motion.div>
-                </div>
-                {i === 0 && (
-                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
-                    <span className="text-white font-bold text-lg">Our Showroom</span>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileHover={{ opacity: 1, scale: 1 }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/20 backdrop-blur-sm rounded-full p-3"
+                    >
+                      <ChevronRight className="w-6 h-6 text-white" />
+                    </motion.div>
                   </div>
-                )}
-              </motion.div>
-            );
+                  {i === 0 && (
+                    <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
+                      <span className="text-white font-bold text-lg"></span>
+                    </div>
+                  )}
+                </motion.div>
+              );
             })}
           </div>
         </div>
@@ -372,11 +372,11 @@ export function AboutUsClient() {
       <section className="py-16 sm:py-24 relative overflow-hidden">
         {/* Background Image that blends into the white section below */}
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <Image 
-            src="https://images.unsplash.com/photo-1503375811461-9457fb1e52ee?q=80&w=2000&auto=format&fit=crop" 
-            alt="Mission background" 
-            fill 
-            className="object-cover opacity-20 object-center mix-blend-luminosity" 
+          <Image
+            src="https://images.unsplash.com/photo-1503375811461-9457fb1e52ee?q=80&w=2000&auto=format&fit=crop"
+            alt="Mission background"
+            fill
+            className="object-cover opacity-20 object-center mix-blend-luminosity"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-white via-white/80 to-white" />
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
@@ -421,10 +421,10 @@ export function AboutUsClient() {
           {/* Vehicle Background Image - clearly visible on dark overlay */}
           <div className="absolute inset-0 z-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={content.directorsBg} 
-              alt="Directors background" 
-              className="w-full h-full object-cover object-center" 
+            <img
+              src={content.directorsBg}
+              alt="Directors background"
+              className="w-full h-full object-cover object-center"
             />
             {/* Dark dramatic overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-black/70 to-orange-950/80" />

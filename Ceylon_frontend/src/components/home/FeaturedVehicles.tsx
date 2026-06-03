@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Fuel, Gauge, ArrowRight, Loader2, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, Fuel, Settings, ArrowRight, Loader2, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -66,8 +66,8 @@ function VehicleCard({ vehicle, onQuickView }: { vehicle: Vehicle; onQuickView: 
             <span className="text-[10px] font-bold uppercase truncate">{vehicle.fuel}</span>
           </div>
           <div className="flex flex-1 items-center justify-center gap-1.5 text-gray-500">
-            <Gauge className="w-3.5 h-3.5 text-gray-400" />
-            <span className="text-[10px] font-bold uppercase truncate">{vehicle.mileage}</span>
+            <Settings className="w-3.5 h-3.5 text-gray-400" />
+            <span className="text-[10px] font-bold uppercase truncate">{vehicle.transmission}</span>
           </div>
         </div>
 

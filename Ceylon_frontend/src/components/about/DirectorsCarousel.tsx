@@ -293,7 +293,7 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
 
   return (
     <>
-      {n <= 4 ? (
+      {n <= 4 && visibleCount > 1 ? (
         // Static Centered View (no loop, no duplication)
         <div className="flex flex-wrap justify-center gap-6 py-8 px-4 max-w-7xl mx-auto">
           {directors.map((director, index) => (
@@ -309,7 +309,9 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
         // Slider view for > 4 directors
         <div
           className="relative w-full py-4"
-          onMouseEnter={() => setIsHovered(true)}
+          onMouseEnter={() => {
+            if (visibleCount > 1) setIsHovered(true);
+          }}
           onMouseLeave={() => {
             setIsHovered(false);
             setIsDragging(false);
@@ -329,6 +331,7 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
+              onTouchCancel={handleTouchEnd}
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}

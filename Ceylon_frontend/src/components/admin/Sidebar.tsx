@@ -22,7 +22,8 @@ import {
   Info,
   Phone,
   X,
-  MessageSquare
+  MessageSquare,
+  Truck
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -36,6 +37,7 @@ const menuItems = [
   { icon: Layout, label: 'Header & Footer', href: '/admin/appearance' },
   { icon: Home, label: 'Homepage Content', href: '/admin/homepage' },
   { icon: Car, label: 'Vehicles', href: '/admin/vehicles' },
+  { icon: Truck, label: 'Commercial Vehicles', href: '/admin/commercial-vehicles' },
   { icon: Gavel, label: 'Auctions', href: '/admin/auctions' },
   { icon: Mail, label: 'Inquiries', href: '/admin/inquiries' },
   { icon: ImageIcon, label: 'Media Manager', href: '/admin/media' },

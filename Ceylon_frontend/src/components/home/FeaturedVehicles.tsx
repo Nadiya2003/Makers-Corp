@@ -97,6 +97,7 @@ export function FeaturedVehicles() {
   const [error, setError] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'auction' | 'commercial'>('auction');
 
   // ── HOOKS FOR CAROUSEL ──────────────────────────────────────────────────
   const [visibleCount, setVisibleCount] = useState(4);
@@ -115,6 +116,8 @@ export function FeaturedVehicles() {
   // Fetch data
   useEffect(() => {
     const fetchVehicles = async () => {
+      setLoading(true);
+      setError('');
       try {
         const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
         const baseUrl = apiUrl.replace(/\/api$/, '');
@@ -124,7 +127,8 @@ export function FeaturedVehicles() {
           return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
         };
 
-        const response = await axios.get(`${apiUrl}/vehicles`);
+        const endpoint = activeTab === 'auction' ? '/vehicles' : '/commercial-vehicles';
+        const response = await axios.get(`${apiUrl}${endpoint}`);
         if (response.data.success) {
           const processedVehicles = response.data.data.map((v: any) => ({
             ...v,
@@ -142,7 +146,7 @@ export function FeaturedVehicles() {
     };
 
     fetchVehicles();
-  }, []);
+  }, [activeTab]);
 
   // Detect screen size & set visibleCount
   useEffect(() => {
@@ -295,6 +299,28 @@ export function FeaturedVehicles() {
             <p className="mt-4 text-gray-500 font-medium text-lg max-w-xl">
               Swipe through our exclusive selection of premium Japanese vehicles, available for immediate import.
             </p>
+            <div className="mt-8 flex flex-wrap items-center gap-2 bg-gray-200/50 p-1.5 rounded-2xl w-fit">
+              <button
+                onClick={() => { setActiveTab('auction'); setIsTransitioning(false); }}
+                className={`px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+                  activeTab === 'auction'
+                    ? 'bg-white text-dark shadow-md'
+                    : 'text-gray-500 hover:text-dark'
+                }`}
+              >
+                Auction Vehicles
+              </button>
+              <button
+                onClick={() => { setActiveTab('commercial'); setIsTransitioning(false); }}
+                className={`px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+                  activeTab === 'commercial'
+                    ? 'bg-white text-dark shadow-md'
+                    : 'text-gray-500 hover:text-dark'
+                }`}
+              >
+                Commercial Vehicles
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center gap-6">

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, Phone, MessageCircle } from "lucide-react";
+import { Menu, X, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useSettings } from "@/context/SettingsContext";
@@ -58,7 +58,7 @@ export function Header() {
 
   const siteName = settings?.siteName || "MAKERS CEYLON";
   const contactNumber =
-    settings?.header?.contactNumber ||
+    /*settings?.header?.contactNumber ||*/
     settings?.footer?.phone ||
     "077 123 4567";
 
@@ -67,11 +67,10 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
-        isScrolled
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${isScrolled
           ? "bg-white shadow-lg py-2"
           : "bg-white border-b border-gray-100 py-4"
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
@@ -109,9 +108,8 @@ export function Header() {
                 <Link
                   key={link.name}
                   href={link.path}
-                  className={`text-[11px] lg:text-[13px] font-bold tracking-wider transition-colors hover:text-primary ${
-                    pathname === link.path ? "text-primary" : "text-gray-700"
-                  }`}
+                  className={`text-[11px] lg:text-[13px] font-bold tracking-wider transition-colors hover:text-primary ${pathname === link.path ? "text-primary" : "text-gray-700"
+                    }`}
                 >
                   {link.name}
                 </Link>
@@ -129,15 +127,6 @@ export function Header() {
 
           {/* Right Actions */}
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
-            <div className="flex items-center gap-2 text-dark font-bold">
-              <Phone className="w-4 h-4 text-primary" />
-              <a
-                href={`tel:${contactNumber}`}
-                className="text-sm hover:text-primary transition-colors"
-              >
-                {contactNumber}
-              </a>
-            </div>
             <a
               href={whatsappUrl}
               target="_blank"
@@ -145,7 +134,7 @@ export function Header() {
               className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 xl:px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20 uppercase"
             >
               <MessageCircle className="w-4 h-4" />
-              WhatsApp Us
+              Contact Japan
             </a>
           </div>
 
@@ -181,11 +170,10 @@ export function Header() {
                     key={link.name}
                     href={link.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`text-[13px] sm:text-sm font-bold tracking-wider px-4 py-3 min-h-[44px] flex items-center rounded-xl transition-all active:scale-[0.98] ${
-                      pathname === link.path
+                    className={`text-[13px] sm:text-sm font-bold tracking-wider px-4 py-3 min-h-[44px] flex items-center rounded-xl transition-all active:scale-[0.98] ${pathname === link.path
                         ? "bg-primary/10 text-primary"
                         : "text-gray-700 hover:bg-gray-50"
-                    }`}
+                      }`}
                   >
                     {link.name}
                   </Link>
@@ -201,15 +189,6 @@ export function Header() {
               )}
               <div className="h-px bg-gray-100 my-2" />
               <div className="flex flex-col gap-3 p-3 bg-gray-50 rounded-xl mb-2">
-                <div className="flex items-center justify-center gap-2 text-dark font-bold">
-                  <Phone className="w-4 h-4 text-primary" />
-                  <a
-                    href={`tel:${contactNumber}`}
-                    className="text-[13px] tracking-wide hover:text-primary transition-colors"
-                  >
-                    {contactNumber}
-                  </a>
-                </div>
                 <a
                   href={whatsappUrl}
                   target="_blank"
@@ -217,7 +196,7 @@ export function Header() {
                   className="flex items-center justify-center w-full gap-2 bg-primary text-white px-4 py-3 rounded-lg text-[13px] font-bold shadow-sm active:scale-95 transition-all uppercase"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  WhatsApp Us
+                  Contact Japan
                 </a>
               </div>
             </div>

@@ -6,6 +6,7 @@ import { X, Gavel } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useSettings } from '@/context/SettingsContext';
+import { normalizeImageUrl } from '@/lib/imageUtils';
 
 export function PopupModal() {
   const { settings, loading } = useSettings();
@@ -78,7 +79,7 @@ export function PopupModal() {
             <div className="h-36 sm:h-48 relative group overflow-hidden bg-gray-100">
               {ad.image && (
                 <Image
-                  src={ad.image}
+                  src={normalizeImageUrl(ad.image)}
                   alt={ad.title || 'Popup Ad'}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"

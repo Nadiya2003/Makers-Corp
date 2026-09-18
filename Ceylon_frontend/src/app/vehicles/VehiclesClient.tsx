@@ -7,6 +7,7 @@ import Image from 'next/image';
 import axios from 'axios';
 
 import { VehicleDetailModal } from '@/components/VehicleDetailModal';
+import { normalizeImageUrl } from '@/lib/imageUtils';
 
 interface Vehicle {
   _id: string;
@@ -61,8 +62,8 @@ export function VehiclesClient() {
         const baseUrl = apiUrl.replace(/\/api$/, '');
         const getImageUrl = (url: string) => {
           if (!url) return '';
-          if (url.startsWith('http')) return url;
-          return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+          if (url.startsWith('http')) return normalizeImageUrl(url);
+          return normalizeImageUrl(`${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`);
         };
 
         // Fetch all vehicles (no featured=true flag)

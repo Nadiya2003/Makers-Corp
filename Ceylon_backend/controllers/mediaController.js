@@ -19,7 +19,11 @@ const addMedia = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Please upload at least one photo' });
     }
 
-    const apiUrl = `${req.protocol}://${req.get('host')}`;
+    // Use https on production hosts; fallback to the actual request protocol locally
+    const host = req.get('host') || '';
+    const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+    const protocol = isLocal ? req.protocol : 'https';
+    const apiUrl = `${protocol}://${host}`;
     const mediaEntries = [];
 
     for (const file of req.files) {

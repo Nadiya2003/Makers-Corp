@@ -22,6 +22,26 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use("/public", express.static("public"));
 
+// Normalize http://makersceylon.com image URLs to https://makersceylon.com in all API responses
+app.use((req, res, next) => {
+  const originalJson = res.json;
+  res.json = function (data) {
+    if (data && typeof data === 'object') {
+      try {
+        const str = JSON.stringify(data);
+        if (str.includes('http://makersceylon.com') || str.includes('http://www.makersceylon.com')) {
+          const replaced = str
+            .replace(/http:\/\/makersceylon\.com/g, 'https://makersceylon.com')
+            .replace(/http:\/\/www\.makersceylon\.com/g, 'https://www.makersceylon.com');
+          return originalJson.call(this, JSON.parse(replaced));
+        }
+      } catch (e) {}
+    }
+    return originalJson.call(this, data);
+  };
+  next();
+});
+
 // ─── Routes ──────────────────────────────────────────────────────────────────
 app.use("/api/inquiries", inquiryRoutes);
 app.use("/api/contact", contactRoutes);

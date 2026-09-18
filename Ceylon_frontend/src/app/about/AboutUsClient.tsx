@@ -6,6 +6,7 @@ import { Shield, Target, Award, ArrowRight, Loader2, X, ChevronLeft, ChevronRigh
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { DirectorsCarousel } from '@/components/about/DirectorsCarousel';
+import { normalizeImageUrl } from '@/lib/imageUtils';
 
 // ─── Default gallery fallback ──────────────────────────────────────────────────
 const DEFAULT_GALLERY = [
@@ -106,8 +107,8 @@ export function AboutUsClient() {
       const baseUrl = apiUrl.replace(/\/api$/, '');
       const getImageUrl = (url: string) => {
         if (!url) return '';
-        if (url.startsWith('http')) return url;
-        return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+        if (url.startsWith('http')) return normalizeImageUrl(url);
+        return normalizeImageUrl(`${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`);
       };
 
       const res = await fetch(`${apiUrl}/settings`);

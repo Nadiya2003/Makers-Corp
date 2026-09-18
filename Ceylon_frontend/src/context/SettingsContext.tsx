@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { normalizeSettingsImages } from '@/lib/imageUtils';
 
 interface Settings {
   siteName: string;
@@ -99,7 +100,7 @@ const SettingsContext = createContext<{
 });
 
 export function SettingsProvider({ children, initialSettings = null }: { children: React.ReactNode, initialSettings?: Settings | null }) {
-  const [settings, setSettings] = useState<Settings | null>(initialSettings);
+  const [settings, setSettings] = useState<Settings | null>(() => initialSettings ? normalizeSettingsImages(initialSettings) : null);
   const [loading, setLoading] = useState(!initialSettings);
 
   const fetchSettings = async () => {
@@ -107,9 +108,10 @@ export function SettingsProvider({ children, initialSettings = null }: { childre
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/settings`);
       const data = await res.json();
       if (data.success) {
-        setSettings(data.data);
+        const normalized = normalizeSettingsImages(data.data);
+        setSettings(normalized);
         // Save to cache so next page load is instant (no flash)
-        try { localStorage.setItem('mc_site_settings', JSON.stringify(data.data)); } catch {}
+        try { localStorage.setItem('mc_site_settings', JSON.stringify(normalized)); } catch {}
       }
     } catch (err) {
       console.error('Failed to fetch settings');
@@ -119,17 +121,18 @@ export function SettingsProvider({ children, initialSettings = null }: { childre
   };
 
   useEffect(() => {
-    // If we didn't get initial settings from the server, or we want to fetch fresh data
+    // If we didn't get initial settings from the server, restore from cache first for fast display
     if (!initialSettings) {
       try {
         const cached = localStorage.getItem('mc_site_settings');
         if (cached) {
-          setSettings(JSON.parse(cached));
+          setSettings(normalizeSettingsImages(JSON.parse(cached)));
           setLoading(false);
         }
       } catch {}
-      fetchSettings();
     }
+    // Always fetch fresh settings on mount to ensure local site has the latest updated details
+    fetchSettings();
   }, [initialSettings]);
 
   return (

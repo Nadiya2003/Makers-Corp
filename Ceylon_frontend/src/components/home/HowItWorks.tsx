@@ -8,6 +8,7 @@ import {
   CheckCircle, Star, Truck, Globe, Zap, Phone, DollarSign,
 } from 'lucide-react';
 import { useSettings } from '@/context/SettingsContext';
+import { normalizeImageUrl } from '@/lib/imageUtils';
 
 // Map icon name strings to actual components
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -30,7 +31,7 @@ export function HowItWorks() {
   const subtitle         = raw?.subtitle         || 'Simple Process';
   const title            = raw?.title            || 'How It Works';
   const description      = raw?.description      || "Importing a vehicle doesn't have to be complicated. We've streamlined the process into 4 simple steps.";
-  const backgroundImage  = raw?.backgroundImage  || '';
+  const backgroundImage  = normalizeImageUrl(raw?.backgroundImage)  || '';
   let steps: { icon: string; title: string; description: string }[] =
     raw?.steps && raw.steps.length > 0 ? raw.steps : DEFAULT_STEPS;
 

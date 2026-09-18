@@ -7,6 +7,7 @@ import { Menu, X, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useSettings } from "@/context/SettingsContext";
+import { normalizeImageUrl } from "@/lib/imageUtils";
 
 export function Header() {
   const { settings, loading } = useSettings();
@@ -78,7 +79,7 @@ export function Header() {
           <Link href="/" className="flex items-center gap-3 z-50">
             {settings?.logo ? (
               <img
-                src={settings.logo}
+                src={normalizeImageUrl(settings.logo)}
                 alt={siteName}
                 className="w-10 h-10 object-contain"
               />

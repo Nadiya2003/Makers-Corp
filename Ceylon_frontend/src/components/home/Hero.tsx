@@ -6,6 +6,7 @@ import { MessageCircle, ArrowRight, Clock, ShieldCheck, FileText, Package, Check
 import Image from 'next/image';
 
 import { useSettings } from '@/context/SettingsContext';
+import { normalizeImageUrl } from '@/lib/imageUtils';
 
 export function Hero() {
   const { settings } = useSettings();
@@ -18,7 +19,7 @@ export function Hero() {
   };
 
   const heroData = settings?.homepage?.hero;
-  const backgroundImage = heroData?.backgroundImage || '/images/background image.jpeg';
+  const backgroundImage = normalizeImageUrl(heroData?.backgroundImage) || '/images/background image.jpeg';
   const heroTitle = heroData?.title || 'YOUR DREAM VEHICLE,\nDIRECTLY FROM JAPAN';
   const heroSubtitle = heroData?.subtitle || 'FROM JAPAN AUCTION TO YOUR DRIVEWAY — WE HANDLE EVERYTHING.';
   const ctaText = heroData?.ctaText || 'GET YOUR IMPORT PRICE NOW';

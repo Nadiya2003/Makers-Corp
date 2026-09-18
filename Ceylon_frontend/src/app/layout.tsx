@@ -22,6 +22,7 @@ export const viewport = {
 
 import { MainLayout } from '@/components/MainLayout';
 import { SettingsProvider } from '@/context/SettingsContext';
+import { normalizeSettingsImages } from '@/lib/imageUtils';
 
 async function fetchInitialSettings() {
   try {
@@ -31,7 +32,7 @@ async function fetchInitialSettings() {
     });
     if (!res.ok) return null;
     const data = await res.json();
-    return data.success ? data.data : null;
+    return data.success ? normalizeSettingsImages(data.data) : null;
   } catch (err) {
     return null;
   }

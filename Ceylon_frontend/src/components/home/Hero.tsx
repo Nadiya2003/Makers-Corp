@@ -104,7 +104,7 @@ export function Hero() {
     }, 5700);
 
     return () => autoPanTimers.current.forEach(clearTimeout);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleTouchStart = (e: React.TouchEvent) => {

@@ -31,6 +31,7 @@ import {
   Loader2
 } from 'lucide-react';
 import Image from 'next/image';
+import { normalizeImageUrl } from '@/lib/imageUtils';
 
 // ─── Icon name → lucide component map ──────────────────────────────────────
 const ICON_MAP: Record<string, any> = {
@@ -114,7 +115,7 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
 
   if (!vehicle) return null;
 
-  const allImages = [vehicle.image, ...(vehicle.images || [])].filter(Boolean);
+  const allImages = [vehicle.image, ...(vehicle.images || [])].filter(Boolean).map(normalizeImageUrl);
 
   const nextImage = () => setActiveImageIndex((prev) => (prev + 1) % allImages.length);
   const prevImage = () => setActiveImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);

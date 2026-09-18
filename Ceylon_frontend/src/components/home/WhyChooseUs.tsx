@@ -8,6 +8,7 @@ import {
   ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { useSettings } from '@/context/SettingsContext';
+import { normalizeImageUrl } from '@/lib/imageUtils';
 
 const ICON_MAP: Record<string, React.ElementType> = {
   DollarSign, Search, Zap, Globe,
@@ -80,7 +81,7 @@ export function WhyChooseUs() {
       {/* Orange & Black Vibe Background Image */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         <img 
-          src={whyChooseUsData.backgroundImage || "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=2000&auto=format&fit=crop"} 
+          src={normalizeImageUrl(whyChooseUsData.backgroundImage) || "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=2000&auto=format&fit=crop"} 
           alt="Dark vehicle background" 
           className="w-full h-full object-cover opacity-40"
         />

@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { MapPin, Phone, Mail, Facebook, Instagram, Youtube, Video } from 'lucide-react';
 import { useSettings } from '@/context/SettingsContext';
+import { normalizeImageUrl } from '@/lib/imageUtils';
 
 export function Footer() {
   const { settings } = useSettings();
@@ -21,7 +22,7 @@ export function Footer() {
   };
 
   const siteName = settings?.siteName || 'Makers Ceylon';
-  const footerLogo = footerData.logo || settings?.logo;
+  const footerLogo = normalizeImageUrl(footerData.logo || settings?.logo);
 
   const renderSocialIcon = (platform: string) => {
     switch (platform.toLowerCase()) {
@@ -51,7 +52,7 @@ export function Footer() {
     (link: any) => link.visible !== false && link.url
   );
 
-  const footerBgImage = footerData.image || 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1600&auto=format&fit=crop';
+  const footerBgImage = normalizeImageUrl(footerData.image) || 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1600&auto=format&fit=crop';
 
   return (
     <footer className="relative bg-[#050505] text-gray-300 py-8 sm:py-14 lg:py-16 border-t border-white/5 overflow-hidden">

@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useSettings } from '@/context/SettingsContext';
+import { normalizeImageUrl } from '@/lib/imageUtils';
 
 // ─── Count-up hook ────────────────────────────────────────────────────────────
 function useCountUp(target: number, duration = 1800, started: boolean) {
@@ -97,7 +98,7 @@ export function About() {
       rawAbout?.description ||
       'We are your dedicated partner in importing high-quality Japanese vehicles directly to Sri Lanka. With years of expertise and a commitment to transparency, we simplify the complex process of vehicle importation.',
     image:
-      rawAbout?.image ||
+      normalizeImageUrl(rawAbout?.image) ||
       'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop',
     stats: rawAbout?.stats ?? [],
   };

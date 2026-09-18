@@ -23,7 +23,29 @@ const nextConfig = {
         port: '5000',
         pathname: '/public/uploads/**',
       },
-      // Production backend – any hostname (catch-all)
+      // Production backend – http (images uploaded from production server use http)
+      {
+        protocol: 'http',
+        hostname: 'makersceylon.com',
+        pathname: '/public/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'www.makersceylon.com',
+        pathname: '/public/**',
+      },
+      // Production backend – https
+      {
+        protocol: 'https',
+        hostname: 'makersceylon.com',
+        pathname: '/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.makersceylon.com',
+        pathname: '/public/**',
+      },
+      // Any other https hostname (catch-all)
       {
         protocol: 'https',
         hostname: '**',

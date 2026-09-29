@@ -132,7 +132,7 @@ export function Header() {
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 xl:px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20 uppercase"
+              className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-5 xl:px-6 py-2.5 rounded-none text-xs font-black tracking-widest uppercase transition-all shadow-md shadow-primary/20 active:scale-95"
             >
               <MessageCircle className="w-4 h-4" />
               Contact Japan
@@ -141,7 +141,7 @@ export function Header() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="lg:hidden z-50 p-2 -mr-2 flex items-center justify-center text-dark hover:bg-gray-100 rounded-lg transition-all focus:outline-none active:scale-95"
+            className="lg:hidden z-50 p-2 -mr-2 flex items-center justify-center text-dark hover:bg-gray-100 rounded-none transition-all focus:outline-none active:scale-95"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -162,7 +162,7 @@ export function Header() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 lg:hidden max-h-[calc(100vh-60px)] overflow-y-auto rounded-b-2xl safe-bottom"
+            className="absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-gray-100 lg:hidden max-h-[calc(100vh-60px)] overflow-y-auto rounded-none safe-bottom"
           >
             <div className="flex flex-col px-4 py-4 gap-1 sm:gap-2">
               {navLinks.map((link) =>
@@ -171,8 +171,8 @@ export function Header() {
                     key={link.name}
                     href={link.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`text-[13px] sm:text-sm font-bold tracking-wider px-4 py-3 min-h-[44px] flex items-center rounded-xl transition-all active:scale-[0.98] ${pathname === link.path
-                        ? "bg-primary/10 text-primary"
+                    className={`text-xs font-black tracking-widest uppercase px-4 py-3 min-h-[44px] flex items-center rounded-none transition-all active:scale-[0.98] ${pathname === link.path
+                        ? "bg-primary/10 text-primary border-l-2 border-primary"
                         : "text-gray-700 hover:bg-gray-50"
                       }`}
                   >
@@ -182,19 +182,19 @@ export function Header() {
                   <button
                     key={link.name}
                     onClick={() => handleNavClick(link.hash!)}
-                    className="text-[13px] sm:text-sm font-bold tracking-wider px-4 py-3 min-h-[44px] flex items-center w-full text-left transition-all active:scale-[0.98] rounded-xl text-gray-700 hover:bg-gray-50 hover:text-primary"
+                    className="text-xs font-black tracking-widest uppercase px-4 py-3 min-h-[44px] flex items-center w-full text-left transition-all active:scale-[0.98] rounded-none text-gray-700 hover:bg-gray-50 hover:text-primary"
                   >
                     {link.name}
                   </button>
                 ),
               )}
               <div className="h-px bg-gray-100 my-2" />
-              <div className="flex flex-col gap-3 p-3 bg-gray-50 rounded-xl mb-2">
+              <div className="flex flex-col gap-3 p-3 bg-gray-50 rounded-none mb-2">
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-center w-full gap-2 bg-primary text-white px-4 py-3 rounded-lg text-[13px] font-bold shadow-sm active:scale-95 transition-all uppercase"
+                  className="flex items-center justify-center w-full gap-2 bg-primary text-white px-4 py-3.5 rounded-none text-xs font-black tracking-widest uppercase shadow-sm active:scale-95 transition-all"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Contact Japan

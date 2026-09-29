@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { MessageCircle, ArrowRight, Clock, ShieldCheck, FileText, Package, Check, Award, Ship, Landmark, Truck } from 'lucide-react';
+import { MessageCircle, ArrowRight, Clock, ShieldCheck, FileText, Package, Check, Award, Ship, Landmark, Truck, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 
 import { useSettings } from '@/context/SettingsContext';
@@ -14,7 +14,14 @@ export function Hero() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const header = document.querySelector('header');
+      const headerHeight = header ? header.getBoundingClientRect().height : 80;
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = Math.max(0, elementPosition - headerHeight);
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
     }
   };
 
@@ -140,7 +147,7 @@ export function Hero() {
 
   return (
     <section
-      className="relative min-h-screen flex flex-col overflow-hidden bg-gray-50 pt-20 lg:pt-[5.5rem] pb-4"
+      className="relative min-h-screen flex flex-col overflow-hidden bg-gray-50 pt-20 lg:pt-[5.5rem] pb-0"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -176,7 +183,7 @@ export function Hero() {
           />
         </div>
         {/* Static overlays */}
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-gray-50 to-transparent z-10" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-gray-50 to-transparent z-10" />
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 60% at 60% 20%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 45%, transparent 100%)' }} />
         {/* Mobile swipe hint */}
         <div className="sm:hidden absolute bottom-[12rem] left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-full pointer-events-none">
@@ -402,6 +409,32 @@ export function Hero() {
           </div>
 
         </div>
+
+        {/* Modern Animated Downward Scroll Arrow - Premium Automotive Design */}
+        <div className="relative z-20 flex flex-col items-center justify-center pt-3 sm:pt-4 pb-4 sm:pb-6 w-full">
+          <motion.button
+            onClick={() => scrollToSection('vehicles')}
+            aria-label="Scroll down to Featured Vehicles"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.85, duration: 0.6 }}
+            className="group flex flex-col items-center gap-2 cursor-pointer focus:outline-none select-none transition-transform active:scale-95"
+          >
+            <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-neutral-900/95 hover:bg-neutral-900 backdrop-blur-md border border-neutral-700/90 hover:border-primary text-white shadow-xl hover:shadow-[0_0_25px_rgba(255,106,0,0.35)] transition-all duration-300">
+              <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.22em] text-neutral-200 group-hover:text-primary transition-colors">
+                Explore Vehicles
+              </span>
+              <motion.div
+                animate={{ y: [0, 4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                className="w-5 h-5 rounded-full bg-primary/20 border border-primary/40 group-hover:bg-primary group-hover:border-primary flex items-center justify-center text-primary group-hover:text-white transition-all"
+              >
+                <ChevronDown className="w-3.5 h-3.5" strokeWidth={3} />
+              </motion.div>
+            </div>
+          </motion.button>
+        </div>
+
       </div>
     </section >
   );

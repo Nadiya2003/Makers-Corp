@@ -59,59 +59,62 @@ export function Inquiry() {
   };
 
   return (
-    <section id="inquiry" className="py-12 sm:py-20 lg:py-24 bg-gray-50 flex justify-center">
+    <section id="inquiry" className="py-16 sm:py-24 lg:py-32 bg-gray-50 flex justify-center border-t border-gray-200">
       <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         
-        {/* Main Container */}
-        <div className="bg-white rounded-[2rem] border border-primary/40 shadow-2xl shadow-orange-500/5 flex flex-col lg:flex-row overflow-hidden">
+        {/* Main Showroom Inquiries Container */}
+        <div className="bg-white rounded-none border border-neutral-200 shadow-2xl flex flex-col lg:flex-row overflow-hidden">
           
           {/* ── Left Column: Contact Details & Map ── */}
-          <div className="lg:w-[45%] bg-[#111] text-white p-8 sm:p-10 lg:p-12 relative flex flex-col">
-            {/* Subtle top-right glow */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+          <div className="lg:w-[45%] bg-[#111111] text-white p-8 sm:p-10 lg:p-12 relative flex flex-col">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-white/5 border-l-2 border-primary mb-6 w-fit">
+              <span className="text-primary font-black tracking-[0.22em] uppercase text-[11px]">
+                Direct Line
+              </span>
+            </div>
 
-            <h3 className="font-display font-bold text-3xl sm:text-4xl mb-3 relative z-10">
+            <h3 className="font-display font-black text-3xl sm:text-4xl uppercase tracking-tight mb-3 text-white">
               Get in Touch
             </h3>
-            <p className="text-gray-400 text-sm sm:text-base mb-10 max-w-md relative z-10">
-              Ready to import your dream vehicle? Fill out the form or contact us directly.
+            <p className="text-neutral-400 text-sm leading-relaxed mb-10 max-w-md">
+              Ready to import your dream Japanese vehicle? Submit your inquiry or connect directly with our specialist team.
             </p>
 
-            <div className="space-y-8 flex-1 relative z-10">
+            <div className="space-y-7 flex-1">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
-                  <Phone className="w-4 h-4 text-primary" />
+                <div className="w-10 h-10 rounded-none bg-neutral-800 border border-neutral-700/80 flex items-center justify-center shrink-0 text-primary">
+                  <Phone className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 mb-1">Call Us</p>
-                  <p className="font-semibold text-white">{settings?.header?.contactNumber || contactData.phone}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-0.5">Call Us</p>
+                  <p className="font-bold text-white text-sm">{settings?.header?.contactNumber || contactData.phone}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
-                  <Mail className="w-4 h-4 text-primary" />
+                <div className="w-10 h-10 rounded-none bg-neutral-800 border border-neutral-700/80 flex items-center justify-center shrink-0 text-primary">
+                  <Mail className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 mb-1">Email Us</p>
-                  <p className="font-semibold text-white break-all sm:break-normal">{contactData.email}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-0.5">Email Us</p>
+                  <p className="font-bold text-white text-sm break-all sm:break-normal">{contactData.email}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-primary" />
+                <div className="w-10 h-10 rounded-none bg-neutral-800 border border-neutral-700/80 flex items-center justify-center shrink-0 text-primary">
+                  <MapPin className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 mb-1">Visit Us</p>
-                  <p className="font-semibold text-white leading-snug max-w-[250px] whitespace-pre-line">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-0.5">Showroom & Office</p>
+                  <p className="font-bold text-white text-sm leading-snug max-w-[250px] whitespace-pre-line">
                     {contactData.address}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-10 space-y-6 relative z-10">
+            <div className="mt-10 space-y-5">
               <a
                 href={`https://wa.me/${(() => {
                   const numStr = settings?.header?.whatsappNumber || settings?.header?.contactNumber || contactData.phone;
@@ -123,14 +126,14 @@ export function Inquiry() {
                 })()}`}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white px-6 py-3.5 rounded-xl font-medium transition-colors w-full text-base"
+                className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebc57] text-white px-6 py-3.5 rounded-none font-black uppercase tracking-widest text-xs transition-colors w-full shadow-lg active:scale-95"
               >
-                <MessageCircle className="w-5 h-5" />
+                <MessageCircle className="w-4 h-4" />
                 Chat on WhatsApp
               </a>
 
               {settings?.contactPage?.googleMapUrl ? (
-                <div className="bg-[#222] rounded-xl h-48 flex items-center justify-center overflow-hidden relative">
+                <div className="bg-[#1c1c1c] rounded-none h-44 flex items-center justify-center overflow-hidden relative border border-neutral-800">
                   <iframe
                     src={settings.contactPage.googleMapUrl}
                     className="w-full h-full border-0 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
@@ -140,10 +143,10 @@ export function Inquiry() {
                   ></iframe>
                 </div>
               ) : (
-                <div className="bg-[#222] rounded-xl h-48 flex items-center justify-center overflow-hidden relative">
-                  <div className="flex flex-col items-center text-gray-500">
-                    <MapPin className="w-6 h-6 mb-2" />
-                    <span className="text-xs font-medium">Map not configured</span>
+                <div className="bg-[#1c1c1c] rounded-none h-44 flex items-center justify-center overflow-hidden relative border border-neutral-800">
+                  <div className="flex flex-col items-center text-neutral-500">
+                    <MapPin className="w-6 h-6 mb-2 text-primary" />
+                    <span className="text-xs font-bold uppercase tracking-wider">Colombo, Sri Lanka</span>
                   </div>
                 </div>
               )}
@@ -151,114 +154,120 @@ export function Inquiry() {
           </div>
 
           {/* ── Right Column: Contact Form ── */}
-          <div className="lg:w-[55%] p-8 sm:p-10 lg:p-12 bg-white">
-            <h3 className="font-display font-bold text-2xl sm:text-3xl text-dark mb-8">
-              Send an Inquiry
-            </h3>
-
-            {success && (
-              <div className="bg-green-50 text-green-700 p-4 rounded-xl mb-6 text-sm">{success}</div>
-            )}
-            {error && (
-              <div className="bg-red-50 text-red-700 p-4 rounded-xl mb-6 text-sm">{error}</div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm text-gray-600 mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm text-gray-600 mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm"
-                    placeholder="+94 7X XXX XXXX"
-                  />
-                </div>
+          <div className="lg:w-[55%] p-8 sm:p-10 lg:p-12 bg-white flex flex-col justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-primary/10 border-l-2 border-primary mb-4 w-fit">
+                <span className="text-primary font-black tracking-[0.22em] uppercase text-[10px]">
+                  Direct Request
+                </span>
               </div>
+              <h3 className="font-display font-black text-2xl sm:text-3xl text-dark mb-2 uppercase tracking-tight">
+                Send an Inquiry
+              </h3>
+              <p className="text-gray-500 text-xs sm:text-sm font-medium mb-8">
+                Provide your vehicle details and our import managers will respond within 24 hours.
+              </p>
 
-              <div>
-                <label htmlFor="vehicle" className="block text-sm text-gray-600 mb-2">
-                  Interested Vehicle Brand
-                </label>
-                <select
-                  id="vehicle"
-                  name="vehicle"
-                  value={formData.vehicle}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white appearance-none text-sm cursor-pointer"
+              {success && (
+                <div className="bg-emerald-50 text-emerald-800 border-l-4 border-emerald-500 p-4 rounded-none mb-6 text-xs font-bold">{success}</div>
+              )}
+              {error && (
+                <div className="bg-rose-50 text-rose-800 border-l-4 border-rose-500 p-4 rounded-none mb-6 text-xs font-bold">{error}</div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="name" className="block text-xs font-black uppercase tracking-wider text-gray-500 mb-2">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-none border border-gray-200 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm font-medium"
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="phone" className="block text-xs font-black uppercase tracking-wider text-gray-500 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-none border border-gray-200 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm font-medium"
+                      placeholder="+94 7X XXX XXXX"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="vehicle" className="block text-xs font-black uppercase tracking-wider text-gray-500 mb-2">
+                    Interested Vehicle Brand / Model
+                  </label>
+                  <select
+                    id="vehicle"
+                    name="vehicle"
+                    value={formData.vehicle}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-none border border-gray-200 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm font-medium cursor-pointer"
+                  >
+                    <option value="" disabled>Select a brand</option>
+                    <optgroup label="Japanese Brands">
+                      <option value="Toyota">Toyota</option>
+                      <option value="Honda">Honda</option>
+                      <option value="Nissan">Nissan</option>
+                      <option value="Mazda">Mazda</option>
+                      <option value="Suzuki">Suzuki</option>
+                      <option value="Mitsubishi">Mitsubishi</option>
+                      <option value="Subaru">Subaru</option>
+                      <option value="Lexus">Lexus</option>
+                      <option value="Daihatsu">Daihatsu</option>
+                      <option value="Isuzu">Isuzu</option>
+                    </optgroup>
+                    <optgroup label="European & Other">
+                      <option value="BMW">BMW</option>
+                      <option value="Mercedes-Benz">Mercedes-Benz</option>
+                      <option value="Audi">Audi</option>
+                      <option value="Other">Other / Commercial Vehicle</option>
+                    </optgroup>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="block text-xs font-black uppercase tracking-wider text-gray-500 mb-2">
+                    Specific Requirements / Budget
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={4}
+                    className="w-full px-4 py-3 rounded-none border border-gray-200 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white resize-none text-sm font-medium"
+                    placeholder="Provide details on model year, auction grade preference, or import budget..."
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-primary hover:bg-primary-hover disabled:bg-primary/50 text-white font-black uppercase tracking-widest py-4 rounded-none transition-all duration-300 flex items-center justify-center gap-2 text-xs shadow-lg active:scale-95"
                 >
-                  <option value="" disabled>Select a brand</option>
-                  <optgroup label="Japanese Brands">
-                    <option value="Toyota">Toyota</option>
-                    <option value="Honda">Honda</option>
-                    <option value="Nissan">Nissan</option>
-                    <option value="Mazda">Mazda</option>
-                    <option value="Suzuki">Suzuki</option>
-                    <option value="Mitsubishi">Mitsubishi</option>
-                    <option value="Subaru">Subaru</option>
-                    <option value="Lexus">Lexus</option>
-                    <option value="Daihatsu">Daihatsu</option>
-                    <option value="Isuzu">Isuzu</option>
-                  </optgroup>
-                  <optgroup label="Korean Brands">
-                    <option value="Hyundai">Hyundai</option>
-                    <option value="Kia">Kia</option>
-                  </optgroup>
-                  <optgroup label="European / Other">
-                    <option value="BMW">BMW</option>
-                    <option value="Mercedes-Benz">Mercedes-Benz</option>
-                    <option value="Volkswagen">Volkswagen</option>
-                  </optgroup>
-                  <option value="Other">Other / Not Listed</option>
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm text-gray-600 mb-2">
-                  Message / Specific Requirements
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white resize-none text-sm"
-                  placeholder="Tell us about the specific model, year, or budget you have in mind..."
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-primary hover:bg-[#e66a00] disabled:bg-primary/50 text-white font-semibold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm mt-4"
-              >
-                <Send className="w-4 h-4" />
-                {loading ? 'Submitting...' : 'Submit Inquiry'}
-              </button>
-            </form>
+                  <Send className="w-4 h-4" />
+                  {loading ? 'Submitting...' : 'Submit Inquiry'}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

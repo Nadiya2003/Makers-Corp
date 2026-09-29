@@ -113,11 +113,10 @@ export function About() {
 
   return (
     <section id="about" className="relative py-16 sm:py-24 lg:py-32 bg-white overflow-hidden">
-      {/* Dynamic Background Accents */}
+      {/* Subtle Ambient Background */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-primary/5 rounded-full blur-[100px]" />
-        <div className="absolute -bottom-[20%] -left-[10%] w-[50%] h-[50%] bg-orange-500/10 rounded-full blur-[120px]" />
-        <div className="absolute top-[30%] right-[20%] w-[20%] h-[20%] bg-blue-500/5 rounded-full blur-[80px]" />
+        <div className="absolute top-0 right-0 w-[35%] h-[35%] bg-primary/5 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -125,14 +124,14 @@ export function About() {
           
           {/* Image Side */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, type: "spring", stiffness: 40 }}
+            transition={{ duration: 0.7 }}
             className="relative order-2 lg:order-1"
           >
-            <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-[0_25px_60px_-10px_rgba(0,0,0,0.35)] z-10 border-8 border-white/50 backdrop-blur-sm group">
-              <div className="absolute inset-0 bg-primary/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-20 pointer-events-none" />
+            {/* Showroom Image Frame - Sharp Architectural Rectangle */}
+            <div className="relative aspect-[4/3] rounded-none overflow-hidden shadow-2xl z-10 border border-gray-200 group">
               <Image
                 src={aboutData.image}
                 alt={aboutData.title}
@@ -141,16 +140,15 @@ export function About() {
               />
             </div>
             
-            {/* Decorative Elements */}
-            <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-br from-primary to-orange-400 rounded-full blur-3xl opacity-30 animate-pulse" />
-            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-gradient-to-br from-orange-400 to-amber-300 rounded-full blur-3xl opacity-20 animate-pulse delay-1000" />
-            
-            <div className="hidden sm:block absolute -right-8 top-1/4 bg-white/90 backdrop-blur-xl p-4 rounded-2xl shadow-xl border border-white/60 z-30 animate-bounce" style={{ animationDuration: '4s' }}>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary font-black text-xl">10+</div>
+            {/* Showroom Trust Badge - Sharp Luxury Spec Plaque */}
+            <div className="hidden sm:block absolute -right-6 -bottom-6 bg-neutral-900 text-white p-5 rounded-none shadow-2xl border border-neutral-700/80 z-20">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-primary/20 border border-primary/40 rounded-none flex items-center justify-center text-primary font-black text-2xl font-display">
+                  10+
+                </div>
                 <div>
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Years</p>
-                  <p className="text-sm font-black text-dark leading-tight">Trust & Quality</p>
+                  <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">Years of Excellence</p>
+                  <p className="text-sm font-black text-white leading-tight uppercase tracking-tight">Trust & Quality Assured</p>
                 </div>
               </div>
             </div>
@@ -158,43 +156,39 @@ export function About() {
 
           {/* Text + Stats Side */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 40 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
             className="text-center lg:text-left flex flex-col items-center lg:items-start order-1 lg:order-2"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 mb-6">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-primary font-bold tracking-[0.2em] uppercase text-xs">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-primary/10 border-l-2 border-primary mb-6">
+              <span className="text-primary font-black tracking-[0.22em] uppercase text-[11px]">
                 Who We Are
               </span>
             </div>
             
-            <h3 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-slate-900 mb-6 sm:mb-8 tracking-tight leading-tight uppercase">
+            <h3 className="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-dark mb-6 tracking-tight leading-tight uppercase">
               {aboutData.title}
             </h3>
             
-            <div className="relative">
-              {/* Decorative quote mark */}
-              <span className="absolute -top-6 -left-6 text-6xl text-primary/10 font-serif font-black select-none pointer-events-none">"</span>
-              <p className="text-slate-600 text-lg sm:text-xl font-medium leading-relaxed whitespace-pre-line text-justify relative z-10">
-                {aboutData.description}
-              </p>
-            </div>
+            <p className="text-gray-600 text-base sm:text-lg font-medium leading-relaxed whitespace-pre-line text-justify lg:text-left relative z-10">
+              {aboutData.description}
+            </p>
 
             {stats.length > 0 && (
-              <div ref={statsRef} className="mt-10 sm:mt-14 w-full grid grid-cols-2 gap-4 sm:gap-6">
+              <div ref={statsRef} className="mt-10 sm:mt-12 w-full grid grid-cols-2 gap-4 sm:gap-6">
                 {stats.map((stat, i) => (
-                  <div key={i} className="bg-slate-50/80 hover:bg-white backdrop-blur-xl p-6 sm:p-8 rounded-[2rem] shadow-sm hover:shadow-xl border border-slate-100 hover:border-primary/20 transition-all duration-500 group flex flex-col items-center lg:items-start text-center lg:text-left">
-                    <p className="text-primary font-black text-3xl sm:text-4xl lg:text-5xl mb-2 tabular-nums group-hover:scale-110 group-hover:-translate-y-1 origin-left transition-transform duration-500">
+                  <div key={i} className="group relative bg-gray-50/70 hover:bg-white p-6 sm:p-8 rounded-none shadow-sm hover:shadow-xl border border-gray-200/80 hover:border-primary transition-all duration-300 flex flex-col items-center lg:items-start text-center lg:text-left">
+                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
+                    <p className="text-primary font-black text-3xl sm:text-4xl lg:text-5xl mb-2 tabular-nums font-display tracking-tight">
                       {animationStarted ? (
                         <StatCardRaw value={stat.value} started={animationStarted} />
                       ) : (
                         '0'
                       )}
                     </p>
-                    <p className="text-slate-500 font-bold text-xs sm:text-sm uppercase tracking-widest group-hover:text-slate-800 transition-colors">
+                    <p className="text-gray-500 font-black text-[11px] sm:text-xs uppercase tracking-widest group-hover:text-dark transition-colors">
                       {stat.label}
                     </p>
                   </div>

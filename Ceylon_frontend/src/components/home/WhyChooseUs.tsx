@@ -76,46 +76,40 @@ export function WhyChooseUs() {
   ];
 
   return (
-    <section id="why-us" className="relative py-16 sm:py-24 lg:py-32 bg-[#050505] overflow-hidden">
+    <section id="why-us" className="relative py-16 sm:py-24 lg:py-32 bg-[#050505] overflow-hidden border-t border-neutral-900">
       
-      {/* Orange & Black Vibe Background Image */}
+      {/* Background Image & Ambient Accents */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         <img 
           src={normalizeImageUrl(whyChooseUsData.backgroundImage) || "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=2000&auto=format&fit=crop"} 
           alt="Dark vehicle background" 
-          className="w-full h-full object-cover opacity-40"
+          className="w-full h-full object-cover opacity-25"
         />
         {/* Subtle orange glow accents */}
-        <div className="absolute top-[-10%] right-[-5%] w-[50%] h-[50%] bg-orange-600/20 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-orange-700/10 rounded-full blur-[130px] animate-pulse delay-700" />
-        <div className="absolute top-[30%] left-[15%] w-[30%] h-[30%] bg-orange-500/10 rounded-full blur-[90px] animate-pulse delay-1000" />
-        
-        {/* Gradients to blend edges */}
+        <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/50 via-transparent to-[#050505]/50" />
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.05] mix-blend-overlay" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div className="max-w-3xl mx-auto mb-12 sm:mb-20">
+        <div className="max-w-3xl mx-auto mb-14 sm:mb-20">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-white/5 border-l-2 border-primary mb-6"
           >
-            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-pink-500 to-orange-400 animate-bounce" />
-            <span className="text-white font-black tracking-[0.25em] uppercase text-xs">
+            <span className="text-primary font-black tracking-[0.22em] uppercase text-[11px]">
               {whyChooseUsData.subtitle}
             </span>
           </motion.div>
 
           <motion.h3 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-display font-black text-4xl sm:text-5xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-gray-400 tracking-tight leading-tight mb-4"
+            className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-tight uppercase mb-4"
           >
             {whyChooseUsData.title}
           </motion.h3>
@@ -125,24 +119,23 @@ export function WhyChooseUs() {
           {/* Mobile Navigation Arrows */}
           <button 
             onClick={() => scroll('left')}
-            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 -ml-2 z-20 w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20 shadow-xl"
+            className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 -ml-2 z-20 w-10 h-10 bg-neutral-900/90 rounded-none flex items-center justify-center text-white border border-neutral-700 shadow-xl"
             aria-label="Scroll left"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
           
           <button 
             onClick={() => scroll('right')}
-            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 -mr-2 z-20 w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20 shadow-xl"
+            className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 -mr-2 z-20 w-10 h-10 bg-neutral-900/90 rounded-none flex items-center justify-center text-white border border-neutral-700 shadow-xl"
             aria-label="Scroll right"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Hide native scrollbar via standard CSS styles */}
           <div 
             ref={scrollRef}
-            className="flex overflow-x-auto overflow-y-visible md:grid md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 justify-start md:justify-center px-4 md:px-0 py-4 snap-x snap-mandatory -mx-4 md:mx-0"
+            className="flex overflow-x-auto overflow-y-visible md:grid md:grid-cols-3 lg:grid-cols-5 gap-6 justify-start md:justify-center px-4 md:px-0 py-4 snap-x snap-mandatory -mx-4 md:mx-0"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             <style jsx>{`
@@ -153,37 +146,29 @@ export function WhyChooseUs() {
             
             {reasons.map((reason, index) => {
               const Icon = ICON_MAP[reason.icon] || CheckCircle;
-              const color = CARD_COLORS[index % CARD_COLORS.length];
               
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 25 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ delay: index * 0.1, duration: 0.6, type: "spring", stiffness: 40 }}
-                  className="group relative shrink-0 w-[85vw] sm:w-[60vw] md:w-auto snap-center"
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ delay: index * 0.08, duration: 0.5 }}
+                  className="group relative shrink-0 w-[85vw] sm:w-[60vw] md:w-auto snap-center flex flex-col bg-neutral-900/80 hover:bg-neutral-900 rounded-none p-7 border border-neutral-800 hover:border-primary shadow-xl hover:-translate-y-1 transition-all duration-300 text-left"
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${color.from} ${color.to} opacity-0 group-hover:opacity-20 blur-2xl transition-opacity duration-500 rounded-[2rem]`} />
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
                   
-                  {/* Removed overflow-hidden so hover translate-y is not clipped */}
-                  <div className="relative h-full flex flex-col items-center sm:items-start text-center sm:text-left bg-white/5 backdrop-blur-sm rounded-[2rem] p-6 lg:p-8 shadow-2xl border border-orange-300/20 hover:border-orange-400/50 hover:-translate-y-2 transition-all duration-500 z-10">
-                    
-                    {/* Smaller icon container (w-14 h-14) to save vertical space */}
-                    <div className={`w-14 h-14 lg:w-16 lg:h-16 bg-gradient-to-br ${color.from} ${color.to} rounded-2xl flex items-center justify-center mb-5 lg:mb-6 shadow-lg group-hover:${color.shadow} transition-all duration-500 relative overflow-hidden`}>
-                      <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
-                      <Icon className="w-6 h-6 lg:w-8 lg:h-8 text-white group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 relative z-10" strokeWidth={1.5} />
-                    </div>
-                    
-                    {/* Adjusted text sizing */}
-                    <h4 className={`font-display font-black text-lg lg:text-xl text-white mb-3 ${color.text} transition-colors duration-300`}>
-                      {reason.title}
-                    </h4>
-                    
-                    <p className="text-gray-400 text-xs lg:text-sm font-medium leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
-                      {reason.desc}
-                    </p>
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 bg-neutral-800 border border-neutral-700/80 rounded-none flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-md">
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={1.75} />
                   </div>
+                  
+                  <h4 className="font-display font-black text-base sm:text-lg text-white mb-2.5 uppercase tracking-tight group-hover:text-primary transition-colors duration-300">
+                    {reason.title}
+                  </h4>
+                  
+                  <p className="text-neutral-400 text-xs sm:text-sm font-medium leading-relaxed">
+                    {reason.desc}
+                  </p>
                 </motion.div>
               );
             })}

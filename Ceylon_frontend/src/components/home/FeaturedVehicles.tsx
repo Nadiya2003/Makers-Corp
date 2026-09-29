@@ -32,8 +32,12 @@ interface Vehicle {
 // ─── Reusable Vehicle Card ────────────────────────────────────────────────────
 function VehicleCard({ vehicle, onQuickView }: { vehicle: Vehicle; onQuickView: () => void }) {
   return (
-    <div className="group relative h-full flex flex-col bg-white/40 hover:bg-white/60 backdrop-blur-xl rounded-[2.5rem] p-3 border border-orange-300/30 hover:border-orange-400/60 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-      <div className="relative h-[220px] sm:h-[260px] rounded-[2rem] overflow-hidden bg-white/50 mb-4 flex-shrink-0">
+    <div className="group relative h-full flex flex-col bg-white rounded-none p-3.5 sm:p-4 border border-gray-200/90 hover:border-primary shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300">
+      {/* Top showroom accent indicator on hover */}
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+      {/* Vehicle Image Container - Sharp Square Box */}
+      <div className="relative h-[220px] sm:h-[260px] rounded-none overflow-hidden bg-gray-100 mb-4 flex-shrink-0 border border-gray-100">
         <Image
           src={vehicle.image}
           alt={vehicle.name}
@@ -41,49 +45,56 @@ function VehicleCard({ vehicle, onQuickView }: { vehicle: Vehicle; onQuickView: 
           className="object-cover group-hover:scale-105 transition-transform duration-700"
           draggable={false}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+        {/* Quick View Overlay Button - Sharp Square */}
+        <div className="absolute inset-0 bg-gradient-to-t from-dark/85 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
           <button
             onClick={onQuickView}
-            className="w-full bg-white/90 backdrop-blur-md text-dark py-3.5 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-primary hover:text-white transition-all active:scale-95 border border-white/50"
+            className="w-full bg-white/95 backdrop-blur-md text-dark py-3.5 rounded-none font-black uppercase tracking-widest text-[10px] hover:bg-primary hover:text-white transition-all active:scale-[0.98] border border-white/60 shadow-lg"
           >
             Quick View
           </button>
         </div>
-        <div className="absolute top-4 left-4">
-          <span className="px-3 py-1.5 bg-white/80 backdrop-blur-md rounded-full text-[9px] font-black text-dark uppercase tracking-widest border border-white/50">
+        {/* Year Model Badge - Sharp Showroom Spec Plaque */}
+        <div className="absolute top-3 left-3">
+          <span className="px-3 py-1.5 bg-white/95 backdrop-blur-md rounded-none text-[9px] font-black text-dark uppercase tracking-widest border-l-2 border-primary shadow-sm">
             {vehicle.year} Model
           </span>
         </div>
       </div>
 
-      <div className="px-3 pb-3">
-        <h4 className="font-display font-black text-lg text-dark leading-tight uppercase group-hover:text-primary transition-colors mb-3 line-clamp-1">
-          {vehicle.name}
-        </h4>
+      <div className="px-1 pb-1 flex flex-col flex-grow justify-between">
+        <div>
+          <h4 className="font-display font-black text-lg text-dark leading-tight uppercase group-hover:text-primary transition-colors mb-3 line-clamp-1">
+            {vehicle.name}
+          </h4>
 
-        <div className="flex items-center gap-3 mb-5 p-3 bg-white/50 backdrop-blur-md rounded-2xl border border-white/40">
-          <div className="flex flex-1 items-center justify-center gap-1.5 text-gray-500 border-r border-gray-200/50">
-            <Fuel className="w-3.5 h-3.5 text-gray-400" />
-            <span className="text-[10px] font-bold uppercase truncate">{vehicle.fuel}</span>
-          </div>
-          <div className="flex flex-1 items-center justify-center gap-1.5 text-gray-500">
-            <Settings className="w-3.5 h-3.5 text-gray-400" />
-            <span className="text-[10px] font-bold uppercase truncate">{vehicle.transmission}</span>
+          {/* Specifications Box - Sharp Rectangular Division */}
+          <div className="flex items-center gap-3 mb-5 p-3 bg-gray-50/80 backdrop-blur-sm rounded-none border border-gray-200/60">
+            <div className="flex flex-1 items-center justify-center gap-1.5 text-gray-500 border-r border-gray-200">
+              <Fuel className="w-3.5 h-3.5 text-gray-400" />
+              <span className="text-[10px] font-bold uppercase truncate">{vehicle.fuel}</span>
+            </div>
+            <div className="flex flex-1 items-center justify-center gap-1.5 text-gray-500">
+              <Settings className="w-3.5 h-3.5 text-gray-400" />
+              <span className="text-[10px] font-bold uppercase truncate">{vehicle.transmission}</span>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        {/* Price & Action Button - Sharp Square */}
+        <div className="flex items-center justify-between pt-1">
           <div className="flex flex-col">
-            <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest mb-0.5">Price</span>
+            <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Price</span>
             <span className="text-lg font-black text-primary leading-none">
               {/^(USD|JPY|EUR|GBP|AUD|LKR)/i.test(vehicle.price.trim()) ? vehicle.price : `LKR ${vehicle.price}`}
             </span>
           </div>
           <button
             onClick={onQuickView}
-            className="w-10 h-10 rounded-xl bg-white/80 backdrop-blur-md flex items-center justify-center text-dark hover:bg-primary hover:text-white hover:rotate-45 transition-all duration-300 active:scale-95 border border-white/50"
+            aria-label="View vehicle details"
+            className="w-10 h-10 rounded-none bg-gray-100 flex items-center justify-center text-dark group-hover:bg-primary group-hover:text-white transition-all duration-300 active:scale-95 border border-gray-200/60 group-hover:border-primary"
           >
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
       </div>
@@ -282,7 +293,7 @@ export function FeaturedVehicles() {
   const activeIndex = n > 0 ? ((currentIndex - visibleCount) % n + n) % n : 0;
 
   return (
-    <section id="vehicles" className="py-16 sm:py-24 lg:py-32 bg-gray-50 relative overflow-hidden">
+    <section id="vehicles" className="py-16 sm:py-24 lg:py-32 bg-gray-50 relative overflow-hidden scroll-mt-20 lg:scroll-mt-24">
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 gap-4 sm:gap-8">
           <div className="max-w-2xl">
@@ -290,7 +301,7 @@ export function FeaturedVehicles() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-4"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-primary/10 border-l-2 border-primary text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-4"
             >
               <Sparkles className="w-3 h-3" /> Premium Collection
             </motion.div>
@@ -300,23 +311,23 @@ export function FeaturedVehicles() {
             <p className="mt-4 text-gray-500 font-medium text-lg max-w-xl">
               Swipe through our exclusive selection of premium Japanese vehicles, available for immediate import.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-2 bg-gray-200/50 p-1.5 rounded-2xl w-fit">
+            <div className="mt-8 flex flex-wrap items-center gap-1.5 bg-neutral-100 p-1.5 rounded-none border border-neutral-200/90 w-fit">
               <button
                 onClick={() => { setActiveTab('auction'); setIsTransitioning(false); }}
-                className={`px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+                className={`px-6 py-3 rounded-none text-xs font-black uppercase tracking-widest transition-all ${
                   activeTab === 'auction'
-                    ? 'bg-white text-dark shadow-md'
-                    : 'text-gray-500 hover:text-dark'
+                    ? 'bg-neutral-900 text-white shadow-md'
+                    : 'text-neutral-500 hover:text-dark'
                 }`}
               >
                 Auction Vehicles
               </button>
               <button
                 onClick={() => { setActiveTab('commercial'); setIsTransitioning(false); }}
-                className={`px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+                className={`px-6 py-3 rounded-none text-xs font-black uppercase tracking-widest transition-all ${
                   activeTab === 'commercial'
-                    ? 'bg-white text-dark shadow-md'
-                    : 'text-gray-500 hover:text-dark'
+                    ? 'bg-neutral-900 text-white shadow-md'
+                    : 'text-neutral-500 hover:text-dark'
                 }`}
               >
                 Commercial Vehicles
@@ -331,8 +342,8 @@ export function FeaturedVehicles() {
               className="hidden sm:flex items-center gap-3 text-dark font-black uppercase tracking-[0.15em] text-sm group"
             >
               Explore Full Collection
-              <div className="w-10 h-10 rounded-full border-2 border-gray-200 flex items-center justify-center group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all bg-white">
-                <ArrowRight className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-none border border-gray-300 flex items-center justify-center group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all bg-white shadow-sm">
+                <ArrowRight className="w-4 h-4" />
               </div>
             </motion.button>
           </div>
@@ -421,14 +432,14 @@ export function FeaturedVehicles() {
               <div className="hidden md:flex absolute top-[40%] -translate-y-1/2 left-0 right-0 justify-between pointer-events-none z-20 px-0 sm:px-2">
                 <button
                   onClick={prevSlide}
-                  className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-md hover:bg-primary hover:text-white text-dark flex items-center justify-center shadow-xl border border-gray-100 hover:border-primary transition-all duration-300 pointer-events-auto hover:scale-105 active:scale-95"
+                  className="w-12 h-12 rounded-none bg-white/95 backdrop-blur-md hover:bg-neutral-900 hover:text-white text-dark flex items-center justify-center shadow-xl border border-gray-200 hover:border-neutral-900 transition-all duration-300 pointer-events-auto active:scale-95"
                   title="Previous"
                 >
                   <ChevronLeft className="w-6 h-6" />
                 </button>
                 <button
                   onClick={nextSlide}
-                  className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-md hover:bg-primary hover:text-white text-dark flex items-center justify-center shadow-xl border border-gray-100 hover:border-primary transition-all duration-300 pointer-events-auto hover:scale-105 active:scale-95"
+                  className="w-12 h-12 rounded-none bg-white/95 backdrop-blur-md hover:bg-neutral-900 hover:text-white text-dark flex items-center justify-center shadow-xl border border-gray-200 hover:border-neutral-900 transition-all duration-300 pointer-events-auto active:scale-95"
                   title="Next"
                 >
                   <ChevronRight className="w-6 h-6" />
@@ -438,7 +449,7 @@ export function FeaturedVehicles() {
 
             {/* Dot Indicators */}
             {n > 1 && (
-              <div className="flex justify-center gap-2.5 mt-10">
+              <div className="flex justify-center gap-2 mt-10">
                 {vehicles.map((_, index) => (
                   <button
                     key={index}
@@ -446,7 +457,7 @@ export function FeaturedVehicles() {
                       setIsTransitioning(true);
                       setCurrentIndex(index + visibleCount);
                     }}
-                    className={`h-2.5 rounded-full transition-all duration-300 ${activeIndex === index ? 'w-8 bg-primary shadow-sm' : 'w-2.5 bg-gray-200 hover:bg-gray-300'
+                    className={`h-1.5 rounded-none transition-all duration-300 ${activeIndex === index ? 'w-8 bg-primary shadow-sm' : 'w-3 bg-gray-300 hover:bg-gray-400'
                       }`}
                     title={`Go to slide ${index + 1}`}
                   />
@@ -481,10 +492,10 @@ export function FeaturedVehicles() {
 
         <button
           onClick={handleExplore}
-          className="mt-8 sm:hidden w-full flex items-center justify-center gap-3 bg-gray-200 hover:bg-gray-300 text-dark font-black py-6 rounded-[2rem] transition-all uppercase tracking-widest text-xs"
+          className="mt-8 sm:hidden w-full flex items-center justify-center gap-3 bg-neutral-900 hover:bg-black text-white font-black py-4 rounded-none transition-all uppercase tracking-widest text-xs shadow-md"
         >
           View Full Collection
-          <ArrowRight className="w-5 h-5" />
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </section>

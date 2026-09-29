@@ -107,14 +107,14 @@ export function Footer() {
             
             {/* Social Links */}
             {visibleSocialLinks.length > 0 && (
-              <div className="flex items-center gap-4 pt-2">
+              <div className="flex items-center gap-3 pt-2">
                 {visibleSocialLinks.map((link: any, index: number) => (
                   <a
                     key={index}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 bg-white/5 hover:bg-primary text-gray-400 hover:text-white rounded-full flex items-center justify-center transition-all duration-300"
+                    className="w-9 h-9 bg-neutral-900 border border-neutral-800 hover:border-primary hover:bg-primary text-neutral-400 hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm"
                     aria-label={link.platform}
                   >
                     {renderSocialIcon(link.platform)}
@@ -126,59 +126,65 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-display font-semibold mb-4 sm:mb-6 text-base sm:text-lg">Quick Links</h3>
-            <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base">
+            <h3 className="text-white font-display font-black mb-4 sm:mb-6 text-sm uppercase tracking-wider border-l-2 border-primary pl-2.5">
+              Quick Links
+            </h3>
+            <ul className="space-y-3 sm:space-y-3.5 text-xs sm:text-sm font-medium">
               <li>
-                <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+                <Link href="/" className="text-neutral-400 hover:text-primary transition-colors">Home</Link>
               </li>
               <li>
-                <a href="/#vehicles" className="hover:text-primary transition-colors">Featured Vehicles</a>
+                <a href="/#vehicles" className="text-neutral-400 hover:text-primary transition-colors">Featured Vehicles</a>
               </li>
               <li>
-                <a href="/#how-it-works" className="hover:text-primary transition-colors">How It Works</a>
+                <a href="/#how-it-works" className="text-neutral-400 hover:text-primary transition-colors">How It Works</a>
               </li>
               <li>
-                <Link href="/about" className="hover:text-primary transition-colors">About Us</Link>
+                <Link href="/about" className="text-neutral-400 hover:text-primary transition-colors">About Us</Link>
               </li>
               <li>
-                <a href="/#inquiry" className="hover:text-primary transition-colors">Contact Us</a>
+                <a href="/#inquiry" className="text-neutral-400 hover:text-primary transition-colors">Contact Us</a>
               </li>
             </ul>
           </div>
 
           {/* Services */}
           <div>
-            <h3 className="text-white font-display font-semibold mb-4 sm:mb-6 text-base sm:text-lg">Our Services</h3>
-            <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base">
-              <li className="text-gray-400">Direct Japan Sourcing</li>
-              <li className="text-gray-400">Live Auction Bidding</li>
-              <li className="text-gray-400">Bank Loan Assistance</li>
-              <li className="text-gray-400">Customs Clearance</li>
-              <li className="text-gray-400">Islandwide Delivery</li>
+            <h3 className="text-white font-display font-black mb-4 sm:mb-6 text-sm uppercase tracking-wider border-l-2 border-primary pl-2.5">
+              Our Services
+            </h3>
+            <ul className="space-y-3 sm:space-y-3.5 text-xs sm:text-sm font-medium text-neutral-400">
+              <li>Direct Japan Sourcing</li>
+              <li>Live Auction Bidding</li>
+              <li>Bank Loan Assistance</li>
+              <li>Customs Clearance</li>
+              <li>Islandwide Delivery</li>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-white font-display font-semibold mb-4 sm:mb-6 text-base sm:text-lg">Contact Info</h3>
-            <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base">
+            <h3 className="text-white font-display font-black mb-4 sm:mb-6 text-sm uppercase tracking-wider border-l-2 border-primary pl-2.5">
+              Contact Info
+            </h3>
+            <ul className="space-y-3 sm:space-y-3.5 text-xs sm:text-sm font-medium">
               <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-gray-400">{footerData.address}</span>
+                <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <span className="text-neutral-400 leading-snug">{footerData.address}</span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
-                <span className="text-gray-400">{settings?.header?.contactNumber || footerData.phone}</span>
+                <Phone className="w-4 h-4 text-primary shrink-0" />
+                <span className="text-neutral-400">{settings?.header?.contactNumber || footerData.phone}</span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
-                <span className="text-gray-400">{footerData.email}</span>
+                <Mail className="w-4 h-4 text-primary shrink-0" />
+                <span className="text-neutral-400">{footerData.email}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-8 sm:mt-16 pt-6 sm:pt-8 border-t border-white/5 text-center text-xs sm:text-sm text-gray-500">
+        <div className="mt-8 sm:mt-14 pt-6 sm:pt-8 border-t border-neutral-900 text-center text-xs text-neutral-500 font-medium">
           <p>{footerData.copyrightText}</p>
         </div>
       </div>

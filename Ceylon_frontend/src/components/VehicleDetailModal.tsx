@@ -157,12 +157,12 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 24 }}
             transition={{ type: 'spring', damping: 28, stiffness: 320 }}
-            className="relative z-10 w-[98vw] lg:w-[92vw] xl:w-[88vw] max-w-[1500px] h-[92vh] bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row"
+            className="relative z-10 w-[98vw] lg:w-[92vw] xl:w-[88vw] max-w-[1500px] h-[92vh] bg-white rounded-none shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-gray-200"
           >
             {/* ── Close Button ── */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 sm:top-5 sm:right-5 p-3 bg-white/90 hover:bg-white backdrop-blur-md rounded-full z-[60] transition-all group shadow-lg hover:shadow-xl active:scale-90"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2.5 bg-white/95 hover:bg-white backdrop-blur-md rounded-none z-[60] transition-all group shadow-md border border-gray-200 active:scale-95"
             >
               <X size={20} className="text-dark group-hover:rotate-90 transition-transform duration-300" />
             </button>
@@ -194,26 +194,26 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 bg-black/30 hover:bg-black/60 backdrop-blur-md rounded-full text-white transition-all hover:scale-110 active:scale-95 z-20"
+                    className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 bg-black/60 hover:bg-black/90 backdrop-blur-md rounded-none text-white transition-all active:scale-95 z-20 border border-white/20"
                   >
                     <ChevronLeft size={22} />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 bg-black/30 hover:bg-black/60 backdrop-blur-md rounded-full text-white transition-all hover:scale-110 active:scale-95 z-20"
+                    className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 bg-black/60 hover:bg-black/90 backdrop-blur-md rounded-none text-white transition-all active:scale-95 z-20 border border-white/20"
                   >
                     <ChevronRight size={22} />
                   </button>
 
                   {/* Thumbnail strip */}
-                  <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-black/30 backdrop-blur-md rounded-2xl max-w-[88%] overflow-x-auto no-scrollbar z-20">
+                  <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-black/60 backdrop-blur-md rounded-none max-w-[88%] overflow-x-auto no-scrollbar z-20 border border-white/10">
                     {allImages.map((img, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveImageIndex(idx)}
-                        className={`relative w-14 h-10 sm:w-18 sm:h-12 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${
+                        className={`relative w-14 h-10 sm:w-18 sm:h-12 rounded-none overflow-hidden border-2 transition-all flex-shrink-0 ${
                           activeImageIndex === idx
-                            ? 'border-primary scale-110 shadow-lg shadow-primary/30'
+                            ? 'border-primary shadow-lg shadow-primary/30'
                             : 'border-transparent opacity-50 hover:opacity-80'
                         }`}
                       >
@@ -226,7 +226,7 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
 
               {/* Status badge */}
               <div className="absolute top-5 left-5 z-20">
-                <span className="px-4 py-1.5 bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-xl">
+                <span className="px-4 py-1.5 bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-none shadow-xl">
                   {vehicle.status}
                 </span>
               </div>
@@ -234,7 +234,7 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
               {/* Image counter */}
               {allImages.length > 1 && (
                 <div className="absolute top-5 right-16 z-20">
-                  <span className="px-3 py-1.5 bg-black/40 backdrop-blur-md text-white text-[10px] font-black rounded-full">
+                  <span className="px-3 py-1.5 bg-black/60 backdrop-blur-md text-white text-[10px] font-black rounded-none border border-white/10">
                     {activeImageIndex + 1} / {allImages.length}
                   </span>
                 </div>
@@ -269,7 +269,7 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
                     : 'grid-cols-2 sm:grid-cols-3 xl:grid-cols-4'
                 }`}>
                   {allVisibleSpecs.map((spec, idx) => (
-                    <div key={idx} className="bg-gray-50 p-4 rounded-2xl border border-gray-100 hover:border-primary/20 transition-colors">
+                    <div key={idx} className="bg-gray-50 p-4 rounded-none border border-gray-200 hover:border-primary/40 transition-colors">
                       <spec.icon className="w-5 h-5 text-primary mb-2.5" />
                       <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.15em] mb-1 truncate" title={spec.label}>
                         {spec.label}
@@ -287,7 +287,7 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
               {/* Description */}
               <div className="mb-10">
                 <h3 className="text-xs font-black text-dark uppercase tracking-[0.25em] mb-4 flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <div className="w-1.5 h-1.5 rounded-none bg-primary" />
                   Overview
                 </h3>
                 <p className="text-gray-500 leading-relaxed font-medium italic whitespace-pre-line text-sm">
@@ -302,18 +302,18 @@ export function VehicleDetailModal({ vehicle, isOpen, onClose }: VehicleDetailMo
                     onClose();
                     document.getElementById('inquiry')?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="flex-1 flex items-center justify-center gap-3 bg-primary hover:bg-primary-hover text-white py-5 rounded-2xl font-black text-sm uppercase tracking-[0.15em] transition-all shadow-xl shadow-primary/25 active:scale-95"
+                  className="flex-1 flex items-center justify-center gap-3 bg-primary hover:bg-primary-hover text-white py-4 rounded-none font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-primary/25 active:scale-95"
                 >
-                  <CheckCircle2 size={20} />
+                  <CheckCircle2 size={18} />
                   Reserve Vehicle
                 </button>
                 <a
                   href={`https://wa.me/94771234567?text=Hi, I am interested in the ${vehicle.name}. Please send more details and auction sheets.`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex-1 flex items-center justify-center gap-3 bg-dark hover:bg-black text-white py-5 rounded-2xl font-black text-sm uppercase tracking-[0.15em] transition-all shadow-xl shadow-black/15 active:scale-95"
+                  className="flex-1 flex items-center justify-center gap-3 bg-dark hover:bg-black text-white py-4 rounded-none font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-black/15 active:scale-95 border border-dark"
                 >
-                  <MessageCircle size={20} className="text-green-400" />
+                  <MessageCircle size={18} className="text-green-400" />
                   WhatsApp Us
                 </a>
               </div>

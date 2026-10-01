@@ -53,13 +53,11 @@ export function HowItWorks() {
             src={backgroundImage}
             alt="Process background"
             fill
-            className="object-cover opacity-15 mix-blend-overlay"
+            className="object-cover opacity-10 mix-blend-overlay"
             priority={false}
           />
         )}
-        <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] mix-blend-screen" />
+        <div className="absolute inset-0 bg-[#0A0A0A]/70" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

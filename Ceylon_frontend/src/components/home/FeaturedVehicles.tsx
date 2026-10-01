@@ -355,22 +355,22 @@ export function FeaturedVehicles() {
             <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Accessing Auction Data...</p>
           </div>
         ) : error ? (
-          <div className="text-center py-24 bg-white rounded-[3rem] border border-red-100 shadow-sm">
+          <div className="text-center py-24 bg-white rounded-none border border-red-200 shadow-sm">
             <p className="text-red-500 font-bold mb-6 text-xl">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-dark text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-black transition-all"
+              className="bg-dark text-white px-8 py-4 rounded-none font-black uppercase tracking-widest text-xs hover:bg-black transition-all"
             >
               Refresh Inventory
             </button>
           </div>
         ) : vehicles.length === 0 ? (
-          <div className="text-center py-24 bg-white rounded-[3rem] border border-gray-100 shadow-sm">
+          <div className="text-center py-24 bg-white rounded-none border border-gray-200 shadow-sm">
             <p className="text-gray-400 font-bold text-lg mb-2">No Featured Vehicles</p>
             <p className="text-gray-400 text-sm mb-8">Check back soon — we're updating our inventory.</p>
             <button
               onClick={() => document.getElementById('inquiry')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-primary text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
+              className="bg-primary text-white px-8 py-4 rounded-none font-black uppercase tracking-widest text-xs hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
             >
               Inquire About a Vehicle
             </button>

@@ -205,9 +205,9 @@ export function Hero() {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 + idx * 0.1 }}
-                className="group flex flex-col items-center justify-center w-[4.5rem] h-[4.5rem] xl:w-[5.5rem] xl:h-[5.5rem] bg-white/70 backdrop-blur-md rounded-2xl shadow-xl shadow-black/5 border border-white/60 hover:bg-white hover:shadow-primary/20 hover:border-primary/40 hover:-translate-y-1 transition-all duration-500"
+                className="group flex flex-col items-center justify-center w-[4.5rem] h-[4.5rem] xl:w-[5.5rem] xl:h-[5.5rem] bg-white/70 backdrop-blur-md rounded-none shadow-md border border-white/60 hover:bg-white hover:border-primary hover:-translate-y-1 transition-all duration-300"
               >
-                <item.icon className="w-5 h-5 xl:w-6 xl:h-6 text-primary mb-1.5 group-hover:scale-110 transition-transform duration-500" />
+                <item.icon className="w-5 h-5 xl:w-6 xl:h-6 text-primary mb-1.5 group-hover:scale-110 transition-transform duration-300" />
                 <span className="text-[7px] xl:text-[8px] font-black text-dark text-center px-1.5 leading-tight uppercase tracking-tighter">
                   {item.label}
                 </span>
@@ -241,7 +241,7 @@ export function Hero() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
-                className="inline-block bg-gray-600/75 backdrop-blur-md rounded-xl sm:rounded-full px-3 sm:px-6 py-2 sm:py-2 mb-4 border border-gray-500 shadow-sm mx-4 sm:mx-0 w-[calc(100%-2rem)] sm:w-auto"
+                className="inline-block bg-gray-600/75 backdrop-blur-md rounded-none px-3 sm:px-6 py-2 sm:py-2 mb-4 border border-gray-500 shadow-sm mx-4 sm:mx-0 w-[calc(100%-2rem)] sm:w-auto"
               >
                 <span className="text-white font-bold text-[8.5px] sm:text-[10px] xl:text-[11px] uppercase tracking-[0.15em] leading-relaxed sm:leading-tight block text-center break-words">
                   {heroSubtitle}
@@ -270,18 +270,18 @@ export function Hero() {
                     e.preventDefault();
                     scrollToSection('inquiry');
                   }}
-                  className="bg-primary hover:bg-primary-hover text-white px-4 sm:px-5 xl:px-7 py-2 sm:py-3 xl:py-3.5 rounded-xl font-black text-[8px] sm:text-[10px] xl:text-[11px] uppercase tracking-widest shadow-xl shadow-primary/30 transition-all flex items-center justify-center gap-1.5 sm:gap-2 group active:scale-95"
+                  className="bg-primary hover:bg-primary-hover text-white px-5 sm:px-6 xl:px-8 py-3 sm:py-3.5 xl:py-4 rounded-none font-black text-[9px] sm:text-[10px] xl:text-[11px] uppercase tracking-widest shadow-xl shadow-primary/30 transition-all flex items-center justify-center gap-1.5 sm:gap-2 group active:scale-95"
                 >
                   {ctaText}
-                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="bg-white/85 backdrop-blur-md hover:bg-white text-dark px-4 sm:px-5 xl:px-7 py-2 sm:py-3 xl:py-3.5 rounded-xl font-black text-[8px] sm:text-[10px] xl:text-[11px] uppercase tracking-widest shadow-xl border border-white/80 transition-all flex items-center justify-center gap-1.5 sm:gap-2 active:scale-95"
+                  className="bg-white/90 backdrop-blur-md hover:bg-white text-dark px-5 sm:px-6 xl:px-8 py-3 sm:py-3.5 xl:py-4 rounded-none font-black text-[9px] sm:text-[10px] xl:text-[11px] uppercase tracking-widest shadow-xl border border-white/80 transition-all flex items-center justify-center gap-1.5 sm:gap-2 active:scale-95"
                 >
-                  <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4 text-[#25D366]" />
+                  <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#25D366]" />
                   CHAT WITH AN IMPORT SPECIALIST
                 </a>
               </motion.div>
@@ -342,7 +342,7 @@ export function Hero() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7, duration: 0.8 }}
-                className="flex flex-row sm:inline-flex items-center justify-between sm:justify-center bg-dark/90 backdrop-blur-xl rounded-xl sm:rounded-2xl p-2 sm:p-3 sm:px-5 border border-white/10 gap-1 sm:gap-5 shadow-2xl relative z-10 w-[calc(100%-1rem)] sm:w-auto mx-auto"
+                className="flex flex-row sm:inline-flex items-center justify-between sm:justify-center bg-dark/95 backdrop-blur-xl rounded-none p-2.5 sm:p-3 sm:px-6 border border-white/10 gap-1 sm:gap-5 shadow-2xl relative z-10 w-[calc(100%-1rem)] sm:w-auto mx-auto"
               >
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 flex-1 sm:flex-none">
                   <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/80 shrink-0" strokeWidth={1.5} />
@@ -378,7 +378,7 @@ export function Hero() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 + idx * 0.1 }}
-                    className="flex flex-col items-center justify-center w-[3.5rem] h-[3.5rem] sm:w-[4.5rem] sm:h-[4.5rem] bg-white/50 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-lg border border-white/30 hover:bg-white/70 transition-all"
+                    className="flex flex-col items-center justify-center w-[3.5rem] h-[3.5rem] sm:w-[4.5rem] sm:h-[4.5rem] bg-white/60 backdrop-blur-md rounded-none shadow-md border border-white/30 hover:bg-white/80 transition-all"
                   >
                     <item.icon className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-primary mb-1 sm:mb-1.5" />
                     <span className="text-[5.5px] sm:text-[7px] font-black text-dark text-center px-0.5 leading-tight uppercase tracking-tighter">
@@ -398,7 +398,7 @@ export function Hero() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="hidden xl:flex bg-dark/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-white/10 w-[260px] items-start gap-3"
+              className="hidden xl:flex bg-dark/95 backdrop-blur-md rounded-none p-4 shadow-2xl border border-white/10 w-[260px] items-start gap-3"
             >
               <Clock className="w-6 h-6 text-primary flex-shrink-0" />
               <div>
@@ -420,14 +420,14 @@ export function Hero() {
             transition={{ delay: 0.85, duration: 0.6 }}
             className="group flex flex-col items-center gap-2 cursor-pointer focus:outline-none select-none transition-transform active:scale-95"
           >
-            <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-neutral-900/95 hover:bg-neutral-900 backdrop-blur-md border border-neutral-700/90 hover:border-primary text-white shadow-xl hover:shadow-[0_0_25px_rgba(255,106,0,0.35)] transition-all duration-300">
+            <div className="flex items-center gap-3 px-5 py-2.5 rounded-none bg-neutral-900/95 hover:bg-neutral-900 backdrop-blur-md border border-neutral-700/90 hover:border-primary text-white shadow-xl transition-all duration-300">
               <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.22em] text-neutral-200 group-hover:text-primary transition-colors">
                 Explore Vehicles
               </span>
               <motion.div
                 animate={{ y: [0, 4, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="w-5 h-5 rounded-full bg-primary/20 border border-primary/40 group-hover:bg-primary group-hover:border-primary flex items-center justify-center text-primary group-hover:text-white transition-all"
+                className="w-5 h-5 rounded-none bg-primary/20 border border-primary/40 group-hover:bg-primary group-hover:border-primary flex items-center justify-center text-primary group-hover:text-white transition-all"
               >
                 <ChevronDown className="w-3.5 h-3.5" strokeWidth={3} />
               </motion.div>

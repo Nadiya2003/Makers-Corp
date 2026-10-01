@@ -51,7 +51,7 @@ function StatCard({
   const display = numeric !== null ? `${prefix}${count}${suffix}` : value;
 
   return (
-    <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex-1 min-w-[140px]">
+    <div className="bg-white p-5 sm:p-6 rounded-none border border-gray-200 flex-1 min-w-[140px]">
       <p className="text-primary font-black text-2xl sm:text-3xl mb-1 tabular-nums">
         {display}
       </p>
@@ -113,11 +113,7 @@ export function About() {
 
   return (
     <section id="about" className="relative py-16 sm:py-24 lg:py-32 bg-white overflow-hidden">
-      {/* Subtle Ambient Background */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 right-0 w-[35%] h-[35%] bg-primary/5 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
-      </div>
+      {/* No decorative background blobs */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">

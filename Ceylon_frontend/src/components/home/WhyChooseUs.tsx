@@ -85,9 +85,6 @@ export function WhyChooseUs() {
           alt="Dark vehicle background" 
           className="w-full h-full object-cover opacity-25"
         />
-        {/* Subtle orange glow accents */}
-        <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]" />
       </div>
 

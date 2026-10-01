@@ -190,11 +190,11 @@ export function VehiclesClient() {
             <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Loading Inventory...</p>
           </div>
         ) : error ? (
-          <div className="text-center py-24 bg-white rounded-[3rem] border border-red-100 shadow-sm">
+          <div className="text-center py-24 bg-white rounded-none border border-red-200 shadow-sm">
             <p className="text-red-500 font-bold mb-6 text-xl">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-dark text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-black transition-all"
+              className="bg-dark text-white px-8 py-4 rounded-none font-black uppercase tracking-widest text-xs hover:bg-black transition-all"
             >
               Refresh Inventory
             </button>
@@ -202,7 +202,7 @@ export function VehiclesClient() {
         ) : (
           <>
             {/* Premium Filter Bar */}
-            <div className="bg-white rounded-[2rem] p-4 sm:p-6 mb-10 shadow-sm border border-gray-100">
+            <div className="bg-white rounded-none p-4 sm:p-6 mb-10 shadow-sm border border-gray-200">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
                 <div>
                   <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Search Vehicle</label>
@@ -211,7 +211,7 @@ export function VehiclesClient() {
                     placeholder="e.g. Toyota..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 font-bold text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
                   />
                 </div>
                 <div>
@@ -219,7 +219,7 @@ export function VehiclesClient() {
                   <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
                   >
                     {categories.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
@@ -229,7 +229,7 @@ export function VehiclesClient() {
                   <select
                     value={fuelFilter}
                     onChange={(e) => setFuelFilter(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
                   >
                     {fuels.map(f => <option key={f} value={f}>{f}</option>)}
                   </select>
@@ -239,7 +239,7 @@ export function VehiclesClient() {
                   <select
                     value={priceFilter}
                     onChange={(e) => setPriceFilter(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
                   >
                     {priceRanges.map(pr => <option key={pr.value} value={pr.value}>{pr.label}</option>)}
                   </select>
@@ -249,7 +249,7 @@ export function VehiclesClient() {
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
                   >
                     {statuses.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
@@ -258,9 +258,9 @@ export function VehiclesClient() {
             </div>
 
             {filteredVehicles.length === 0 ? (
-              <div className="text-center py-20 bg-white rounded-[3rem] border border-gray-100 shadow-sm">
-                <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Filter className="w-8 h-8 text-gray-300" />
+              <div className="text-center py-20 bg-white rounded-none border border-gray-200 shadow-sm">
+                <div className="w-16 h-16 bg-gray-50 border border-gray-200 rounded-none flex items-center justify-center mx-auto mb-6">
+                  <Filter className="w-7 h-7 text-gray-400" />
                 </div>
                 <p className="text-dark font-black text-2xl mb-2">No Matches Found</p>
                 <p className="text-gray-500 text-sm max-w-md mx-auto">Try adjusting your filters to find what you're looking for.</p>

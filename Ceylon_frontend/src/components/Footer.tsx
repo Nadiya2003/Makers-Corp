@@ -92,7 +92,7 @@ export function Footer() {
                 />
               ) : (
                 <>
-                  <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-display font-bold text-xl">
+                  <div className="w-10 h-10 bg-primary rounded-none flex items-center justify-center text-white font-display font-bold text-xl">
                     {siteName.charAt(0)}
                   </div>
                   <span className="font-display font-bold text-xl tracking-tight text-white uppercase">

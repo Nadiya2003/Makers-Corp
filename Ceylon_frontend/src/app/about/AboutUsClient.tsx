@@ -47,10 +47,10 @@ function Lightbox({ images, index, onClose, onPrev, onNext }: {
       className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center"
       onClick={onClose}
     >
-      <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white z-10 p-2 rounded-full hover:bg-white/10 transition-colors">
+      <button onClick={onClose} className="absolute top-4 right-4 text-white/70 hover:text-white z-10 p-2 rounded-none hover:bg-white/10 transition-colors">
         <X size={28} />
       </button>
-      <button onClick={(e) => { e.stopPropagation(); onPrev(); }} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10 p-3 rounded-full hover:bg-white/10 transition-colors">
+      <button onClick={(e) => { e.stopPropagation(); onPrev(); }} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10 p-3 rounded-none hover:bg-white/10 transition-colors">
         <ChevronLeft size={32} />
       </button>
       <motion.div
@@ -62,9 +62,9 @@ function Lightbox({ images, index, onClose, onPrev, onNext }: {
         className="relative w-[90vw] max-w-4xl aspect-video"
         onClick={(e) => e.stopPropagation()}
       >
-        <Image src={images[index]} alt={`Gallery ${index + 1}`} fill className="object-contain rounded-xl" />
+        <Image src={images[index]} alt={`Gallery ${index + 1}`} fill className="object-contain rounded-none" />
       </motion.div>
-      <button onClick={(e) => { e.stopPropagation(); onNext(); }} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10 p-3 rounded-full hover:bg-white/10 transition-colors">
+      <button onClick={(e) => { e.stopPropagation(); onNext(); }} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10 p-3 rounded-none hover:bg-white/10 transition-colors">
         <ChevronRight size={32} />
       </button>
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/50 text-sm font-medium">
@@ -164,30 +164,13 @@ export function AboutUsClient() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90" />
         </motion.div>
 
-        {/* Animated particles */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          {[...Array(12)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-primary/20"
-              style={{
-                width: Math.random() * 6 + 3,
-                height: Math.random() * 6 + 3,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{ y: [0, -30, 0], opacity: [0.3, 1, 0.3] }}
-              transition={{ duration: Math.random() * 4 + 3, repeat: Infinity, delay: Math.random() * 2 }}
-            />
-          ))}
-        </div>
 
         <motion.div style={{ opacity: heroOpacity }} className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 bg-primary/20 backdrop-blur-sm border border-primary/30 text-primary text-sm font-bold uppercase tracking-widest px-5 py-2 rounded-full mb-6"
+            className="inline-flex items-center gap-2 bg-primary/20 backdrop-blur-sm border border-primary/30 text-primary text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-none mb-6 border-l-2 border-l-primary"
           >
             <Star size={14} /> Our Story
           </motion.div>
@@ -225,9 +208,9 @@ export function AboutUsClient() {
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center pt-2"
+              className="w-5 h-8 border border-white/30 rounded-none flex items-start justify-center pt-1.5"
             >
-              <div className="w-1 h-3 bg-white/60 rounded-full" />
+              <div className="w-1 h-2 bg-primary rounded-none" />
             </motion.div>
           </motion.div>
         </motion.div>
@@ -235,12 +218,8 @@ export function AboutUsClient() {
 
       {/* ── Who We Are ────────────────────────────────────────────────────────── */}
       <section className="py-20 sm:py-32 bg-gray-50 relative overflow-hidden">
-        {/* Decorative Grid Pattern */}
+        {/* Subtle grid pattern without blur blobs */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-
-        {/* Floating Gradient Orbs */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-orange-400/10 rounded-full blur-[120px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
 
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
@@ -253,14 +232,14 @@ export function AboutUsClient() {
               transition={{ duration: 0.7 }}
               className="lg:col-span-5"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 shadow-sm mb-6">
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-white border border-gray-200 border-l-2 border-l-primary shadow-sm mb-6">
+                <span className="w-2 h-2 rounded-none bg-primary animate-pulse" />
                 <span className="text-primary font-black uppercase tracking-widest text-[10px]">Who We Are</span>
               </div>
-              <h2 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-dark leading-tight mb-8">
+              <h2 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-dark leading-tight mb-6">
                 Our <span className="text-primary">Story</span>
               </h2>
-              <div className="w-20 h-1.5 bg-gradient-to-r from-primary to-orange-300 rounded-full mb-8" />
+              <div className="w-20 h-1 bg-gradient-to-r from-primary to-orange-300 rounded-none mb-8" />
               <p className="text-lg sm:text-xl text-gray-500 font-medium leading-relaxed whitespace-pre-wrap text-justify">
                 {content.content}
               </p>
@@ -278,17 +257,14 @@ export function AboutUsClient() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.05, duration: 0.25 }}
-                      whileHover={{ y: -8, scale: 1.02 }}
-                      className="group relative bg-white rounded-[2rem] p-8 shadow-lg hover:shadow-2xl border border-gray-100 hover:border-orange-300/50 transition-all duration-300 overflow-hidden"
+                      whileHover={{ y: -4 }}
+                      className="group relative bg-white rounded-none p-8 shadow-sm hover:shadow-xl border border-gray-200 hover:border-primary transition-all duration-300 overflow-hidden"
                     >
-                      {/* Hover Gradient Background */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
                       <div className="relative z-10">
-                        <div className="w-16 h-16 bg-gray-50 group-hover:bg-primary rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300 shadow-sm group-hover:shadow-orange-500/30">
-                          <Icon className="w-8 h-8 text-dark group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
+                        <div className="w-14 h-14 bg-gray-50 group-hover:bg-primary rounded-none border border-gray-200 group-hover:border-primary flex items-center justify-center mb-6 transition-colors duration-300 shadow-sm">
+                          <Icon className="w-7 h-7 text-dark group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
                         </div>
-                        <h4 className="font-display font-black text-xl text-dark mb-3 group-hover:text-primary transition-colors duration-300">{item.title}</h4>
+                        <h4 className="font-display font-black text-xl text-dark mb-3 group-hover:text-primary transition-colors duration-300 uppercase tracking-tight">{item.title}</h4>
                         <p className="text-gray-500 text-sm font-medium leading-relaxed">{item.desc}</p>
                       </div>
                     </motion.div>
@@ -332,14 +308,14 @@ export function AboutUsClient() {
                   transition={{ delay: i * 0.08, duration: 0.5 }}
                   whileHover={{ scale: 1.02 }}
                   onClick={() => openLightbox(i)}
-                  className={`relative overflow-hidden rounded-2xl cursor-pointer group ${gridClass}`}
+                  className={`relative overflow-hidden rounded-none border border-neutral-800 cursor-pointer group ${gridClass}`}
                 >
                   <Image src={img} alt={`Gallery ${i + 1}`} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
                     <motion.div
                       initial={{ opacity: 0, scale: 0.8 }}
                       whileHover={{ opacity: 1, scale: 1 }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/20 backdrop-blur-sm rounded-full p-3"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity bg-neutral-900/80 border border-neutral-700 rounded-none p-3"
                     >
                       <ChevronRight className="w-6 h-6 text-white" />
                     </motion.div>
@@ -370,18 +346,7 @@ export function AboutUsClient() {
       </AnimatePresence>
 
       {/* ── Mission & Vision ──────────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24 relative overflow-hidden">
-        {/* Background Image that blends into the white section below */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <Image
-            src="https://images.unsplash.com/photo-1503375811461-9457fb1e52ee?q=80&w=2000&auto=format&fit=crop"
-            alt="Mission background"
-            fill
-            className="object-cover opacity-20 object-center mix-blend-luminosity"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-white via-white/80 to-white" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
-        </div>
+      <section className="py-16 sm:py-24 relative overflow-hidden bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
             <span className="text-primary font-semibold uppercase tracking-widest text-sm">What drives us</span>
@@ -400,12 +365,12 @@ export function AboutUsClient() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: i * 0.15 }}
                 whileHover={{ y: -4 }}
-                className="relative bg-white rounded-3xl shadow-md border border-gray-100 overflow-hidden group"
+                className="relative bg-white rounded-none shadow-sm hover:shadow-xl border border-gray-200 overflow-hidden group"
               >
-                <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${color}`} />
+                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${color}`} />
                 <div className="p-8 sm:p-10">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${color} rounded-2xl flex items-center justify-center mb-6 shadow-lg`}>
-                    <Icon className="w-8 h-8 text-white" />
+                  <div className={`w-14 h-14 bg-gradient-to-br ${color} rounded-none flex items-center justify-center mb-6 shadow-md`}>
+                    <Icon className="w-7 h-7 text-white" />
                   </div>
                   <h3 className="font-display font-black text-2xl sm:text-3xl text-dark mb-4">{label}</h3>
                   <p className="text-gray-500 leading-relaxed text-base sm:text-lg">{text}</p>
@@ -441,14 +406,14 @@ export function AboutUsClient() {
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6">
-                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-none bg-white/10 backdrop-blur-md border border-white/20 border-l-2 border-l-orange-500 mb-6">
+                <span className="w-2 h-2 rounded-none bg-orange-500 animate-pulse" />
                 <span className="text-orange-400 font-black tracking-[0.25em] uppercase text-xs">Leadership</span>
               </div>
               <h2 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-white mt-2 mb-4">
                 Board of <span className="text-orange-500">Directors</span>
               </h2>
-              <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-orange-300 rounded-full mx-auto mb-4" />
+              <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-orange-300 rounded-none mx-auto mb-4" />
               <p className="text-gray-300 max-w-2xl mx-auto text-lg">Meet the visionary leaders behind Makers Ceylon.</p>
             </motion.div>
             <DirectorsCarousel directors={content.directors} />
@@ -479,17 +444,17 @@ export function AboutUsClient() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15, duration: 0.6 }}
-                whileHover={{ y: -6 }}
-                className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 group hover:bg-white/10 transition-all"
+                whileHover={{ y: -4 }}
+                className="relative bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/50 rounded-none p-8 group hover:bg-white/10 transition-all"
               >
                 <div className="text-7xl font-black text-white/5 group-hover:text-primary/10 transition-colors absolute top-4 right-6 font-display select-none">
                   {item.number}
                 </div>
-                <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                <div className="w-12 h-12 bg-primary/20 rounded-none border border-primary/30 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
                   <Award className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
                 </div>
-                <h4 className="font-display font-bold text-xl text-white mb-3">{item.title}</h4>
-                <p className="text-gray-400 leading-relaxed">{item.desc}</p>
+                <h4 className="font-display font-bold text-xl text-white mb-3 uppercase tracking-tight">{item.title}</h4>
+                <p className="text-gray-400 leading-relaxed text-sm">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -503,10 +468,10 @@ export function AboutUsClient() {
           >
             <button
               onClick={() => router.push('/contact')}
-              className="inline-flex items-center gap-3 bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-2xl font-bold text-lg transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:shadow-xl group"
+              className="inline-flex items-center gap-3 bg-primary hover:bg-primary-hover text-white px-8 py-4 rounded-none font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-primary/20 group"
             >
               Contact Us Today
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </motion.div>
         </div>

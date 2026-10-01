@@ -164,7 +164,7 @@ export default function AboutUsSettings() {
       </div>
 
       {statusMessage && (
-        <div className={`fixed top-6 right-6 z-[300] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl transition-all animate-in slide-in-from-right ${
+        <div className={`fixed top-6 right-6 z-[300] flex items-center gap-3 px-6 py-4 rounded-none shadow-2xl transition-all animate-in slide-in-from-right border border-gray-800 ${
           statusMessage.type === 'success' ? 'bg-black text-white' : 'bg-red-600 text-white'
         }`}>
           {statusMessage.type === 'success' ? <CheckCircle2 size={24} className="text-orange-500" /> : <AlertCircle size={24} />}
@@ -179,7 +179,7 @@ export default function AboutUsSettings() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="bg-white border border-gray-200 rounded-[2.5rem] p-10 shadow-sm space-y-10">
+          <div className="bg-white border border-gray-200 rounded-none p-10 shadow-sm space-y-10">
             
             {/* Main Title & Image */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10">
@@ -192,7 +192,7 @@ export default function AboutUsSettings() {
                       type="text" 
                       value={aboutData.title}
                       onChange={(e) => setAboutData({...aboutData, title: e.target.value})}
-                      className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-none pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
                     />
                   </div>
                 </div>
@@ -206,11 +206,11 @@ export default function AboutUsSettings() {
                         type="text" 
                         value={aboutData.image}
                         onChange={(e) => setAboutData({...aboutData, image: e.target.value})}
-                        className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-none pl-12 pr-6 py-4 text-sm font-bold outline-none focus:border-orange-600 transition-all"
                         placeholder="Paste image URL here"
                       />
                     </div>
-                    <label className="flex items-center justify-center bg-gray-50 hover:bg-gray-100 text-gray-600 px-6 rounded-2xl cursor-pointer transition-colors border border-gray-100" title="Upload Image">
+                    <label className="flex items-center justify-center bg-gray-50 hover:bg-gray-100 text-gray-600 px-6 rounded-none cursor-pointer transition-colors border border-gray-200" title="Upload Image">
                       <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, (url) => setAboutData({...aboutData, image: url}))} disabled={isUploading} />
                       {isUploading ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} />}
                     </label>
@@ -218,7 +218,7 @@ export default function AboutUsSettings() {
                 </div>
               </div>
 
-              <div className="aspect-video rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center relative">
+              <div className="aspect-video rounded-none overflow-hidden bg-gray-50 border border-gray-200 flex items-center justify-center relative">
                  {aboutData.image ? (
                    <img src={aboutData.image} alt="Preview" className="w-full h-full object-cover" />
                  ) : (
@@ -240,13 +240,13 @@ export default function AboutUsSettings() {
                  value={aboutData.content}
                  onChange={(e) => setAboutData({...aboutData, content: e.target.value})}
                  rows={10}
-                 className="w-full bg-gray-50 border border-gray-100 rounded-[1.5rem] px-6 py-4 text-sm font-medium outline-none focus:border-orange-600 transition-all leading-relaxed"
+                 className="w-full bg-gray-50 border border-gray-200 rounded-none px-6 py-4 text-sm font-medium outline-none focus:border-orange-600 transition-all leading-relaxed"
                  placeholder="Tell your company story here..."
                />
             </div>
 
             {/* Mission & Vision */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-gray-50">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-gray-100">
                <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <Target className="text-blue-600" size={18} />
@@ -256,7 +256,7 @@ export default function AboutUsSettings() {
                     value={aboutData.mission}
                     onChange={(e) => setAboutData({...aboutData, mission: e.target.value})}
                     rows={4}
-                    className="w-full bg-gray-50 border border-gray-100 rounded-[1.5rem] px-6 py-4 text-sm font-medium outline-none focus:border-orange-600 transition-all"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-6 py-4 text-sm font-medium outline-none focus:border-orange-600 transition-all"
                   />
                </div>
                <div className="space-y-4">
@@ -268,13 +268,13 @@ export default function AboutUsSettings() {
                     value={aboutData.vision}
                     onChange={(e) => setAboutData({...aboutData, vision: e.target.value})}
                     rows={4}
-                    className="w-full bg-gray-50 border border-gray-100 rounded-[1.5rem] px-6 py-4 text-sm font-medium outline-none focus:border-orange-600 transition-all"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-6 py-4 text-sm font-medium outline-none focus:border-orange-600 transition-all"
                   />
                </div>
             </div>
 
             {/* Board of Directors */}
-            <div className="pt-6 border-t border-gray-50 space-y-6">
+            <div className="pt-6 border-t border-gray-100 space-y-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <Users className="text-purple-600" size={20} />
@@ -286,14 +286,14 @@ export default function AboutUsSettings() {
                     ...aboutData,
                     directors: [...aboutData.directors, { name: '', role: '', bio: '', image: '' }]
                   })}
-                  className="flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-all border border-orange-200 whitespace-nowrap"
+                  className="flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3.5 py-2 rounded-none transition-all border border-orange-200 whitespace-nowrap uppercase tracking-wider"
                 >
                   <Plus size={14} /> Add Director
                 </button>
               </div>
 
               {/* Directors Background Image */}
-              <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 space-y-3">
+              <div className="bg-gray-50 border border-gray-200 rounded-none p-5 space-y-3">
                 <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest">Section Background Image</label>
                 <div className="flex gap-2">
                   <div className="relative flex-1">
@@ -303,17 +303,17 @@ export default function AboutUsSettings() {
                       value={aboutData.directorsBg}
                       onChange={(e) => setAboutData({...aboutData, directorsBg: e.target.value})}
                       placeholder="Paste background image URL here..."
-                      className="w-full bg-white border border-gray-200 rounded-xl pl-11 pr-4 py-3 text-sm font-medium outline-none focus:border-orange-600 transition-all"
+                      className="w-full bg-white border border-gray-200 rounded-none pl-11 pr-4 py-3 text-sm font-medium outline-none focus:border-orange-600 transition-all"
                     />
                   </div>
-                  <label className="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-5 rounded-xl cursor-pointer transition-colors font-bold text-xs whitespace-nowrap" title="Upload Background Image">
+                  <label className="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-5 rounded-none cursor-pointer transition-colors font-bold text-xs whitespace-nowrap" title="Upload Background Image">
                     <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, (url) => setAboutData({...aboutData, directorsBg: url}))} disabled={isUploading} />
                     {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
                     Upload
                   </label>
                 </div>
                 {aboutData.directorsBg && (
-                  <div className="relative rounded-xl overflow-hidden h-28">
+                  <div className="relative rounded-none overflow-hidden h-28 border border-gray-200">
                     <img src={aboutData.directorsBg} alt="Directors BG Preview" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center px-4">
                       <span className="text-white text-xs font-bold">Background Preview</span>
@@ -324,7 +324,7 @@ export default function AboutUsSettings() {
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
                 {aboutData.directors.map((director, idx) => (
-                  <div key={idx} className="relative group bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+                  <div key={idx} className="relative group bg-white border border-gray-200 rounded-none overflow-hidden shadow-sm">
                     {/* Photo */}
                     <div className="relative aspect-square bg-gray-100 flex items-center justify-center">
                       {director.image ? (
@@ -336,7 +336,7 @@ export default function AboutUsSettings() {
                       )}
                       {/* Photo overlay on hover */}
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                        <label className="flex items-center gap-1.5 bg-white text-gray-800 text-xs font-bold px-3 py-1.5 rounded-lg cursor-pointer hover:bg-orange-50 transition-colors">
+                        <label className="flex items-center gap-1.5 bg-white text-gray-800 text-xs font-bold px-3 py-1.5 rounded-none cursor-pointer hover:bg-orange-50 transition-colors">
                           <Upload size={13} />
                           {director.image ? 'Change' : 'Upload'}
                           <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, (url) => {
@@ -353,7 +353,7 @@ export default function AboutUsSettings() {
                               d[idx] = { ...d[idx], image: '' };
                               setAboutData({ ...aboutData, directors: d });
                             }}
-                            className="flex items-center gap-1.5 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-red-600 transition-colors"
+                            className="flex items-center gap-1.5 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-none hover:bg-red-600 transition-colors"
                           >
                             <Trash2 size={13} /> Remove
                           </button>
@@ -372,7 +372,7 @@ export default function AboutUsSettings() {
                           setAboutData({ ...aboutData, directors: d });
                         }}
                         placeholder="Name"
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-none px-2.5 py-1.5 text-xs font-bold text-gray-900 focus:outline-none focus:border-orange-600 transition-all"
                       />
                       <input
                         type="text"
@@ -383,7 +383,7 @@ export default function AboutUsSettings() {
                           setAboutData({ ...aboutData, directors: d });
                         }}
                         placeholder="Role / Title"
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-orange-600 font-semibold focus:outline-none focus:border-orange-600 transition-all"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-none px-2.5 py-1.5 text-xs text-orange-600 font-semibold focus:outline-none focus:border-orange-600 transition-all"
                       />
                       <textarea
                         value={director.bio}
@@ -394,7 +394,7 @@ export default function AboutUsSettings() {
                         }}
                         rows={5}
                         placeholder="Short Bio..."
-                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 focus:outline-none focus:border-orange-600 transition-all resize-none"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-none px-2.5 py-1.5 text-xs text-gray-700 focus:outline-none focus:border-orange-600 transition-all resize-none"
                       />
                     </div>
 
@@ -402,7 +402,7 @@ export default function AboutUsSettings() {
                     <button
                       type="button"
                       onClick={() => setConfirmDeleteIdx(idx)}
-                      className="absolute top-2 right-2 p-1.5 bg-white/90 text-red-400 hover:text-red-600 hover:bg-white rounded-lg shadow transition-all opacity-0 group-hover:opacity-100"
+                      className="absolute top-2 right-2 p-1.5 bg-white/90 text-red-400 hover:text-red-600 hover:bg-white rounded-none shadow transition-all opacity-0 group-hover:opacity-100 border border-gray-200"
                       title="Remove director"
                     >
                       <Trash2 size={14} />
@@ -412,20 +412,20 @@ export default function AboutUsSettings() {
               </div>
 
               {aboutData.directors.length === 0 && (
-                <p className="text-xs text-gray-400 font-medium text-center py-6 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                <p className="text-xs text-gray-400 font-medium text-center py-6 bg-gray-50 rounded-none border border-dashed border-gray-200">
                   No directors added yet. Click "Add Director" to create one.
                 </p>
               )}
             </div>
 
             {/* Photo Gallery */}
-            <div className="pt-6 border-t border-gray-50 space-y-6">
+            <div className="pt-6 border-t border-gray-100 space-y-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <ImageIcon className="text-pink-600" size={20} />
                   <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest">Photo Gallery</h3>
                 </div>
-                <label className="flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-all border border-orange-200 cursor-pointer">
+                <label className="flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3.5 py-2 rounded-none transition-all border border-orange-200 cursor-pointer uppercase tracking-wider">
                   {isUploading ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
                   Add Photo
                   <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, (url) => {
@@ -436,7 +436,7 @@ export default function AboutUsSettings() {
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {aboutData.galleryImages.map((imgUrl, idx) => (
-                  <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50 border border-gray-200 group">
+                  <div key={idx} className="relative aspect-square rounded-none overflow-hidden bg-gray-50 border border-gray-200 group">
                     <img src={imgUrl} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <button
@@ -445,7 +445,7 @@ export default function AboutUsSettings() {
                           const newImages = aboutData.galleryImages.filter((_, i) => i !== idx);
                           setAboutData({ ...aboutData, galleryImages: newImages });
                         }}
-                        className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors"
+                        className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-none transition-colors"
                       >
                         <Trash2 size={18} />
                       </button>
@@ -455,7 +455,7 @@ export default function AboutUsSettings() {
                 
                 {aboutData.galleryImages.length === 0 && (
                   <div className="col-span-full">
-                    <p className="text-xs text-gray-400 font-medium text-center py-6 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                    <p className="text-xs text-gray-400 font-medium text-center py-6 bg-gray-50 rounded-none border border-dashed border-gray-200">
                       No gallery photos added yet. Click "Add Photo" to upload some.
                     </p>
                   </div>
@@ -468,7 +468,7 @@ export default function AboutUsSettings() {
           <div className="flex justify-end">
              <button 
                type="submit" disabled={submitting}
-               className="bg-black hover:bg-orange-600 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all flex items-center gap-3 shadow-xl"
+               className="bg-black hover:bg-orange-600 text-white px-10 py-5 rounded-none font-black uppercase tracking-widest text-[10px] transition-all flex items-center gap-3 shadow-xl"
              >
                {submitting ? <Loader2 size={16} className="animate-spin" /> : <><Save size={16} /> Save About Us Content</>}
              </button>
@@ -485,8 +485,8 @@ export default function AboutUsSettings() {
             onClick={() => setConfirmDeleteIdx(null)}
           />
           {/* Dialog */}
-          <div className="relative bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center z-10 animate-in zoom-in-95 duration-150">
-            <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="relative bg-white rounded-none shadow-2xl p-8 max-w-sm w-full text-center z-10 animate-in zoom-in-95 duration-150 border border-gray-200">
+            <div className="w-14 h-14 bg-red-100 rounded-none flex items-center justify-center mx-auto mb-4 border border-red-200">
               <Trash2 className="text-red-500" size={26} />
             </div>
             <h3 className="text-lg font-black text-gray-900 mb-2">Remove Director?</h3>
@@ -501,7 +501,7 @@ export default function AboutUsSettings() {
               <button
                 type="button"
                 onClick={() => setConfirmDeleteIdx(null)}
-                className="flex-1 px-5 py-2.5 rounded-xl border border-gray-200 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-colors"
+                className="flex-1 px-5 py-2.5 rounded-none border border-gray-200 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
@@ -512,7 +512,7 @@ export default function AboutUsSettings() {
                   setAboutData({ ...aboutData, directors: newDirectors });
                   setConfirmDeleteIdx(null);
                 }}
-                className="flex-1 px-5 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold text-sm transition-colors"
+                className="flex-1 px-5 py-2.5 rounded-none bg-red-500 hover:bg-red-600 text-white font-semibold text-sm transition-colors"
               >
                 Yes, Remove
               </button>

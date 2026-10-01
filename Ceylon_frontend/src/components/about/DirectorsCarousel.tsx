@@ -30,7 +30,7 @@ function DirectorCard({ director, onClick }: { director: Director; onClick: () =
   return (
     <div 
       onClick={onClick}
-      className="relative flex flex-col h-full bg-white/10 hover:bg-white/15 backdrop-blur-xl rounded-[2.5rem] overflow-hidden border border-white/20 hover:border-orange-400/60 shadow-2xl hover:shadow-orange-500/20 hover:-translate-y-2 transition-all duration-300 group cursor-pointer"
+      className="relative flex flex-col h-full bg-white/10 hover:bg-white/15 backdrop-blur-xl rounded-none overflow-hidden border border-white/20 hover:border-orange-500 shadow-xl hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer"
     >
       {/* Photo Section */}
       <div className="relative aspect-square w-full overflow-hidden bg-gray-800 flex-shrink-0">
@@ -52,8 +52,8 @@ function DirectorCard({ director, onClick }: { director: Director; onClick: () =
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none group-hover:from-black/90 transition-all" />
         
         {/* View Profile Badge */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 z-10 pointer-events-none">
-          <span className="bg-orange-500 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-[0.2em] px-5 py-2.5 rounded-full shadow-lg shadow-orange-500/40 whitespace-nowrap">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 z-10 pointer-events-none">
+          <span className="bg-orange-500 text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-none shadow-lg whitespace-nowrap">
             View Profile
           </span>
         </div>
@@ -79,7 +79,7 @@ function DirectorCard({ director, onClick }: { director: Director; onClick: () =
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-orange-500 hover:text-white flex items-center justify-center text-gray-400 transition-all duration-300 hover:scale-110"
+              className="w-8 h-8 rounded-none bg-white/10 hover:bg-orange-500 hover:text-white flex items-center justify-center text-gray-400 transition-all duration-300"
               title="LinkedIn Profile"
             >
               <Linkedin className="w-3.5 h-3.5" />
@@ -91,7 +91,7 @@ function DirectorCard({ director, onClick }: { director: Director; onClick: () =
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-orange-500 hover:text-white flex items-center justify-center text-gray-400 transition-all duration-300 hover:scale-110"
+              className="w-8 h-8 rounded-none bg-white/10 hover:bg-orange-500 hover:text-white flex items-center justify-center text-gray-400 transition-all duration-300"
               title="Twitter Profile"
             >
               <Twitter className="w-3.5 h-3.5" />
@@ -101,7 +101,7 @@ function DirectorCard({ director, onClick }: { director: Director; onClick: () =
             <a
               href={emailLink}
               onClick={(e) => e.stopPropagation()}
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-orange-500 hover:text-white flex items-center justify-center text-gray-400 transition-all duration-300 hover:scale-110"
+              className="w-8 h-8 rounded-none bg-white/10 hover:bg-orange-500 hover:text-white flex items-center justify-center text-gray-400 transition-all duration-300"
               title="Send Email"
             >
               <Mail className="w-3.5 h-3.5" />
@@ -113,7 +113,7 @@ function DirectorCard({ director, onClick }: { director: Director; onClick: () =
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="w-8 h-8 rounded-full bg-white/10 hover:bg-orange-500 hover:text-white flex items-center justify-center text-gray-400 transition-all duration-300 hover:scale-110"
+              className="w-8 h-8 rounded-none bg-white/10 hover:bg-orange-500 hover:text-white flex items-center justify-center text-gray-400 transition-all duration-300"
               title="Website"
             >
               <Globe className="w-3.5 h-3.5" />
@@ -272,12 +272,12 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
       <div className="w-full flex items-center justify-center py-16">
         <div className="animate-pulse flex gap-6 w-full">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="flex-1 rounded-[2.5rem] overflow-hidden">
+            <div key={i} className="flex-1 rounded-none overflow-hidden border border-white/10">
               <div className="aspect-square bg-white/10 w-full" />
               <div className="p-6 space-y-3">
-                <div className="h-5 bg-white/10 rounded w-3/4" />
-                <div className="h-3 bg-white/10 rounded w-1/2" />
-                <div className="h-3 bg-white/10 rounded w-full" />
+                <div className="h-5 bg-white/10 rounded-none w-3/4" />
+                <div className="h-3 bg-white/10 rounded-none w-1/2" />
+                <div className="h-3 bg-white/10 rounded-none w-full" />
               </div>
             </div>
           ))}
@@ -360,14 +360,14 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
           <div className="absolute top-[40%] -translate-y-1/2 left-0 right-0 flex justify-between pointer-events-none z-20 px-0">
             <button
               onClick={prevSlide}
-              className="w-12 h-12 -ml-6 rounded-full bg-white/15 hover:bg-orange-500 hover:text-white text-white backdrop-blur-md flex items-center justify-center shadow-xl border border-white/20 hover:border-orange-500 transition-all duration-300 pointer-events-auto hover:scale-105 active:scale-95"
+              className="w-12 h-12 -ml-6 rounded-none bg-neutral-900/90 hover:bg-orange-500 hover:text-white text-white backdrop-blur-md flex items-center justify-center shadow-xl border border-neutral-700 hover:border-orange-500 transition-all duration-300 pointer-events-auto active:scale-95"
               title="Previous"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={nextSlide}
-              className="w-12 h-12 -mr-6 rounded-full bg-white/15 hover:bg-orange-500 hover:text-white text-white backdrop-blur-md flex items-center justify-center shadow-xl border border-white/20 hover:border-orange-500 transition-all duration-300 pointer-events-auto hover:scale-105 active:scale-95"
+              className="w-12 h-12 -mr-6 rounded-none bg-neutral-900/90 hover:bg-orange-500 hover:text-white text-white backdrop-blur-md flex items-center justify-center shadow-xl border border-neutral-700 hover:border-orange-500 transition-all duration-300 pointer-events-auto active:scale-95"
               title="Next"
             >
               <ChevronRight className="w-6 h-6" />
@@ -375,7 +375,7 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
           </div>
 
           {/* Dot Indicators */}
-          <div className="flex justify-center gap-2.5 mt-8">
+          <div className="flex justify-center gap-2 mt-8">
             {directors.map((_, index) => (
               <button
                 key={index}
@@ -383,8 +383,8 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
                   setIsTransitioning(true);
                   setCurrentIndex(index + visibleCount);
                 }}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
-                  activeIndex === index ? 'w-8 bg-orange-500 shadow-sm shadow-orange-500/50' : 'w-2.5 bg-white/30 hover:bg-white/50'
+                className={`h-1.5 rounded-none transition-all duration-300 ${
+                  activeIndex === index ? 'w-8 bg-orange-500 shadow-sm shadow-orange-500/50' : 'w-3 bg-white/30 hover:bg-white/50'
                 }`}
                 title={`Go to slide ${index + 1}`}
               />
@@ -412,11 +412,11 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-4xl bg-white rounded-[2rem] sm:rounded-[3rem] shadow-2xl overflow-hidden z-10 flex flex-col md:flex-row max-h-[90vh]"
+              className="relative w-full max-w-4xl bg-white rounded-none shadow-2xl overflow-hidden z-10 flex flex-col md:flex-row max-h-[90vh] border border-gray-200"
             >
               <button
                 onClick={() => setSelectedDirector(null)}
-                className="absolute top-4 right-4 sm:top-6 sm:right-6 p-3 bg-white/80 hover:bg-white backdrop-blur-md rounded-full z-20 transition-all duration-300 group shadow-md hover:shadow-lg active:scale-95"
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2.5 bg-white/90 hover:bg-white backdrop-blur-md rounded-none z-20 transition-all duration-300 group shadow-md hover:shadow-lg active:scale-95 border border-gray-200"
                 title="Close"
               >
                 <X className="w-5 h-5 text-dark group-hover:rotate-90 transition-transform duration-300" />
@@ -450,8 +450,8 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
                   </p>
                 </div>
                 
-                <div className="w-12 h-1.5 bg-gray-100 mb-8 rounded-full overflow-hidden">
-                  <div className="w-1/2 h-full bg-primary rounded-full" />
+                <div className="w-12 h-1 bg-gray-100 mb-8 rounded-none overflow-hidden">
+                  <div className="w-1/2 h-full bg-primary" />
                 </div>
                 
                 <div className="prose prose-sm sm:prose-base prose-gray max-w-none text-gray-600 mb-10 whitespace-pre-line leading-relaxed font-medium">
@@ -465,7 +465,7 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
                       href={selectedDirector.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-50 hover:bg-[#0077b5] hover:text-white text-gray-500 font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-md"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-none bg-gray-50 hover:bg-[#0077b5] hover:text-white text-gray-600 font-bold text-xs uppercase tracking-wider transition-all duration-300 border border-gray-200 shadow-sm"
                     >
                       <Linkedin className="w-4 h-4" />
                       <span>LinkedIn</span>
@@ -476,7 +476,7 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
                       href={selectedDirector.twitter}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-50 hover:bg-[#1DA1F2] hover:text-white text-gray-500 font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-md"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-none bg-gray-50 hover:bg-[#1DA1F2] hover:text-white text-gray-600 font-bold text-xs uppercase tracking-wider transition-all duration-300 border border-gray-200 shadow-sm"
                     >
                       <Twitter className="w-4 h-4" />
                       <span>Twitter</span>
@@ -485,7 +485,7 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
                   {selectedDirector.email && (
                     <a
                       href={`mailto:${selectedDirector.email}`}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-50 hover:bg-primary hover:text-white text-gray-500 font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-md"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-none bg-gray-50 hover:bg-primary hover:text-white text-gray-600 font-bold text-xs uppercase tracking-wider transition-all duration-300 border border-gray-200 shadow-sm"
                     >
                       <Mail className="w-4 h-4" />
                       <span>Email</span>
@@ -496,7 +496,7 @@ export function DirectorsCarousel({ directors }: DirectorsCarouselProps) {
                       href={selectedDirector.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-50 hover:bg-dark hover:text-white text-gray-500 font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-md"
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-none bg-gray-50 hover:bg-dark hover:text-white text-gray-600 font-bold text-xs uppercase tracking-wider transition-all duration-300 border border-gray-200 shadow-sm"
                     >
                       <Globe className="w-4 h-4" />
                       <span>Website</span>

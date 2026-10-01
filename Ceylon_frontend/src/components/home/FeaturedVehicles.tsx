@@ -293,59 +293,96 @@ export function FeaturedVehicles() {
   const activeIndex = n > 0 ? ((currentIndex - visibleCount) % n + n) % n : 0;
 
   return (
-    <section id="vehicles" className="py-16 sm:py-24 lg:py-32 bg-gray-50 relative overflow-hidden scroll-mt-20 lg:scroll-mt-24">
-      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 gap-4 sm:gap-8">
-          <div className="max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-primary/10 border-l-2 border-primary text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-4"
-            >
-              <Sparkles className="w-3 h-3" /> Premium Collection
-            </motion.div>
-            <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-dark leading-none uppercase tracking-tighter">
-              Featured <span className="text-primary">Inventory</span>
-            </h2>
-            <p className="mt-4 text-gray-500 font-medium text-lg max-w-xl">
-              Swipe through our exclusive selection of premium Japanese vehicles, available for immediate import.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-1.5 bg-neutral-100 p-1.5 rounded-none border border-neutral-200/90 w-fit">
-              <button
-                onClick={() => { setActiveTab('auction'); setIsTransitioning(false); }}
-                className={`px-6 py-3 rounded-none text-xs font-black uppercase tracking-widest transition-all ${
-                  activeTab === 'auction'
-                    ? 'bg-neutral-900 text-white shadow-md'
-                    : 'text-neutral-500 hover:text-dark'
-                }`}
+    <section id="vehicles" className="pt-6 sm:pt-10 lg:pt-12 pb-16 sm:pb-20 lg:pb-24 bg-gray-50 relative overflow-hidden scroll-mt-20 lg:scroll-mt-24">
+      {/* Subtle Automotive Grid & Watermark Texture */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden opacity-[0.035]">
+        <div className="absolute -top-16 -right-10 text-[12rem] xl:text-[15rem] font-black tracking-tighter text-black uppercase font-display leading-none">
+          JAPAN
+        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(#000000_1px,transparent_1px)] [background-size:24px_24px]" />
+      </div>
+
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Creative Automotive Header */}
+        <div className="mb-10 sm:mb-12">
+          {/* Top Meta Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-gray-200/80 mb-5">
+            <div className="flex items-center gap-3">
+              <motion.div
+                initial={{ opacity: 0, x: -15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-none bg-primary/10 border-l-2 border-primary text-primary text-[10px] font-black uppercase tracking-[0.2em]"
               >
-                Auction Vehicles
-              </button>
-              <button
-                onClick={() => { setActiveTab('commercial'); setIsTransitioning(false); }}
-                className={`px-6 py-3 rounded-none text-xs font-black uppercase tracking-widest transition-all ${
-                  activeTab === 'commercial'
-                    ? 'bg-neutral-900 text-white shadow-md'
-                    : 'text-neutral-500 hover:text-dark'
-                }`}
-              >
-                Commercial Vehicles
-              </button>
+                <Sparkles className="w-3 h-3" /> Our Vehicles
+              </motion.div>
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-white border border-gray-200/90 text-neutral-600 text-[10px] font-bold uppercase tracking-wider shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Live Japan Auction Stock
+              </div>
+            </div>
+
+            {/* Verified Trust Signals */}
+            <div className="hidden md:flex items-center gap-4 text-[10px] font-bold tracking-wider uppercase text-gray-500">
+              <span className="flex items-center gap-1.5">
+                <span className="text-primary font-black">✓</span> 100% Inspected
+              </span>
+              <span className="text-gray-300">•</span>
+              <span className="flex items-center gap-1.5">
+                <span className="text-primary font-black">✓</span> USS & CAA Auctions
+              </span>
+              <span className="text-gray-300">•</span>
+              <span className="flex items-center gap-1.5">
+                <span className="text-primary font-black">✓</span> Islandwide Delivery
+              </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <motion.button
-              whileHover={{ x: 5 }}
-              onClick={handleExplore}
-              className="hidden sm:flex items-center gap-3 text-dark font-black uppercase tracking-[0.15em] text-sm group"
-            >
-              Explore Full Collection
-              <div className="w-10 h-10 rounded-none border border-gray-300 flex items-center justify-center group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all bg-white shadow-sm">
-                <ArrowRight className="w-4 h-4" />
+          {/* Main Title & Action Bar */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div>
+              <h2 className="font-display font-black text-2xl sm:text-4xl lg:text-5xl xl:text-6xl text-dark leading-tight uppercase tracking-tight whitespace-normal sm:whitespace-nowrap">
+                Find Your <span className="text-primary">Next Vehicle</span>
+              </h2>
+              <p className="mt-2 text-gray-500 font-medium text-sm sm:text-base max-w-2xl">
+                Explore our latest vehicles sourced directly from Japan with auction-grade inspection and full transparency.
+              </p>
+            </div>
+
+            {/* Controls: Category Switcher + View All */}
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 self-start lg:self-end">
+              <div className="flex items-center p-1 bg-white rounded-none border border-neutral-200/90 shadow-xs">
+                <button
+                  onClick={() => { setActiveTab('auction'); setIsTransitioning(false); }}
+                  className={`px-4 sm:px-6 py-2.5 rounded-none text-xs font-black uppercase tracking-widest transition-all ${
+                    activeTab === 'auction'
+                      ? 'bg-neutral-900 text-white shadow-xs'
+                      : 'text-neutral-500 hover:text-dark'
+                  }`}
+                >
+                  Auction Vehicles
+                </button>
+                <button
+                  onClick={() => { setActiveTab('commercial'); setIsTransitioning(false); }}
+                  className={`px-4 sm:px-6 py-2.5 rounded-none text-xs font-black uppercase tracking-widest transition-all ${
+                    activeTab === 'commercial'
+                      ? 'bg-neutral-900 text-white shadow-xs'
+                      : 'text-neutral-500 hover:text-dark'
+                  }`}
+                >
+                  Commercial Vehicles
+                </button>
               </div>
-            </motion.button>
+
+              <motion.button
+                whileHover={{ x: 3 }}
+                onClick={handleExplore}
+                className="hidden sm:inline-flex items-center gap-2.5 bg-neutral-900 hover:bg-primary text-white font-black text-xs uppercase tracking-widest px-5 py-3 transition-colors shadow-xs group"
+              >
+                <span>View All</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </motion.button>
+            </div>
           </div>
         </div>
 
@@ -490,13 +527,16 @@ export function FeaturedVehicles() {
           onClose={() => setIsModalOpen(false)}
         />
 
-        <button
-          onClick={handleExplore}
-          className="mt-8 sm:hidden w-full flex items-center justify-center gap-3 bg-neutral-900 hover:bg-black text-white font-black py-4 rounded-none transition-all uppercase tracking-widest text-xs shadow-md"
-        >
-          View Full Collection
-          <ArrowRight className="w-4 h-4" />
-        </button>
+        {/* View All Vehicles Bottom CTA */}
+        <div className="mt-12 text-center flex justify-center">
+          <button
+            onClick={handleExplore}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-neutral-900 hover:bg-primary text-white font-black py-4 px-8 sm:px-12 rounded-none transition-all uppercase tracking-widest text-xs shadow-xl active:scale-95 group"
+          >
+            <span>View All Vehicles</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
       </div>
     </section>
   );

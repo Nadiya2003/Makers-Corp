@@ -15,12 +15,12 @@ export default function HomePage() {
       <PopupModal />
       <FloatingActionButton />
       <Hero />
-      <Features />
-      <About />
-      <HowItWorks />
       <FeaturedVehicles />
-      <LiveAuction />
+      <Features />
+      <HowItWorks />
       <WhyChooseUs />
+      <About />
+      <LiveAuction />
       <Inquiry />
     </main>
   );

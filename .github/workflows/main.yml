@@ -18,7 +18,13 @@ jobs:
         with:
           authkey: ${{ secrets.TS_AUTHKEY }}
           tags: tag:ci
-
+          
+      - name: Debug Tailscale Connectivity
+        run: |
+          tailscale status
+          tailscale ping -c 3 ${{ secrets.SSH_HOST }}
+          nc -zv -w 5 ${{ secrets.SSH_HOST }} ${{ secrets.SSH_PORT }} || echo "Port closed or unreachable"
+     
       - name: Setup SSH Key
         shell: bash
         env:

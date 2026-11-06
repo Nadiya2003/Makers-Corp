@@ -141,10 +141,6 @@ jobs:
               || pm2 start npm --name makers-backend -- start
             pm2 save
 
-            # ── 7. Nginx ──
-            echo "Reloading Nginx..."
-            sudo systemctl reload nginx
-
             echo "--- Deployment Finished Successfully ---"
             pm2 status
           EOF

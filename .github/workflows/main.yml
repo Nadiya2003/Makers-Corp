@@ -1,38 +1,75 @@
-name: Makers-Ceylon deploy 
+name: Makers-Ceylon deploy
+
 on:
   push:
     branches:
       - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          authkey: ${{ secrets.TS_AUTHKEY }}
+          tags: tag:ci
+
       - name: Setup SSH Key
+        shell: bash
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || echo "keyscan warning: verify server key manually if needed"
+          chmod 644 ~/.ssh/known_hosts
+
       - name: Deploy to Server
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SERVER_PATH: ${{ secrets.WORK_DIR }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          PORT: ${{ vars.PORT }}
+          FRONTEND_URL: ${{ vars.FRONTEND_URL }}
+          RESEND_API: ${{ secrets.RESEND_API }}
+          RECEIVE_EMAIL: ${{ vars.RECEIVE_EMAIL }}
+          SEND_EMAIL: ${{ vars.SEND_EMAIL }}
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-          "SERVER_PATH='${{ secrets.WORK_DIR }}' \
-           REPO_URL='git@github.com:Nadiya2003/Makers-Ceylon.git' \
-           MONGO_URI='${{ secrets.MONGO_URI }}' \
-           PORT='${{ vars.PORT }}' \
-           FRONTEND_URL='${{ vars.FRONTEND_URL }}' \
-           RESEND_API='${{ secrets.RESEND_API }}' \
-           RECEIVE_EMAIL='${{ vars.RECEIVE_EMAIL }}' \
-           SEND_EMAIL='${{ vars.SEND_EMAIL }}' \
-           bash -s" << 'EOF'
-            set -e
+          set -euo pipefail
+
+          ssh -p "$SSH_PORT" -i ~/.ssh/id_deploy -o StrictHostKeyChecking=accept-new \
+            "$SSH_USER@$SSH_HOST" \
+            "SERVER_PATH='$SERVER_PATH' \
+             REPO_URL='git@github.com:Nadiya2003/Makers-Ceylon.git' \
+             MONGO_URI='$MONGO_URI' \
+             PORT='$PORT' \
+             FRONTEND_URL='$FRONTEND_URL' \
+             RESEND_API='$RESEND_API' \
+             RECEIVE_EMAIL='$RECEIVE_EMAIL' \
+             SEND_EMAIL='$SEND_EMAIL' \
+             bash -s" << 'EOF'
+            set -euo pipefail
             echo "--- Starting Deployment ---"
 
+            # Ensure GitHub host key is trusted on the target server
+            mkdir -p ~/.ssh
+            chmod 700 ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+            sort -u ~/.ssh/known_hosts -o ~/.ssh/known_hosts
+
             UPLOADS_PATH="$SERVER_PATH/Ceylon_backend/public/uploads"
-            UPLOADS_BACKUP_DIR="/tmp/makers-uploads-backup-$(date +%s)"
+            TS="$(date +%s)"
+            UPLOADS_BACKUP_DIR="/tmp/makers-uploads-backup-$TS"
 
             # ── 1. Backup uploads to a SAFE location outside SERVER_PATH ──
             echo "Backing up uploads folder..."
@@ -45,15 +82,18 @@ jobs:
             fi
 
             # ── 2. Clone repo to temp dir ──
-            TEMP_CLONE_DIR="/tmp/makersceylon-$(date +%s)"
+            TEMP_CLONE_DIR="/tmp/makersceylon-$TS"
             echo "Cloning repository into $TEMP_CLONE_DIR..."
-            git clone "$REPO_URL" "$TEMP_CLONE_DIR"
+            git clone --depth 1 "$REPO_URL" "$TEMP_CLONE_DIR"
 
-            # ── 3. Swap code (uploads are already backed up safely) ──
+            # ── 3. Swap code ──
             echo "Updating application code in $SERVER_PATH..."
             rm -rf "$SERVER_PATH"
             mkdir -p "$SERVER_PATH"
+            
+            shopt -s dotglob
             mv "$TEMP_CLONE_DIR"/* "$SERVER_PATH/"
+            shopt -u dotglob
             rm -rf "$TEMP_CLONE_DIR"
 
             # ── 4. Restore uploads into correct path ──
@@ -76,7 +116,9 @@ jobs:
             echo "Building Next.js app..."
             npm run build
             echo "Restarting frontend PM2..."
-            pm2 restart makers-frontend || pm2 start npm --name "makers-frontend" -- start
+            pm2 describe makers-frontend >/dev/null 2>&1 \
+              && pm2 restart makers-frontend \
+              || pm2 start npm --name "makers-frontend" -- start
             pm2 save
 
             # ── 6. Backend ──

@@ -1,6 +1,5 @@
 const Media = require('../models/Media');
-const fs = require('fs');
-const path = require('path');
+const { cloudinary, uploadBuffer } = require('../config/cloudinary');
 
 // Get all media
 const getMedia = async (req, res) => {
@@ -19,17 +18,14 @@ const addMedia = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Please upload at least one photo' });
     }
 
-    // Use https on production hosts; fallback to the actual request protocol locally
-    const host = req.get('host') || '';
-    const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
-    const protocol = isLocal ? req.protocol : 'https';
-    const apiUrl = `${protocol}://${host}`;
     const mediaEntries = [];
 
     for (const file of req.files) {
+      const result = await uploadBuffer(file.buffer);
       const newMedia = await Media.create({
         name: file.originalname,
-        url: `${apiUrl}/public/uploads/gallery/${file.filename}`,
+        url: result.secure_url,
+        publicId: result.public_id,
         category: req.body.category || 'General'
       });
       mediaEntries.push(newMedia);
@@ -53,12 +49,13 @@ const deleteMedia = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Media not found' });
     }
 
-    // Extract filename from URL and delete actual file
-    const filename = media.url.split('/').pop();
-    const filePath = path.join(__dirname, '../public/uploads/gallery', filename);
-    
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
+    if (media.publicId) {
+      // Cloudinary asset: remove it from the Assets folder
+      try {
+        await cloudinary.uploader.destroy(media.publicId, { invalidate: true });
+      } catch (e) {
+        console.error('Cloudinary delete failed:', e.message);
+      }
     }
 
     await media.deleteOne();

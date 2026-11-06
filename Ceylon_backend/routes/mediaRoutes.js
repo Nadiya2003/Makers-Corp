@@ -5,16 +5,8 @@ const path = require('path');
 const { getMedia, addMedia, deleteMedia } = require('../controllers/mediaController');
 const { protect } = require('../middleware/authMiddleware');
 
-// Multer Config
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'public/uploads/gallery');
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
+// Multer Config (files are kept in memory and streamed to Cloudinary)
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|webp/;

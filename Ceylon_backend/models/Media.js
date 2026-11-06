@@ -5,6 +5,9 @@ const MediaSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  publicId: {
+    type: String
+  },
   name: {
     type: String,
     required: true

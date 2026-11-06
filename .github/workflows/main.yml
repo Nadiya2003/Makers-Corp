@@ -43,6 +43,7 @@ jobs:
           FRONTEND_PORT: ${{ vars.FRONTEND_PORT }}
           FRONTEND_URL: ${{ vars.FRONTEND_URL }}
           RESEND_API: ${{ secrets.RESEND_API }}
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
           RECEIVE_EMAIL: ${{ vars.RECEIVE_EMAIL }}
           SEND_EMAIL: ${{ vars.SEND_EMAIL }}
         run: |
@@ -57,6 +58,7 @@ jobs:
              FRONTEND_PORT='$FRONTEND_PORT' \
              FRONTEND_URL='$FRONTEND_URL' \
              RESEND_API='$RESEND_API' \
+             CLOUDINARY_URL='$CLOUDINARY_URL' \
              RECEIVE_EMAIL='$RECEIVE_EMAIL' \
              SEND_EMAIL='$SEND_EMAIL' \
              bash -s" << 'EOF'
@@ -136,6 +138,7 @@ jobs:
                 echo "PORT=$PORT"
                 echo "FRONTEND_URL=$FRONTEND_URL"
                 echo "RESEND_API=$RESEND_API"
+                echo "CLOUDINARY_URL=$CLOUDINARY_URL"
                 echo "RECEIVE_EMAIL=$RECEIVE_EMAIL"
                 echo "SEND_EMAIL=$SEND_EMAIL"
             } > .env

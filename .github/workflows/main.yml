@@ -18,7 +18,7 @@ jobs:
         with:
           authkey: ${{ secrets.TS_AUTHKEY }}
           tags: tag:ci
-              
+
       - name: Setup SSH Key
         shell: bash
         env:
@@ -40,6 +40,7 @@ jobs:
           SERVER_PATH: ${{ secrets.WORK_DIR }}
           MONGO_URI: ${{ secrets.MONGO_URI }}
           PORT: ${{ vars.PORT }}
+          FRONTEND_PORT: ${{ vars.FRONTEND_PORT }}
           FRONTEND_URL: ${{ vars.FRONTEND_URL }}
           RESEND_API: ${{ secrets.RESEND_API }}
           RECEIVE_EMAIL: ${{ vars.RECEIVE_EMAIL }}
@@ -53,6 +54,7 @@ jobs:
              REPO_URL='git@github.com:Nadiya2003/Makers-Ceylon.git' \
              MONGO_URI='$MONGO_URI' \
              PORT='$PORT' \
+             FRONTEND_PORT='$FRONTEND_PORT' \
              FRONTEND_URL='$FRONTEND_URL' \
              RESEND_API='$RESEND_API' \
              RECEIVE_EMAIL='$RECEIVE_EMAIL' \
@@ -110,15 +112,18 @@ jobs:
             # ── 5. Frontend ──
             cd "$SERVER_PATH/Ceylon_frontend"
             echo "Writing frontend .env file..."
-            echo "NEXT_PUBLIC_API_URL=https://makersceylon.com/api" > .env
+            {
+              echo "PORT=$FRONTEND_PORT"
+              echo "NEXT_PUBLIC_API_URL=https://makersceylon.com/api"
+            } > .env
             echo "Installing frontend dependencies..."
             npm install
             echo "Building Next.js app..."
             npm run build
-            echo "Restarting frontend PM2..."
+            echo "Restarting frontend PM2 on port $FRONTEND_PORT..."
             pm2 describe makers-frontend >/dev/null 2>&1 \
-              && pm2 restart makers-frontend \
-              || pm2 start npm --name "makers-frontend" -- start
+              && pm2 restart makers-frontend --update-env \
+              || pm2 start npm --name "makers-frontend" -- start -- -p "$FRONTEND_PORT"
             pm2 save
 
             # ── 6. Backend ──
@@ -135,7 +140,7 @@ jobs:
                 echo "SEND_EMAIL=$SEND_EMAIL"
             } > .env
             chmod 600 .env
-            echo "Restarting backend PM2..."
+            echo "Restarting backend PM2 on port $PORT..."
             pm2 describe makers-backend >/dev/null 2>&1 \
               && pm2 restart makers-backend --update-env \
               || pm2 start npm --name makers-backend -- start

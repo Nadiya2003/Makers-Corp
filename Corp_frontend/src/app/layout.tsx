@@ -1,59 +1,43 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { MainLayout } from '@/components/MainLayout';
+import { SettingsProvider } from '@/context/SettingsContext';
+import { MarketProvider } from '@/context/MarketContext';
 
 export const metadata: Metadata = {
-  title: 'Ceylon Imports — Premium Japanese Vehicles Direct to Sri Lanka',
+  title: 'Makers Corp Japan — Global Vehicle Export Marketplace',
   description:
-    'Import premium Japanese vehicles directly to Sri Lanka with transparent pricing, live auction access, and end-to-end handling. Better prices. Trusted process.',
-  keywords: 'Japan car import, Sri Lanka, JDM, vehicle import, Ceylon Imports, Makers Ceylon, Japanese car importer',
+    'Browse genuine vehicles sourced from Japan. Transparent FOB and CIF pricing, destination eligibility checks for India, Sri Lanka, and Africa, and written quotations direct from Tokyo.',
+  keywords:
+    'Japan car export, Japanese used cars, buy cars from Japan, import JDM cars, Japan vehicle export marketplace, Makers Corp Japan, vehicles sourced from Japan',
   openGraph: {
-    title: 'Ceylon Imports — Premium Japanese Vehicles',
-    description: 'Your trusted partner for importing premium Japanese vehicles to Sri Lanka.',
+    title: 'Makers Corp Japan — Vehicle Export Marketplace',
+    description: 'Find your next vehicle in Japan. Browse stock, check destination availability, and request a written quotation.',
     type: 'website',
-  },
+    locale: 'en_US',
+    siteName: 'Makers Corp Japan'
+  }
 };
 
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#ffffff',
+  themeColor: '#EA580C'
 };
 
-import { MainLayout } from '@/components/MainLayout';
-import { SettingsProvider } from '@/context/SettingsContext';
-import { normalizeSettingsImages } from '@/lib/imageUtils';
-
-async function fetchInitialSettings() {
-  try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-    const res = await fetch(`${apiUrl}/settings`, { 
-      cache: 'no-store'
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.success ? normalizeSettingsImages(data.data) : null;
-  } catch (err) {
-    return null;
-  }
-}
-
-export default async function RootLayout({
-  children,
+export default function RootLayout({
+  children
 }: {
   children: React.ReactNode;
 }) {
-  const initialSettings = await fetchInitialSettings();
-
-
   return (
     <html lang="en">
-      <head>
-        {initialSettings?.logo && <link rel="icon" href={initialSettings.logo} />}
-      </head>
-      <body className="min-h-screen flex flex-col font-sans bg-gray-50">
-        <SettingsProvider initialSettings={initialSettings}>
-          <MainLayout>{children}</MainLayout>
+      <body className="min-h-screen flex flex-col font-sans bg-[#F8FAFC] text-[#0F172A] antialiased">
+        <SettingsProvider>
+          <MarketProvider>
+            <MainLayout>{children}</MainLayout>
+          </MarketProvider>
         </SettingsProvider>
       </body>
     </html>

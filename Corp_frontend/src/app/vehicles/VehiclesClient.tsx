@@ -1,365 +1,639 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Fuel, Settings, ArrowRight, Loader2, Sparkles, Filter } from 'lucide-react';
-import Image from 'next/image';
-import axios from 'axios';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import {
+  Search,
+  Filter,
+  X,
+  RotateCcw,
+  SlidersHorizontal,
+  ChevronDown,
+  Globe,
+  ShieldCheck,
+  AlertCircle,
+  HelpCircle,
+  ArrowRight,
+  Car,
+  Layers,
+  Sparkles,
+  Truck,
+  Compass
+} from 'lucide-react';
+import { VehicleCard } from '@/components/VehicleCard';
+import { VehicleBrowseSidebar, categoryOptions } from '@/components/vehicles/VehicleBrowseSidebar';
+import { vehicles, Vehicle, BodyType, FuelType, SteeringType } from '@/data';
+import { useMarket } from '@/context/MarketContext';
+import { getReviewState } from '@/data/reviews';
+import { markets } from '@/data';
 
-import { VehicleDetailModal } from '@/components/VehicleDetailModal';
-import { normalizeImageUrl } from '@/lib/imageUtils';
+function VehiclesCatalogContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { destinationSlug, setDestination, market } = useMarket();
 
-interface Vehicle {
-  _id: string;
-  name: string;
-  image: string;
-  images?: string[];
-  category: string;
-  year: string;
-  fuel: string;
-  mileage: string;
-  price: string;
-  engine: string;
-  transmission: string;
-  drive: string;
-  seats: number;
-  color: string;
-  description: string;
-  status: string;
-}
+  // Search & Filter States
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+  const [makeFilter, setMakeFilter] = useState(searchParams.get('make') || 'All');
+  const [modelFilter, setModelFilter] = useState(searchParams.get('model') || 'All');
+  const [bodyFilter, setBodyFilter] = useState(searchParams.get('body') || 'All');
+  const [categoryFilter, setCategoryFilter] = useState(searchParams.get('category') || 'All');
+  const [fuelFilter, setFuelFilter] = useState(searchParams.get('fuel') || 'All');
+  const [steeringFilter, setSteeringFilter] = useState(searchParams.get('steering') || 'All');
+  const [transmissionFilter, setTransmissionFilter] = useState(searchParams.get('trans') || 'All');
+  const [availabilityFilter, setAvailabilityFilter] = useState(searchParams.get('status') || 'Available');
+  const [maxMileage, setMaxMileage] = useState(searchParams.get('mileage') || 'All');
+  const [priceRange, setPriceRange] = useState(searchParams.get('price') || 'All');
+  const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'newest');
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
-export function VehiclesClient() {
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Sync destination filter from URL or context
+  const currentDestination = searchParams.get('destination') !== null
+    ? searchParams.get('destination') || ''
+    : destinationSlug || '';
 
-  // Filter States
-  const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('All');
-  const [fuelFilter, setFuelFilter] = useState('All');
-  const [statusFilter, setStatusFilter] = useState('All');
-  const [priceFilter, setPriceFilter] = useState('All');
-
-  // Derive unique categories/fuels from vehicles for dropdowns (or hardcode standard ones)
-  const categories = ['All', 'SUV', 'Sedan', 'Hatchback', 'Van', 'Other'];
-  const fuels = ['All', 'Petrol', 'Diesel', 'Hybrid', 'Electric'];
-  const statuses = ['All', 'Available', 'Reserved', 'Sold'];
-  const priceRanges = [
-    { label: 'All Prices', value: 'All' },
-    { label: 'Under 15M', value: 'under_15' },
-    { label: '15M - 25M', value: '15_25' },
-    { label: '25M - 35M', value: '25_35' },
-    { label: 'Over 35M', value: 'over_35' }
-  ];
-
+  // Synchronize internal state whenever searchParams changes (e.g. back/forward navigation or search from header)
   useEffect(() => {
-    window.scrollTo(0, 0);
-    const fetchVehicles = async () => {
-      try {
-        const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
-        const baseUrl = apiUrl.replace(/\/api$/, '');
-        const getImageUrl = (url: string) => {
-          if (!url) return '';
-          if (url.startsWith('http')) return normalizeImageUrl(url);
-          return normalizeImageUrl(`${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`);
-        };
+    setSearchTerm(searchParams.get('q') || '');
+    setMakeFilter(searchParams.get('make') || 'All');
+    setModelFilter(searchParams.get('model') || 'All');
+    setBodyFilter(searchParams.get('body') || 'All');
+    setCategoryFilter(searchParams.get('category') || 'All');
+    setFuelFilter(searchParams.get('fuel') || 'All');
+    setSteeringFilter(searchParams.get('steering') || 'All');
+    setTransmissionFilter(searchParams.get('trans') || 'All');
+    setAvailabilityFilter(searchParams.get('status') || 'Available');
+    setMaxMileage(searchParams.get('mileage') || 'All');
+    setPriceRange(searchParams.get('price') || 'All');
+    setSortBy(searchParams.get('sort') || 'newest');
+  }, [searchParams]);
 
-        // Fetch all vehicles (no featured=true flag)
-        const response = await axios.get(`${apiUrl}/vehicles`);
-        if (response.data.success) {
-          const processedVehicles = response.data.data.map((v: any) => ({
-            ...v,
-            image: getImageUrl(v.image),
-            images: v.images ? v.images.map((img: string) => getImageUrl(img)) : []
-          }));
-          setVehicles(processedVehicles);
-        }
-      } catch (err) {
-        console.error('Error fetching vehicles:', err);
-        setError('Failed to load the vehicle inventory.');
-      } finally {
-        setLoading(false);
+  // Synchronize URL query params whenever filters change
+  const updateUrl = (newParams: Record<string, string | null>) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    Object.entries(newParams).forEach(([key, value]) => {
+      if (value === null || value === '' || value === 'All') {
+        current.delete(key);
+      } else {
+        current.set(key, value);
       }
-    };
+    });
+    router.replace(`/vehicles?${current.toString()}`, { scroll: false });
+  };
 
-    fetchVehicles();
+  // Extract available makes and dependent models
+  const availableMakes = useMemo(() => {
+    const set = new Set<string>();
+    vehicles.forEach((v) => set.add(v.make));
+    return ['All', ...Array.from(set).sort()];
   }, []);
 
-  const openDetails = (vehicle: Vehicle) => {
-    setSelectedVehicle(vehicle);
-    setIsModalOpen(true);
+  const availableModels = useMemo(() => {
+    if (makeFilter === 'All') return ['All'];
+    const set = new Set<string>();
+    vehicles.filter((v) => v.make === makeFilter).forEach((v) => set.add(v.model));
+    return ['All', ...Array.from(set).sort()];
+  }, [makeFilter]);
+
+  // Reset model filter if make changes
+  const handleMakeChange = (newMake: string) => {
+    setMakeFilter(newMake);
+    setModelFilter('All');
+    updateUrl({ make: newMake, model: null });
   };
 
-  // Helper to extract numbers from price strings like "18M - 25M", "18 Lakhs - 25 Lakhs", etc.
-  const parseVehiclePrice = (priceStr: string) => {
-    const parts = (priceStr || '').split('-').map(s => s.trim());
-
-    const parseSingleValue = (valStr: string) => {
-      const clean = valStr.trim().toUpperCase().replace(/,/g, '');
-      const numMatch = clean.match(/\d+(?:\.\d+)?/);
-      if (!numMatch) return 0;
-      const num = parseFloat(numMatch[0]);
-
-      if (clean.includes('M') || clean.includes('MILLION')) {
-        return num * 1000000;
-      }
-      if (clean.includes('LAKH') || clean.includes('LAKS') || clean.includes('LAK') || clean.includes('LAC')) {
-        return num * 100000;
-      }
-      if (clean.includes('B') || clean.includes('BILLION')) {
-        return num * 1000000000;
-      }
-      if (clean.includes('T') || clean.includes('K') || clean.includes('THOUSAND')) {
-        return num * 1000;
-      }
-
-      // Default/no unit specified
-      if (num < 1000) {
-        return num * 1000000; // Legacy default to Millions (M)
-      }
-      return num;
-    };
-
-    const parsed = parts.map(part => parseSingleValue(part));
-    const min = parsed[0] || 0;
-    const max = parsed.length > 1 ? (parsed[1] || min) : min;
-    return { min, max };
+  const handleBodyChange = (newBody: string) => {
+    setBodyFilter(newBody);
+    updateUrl({ body: newBody });
   };
 
-  // Filter Logic
-  const filteredVehicles = vehicles.filter(v => {
-    const matchesSearch = v.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === 'All' || v.category === categoryFilter;
-    const matchesFuel = fuelFilter === 'All' || v.fuel === fuelFilter;
-    const matchesStatus = statusFilter === 'All' || v.status === statusFilter;
+  const handleCategoryChange = (newCat: string) => {
+    setCategoryFilter(newCat);
+    updateUrl({ category: newCat });
+  };
 
-    let matchesPrice = true;
-    if (priceFilter !== 'All') {
-      const { min, max } = parseVehiclePrice(v.price);
-      if (priceFilter === 'under_15') {
-        matchesPrice = max < 15000000;
-      } else if (priceFilter === '15_25') {
-        matchesPrice = min <= 25000000 && max >= 15000000;
-      } else if (priceFilter === '25_35') {
-        matchesPrice = min <= 35000000 && max >= 25000000;
-      } else if (priceFilter === 'over_35') {
-        matchesPrice = min > 35000000;
-      }
-    }
+  // Reset all filters in one action
+  const handleResetFilters = () => {
+    setSearchTerm('');
+    setMakeFilter('All');
+    setModelFilter('All');
+    setBodyFilter('All');
+    setCategoryFilter('All');
+    setFuelFilter('All');
+    setSteeringFilter('All');
+    setTransmissionFilter('All');
+    setAvailabilityFilter('Available');
+    setMaxMileage('All');
+    setPriceRange('All');
+    setSortBy('newest');
+    router.replace('/vehicles', { scroll: false });
+  };
 
-    return matchesSearch && matchesCategory && matchesFuel && matchesStatus && matchesPrice;
-  });
+  // Helper function to check if a vehicle matches the category filter
+  const matchesCategory = (v: Vehicle, cat: string) => {
+    if (cat === 'All') return true;
+    if (cat === 'Hybrid') return v.fuel === 'Hybrid' || v.fuel === 'Plug-in Hybrid';
+    if (cat === 'Electric') return v.fuel === 'Electric';
+    if (cat === 'Automatic') return v.transmission === 'Automatic' || v.transmission === 'Dual-Clutch' || v.transmission === 'CVT';
+    if (cat === 'Manual') return v.transmission === 'Manual';
+    if (cat === 'Right-Hand Drive') return v.steering === 'RHD';
+    if (cat === 'Left-Hand Drive') return v.steering === 'LHD';
+    if (cat === 'Commercial Vehicles') return v.bodyType === 'Trucks & Commercial' || v.bodyType === 'Vans & MPVs';
+    return true;
+  };
+
+  // Calculate Accurate Dynamic Counts for Brands (respecting destination, body, and category)
+  const brandCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    availableMakes.forEach((m) => {
+      if (m === 'All') return;
+      counts[m] = vehicles.filter((v) => {
+        if (v.availability === 'Sold' && availabilityFilter === 'Available') return false;
+        if (currentDestination) {
+          const review = getReviewState(v.stockId, currentDestination);
+          if (review === 'not_offered') return false;
+        }
+        if (bodyFilter !== 'All' && v.bodyType !== bodyFilter) return false;
+        if (!matchesCategory(v, categoryFilter)) return false;
+        return v.make === m;
+      }).length;
+    });
+    return counts;
+  }, [availableMakes, currentDestination, bodyFilter, categoryFilter, availabilityFilter]);
+
+  // Calculate Accurate Dynamic Counts for Body Types (respecting destination, make, and category)
+  const bodyCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    const allBodies: BodyType[] = [
+      'SUVs & 4x4',
+      'Luxury & Performance',
+      'Vans & MPVs',
+      'Trucks & Commercial',
+      'Sedans & Hatchbacks',
+      'Kei Cars',
+    ];
+    allBodies.forEach((b) => {
+      counts[b] = vehicles.filter((v) => {
+        if (v.availability === 'Sold' && availabilityFilter === 'Available') return false;
+        if (currentDestination) {
+          const review = getReviewState(v.stockId, currentDestination);
+          if (review === 'not_offered') return false;
+        }
+        if (makeFilter !== 'All' && v.make !== makeFilter) return false;
+        if (!matchesCategory(v, categoryFilter)) return false;
+        return v.bodyType === b;
+      }).length;
+    });
+    return counts;
+  }, [currentDestination, makeFilter, categoryFilter, availabilityFilter]);
+
+  // Calculate Accurate Dynamic Counts for Categories (respecting destination, make, and body)
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    categoryOptions.forEach((opt) => {
+      counts[opt.key] = vehicles.filter((v) => {
+        if (v.availability === 'Sold' && availabilityFilter === 'Available') return false;
+        if (currentDestination) {
+          const review = getReviewState(v.stockId, currentDestination);
+          if (review === 'not_offered') return false;
+        }
+        if (makeFilter !== 'All' && v.make !== makeFilter) return false;
+        if (bodyFilter !== 'All' && v.bodyType !== bodyFilter) return false;
+        return matchesCategory(v, opt.key);
+      }).length;
+    });
+    return counts;
+  }, [currentDestination, makeFilter, bodyFilter, availabilityFilter]);
+
+  // Filter and sort the vehicles
+  const filteredVehicles = useMemo(() => {
+    return vehicles
+      .filter((v) => {
+        // 1. Keyword / Stock ID / Model code search
+        if (searchTerm.trim()) {
+          const query = searchTerm.toLowerCase().trim();
+          const matchTitle = `${v.year} ${v.make} ${v.model} ${v.grade}`.toLowerCase().includes(query);
+          const matchStock = v.stockId.toLowerCase().includes(query);
+          const matchCode = v.modelCode.toLowerCase().includes(query);
+          if (!matchTitle && !matchStock && !matchCode) return false;
+        }
+
+        // 2. Make & Model
+        if (makeFilter !== 'All' && v.make !== makeFilter) return false;
+        if (modelFilter !== 'All' && v.model !== modelFilter) return false;
+
+        // 3. Body Type
+        if (bodyFilter !== 'All' && v.bodyType !== bodyFilter) return false;
+
+        // 4. Category
+        if (!matchesCategory(v, categoryFilter)) return false;
+
+        // 5. Fuel
+        if (fuelFilter !== 'All' && v.fuel !== fuelFilter) return false;
+
+        // 6. Steering
+        if (steeringFilter !== 'All' && v.steering !== steeringFilter) return false;
+
+        // 7. Transmission
+        if (transmissionFilter !== 'All' && v.transmission !== transmissionFilter) return false;
+
+        // 8. Availability status
+        if (availabilityFilter !== 'All' && v.availability !== availabilityFilter) return false;
+
+        // 9. Mileage
+        if (maxMileage !== 'All') {
+          const maxKm = parseInt(maxMileage, 10);
+          if (v.mileageKm > maxKm) return false;
+        }
+
+        // 10. Price (FOB USD)
+        if (priceRange !== 'All') {
+          const amount = v.priceFOB.amount;
+          if (priceRange === 'under_20k' && amount >= 20000) return false;
+          if (priceRange === '20k_50k' && (amount < 20000 || amount > 50000)) return false;
+          if (priceRange === '50k_100k' && (amount < 50000 || amount > 100000)) return false;
+          if (priceRange === 'over_100k' && amount <= 100000) return false;
+        }
+
+        // 11. Destination eligibility filter (respect destination, never silently switch to global)
+        if (currentDestination) {
+          const review = getReviewState(v.stockId, currentDestination);
+          // Exclude units explicitly "Not Offered" for that destination
+          if (review === 'not_offered') return false;
+        }
+
+        return true;
+      })
+      .sort((a, b) => {
+        if (sortBy === 'newest') {
+          return b.year - a.year || b.stockId.localeCompare(a.stockId);
+        }
+        if (sortBy === 'price_asc') {
+          return a.priceFOB.amount - b.priceFOB.amount;
+        }
+        if (sortBy === 'price_desc') {
+          return b.priceFOB.amount - a.priceFOB.amount;
+        }
+        if (sortBy === 'mileage_asc') {
+          return a.mileageKm - b.mileageKm;
+        }
+        return 0;
+      });
+  }, [
+    searchTerm,
+    makeFilter,
+    modelFilter,
+    bodyFilter,
+    categoryFilter,
+    fuelFilter,
+    steeringFilter,
+    transmissionFilter,
+    availabilityFilter,
+    maxMileage,
+    priceRange,
+    currentDestination,
+    sortBy,
+  ]);
+
+  const activeFiltersCount = [
+    searchTerm.trim() !== '',
+    makeFilter !== 'All',
+    modelFilter !== 'All',
+    bodyFilter !== 'All',
+    categoryFilter !== 'All',
+    fuelFilter !== 'All',
+    steeringFilter !== 'All',
+    transmissionFilter !== 'All',
+    availabilityFilter !== 'Available',
+    maxMileage !== 'All',
+    priceRange !== 'All',
+    currentDestination !== '',
+  ].filter(Boolean).length;
+
+  const currentMarketObj = markets.find((m) => m.slug === currentDestination);
 
   return (
-    <main className="min-h-screen pt-24 pb-16 bg-gray-50">
-      {/* Page Header */}
-      <div className="bg-dark text-white py-12 sm:py-16 mb-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-4 border border-primary/20"
-          >
-            <Sparkles className="w-3 h-3" /> Premium Selection
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-display font-black mb-4 uppercase tracking-tighter"
-          >
-            Vehicle <span className="text-primary italic">Inventory</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base font-medium"
-          >
-            Explore our complete collection of high-quality Japanese vehicles ready for direct import to Sri Lanka.
-          </motion.p>
-        </div>
-      </div>
-
+    <div className="bg-[#F8FAFC] min-h-screen py-6 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-32 w-full">
-            <Loader2 className="w-12 h-12 text-primary animate-spin mb-6" />
-            <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Loading Inventory...</p>
+        {/* Page Breadcrumb & Header */}
+        <div className="mb-6">
+          <div className="text-xs text-slate-500 mb-1 flex items-center gap-1.5 flex-wrap">
+            <span className="text-slate-400">Showroom</span> /{' '}
+            <span className="font-bold text-slate-800">Global Inventory</span>
+            {currentDestination && (
+              <>
+                {' '}/
+                <span className="font-bold text-orange-600 uppercase bg-orange-50 px-1.5 py-0.2 rounded border border-orange-200">
+                  {currentMarketObj ? currentMarketObj.name : currentDestination} Reviewed
+                </span>
+              </>
+            )}
           </div>
-        ) : error ? (
-          <div className="text-center py-24 bg-white rounded-none border border-red-200 shadow-sm">
-            <p className="text-red-500 font-bold mb-6 text-xl">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-dark text-white px-8 py-4 rounded-none font-black uppercase tracking-widest text-xs hover:bg-black transition-all"
-            >
-              Refresh Inventory
-            </button>
-          </div>
-        ) : (
-          <>
-            {/* Premium Filter Bar */}
-            <div className="bg-white rounded-none p-4 sm:p-6 mb-10 shadow-sm border border-gray-200">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-                <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Search Vehicle</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Toyota..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Category</label>
-                  <select
-                    value={categoryFilter}
-                    onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
-                  >
-                    {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Fuel Type</label>
-                  <select
-                    value={fuelFilter}
-                    onChange={(e) => setFuelFilter(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
-                  >
-                    {fuels.map(f => <option key={f} value={f}>{f}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Price Range</label>
-                  <select
-                    value={priceFilter}
-                    onChange={(e) => setPriceFilter(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
-                  >
-                    {priceRanges.map(pr => <option key={pr.value} value={pr.value}>{pr.label}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Status</label>
-                  <select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-none px-4 py-3 font-bold text-sm focus:border-primary transition-all outline-none"
-                  >
-                    {statuses.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </div>
-              </div>
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                Japan Vehicle Inventory Catalog
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                Showing{' '}
+                <strong className="text-slate-900 font-extrabold">{filteredVehicles.length}</strong> physical vehicles
+                inspected in Tokyo, Yokohama, Kobe & Nagoya yards.
+              </p>
             </div>
 
-            {filteredVehicles.length === 0 ? (
-              <div className="text-center py-20 bg-white rounded-none border border-gray-200 shadow-sm">
-                <div className="w-16 h-16 bg-gray-50 border border-gray-200 rounded-none flex items-center justify-center mx-auto mb-6">
-                  <Filter className="w-7 h-7 text-gray-400" />
-                </div>
-                <p className="text-dark font-black text-2xl mb-2">No Matches Found</p>
-                <p className="text-gray-500 text-sm max-w-md mx-auto">Try adjusting your filters to find what you're looking for.</p>
+            {/* Destination Mode Indicator */}
+            {currentDestination && (
+              <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 px-3.5 py-2 rounded-xl text-xs shadow-xs">
+                <Globe className="w-4 h-4 text-orange-600 shrink-0" />
+                <span className="text-slate-700">
+                  Market: <strong className="text-slate-900 font-black">{currentMarketObj ? currentMarketObj.name : currentDestination.toUpperCase()}</strong>
+                </span>
                 <button
-                  onClick={() => { setSearchTerm(''); setCategoryFilter('All'); setFuelFilter('All'); setStatusFilter('All'); setPriceFilter('All'); }}
-                  className="mt-6 text-primary font-black uppercase tracking-widest text-xs hover:underline"
+                  onClick={() => {
+                    setDestination(null);
+                    updateUrl({ destination: null });
+                  }}
+                  className="text-[11px] font-bold text-orange-700 hover:text-orange-900 hover:underline ml-1.5 pl-1.5 border-l border-orange-200"
                 >
-                  Clear Filters
+                  Clear to Global
                 </button>
               </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                {filteredVehicles.map((vehicle, index) => (
-                  <motion.div
-                    key={vehicle._id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05, duration: 0.5 }}
-                    className="group relative bg-white rounded-none p-3.5 sm:p-4 shadow-sm hover:shadow-2xl border border-gray-200/90 hover:border-primary hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between"
+            )}
+          </div>
+        </div>
+
+        {/* Primary Search & Fast Filter Bar */}
+        <div className="bg-white border border-slate-200 rounded-xl p-3.5 sm:p-4 mb-6 shadow-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {/* Search Input */}
+            <div className="relative lg:col-span-2">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  updateUrl({ q: e.target.value || null });
+                }}
+                placeholder="Search by Keyword, Model, or Stock ID (e.g. MCJ-2024-8801, GT-R, LX 600)..."
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-orange-500 focus:bg-white"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => {
+                    setSearchTerm('');
+                    updateUrl({ q: null });
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Destination Selector */}
+            <div>
+              <select
+                value={currentDestination}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setDestination(val || null);
+                  updateUrl({ destination: val || null });
+                }}
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 font-semibold focus:outline-none focus:border-orange-500 focus:bg-white"
+              >
+                <option value="">Global Showroom (All)</option>
+                <option value="india">India (Nhava Sheva / Chennai)</option>
+                <option value="sri-lanka">Sri Lanka (Colombo Port)</option>
+                <option value="kenya">Kenya (Mombasa Port)</option>
+                <option value="tanzania">Tanzania (Dar es Salaam)</option>
+                <option value="pakistan">Pakistan (Inquiry Only)</option>
+              </select>
+            </div>
+
+            {/* Sort Options */}
+            <div>
+              <select
+                value={sortBy}
+                onChange={(e) => {
+                  setSortBy(e.target.value);
+                  updateUrl({ sort: e.target.value });
+                }}
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-orange-500 focus:bg-white font-bold"
+              >
+                <option value="newest">Sort: Newest First</option>
+                <option value="price_asc">Price: Low to High (FOB)</option>
+                <option value="price_desc">Price: High to Low (FOB)</option>
+                <option value="mileage_asc">Mileage: Low to High</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Removable Active Filter Chips & Mobile Filter Button */}
+          <div className="mt-3.5 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-1.5 text-xs">
+              <span className="text-slate-500 text-[11px] font-bold">Active Filters:</span>
+              {activeFiltersCount === 0 && (
+                <span className="text-slate-400 text-[11px] italic">None (Showing all active stock)</span>
+              )}
+
+              {/* Destination Chip */}
+              {currentDestination && (
+                <span className="inline-flex items-center gap-1 bg-orange-100 text-orange-900 border border-orange-200 px-2 py-0.5 rounded text-[11px] font-bold">
+                  <span>Destination: {currentMarketObj ? currentMarketObj.name : currentDestination}</span>
+                  <button onClick={() => { setDestination(null); updateUrl({ destination: null }); }}>
+                    <X className="w-3 h-3 text-orange-600 hover:text-orange-950" />
+                  </button>
+                </span>
+              )}
+
+              {/* Search Query Chip */}
+              {searchTerm.trim() !== '' && (
+                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                  <span>Query: &quot;{searchTerm}&quot;</span>
+                  <button onClick={() => { setSearchTerm(''); updateUrl({ q: null }); }}>
+                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                  </button>
+                </span>
+              )}
+
+              {/* Make Chip */}
+              {makeFilter !== 'All' && (
+                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                  <span>Brand: {makeFilter}</span>
+                  <button onClick={() => handleMakeChange('All')}>
+                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                  </button>
+                </span>
+              )}
+
+              {/* Model Chip */}
+              {modelFilter !== 'All' && (
+                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                  <span>Model: {modelFilter}</span>
+                  <button onClick={() => { setModelFilter('All'); updateUrl({ model: null }); }}>
+                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                  </button>
+                </span>
+              )}
+
+              {/* Body Type Chip */}
+              {bodyFilter !== 'All' && (
+                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                  <span>Body: {bodyFilter}</span>
+                  <button onClick={() => handleBodyChange('All')}>
+                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                  </button>
+                </span>
+              )}
+
+              {/* Category Chip */}
+              {categoryFilter !== 'All' && (
+                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                  <span>Category: {categoryFilter}</span>
+                  <button onClick={() => handleCategoryChange('All')}>
+                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                  </button>
+                </span>
+              )}
+
+              {/* Steering Chip */}
+              {steeringFilter !== 'All' && (
+                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                  <span>Steering: {steeringFilter}</span>
+                  <button onClick={() => { setSteeringFilter('All'); updateUrl({ steering: null }); }}>
+                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                  </button>
+                </span>
+              )}
+
+              {/* Price Range Chip */}
+              {priceRange !== 'All' && (
+                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                  <span>Price: {priceRange.replace('_', ' ')}</span>
+                  <button onClick={() => { setPriceRange('All'); updateUrl({ price: null }); }}>
+                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                  </button>
+                </span>
+              )}
+
+              {/* Reset All Button */}
+              {activeFiltersCount > 0 && (
+                <button
+                  onClick={handleResetFilters}
+                  className="text-[11px] text-orange-600 hover:text-orange-700 font-extrabold ml-1 flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-orange-50 transition-colors"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>Reset All</span>
+                </button>
+              )}
+            </div>
+
+            {/* Mobile Filter Button */}
+            <button
+              onClick={() => setMobileFilterOpen(true)}
+              className="lg:hidden inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-lg border border-slate-200 transition-colors"
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5 text-orange-600" />
+              <span>Filters</span>
+              {activeFiltersCount > 0 && (
+                <span className="bg-orange-600 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                  {activeFiltersCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Catalog Main Layout: Connected Sidebar + Vehicle Listings Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+          {/* Connected Vehicle Browse Sidebar */}
+          <div className="lg:col-span-1">
+            <VehicleBrowseSidebar
+              makes={availableMakes}
+              currentMake={makeFilter}
+              onSelectMake={handleMakeChange}
+              currentBody={bodyFilter}
+              onSelectBody={handleBodyChange}
+              currentCategory={categoryFilter}
+              onSelectCategory={handleCategoryChange}
+              brandCounts={brandCounts}
+              bodyCounts={bodyCounts}
+              categoryCounts={categoryCounts}
+              onResetAll={handleResetFilters}
+              activeFiltersCount={activeFiltersCount}
+              mobileOpen={mobileFilterOpen}
+              onCloseMobile={() => setMobileFilterOpen(false)}
+              onApplyMobile={() => setMobileFilterOpen(false)}
+            />
+          </div>
+
+          {/* Results Listings Grid */}
+          <div className="lg:col-span-3">
+            {filteredVehicles.length === 0 ? (
+              /* Honest No-Results State respecting selected destination */
+              <div className="bg-white border border-slate-200 rounded-xl p-8 sm:p-12 text-center shadow-xs">
+                <div className="w-14 h-14 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mx-auto mb-4">
+                  <Search className="w-7 h-7" />
+                </div>
+                <h3 className="text-xl font-black text-slate-900 mb-2">
+                  No Matching Vehicles Found
+                  {currentDestination && ` for ${currentMarketObj ? currentMarketObj.name : currentDestination.toUpperCase()}`}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto mb-6 leading-relaxed">
+                  {currentDestination ? (
+                    <>
+                      We could not find active inventory matching your specific filters that is reviewed for{' '}
+                      <strong>{currentMarketObj ? currentMarketObj.name : currentDestination}</strong>.
+                      We strictly do not substitute unverified global inventory for destination-restricted markets.
+                    </>
+                  ) : (
+                    'We could not find any active units matching your selected combination of brand, body type, and filters.'
+                  )}
+                </p>
+
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    onClick={handleResetFilters}
+                    className="inline-flex items-center gap-1.5 bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-lg hover:bg-slate-800 transition-colors shadow-xs"
                   >
-                    {/* Top showroom accent indicator on hover */}
-                    <div className="absolute top-0 left-0 right-0 h-[3px] bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>Reset All Filters</span>
+                  </button>
 
-                    <div>
-                      <div className="relative h-[220px] rounded-none overflow-hidden bg-gray-100 mb-4 border border-gray-100">
-                        <Image
-                          src={vehicle.image}
-                          alt={vehicle.name}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-700"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-dark/85 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                          <button
-                            onClick={() => openDetails(vehicle)}
-                            className="w-full bg-white/95 backdrop-blur-md text-dark py-3.5 rounded-none font-black uppercase tracking-widest text-[10px] hover:bg-primary hover:text-white transition-all shadow-lg active:scale-[0.98] border border-white/60"
-                          >
-                            Quick View
-                          </button>
-                        </div>
-                        <div className="absolute top-3 left-3">
-                          <span className="px-3 py-1.5 bg-white/95 backdrop-blur-md rounded-none text-[9px] font-black text-dark uppercase tracking-widest border-l-2 border-primary shadow-sm">
-                            {vehicle.year}
-                          </span>
-                        </div>
-                        <div className="absolute top-3 right-3">
-                          <span className="px-3 py-1.5 bg-primary text-white backdrop-blur-md rounded-none text-[9px] font-black uppercase tracking-widest shadow-sm">
-                            {vehicle.status}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="px-1 pb-1">
-                        <h4 className="font-display font-black text-lg text-dark leading-tight uppercase group-hover:text-primary transition-colors mb-3 line-clamp-1">
-                          {vehicle.name}
-                        </h4>
-
-                        <div className="flex items-center gap-3 mb-5 p-3 bg-gray-50/80 backdrop-blur-sm rounded-none border border-gray-200/60">
-                          <div className="flex flex-1 items-center justify-center gap-1.5 text-gray-500 border-r border-gray-200">
-                            <Fuel className="w-3.5 h-3.5 text-gray-400" />
-                            <span className="text-[10px] font-bold uppercase truncate">{vehicle.fuel}</span>
-                          </div>
-                          <div className="flex flex-1 items-center justify-center gap-1.5 text-gray-500">
-                            <Settings className="w-3.5 h-3.5 text-gray-400" />
-                            <span className="text-[10px] font-bold uppercase truncate">{vehicle.transmission}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="px-1 pb-1">
-                      <div className="flex items-center justify-between pt-1">
-                        <div className="flex flex-col">
-                          <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Price</span>
-                          <span className="text-lg font-black text-primary leading-none">
-                            {/^(USD|JPY|EUR|GBP|AUD|LKR)/i.test(vehicle.price.trim()) ? vehicle.price : `LKR ${vehicle.price}`}
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => openDetails(vehicle)}
-                          aria-label="View vehicle details"
-                          className="w-10 h-10 rounded-none bg-gray-100 flex items-center justify-center text-dark group-hover:bg-primary group-hover:text-white transition-all duration-300 active:scale-95 border border-gray-200/60 group-hover:border-primary"
-                        >
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
+                  <button
+                    onClick={() => router.push('/request-a-vehicle')}
+                    className="inline-flex items-center gap-1.5 bg-orange-600 text-white text-xs font-bold px-4 py-2.5 rounded-lg hover:bg-orange-700 transition-colors shadow-xs"
+                  >
+                    <span>Request Custom Sourcing</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                {filteredVehicles.map((vehicle, idx) => (
+                  <VehicleCard
+                    key={vehicle.id}
+                    vehicle={vehicle}
+                    destinationOverride={currentDestination || undefined}
+                    priority={idx < 6}
+                  />
                 ))}
               </div>
             )}
-          </>
-        )}
+          </div>
+        </div>
       </div>
+    </div>
+  );
+}
 
-      <VehicleDetailModal
-        vehicle={selectedVehicle}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </main>
+export function VehiclesClient() {
+  return (
+    <Suspense fallback={<div className="p-12 text-center text-xs text-slate-400">Loading catalog...</div>}>
+      <VehiclesCatalogContent />
+    </Suspense>
   );
 }

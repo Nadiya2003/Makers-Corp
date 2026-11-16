@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { VehiclesClient } from './VehiclesClient';
 
 export const metadata: Metadata = {
-  title: 'Our Vehicles - Makers Ceylon',
-  description: 'Explore our full collection of premium Japanese vehicles available for direct import to Sri Lanka.',
+  title: 'Japan Vehicle Inventory — Makers Corp Japan',
+  description: 'Browse genuine vehicles sourced from Japan. Filter by make, body type, year, mileage and destination. Request a written export quotation.',
 };
 
 export default function VehiclesPage() {

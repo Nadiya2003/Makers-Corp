@@ -2,190 +2,248 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { MapPin, Phone, Mail, Facebook, Instagram, Youtube, Video } from 'lucide-react';
-import { useSettings } from '@/context/SettingsContext';
-import { normalizeImageUrl } from '@/lib/imageUtils';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  ShieldCheck,
+  Globe,
+  Ship,
+  FileCheck,
+  Clock,
+  ArrowUpRight
+} from 'lucide-react';
 
 export function Footer() {
-  const { settings } = useSettings();
-
-  const footerData = settings?.footer || {
-    logo: '',
-    image: '',
-    imageVisible: true,
-    aboutText: 'Your trusted partner for importing premium Japanese vehicles directly to Sri Lanka. Better prices, transparent process, and complete peace of mind.',
-    address: '123 Import Avenue, Colombo 03, Sri Lanka',
-    phone: '+94 77 123 4567',
-    email: 'info@ceylonimports.lk',
-    copyrightText: `© ${new Date().getFullYear()} Makers Ceylon. All rights reserved.`,
-    socialLinks: [] as Array<{ platform: string; url: string; visible?: boolean }>
-  };
-
-  const siteName = settings?.siteName || 'Makers Ceylon';
-  const footerLogo = normalizeImageUrl(footerData.logo || settings?.logo);
-
-  const renderSocialIcon = (platform: string) => {
-    switch (platform.toLowerCase()) {
-      case 'facebook': return <Facebook className="w-5 h-5" />;
-      case 'instagram': return <Instagram className="w-5 h-5" />;
-      case 'youtube': return <Youtube className="w-5 h-5" />;
-      case 'tiktok': return (
-        <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 2.78-1.15 5.54-3.11 7.47-1.87 1.83-4.52 2.84-7.1 2.63-2.69-.17-5.24-1.61-6.68-3.95-1.39-2.22-1.66-5.06-.69-7.46 1.05-2.58 3.39-4.51 6.13-5.06 1.04-.21 2.1-.22 3.14-.15v4.11c-.52-.08-1.04-.15-1.57-.13-1.09.03-2.18.52-2.88 1.34-.84.97-1.15 2.37-.8 3.63.32 1.19 1.25 2.16 2.39 2.58 1.4.52 3.03.38 4.29-.44 1.11-.74 1.76-1.97 1.85-3.32.06-2.55.02-5.11.03-7.66l.01-10.42z" />
-        </svg>
-      );
-      default: return <Video className="w-5 h-5" />;
-    }
-  };
-
-  let socialLinks = footerData.socialLinks;
-  if (!socialLinks || socialLinks.length === 0) {
-    socialLinks = [
-      { platform: 'Facebook', url: '#', visible: true },
-      { platform: 'Instagram', url: '#', visible: true },
-      { platform: 'TikTok', url: '#', visible: true },
-      { platform: 'YouTube', url: '#', visible: true }
-    ];
-  }
-
-  const visibleSocialLinks = socialLinks.filter(
-    (link: any) => link.visible !== false && link.url
-  );
-
-  const footerBgImage = normalizeImageUrl(footerData.image) || 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1600&auto=format&fit=crop';
+  const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-[#050505] text-gray-300 py-8 sm:py-14 lg:py-16 border-t border-white/5 overflow-hidden">
-      {/* Creative Split Footer Background */}
-      {footerData.imageVisible && (
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          {/* Image fills the container, avoiding any middle-screen cut-off line */}
-          <div className="absolute inset-0 w-full h-full">
-            <img 
-              src={footerBgImage}
-              alt="Footer background" 
-              className="w-full h-full object-cover object-center opacity-40"
-            />
-            {/* Warm orange tint to brand the image */}
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-900/40 via-transparent to-blue-900/20" />
+    <footer className="bg-[#0B1120] text-slate-300 pt-14 pb-8 border-t border-slate-800 text-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Top 3 Pillar Highlights */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-12 border-b border-slate-800/80">
+          <div className="flex items-start gap-3.5">
+            <div className="w-10 h-10 rounded bg-slate-800/90 flex items-center justify-center shrink-0 text-orange-400 border border-slate-700/60">
+              <ShieldCheck className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-white font-bold text-sm mb-1">100% Genuine Physical Inventory</div>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                Every listed unit is physically verified in Japan with authentic chassis numbers, genuine mileage records, and documented de-registration certificates.
+              </p>
+            </div>
           </div>
-          {/* Strong left-to-right fade so content is perfectly readable. 
-              Using multiple stops to create a seamless blend from solid black to transparent */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505] sm:via-[#050505]/80 to-transparent" />
-          {/* Bottom fade for clean bottom edge */}
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#050505] to-transparent" />
-          {/* Top fade */}
-          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#050505] to-transparent" />
-        </div>
-      )}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 lg:gap-12">
-          {/* Brand */}
-          <div className="space-y-6">
-            <Link href="/" className="flex items-center gap-2">
-              {footerLogo ? (
-                <img
-                  src={footerLogo}
-                  alt={siteName}
-                  className="h-12 w-auto object-contain object-left"
-                />
-              ) : (
-                <>
-                  <div className="w-10 h-10 bg-primary rounded-none flex items-center justify-center text-white font-display font-bold text-xl">
-                    {siteName.charAt(0)}
-                  </div>
-                  <span className="font-display font-bold text-xl tracking-tight text-white uppercase">
-                    {siteName}
-                  </span>
-                </>
-              )}
-            </Link>
-            <p className="text-sm leading-relaxed text-gray-400 text-justify">
-              {footerData.aboutText}
-            </p>
-            
-            {/* Social Links */}
-            {visibleSocialLinks.length > 0 && (
-              <div className="flex items-center gap-3 pt-2">
-                {visibleSocialLinks.map((link: any, index: number) => (
-                  <a
-                    key={index}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-9 h-9 bg-neutral-900 border border-neutral-800 hover:border-primary hover:bg-primary text-neutral-400 hover:text-white rounded-none flex items-center justify-center transition-all duration-300 shadow-sm"
-                    aria-label={link.platform}
-                  >
-                    {renderSocialIcon(link.platform)}
-                  </a>
-                ))}
+          <div className="flex items-start gap-3.5">
+            <div className="w-10 h-10 rounded bg-slate-800/90 flex items-center justify-center shrink-0 text-orange-400 border border-slate-700/60">
+              <Ship className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-white font-bold text-sm mb-1">Transparent Shipping Terms</div>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                Clear distinction between FOB Japan and CIF destination port amounts. Explicit disclosure of what is included and excluded before quotation confirmation.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3.5">
+            <div className="w-10 h-10 rounded bg-slate-800/90 flex items-center justify-center shrink-0 text-orange-400 border border-slate-700/60">
+              <FileCheck className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-white font-bold text-sm mb-1">Destination Review Protocol</div>
+              <p className="text-slate-400 text-xs leading-relaxed">
+                Vehicle eligibility reviewed against destination regulations (e.g. DGFT direct import for India, LC and age criteria for Sri Lanka) prior to proforma invoice.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 4 Column Main Footer Links */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 py-10">
+          {/* Brand & Corporate */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-orange-600 rounded flex items-center justify-center text-white font-black text-lg">
+                M
               </div>
-            )}
+              <span className="font-extrabold text-base tracking-tight text-white uppercase">
+                Makers Corp <span className="text-orange-500 font-bold">Japan</span>
+              </span>
+            </div>
+            <p className="text-slate-400 leading-relaxed text-xs pr-4">
+              A specialized Japanese vehicle export marketplace connecting verified Tokyo, Yokohama, Kobe, and Nagoya stock with international buyers across Asia, East Africa, and global right-hand-drive markets.
+            </p>
+
+            <div className="space-y-2 text-slate-300 text-xs pt-2">
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
+                <div>
+                  <span className="text-white font-medium">Head Operations Desk:</span> Tokyo Export Hub, Minato-ku, Tokyo 105-0004, Japan
+                  <span className="block text-[11px] text-slate-500 italic mt-0.5">
+                    (Registered entity confirmation pending formal corporate registration publication)
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
+                <div>
+                  <span className="text-white font-medium">Sri Lanka Operations Liaison:</span> 123 Import Avenue, Colombo 03, Sri Lanka
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 pt-1">
+                <Phone className="w-4 h-4 text-orange-400 shrink-0" />
+                <span className="text-slate-300">Japan HQ: +81 3 5555 0198 | SL Desk: +94 77 123 4567</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-orange-400 shrink-0" />
+                <span className="text-slate-300">export@makerscorp.jp | india-desk@makerscorp.jp</span>
+              </div>
+            </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Sourcing & Stock */}
           <div>
-            <h3 className="text-white font-display font-black mb-4 sm:mb-6 text-sm uppercase tracking-wider border-l-2 border-primary pl-2.5">
-              Quick Links
-            </h3>
-            <ul className="space-y-3 sm:space-y-3.5 text-xs sm:text-sm font-medium">
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4 border-l-2 border-orange-500 pl-2">
+              Inventory Categories
+            </h4>
+            <ul className="space-y-2.5">
               <li>
-                <Link href="/" className="text-neutral-400 hover:text-primary transition-colors">Home</Link>
+                <Link href="/vehicles" className="hover:text-orange-400 transition-colors">
+                  All Japan Stock
+                </Link>
               </li>
               <li>
-                <a href="/#vehicles" className="text-neutral-400 hover:text-primary transition-colors">Featured Vehicles</a>
+                <Link href="/vehicles?body=SUVs+%26+4x4" className="hover:text-orange-400 transition-colors">
+                  SUVs & 4x4
+                </Link>
               </li>
               <li>
-                <a href="/#how-it-works" className="text-neutral-400 hover:text-primary transition-colors">How It Works</a>
+                <Link href="/vehicles?body=Luxury+%26+Performance" className="hover:text-orange-400 transition-colors">
+                  Luxury & Performance
+                </Link>
               </li>
               <li>
-                <Link href="/about" className="text-neutral-400 hover:text-primary transition-colors">About Us</Link>
+                <Link href="/vehicles?body=Vans+%26+MPVs" className="hover:text-orange-400 transition-colors">
+                  Vans & MPVs (Hiace / Alphard)
+                </Link>
               </li>
               <li>
-                <a href="/#inquiry" className="text-neutral-400 hover:text-primary transition-colors">Contact Us</a>
+                <Link href="/vehicles?body=Trucks+%26+Commercial" className="hover:text-orange-400 transition-colors">
+                  Trucks & Commercial
+                </Link>
+              </li>
+              <li>
+                <Link href="/request-a-vehicle" className="text-orange-400 font-semibold hover:underline inline-flex items-center gap-1">
+                  <span>Custom Sourcing Request</span>
+                  <ArrowUpRight className="w-3 h-3" />
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Destinations */}
           <div>
-            <h3 className="text-white font-display font-black mb-4 sm:mb-6 text-sm uppercase tracking-wider border-l-2 border-primary pl-2.5">
-              Our Services
-            </h3>
-            <ul className="space-y-3 sm:space-y-3.5 text-xs sm:text-sm font-medium text-neutral-400">
-              <li>Direct Japan Sourcing</li>
-              <li>Live Auction Bidding</li>
-              <li>Bank Loan Assistance</li>
-              <li>Customs Clearance</li>
-              <li>Islandwide Delivery</li>
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4 border-l-2 border-orange-500 pl-2">
+              Destination Markets
+            </h4>
+            <ul className="space-y-2.5">
+              <li>
+                <Link href="/destinations/asia/india" className="hover:text-orange-400 transition-colors flex items-center justify-between">
+                  <span>India (Launch Route)</span>
+                  <span className="text-[10px] bg-emerald-950 text-emerald-400 px-1.5 py-0.2 rounded border border-emerald-800">Active</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/destinations/asia/sri-lanka" className="hover:text-orange-400 transition-colors flex items-center justify-between">
+                  <span>Sri Lanka (Colombo Desk)</span>
+                  <span className="text-[10px] bg-emerald-950 text-emerald-400 px-1.5 py-0.2 rounded border border-emerald-800">Active</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/destinations/asia/pakistan" className="hover:text-orange-400 transition-colors flex items-center justify-between">
+                  <span>Pakistan (Karachi)</span>
+                  <span className="text-[10px] bg-amber-950 text-amber-400 px-1.5 py-0.2 rounded border border-amber-800">Inquiry Only</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/destinations/africa" className="hover:text-orange-400 transition-colors">
+                  Kenya & Tanzania
+                </Link>
+              </li>
+              <li>
+                <Link href="/destinations" className="hover:text-orange-400 transition-colors font-semibold text-slate-200">
+                  All Destinations Directory →
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Process & Trust */}
           <div>
-            <h3 className="text-white font-display font-black mb-4 sm:mb-6 text-sm uppercase tracking-wider border-l-2 border-primary pl-2.5">
-              Contact Info
-            </h3>
-            <ul className="space-y-3 sm:space-y-3.5 text-xs sm:text-sm font-medium">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                <span className="text-neutral-400 leading-snug">{footerData.address}</span>
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4 border-l-2 border-orange-500 pl-2">
+              Buyer Services
+            </h4>
+            <ul className="space-y-2.5">
+              <li>
+                <Link href="/how-to-buy" className="hover:text-orange-400 transition-colors">
+                  Export Process Guide
+                </Link>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-neutral-400">{settings?.header?.contactNumber || footerData.phone}</span>
+              <li>
+                <Link href="/news" className="hover:text-orange-400 transition-colors text-orange-400">
+                  News & Reviews (Media Center)
+                </Link>
               </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-neutral-400">{footerData.email}</span>
+              <li>
+                <Link href="/about" className="hover:text-orange-400 transition-colors">
+                  About Makers Corp Japan
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-orange-400 transition-colors">
+                  Head Office & Desks
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-orange-400 transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-orange-400 transition-colors">
+                  Terms & Shipping Disclaimers
+                </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-8 sm:mt-14 pt-6 sm:pt-8 border-t border-neutral-900 text-center text-xs text-neutral-500 font-medium">
-          <p>{footerData.copyrightText}</p>
+        {/* Regulatory Disclosure Disclaimer */}
+        <div className="pt-6 pb-6 border-t border-slate-800/80 text-[11px] text-slate-500 leading-relaxed space-y-2">
+          <p>
+            <strong className="text-slate-400">Legal & Commercial Notice:</strong> Makers Corp Japan operates as a vehicle sourcing and international trade export marketplace. “Reviewed for quotation” indicates an internal documentation and specification review and does not constitute a guarantee of customs clearance, individual import licensing, or destination road transport registration.
+          </p>
+          <p>
+            Quoted CIF (Cost, Insurance, and Freight) prices include vehicle cost, ocean freight to the named discharge port, and marine cargo transit insurance. Quoted amounts strictly exclude destination country import tariffs, value-added taxes (e.g. GST/VAT), demurrage, port handling charges, customs broker fees, and domestic vehicle registration fees.
+          </p>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2">
+          <div>
+            © {currentYear} Makers Corp Japan. All rights reserved. Global Export Division.
+          </div>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="hover:underline">Privacy</Link>
+            <span>·</span>
+            <Link href="/terms" className="hover:underline">Terms of Trade</Link>
+            <span>·</span>
+            <Link href="/contact" className="hover:underline">Contact Desk</Link>
+          </div>
         </div>
       </div>
     </footer>

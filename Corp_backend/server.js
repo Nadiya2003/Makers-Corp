@@ -72,7 +72,13 @@ app.use((err, req, res, next) => {
 // ─── Database & Server Start ──────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 const MONGO_URI =
-  process.env.MONGO_URI || "mongodb://localhost:27017/ceylon_imports";
+  process.env.MONGO_URI ||
+  "mongodb+srv://markersCeylon:markersCeylon43234Dfdsdf@main-cluster.vqngjf9.mongodb.net/markersCeylon";
+
+// Start server immediately so API is responsive
+app.listen(PORT, () => {
+  console.log(`🚀  Makers Corp Japan Backend running on http://localhost:${PORT}`);
+});
 
 const MAX_RETRIES = 5;
 const RETRY_DELAY_MS = 5000;
@@ -81,9 +87,6 @@ async function connectWithRetry(attempt = 1) {
   try {
     await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 10000 });
     console.log("✅  MongoDB connected successfully");
-    app.listen(PORT, () => {
-      console.log(`🚀  Ceylon Backend running on http://localhost:${PORT}`);
-    });
   } catch (err) {
     console.error(
       `❌  MongoDB connection failed (attempt ${attempt}/${MAX_RETRIES}): ${err.message}`,
@@ -103,8 +106,7 @@ async function connectWithRetry(attempt = 1) {
       console.log(`⏳  Retrying in ${RETRY_DELAY_MS / 1000}s...`);
       setTimeout(() => connectWithRetry(attempt + 1), RETRY_DELAY_MS);
     } else {
-      console.error("🔴  Max retries reached. Exiting.");
-      process.exit(1);
+      console.warn("⚠️  Max retries reached. Backend running with offline database fallback.");
     }
   }
 }

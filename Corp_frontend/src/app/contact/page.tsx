@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
-import { ContactUsClient } from './ContactUsClient';
+import { ContactPageClient } from './ContactPageClient';
 
 export const metadata: Metadata = {
-  title: 'Contact Us — Ceylon Imports',
-  description: 'Get in touch with Ceylon Imports. Our team is here to help you import your dream vehicle from Japan.',
+  title: 'Contact — Makers Corp Japan',
+  description:
+    'Get in touch with Makers Corp Japan. Export inquiries, destination checks, quotation requests and vehicle sourcing — our desks are ready.',
 };
 
-export default function ContactUsPage() {
-  return <ContactUsClient />;
+export default function ContactPage() {
+  return <ContactPageClient />;
 }

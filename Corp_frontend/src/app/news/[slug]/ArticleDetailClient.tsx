@@ -33,13 +33,13 @@ export function ArticleDetailClient({ article }: { article: Article }) {
   };
 
   return (
-    <article className="bg-[#F8FAFC] min-h-screen py-8 sm:py-12">
+    <article className="bg-white min-h-screen py-8 sm:py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb & Back Link */}
         <div className="mb-6 flex items-center justify-between">
           <Link
             href="/news"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-orange-600 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-600 hover:text-[#ff6a00] transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to News & Reviews</span>
@@ -47,7 +47,7 @@ export function ArticleDetailClient({ article }: { article: Article }) {
 
           <button
             onClick={handleCopyLink}
-            className="inline-flex items-center gap-1.5 text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:text-orange-600 px-3 py-1.5 rounded-md shadow-xs transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-bold bg-white border border-neutral-200 text-neutral-700 hover:text-[#ff6a00] px-3 py-1.5 rounded-none shadow-xs transition-colors"
           >
             {copied ? (
               <>
@@ -64,37 +64,37 @@ export function ArticleDetailClient({ article }: { article: Article }) {
         </div>
 
         {/* Article Header Card */}
-        <header className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 mb-8 shadow-sm">
+        <header className="bg-white border border-neutral-200 rounded-none p-6 sm:p-10 mb-8 shadow-sm">
           <div className="inline-flex items-center gap-2 mb-3">
-            <span className="bg-orange-600 text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded">
+            <span className="bg-[#ff6a00] text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-1 rounded-none">
               {article.category}
             </span>
-            <span className="text-xs text-slate-400 font-medium">Makers Corp Japan Editorial</span>
+            <span className="text-xs text-neutral-400 font-medium">Makers Corp Japan Editorial</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-tight mb-3">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#111111] tracking-tight leading-tight mb-3">
             {article.title}
           </h1>
 
           {article.subtitle && (
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-6 font-medium">
+            <p className="text-sm sm:text-base text-neutral-600 leading-relaxed mb-6 font-medium">
               {article.subtitle}
             </p>
           )}
 
           {/* Author & Meta Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-slate-100 text-xs text-slate-500">
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-neutral-100 text-xs text-neutral-500">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 font-bold shrink-0">
-                <User className="w-4 h-4 text-orange-600" />
+              <div className="w-9 h-9 rounded-none bg-neutral-100 border border-neutral-200 flex items-center justify-center text-neutral-700 font-bold shrink-0">
+                <User className="w-4 h-4 text-[#ff6a00]" />
               </div>
               <div>
-                <div className="font-bold text-slate-900">{article.author.name}</div>
-                <div className="text-[11px] text-slate-500">{article.author.role}</div>
+                <div className="font-bold text-[#111111]">{article.author.name}</div>
+                <div className="text-[11px] text-neutral-500">{article.author.role}</div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 text-slate-400">
+            <div className="flex items-center gap-4 text-neutral-400">
               <span className="flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5" />
                 {article.publishedAt}
@@ -109,7 +109,7 @@ export function ArticleDetailClient({ article }: { article: Article }) {
         </header>
 
         {/* Hero Cover Image */}
-        <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden mb-8 bg-slate-100 border border-slate-200 shadow-sm">
+        <div className="relative aspect-[16/9] w-full rounded-none overflow-hidden mb-8 bg-neutral-100 border border-neutral-200 shadow-sm">
           <Image
             src={article.coverImage}
             alt={article.title}
@@ -122,15 +122,15 @@ export function ArticleDetailClient({ article }: { article: Article }) {
 
         {/* Key Takeaways Plaque */}
         {article.keyTakeaways && article.keyTakeaways.length > 0 && (
-          <aside className="bg-orange-50/70 border border-orange-200/80 rounded-xl p-5 sm:p-6 mb-8">
-            <h2 className="text-xs font-black uppercase tracking-wider text-orange-800 mb-3 flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-orange-600" />
+          <aside className="bg-[#fff4eb]/70 border border-[#ffd1ad]/80 rounded-none p-5 sm:p-6 mb-8">
+            <h2 className="text-xs font-black uppercase tracking-wider text-[#cc5500] mb-3 flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-[#ff6a00]" />
               Essential Key Takeaways
             </h2>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-800">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-neutral-800">
               {article.keyTakeaways.map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-orange-600 font-bold mt-0.5">•</span>
+                  <span className="text-[#ff6a00] font-bold mt-0.5">•</span>
                   <span className="leading-relaxed">{item}</span>
                 </li>
               ))}
@@ -139,13 +139,13 @@ export function ArticleDetailClient({ article }: { article: Article }) {
         )}
 
         {/* Article Body Content */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 shadow-sm space-y-6 text-slate-700 leading-relaxed text-sm sm:text-base">
+        <div className="bg-white border border-neutral-200 rounded-none p-6 sm:p-10 shadow-sm space-y-6 text-neutral-700 leading-relaxed text-sm sm:text-base">
           {article.content.map((paragraph, idx) => {
             if (paragraph.startsWith('### ')) {
               return (
                 <h3
                   key={idx}
-                  className="text-lg sm:text-xl font-black text-slate-900 tracking-tight pt-4 border-t border-slate-100"
+                  className="text-lg sm:text-xl font-black text-[#111111] tracking-tight pt-4 border-t border-neutral-100"
                 >
                   {paragraph.replace('### ', '')}
                 </h3>
@@ -162,9 +162,9 @@ export function ArticleDetailClient({ article }: { article: Article }) {
                       // Parse bold formatting **text**
                       const parts = b.split('**');
                       return (
-                        <li key={bi} className="list-disc text-sm text-slate-700 leading-relaxed">
+                        <li key={bi} className="list-disc text-sm text-neutral-700 leading-relaxed">
                           {parts.map((p, pi) =>
-                            pi % 2 === 1 ? <strong key={pi} className="text-slate-900">{p}</strong> : p
+                            pi % 2 === 1 ? <strong key={pi} className="text-[#111111]">{p}</strong> : p
                           )}
                         </li>
                       );
@@ -175,7 +175,7 @@ export function ArticleDetailClient({ article }: { article: Article }) {
             }
 
             return (
-              <p key={idx} className="text-slate-700 leading-relaxed">
+              <p key={idx} className="text-neutral-700 leading-relaxed">
                 {paragraph}
               </p>
             );
@@ -183,15 +183,15 @@ export function ArticleDetailClient({ article }: { article: Article }) {
         </div>
 
         {/* Contextual Action Banner */}
-        <div className="mt-8 bg-slate-900 text-white rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
+        <div className="mt-8 bg-[#111111] text-white rounded-none p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
           <div>
-            <span className="text-[11px] font-bold text-orange-400 uppercase tracking-widest block mb-1">
+            <span className="text-[11px] font-bold text-[#ff8a33] uppercase tracking-widest block mb-1">
               Looking for a verified vehicle from Japan?
             </span>
             <h3 className="text-lg sm:text-xl font-black tracking-tight mb-1">
               Browse Genuine Japan Yard Stock or Request Sourcing
             </h3>
-            <p className="text-xs text-slate-300">
+            <p className="text-xs text-neutral-300">
               All vehicles include genuine chassis codes, verified mileage, and pre-export inspection reports.
             </p>
           </div>
@@ -199,14 +199,14 @@ export function ArticleDetailClient({ article }: { article: Article }) {
           <div className="flex items-center gap-3 shrink-0">
             <Link
               href="/vehicles"
-              className="bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5"
+              className="bg-[#ff6a00] hover:bg-[#e55f00] text-white text-xs font-bold px-4 py-2.5 rounded-none transition-colors flex items-center gap-1.5"
             >
               <span>Browse Stock</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
             <Link
               href="/request-a-vehicle"
-              className="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg border border-slate-700 transition-colors"
+              className="bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-bold px-4 py-2.5 rounded-none border border-neutral-700 transition-colors"
             >
               Request Sourcing
             </Link>
@@ -215,8 +215,8 @@ export function ArticleDetailClient({ article }: { article: Article }) {
 
         {/* Related Articles Section */}
         {related.length > 0 && (
-          <section className="mt-12 pt-8 border-t border-slate-200">
-            <h3 className="text-lg font-black text-slate-900 tracking-tight mb-6">
+          <section className="mt-12 pt-8 border-t border-neutral-200">
+            <h3 className="text-lg font-black text-[#111111] tracking-tight mb-6">
               Related Articles & Sourcing Guides
             </h3>
 
@@ -225,9 +225,9 @@ export function ArticleDetailClient({ article }: { article: Article }) {
                 <Link
                   key={rel.id}
                   href={`/news/${rel.slug}`}
-                  className="group bg-white border border-slate-200 hover:border-orange-500 rounded-xl overflow-hidden shadow-xs hover:shadow-sm transition-all flex flex-col justify-between"
+                  className="group bg-white border border-neutral-200 hover:border-[#ff6a00] rounded-none overflow-hidden shadow-xs hover:shadow-sm transition-all flex flex-col justify-between"
                 >
-                  <div className="relative aspect-[16/10] w-full bg-slate-100 overflow-hidden">
+                  <div className="relative aspect-[16/10] w-full bg-neutral-100 overflow-hidden">
                     <Image
                       src={rel.coverImage}
                       alt={rel.title}
@@ -236,17 +236,17 @@ export function ArticleDetailClient({ article }: { article: Article }) {
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-2 left-2">
-                      <span className="bg-slate-900/90 text-white text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded">
+                      <span className="bg-[#111111]/90 text-white text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-none">
                         {rel.category}
                       </span>
                     </div>
                   </div>
 
                   <div className="p-3.5 flex flex-col justify-between flex-grow">
-                    <h4 className="font-bold text-xs text-slate-900 group-hover:text-orange-600 transition-colors line-clamp-2 leading-snug mb-2">
+                    <h4 className="font-bold text-xs text-[#111111] group-hover:text-[#ff6a00] transition-colors line-clamp-2 leading-snug mb-2">
                       {rel.title}
                     </h4>
-                    <span className="text-[11px] font-bold text-orange-600 flex items-center gap-1">
+                    <span className="text-[11px] font-bold text-[#ff6a00] flex items-center gap-1">
                       Read article <ArrowRight className="w-3 h-3" />
                     </span>
                   </div>

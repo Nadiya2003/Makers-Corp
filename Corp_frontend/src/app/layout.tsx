@@ -10,6 +10,16 @@ export const metadata: Metadata = {
     'Browse genuine vehicles sourced from Japan. Transparent FOB and CIF pricing, destination eligibility checks for India, Sri Lanka, and Africa, and written quotations direct from Tokyo.',
   keywords:
     'Japan car export, Japanese used cars, buy cars from Japan, import JDM cars, Japan vehicle export marketplace, Makers Corp Japan, vehicles sourced from Japan',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '192x192' }
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }
+    ],
+    shortcut: '/favicon.ico'
+  },
   openGraph: {
     title: 'Makers Corp Japan — Vehicle Export Marketplace',
     description: 'Find your next vehicle in Japan. Browse stock, check destination availability, and request a written quotation.',
@@ -33,7 +43,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col font-sans bg-[#F8FAFC] text-[#0F172A] antialiased">
+      <body className="min-h-screen flex flex-col font-sans bg-white text-[#111111] antialiased">
         <SettingsProvider>
           <MarketProvider>
             <MainLayout>{children}</MainLayout>

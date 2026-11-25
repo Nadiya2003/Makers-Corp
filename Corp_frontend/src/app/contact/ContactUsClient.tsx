@@ -145,7 +145,7 @@ export function ContactUsClient() {
             {/* ── Left Column: Contact Details & Map ── */}
             <div className="lg:w-[45%] bg-[#111] text-white p-8 sm:p-10 lg:p-12 relative flex flex-col">
               {/* Subtle top-right glow */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+    
 
               <h3 className="font-display font-bold text-3xl sm:text-4xl mb-3 relative z-10">
                 Get in Touch
@@ -156,7 +156,7 @@ export function ContactUsClient() {
 
               <div className="space-y-8 flex-1 relative z-10">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-none bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
                     <Phone className="w-4 h-4 text-primary" />
                   </div>
                   <div>
@@ -166,7 +166,7 @@ export function ContactUsClient() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-none bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
                     <Mail className="w-4 h-4 text-primary" />
                   </div>
                   <div>
@@ -176,7 +176,7 @@ export function ContactUsClient() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-none bg-[#222] border border-gray-800 flex items-center justify-center shrink-0">
                     <MapPin className="w-4 h-4 text-primary" />
                   </div>
                   <div>
@@ -193,14 +193,14 @@ export function ContactUsClient() {
                   href={`https://wa.me/${contactInfo.footer.phone.replace(/[^0-9]/g, '')}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white px-6 py-3.5 rounded-xl font-medium transition-colors w-full text-base"
+                  className="flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white px-6 py-3.5 rounded-none font-medium transition-colors w-full text-base"
                 >
                   <MessageCircle className="w-5 h-5" />
                   Chat on WhatsApp
                 </a>
 
                 {/* Map */}
-                <div className="bg-[#222] rounded-xl h-48 flex items-center justify-center overflow-hidden relative">
+                <div className="bg-[#222] rounded-none h-48 flex items-center justify-center overflow-hidden relative">
                   {(() => {
                     const mapResult = convertMapUrl(contactInfo.contactPage.googleMapUrl);
                     if (mapResult.embedUrl) {
@@ -232,10 +232,10 @@ export function ContactUsClient() {
               </h3>
 
               {success && (
-                <div className="bg-green-50 text-green-700 p-4 rounded-xl mb-6 text-sm">{success}</div>
+                <div className="bg-green-50 text-green-700 p-4 rounded-none mb-6 text-sm">{success}</div>
               )}
               {error && (
-                <div className="bg-red-50 text-red-700 p-4 rounded-xl mb-6 text-sm">{error}</div>
+                <div className="bg-red-50 text-red-700 p-4 rounded-none mb-6 text-sm">{error}</div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -251,7 +251,7 @@ export function ContactUsClient() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm"
+                      className="w-full px-4 py-3 rounded-none border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm"
                       placeholder="John Doe"
                     />
                   </div>
@@ -267,7 +267,7 @@ export function ContactUsClient() {
                       value={formData.phone}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm"
+                      className="w-full px-4 py-3 rounded-none border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white text-sm"
                       placeholder="+94 7X XXX XXXX"
                     />
                   </div>
@@ -283,7 +283,7 @@ export function ContactUsClient() {
                     value={formData.vehicle}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white appearance-none text-sm cursor-pointer"
+                    className="w-full px-4 py-3 rounded-none border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white appearance-none text-sm cursor-pointer"
                   >
                     <option value="" disabled>Select a brand</option>
                     <optgroup label="Japanese Brands">
@@ -321,7 +321,7 @@ export function ContactUsClient() {
                     value={formData.message}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white resize-none text-sm"
+                    className="w-full px-4 py-3 rounded-none border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none bg-gray-50/50 focus:bg-white resize-none text-sm"
                     placeholder="Tell us about the specific model, year, or budget you have in mind..."
                   />
                 </div>
@@ -329,7 +329,7 @@ export function ContactUsClient() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-primary hover:bg-[#e66a00] disabled:bg-primary/50 text-white font-semibold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm mt-4"
+                  className="w-full bg-primary hover:bg-[#e66a00] disabled:bg-primary/50 text-white font-semibold py-4 rounded-none transition-all duration-300 flex items-center justify-center gap-2 text-sm mt-4"
                 >
                   <Send className="w-4 h-4" />
                   {loading ? 'Sending...' : 'Submit Inquiry'}

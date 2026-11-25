@@ -142,14 +142,14 @@ export default function RequestVehicleForm() {
 
   if (submitted) {
     return (
-      <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
+      <div className="bg-green-50 border border-green-200 rounded-none p-8 text-center">
         <div className="text-green-600 text-5xl mb-4">✓</div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Request Received</h2>
-        <p className="text-slate-700 mb-4">
+        <h2 className="text-2xl font-bold text-[#111111] mb-2">Request Received</h2>
+        <p className="text-neutral-700 mb-4">
           Your reference number is{' '}
-          <span className="font-mono font-semibold text-orange-600">{refNumber}</span>.
+          <span className="font-mono font-semibold text-[#ff6a00]">{refNumber}</span>.
         </p>
-        <p className="text-slate-600">
+        <p className="text-neutral-600">
           We will respond within one business day.
         </p>
       </div>
@@ -159,14 +159,14 @@ export default function RequestVehicleForm() {
   return (
     <div>
       {/* Mode Toggle */}
-      <div className="flex gap-2 mb-8 bg-slate-100 rounded-lg p-1 w-fit">
+      <div className="flex gap-2 mb-8 bg-neutral-100 rounded-none p-1 w-fit">
         <button
           type="button"
           onClick={() => setMode('specific')}
-          className={`px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
+          className={`px-5 py-2 rounded-none text-sm font-semibold transition-colors ${
             mode === 'specific'
-              ? 'bg-orange-600 text-white shadow'
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[#ff6a00] text-white shadow'
+              : 'text-neutral-600 hover:text-[#111111]'
           }`}
         >
           Specific Model Request
@@ -174,10 +174,10 @@ export default function RequestVehicleForm() {
         <button
           type="button"
           onClick={() => setMode('general')}
-          className={`px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
+          className={`px-5 py-2 rounded-none text-sm font-semibold transition-colors ${
             mode === 'general'
-              ? 'bg-orange-600 text-white shadow'
-              : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-[#ff6a00] text-white shadow'
+              : 'text-neutral-600 hover:text-[#111111]'
           }`}
         >
           General Sourcing Inquiry
@@ -201,8 +201,8 @@ export default function RequestVehicleForm() {
 
             <div className="grid md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Full Name <span className="text-orange-600">*</span>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Full Name <span className="text-[#ff6a00]">*</span>
                 </label>
                 <input
                   type="text"
@@ -210,12 +210,12 @@ export default function RequestVehicleForm() {
                   value={specificForm.fullName}
                   onChange={handleSpecificChange}
                   required
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Email <span className="text-orange-600">*</span>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Email <span className="text-[#ff6a00]">*</span>
                 </label>
                 <input
                   type="email"
@@ -223,14 +223,14 @@ export default function RequestVehicleForm() {
                   value={specificForm.email}
                   onChange={handleSpecificChange}
                   required
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                 />
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
                   Phone / WhatsApp
                 </label>
                 <input
@@ -238,19 +238,19 @@ export default function RequestVehicleForm() {
                   name="phone"
                   value={specificForm.phone}
                   onChange={handleSpecificChange}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Destination Country <span className="text-orange-600">*</span>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Destination Country <span className="text-[#ff6a00]">*</span>
                 </label>
                 <select
                   name="destinationCountry"
                   value={specificForm.destinationCountry}
                   onChange={handleSpecificChange}
                   required
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00] bg-white"
                 >
                   <option value="">Select country…</option>
                   {DESTINATION_OPTIONS.map((c) => (
@@ -261,7 +261,7 @@ export default function RequestVehicleForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-neutral-700 mb-1">
                 Destination Port
               </label>
               <input
@@ -270,17 +270,17 @@ export default function RequestVehicleForm() {
                 value={specificForm.destinationPort}
                 onChange={handleSpecificChange}
                 placeholder="e.g. Nhava Sheva, Colombo, Mombasa"
-                className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
               />
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-neutral-500 mt-1">
                 Your freight forwarder can confirm the preferred port.
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Vehicle Make <span className="text-orange-600">*</span>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Vehicle Make <span className="text-[#ff6a00]">*</span>
                 </label>
                 <input
                   type="text"
@@ -289,12 +289,12 @@ export default function RequestVehicleForm() {
                   onChange={handleSpecificChange}
                   required
                   placeholder="e.g. Toyota, Nissan, Mitsubishi"
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Model <span className="text-orange-600">*</span>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Model <span className="text-[#ff6a00]">*</span>
                 </label>
                 <input
                   type="text"
@@ -303,14 +303,14 @@ export default function RequestVehicleForm() {
                   onChange={handleSpecificChange}
                   required
                   placeholder="e.g. Land Cruiser, X-Trail, Outlander"
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                 />
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
                   Year Range
                 </label>
                 <div className="flex gap-3 items-center">
@@ -322,9 +322,9 @@ export default function RequestVehicleForm() {
                     placeholder="From"
                     min="1990"
                     max="2030"
-                    className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                   />
-                  <span className="text-slate-400">–</span>
+                  <span className="text-neutral-400">–</span>
                   <input
                     type="number"
                     name="yearTo"
@@ -333,12 +333,12 @@ export default function RequestVehicleForm() {
                     placeholder="To"
                     min="1990"
                     max="2030"
-                    className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
                   Max Budget (USD)
                 </label>
                 <input
@@ -348,21 +348,21 @@ export default function RequestVehicleForm() {
                   onChange={handleSpecificChange}
                   placeholder="e.g. 25000"
                   min="0"
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                 />
               </div>
             </div>
 
             <div className="grid md:grid-cols-3 gap-5">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
                   Body Type
                 </label>
                 <select
                   name="bodyType"
                   value={specificForm.bodyType}
                   onChange={handleSpecificChange}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00] bg-white"
                 >
                   <option value="">Any</option>
                   {BODY_TYPE_OPTIONS.map((b) => (
@@ -371,14 +371,14 @@ export default function RequestVehicleForm() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
                   Fuel Preference
                 </label>
                 <select
                   name="fuel"
                   value={specificForm.fuel}
                   onChange={handleSpecificChange}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00] bg-white"
                 >
                   {FUEL_OPTIONS.map((f) => (
                     <option key={f} value={f}>{f}</option>
@@ -386,14 +386,14 @@ export default function RequestVehicleForm() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
                   Steering
                 </label>
                 <select
                   name="steering"
                   value={specificForm.steering}
                   onChange={handleSpecificChange}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00] bg-white"
                 >
                   {STEERING_OPTIONS.map((s) => (
                     <option key={s} value={s}>{s}</option>
@@ -403,7 +403,7 @@ export default function RequestVehicleForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-neutral-700 mb-1">
                 Notes / Specific Requirements
               </label>
               <textarea
@@ -412,7 +412,7 @@ export default function RequestVehicleForm() {
                 onChange={handleSpecificChange}
                 rows={4}
                 placeholder="Any specific requirements, trim levels, features, or other notes…"
-                className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
               />
             </div>
           </div>
@@ -421,8 +421,8 @@ export default function RequestVehicleForm() {
           <div className="space-y-5">
             <div className="grid md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Full Name <span className="text-orange-600">*</span>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Full Name <span className="text-[#ff6a00]">*</span>
                 </label>
                 <input
                   type="text"
@@ -430,12 +430,12 @@ export default function RequestVehicleForm() {
                   value={generalForm.fullName}
                   onChange={handleGeneralChange}
                   required
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Email <span className="text-orange-600">*</span>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Email <span className="text-[#ff6a00]">*</span>
                 </label>
                 <input
                   type="email"
@@ -443,14 +443,14 @@ export default function RequestVehicleForm() {
                   value={generalForm.email}
                   onChange={handleGeneralChange}
                   required
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                 />
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
                   Phone / WhatsApp
                 </label>
                 <input
@@ -458,19 +458,19 @@ export default function RequestVehicleForm() {
                   name="phone"
                   value={generalForm.phone}
                   onChange={handleGeneralChange}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Destination Country <span className="text-orange-600">*</span>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  Destination Country <span className="text-[#ff6a00]">*</span>
                 </label>
                 <select
                   name="destinationCountry"
                   value={generalForm.destinationCountry}
                   onChange={handleGeneralChange}
                   required
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                  className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00] bg-white"
                 >
                   <option value="">Select country…</option>
                   {DESTINATION_OPTIONS.map((c) => (
@@ -481,14 +481,14 @@ export default function RequestVehicleForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-neutral-700 mb-1">
                 Budget Range
               </label>
               <select
                 name="budgetRange"
                 value={generalForm.budgetRange}
                 onChange={handleGeneralChange}
-                className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00] bg-white"
               >
                 <option value="">Prefer not to say</option>
                 {BUDGET_RANGES.map((b) => (
@@ -498,17 +498,17 @@ export default function RequestVehicleForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-neutral-700 mb-2">
                 Vehicle Categories of Interest
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {VEHICLE_CATEGORIES.map((cat) => (
                   <label
                     key={cat}
-                    className={`flex items-center gap-2 cursor-pointer rounded-lg border px-4 py-2.5 text-sm transition-colors ${
+                    className={`flex items-center gap-2 cursor-pointer rounded-none border px-4 py-2.5 text-sm transition-colors ${
                       generalForm.categories.includes(cat)
-                        ? 'border-orange-500 bg-orange-50 text-orange-700'
-                        : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                        ? 'border-[#ff6a00] bg-[#fff4eb] text-[#e55f00]'
+                        : 'border-neutral-200 bg-white text-neutral-700 hover:border-neutral-300'
                     }`}
                   >
                     <input
@@ -524,7 +524,7 @@ export default function RequestVehicleForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-neutral-700 mb-1">
                 Message
               </label>
               <textarea
@@ -533,14 +533,14 @@ export default function RequestVehicleForm() {
                 onChange={handleGeneralChange}
                 rows={4}
                 placeholder="Describe what you're looking for — budget, quantities, preferred specs, intended use…"
-                className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full border border-neutral-300 rounded-none px-4 py-2.5 text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#ff6a00]"
               />
             </div>
           </div>
         )}
 
         {error && (
-          <p className="mt-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+          <p className="mt-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-none p-3">
             {error}
           </p>
         )}
@@ -549,7 +549,7 @@ export default function RequestVehicleForm() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-orange-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            className="bg-[#ff6a00] text-white font-semibold px-8 py-3 rounded-none hover:bg-[#e55f00] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? 'Submitting…' : 'Submit Request'}
           </button>

@@ -313,17 +313,17 @@ function VehiclesCatalogContent() {
   const currentMarketObj = markets.find((m) => m.slug === currentDestination);
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen py-6 sm:py-8">
+    <div className="bg-white min-h-screen py-6 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Breadcrumb & Header */}
         <div className="mb-6">
-          <div className="text-xs text-slate-500 mb-1 flex items-center gap-1.5 flex-wrap">
-            <span className="text-slate-400">Showroom</span> /{' '}
-            <span className="font-bold text-slate-800">Global Inventory</span>
+          <div className="text-xs text-neutral-500 mb-1 flex items-center gap-1.5 flex-wrap">
+            <span className="text-neutral-400">Showroom</span> /{' '}
+            <span className="font-bold text-neutral-800">Global Inventory</span>
             {currentDestination && (
               <>
                 {' '}/
-                <span className="font-bold text-orange-600 uppercase bg-orange-50 px-1.5 py-0.2 rounded border border-orange-200">
+                <span className="font-bold text-[#ff6a00] uppercase bg-[#fff4eb] px-1.5 py-0.2 rounded-none border border-[#ffd1ad]">
                   {currentMarketObj ? currentMarketObj.name : currentDestination} Reviewed
                 </span>
               </>
@@ -332,29 +332,29 @@ function VehiclesCatalogContent() {
 
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black text-[#111111] tracking-tight">
                 Japan Vehicle Inventory Catalog
               </h1>
-              <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              <p className="text-xs sm:text-sm text-neutral-600 mt-1">
                 Showing{' '}
-                <strong className="text-slate-900 font-extrabold">{filteredVehicles.length}</strong> physical vehicles
+                <strong className="text-[#111111] font-extrabold">{filteredVehicles.length}</strong> physical vehicles
                 inspected in Tokyo, Yokohama, Kobe & Nagoya yards.
               </p>
             </div>
 
             {/* Destination Mode Indicator */}
             {currentDestination && (
-              <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 px-3.5 py-2 rounded-xl text-xs shadow-xs">
-                <Globe className="w-4 h-4 text-orange-600 shrink-0" />
-                <span className="text-slate-700">
-                  Market: <strong className="text-slate-900 font-black">{currentMarketObj ? currentMarketObj.name : currentDestination.toUpperCase()}</strong>
+              <div className="inline-flex items-center gap-2 bg-[#fff4eb] border border-[#ffd1ad] px-3.5 py-2 rounded-none text-xs shadow-xs">
+                <Globe className="w-4 h-4 text-[#ff6a00] shrink-0" />
+                <span className="text-neutral-700">
+                  Market: <strong className="text-[#111111] font-black">{currentMarketObj ? currentMarketObj.name : currentDestination.toUpperCase()}</strong>
                 </span>
                 <button
                   onClick={() => {
                     setDestination(null);
                     updateUrl({ destination: null });
                   }}
-                  className="text-[11px] font-bold text-orange-700 hover:text-orange-900 hover:underline ml-1.5 pl-1.5 border-l border-orange-200"
+                  className="text-[11px] font-bold text-[#e55f00] hover:text-[#b34a00] hover:underline ml-1.5 pl-1.5 border-l border-[#ffd1ad]"
                 >
                   Clear to Global
                 </button>
@@ -364,11 +364,11 @@ function VehiclesCatalogContent() {
         </div>
 
         {/* Primary Search & Fast Filter Bar */}
-        <div className="bg-white border border-slate-200 rounded-xl p-3.5 sm:p-4 mb-6 shadow-xs">
+        <div className="bg-white border border-neutral-200 rounded-none p-3.5 sm:p-4 mb-6 shadow-xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {/* Search Input */}
             <div className="relative lg:col-span-2">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchTerm}
@@ -377,7 +377,7 @@ function VehiclesCatalogContent() {
                   updateUrl({ q: e.target.value || null });
                 }}
                 placeholder="Search by Keyword, Model, or Stock ID (e.g. MCJ-2024-8801, GT-R, LX 600)..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-orange-500 focus:bg-white"
+                className="w-full bg-neutral-50 border border-neutral-200 rounded-none pl-9 pr-3 py-2 text-xs text-[#111111] focus:outline-none focus:border-[#ff6a00] focus:bg-white"
               />
               {searchTerm && (
                 <button
@@ -385,7 +385,7 @@ function VehiclesCatalogContent() {
                     setSearchTerm('');
                     updateUrl({ q: null });
                   }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -401,7 +401,7 @@ function VehiclesCatalogContent() {
                   setDestination(val || null);
                   updateUrl({ destination: val || null });
                 }}
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 font-semibold focus:outline-none focus:border-orange-500 focus:bg-white"
+                className="w-full bg-neutral-50 border border-neutral-200 rounded-none px-3 py-2 text-xs text-neutral-800 font-semibold focus:outline-none focus:border-[#ff6a00] focus:bg-white"
               >
                 <option value="">Global Showroom (All)</option>
                 <option value="india">India (Nhava Sheva / Chennai)</option>
@@ -420,7 +420,7 @@ function VehiclesCatalogContent() {
                   setSortBy(e.target.value);
                   updateUrl({ sort: e.target.value });
                 }}
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-orange-500 focus:bg-white font-bold"
+                className="w-full bg-neutral-50 border border-neutral-200 rounded-none px-3 py-2 text-xs text-neutral-800 focus:outline-none focus:border-[#ff6a00] focus:bg-white font-bold"
               >
                 <option value="newest">Sort: Newest First</option>
                 <option value="price_asc">Price: Low to High (FOB)</option>
@@ -431,89 +431,89 @@ function VehiclesCatalogContent() {
           </div>
 
           {/* Removable Active Filter Chips & Mobile Filter Button */}
-          <div className="mt-3.5 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+          <div className="mt-3.5 pt-3 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-1.5 text-xs">
-              <span className="text-slate-500 text-[11px] font-bold">Active Filters:</span>
+              <span className="text-neutral-500 text-[11px] font-bold">Active Filters:</span>
               {activeFiltersCount === 0 && (
-                <span className="text-slate-400 text-[11px] italic">None (Showing all active stock)</span>
+                <span className="text-neutral-400 text-[11px] italic">None (Showing all active stock)</span>
               )}
 
               {/* Destination Chip */}
               {currentDestination && (
-                <span className="inline-flex items-center gap-1 bg-orange-100 text-orange-900 border border-orange-200 px-2 py-0.5 rounded text-[11px] font-bold">
+                <span className="inline-flex items-center gap-1 bg-[#ffe8d6] text-[#b34a00] border border-[#ffd1ad] px-2 py-0.5 rounded-none text-[11px] font-bold">
                   <span>Destination: {currentMarketObj ? currentMarketObj.name : currentDestination}</span>
                   <button onClick={() => { setDestination(null); updateUrl({ destination: null }); }}>
-                    <X className="w-3 h-3 text-orange-600 hover:text-orange-950" />
+                    <X className="w-3 h-3 text-[#ff6a00] hover:text-[#993f00]" />
                   </button>
                 </span>
               )}
 
               {/* Search Query Chip */}
               {searchTerm.trim() !== '' && (
-                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                <span className="inline-flex items-center gap-1 bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded-none text-[11px] font-medium border border-neutral-200">
                   <span>Query: &quot;{searchTerm}&quot;</span>
                   <button onClick={() => { setSearchTerm(''); updateUrl({ q: null }); }}>
-                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                    <X className="w-3 h-3 text-neutral-400 hover:text-neutral-700" />
                   </button>
                 </span>
               )}
 
               {/* Make Chip */}
               {makeFilter !== 'All' && (
-                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                <span className="inline-flex items-center gap-1 bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded-none text-[11px] font-medium border border-neutral-200">
                   <span>Brand: {makeFilter}</span>
                   <button onClick={() => handleMakeChange('All')}>
-                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                    <X className="w-3 h-3 text-neutral-400 hover:text-neutral-700" />
                   </button>
                 </span>
               )}
 
               {/* Model Chip */}
               {modelFilter !== 'All' && (
-                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                <span className="inline-flex items-center gap-1 bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded-none text-[11px] font-medium border border-neutral-200">
                   <span>Model: {modelFilter}</span>
                   <button onClick={() => { setModelFilter('All'); updateUrl({ model: null }); }}>
-                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                    <X className="w-3 h-3 text-neutral-400 hover:text-neutral-700" />
                   </button>
                 </span>
               )}
 
               {/* Body Type Chip */}
               {bodyFilter !== 'All' && (
-                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                <span className="inline-flex items-center gap-1 bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded-none text-[11px] font-medium border border-neutral-200">
                   <span>Body: {bodyFilter}</span>
                   <button onClick={() => handleBodyChange('All')}>
-                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                    <X className="w-3 h-3 text-neutral-400 hover:text-neutral-700" />
                   </button>
                 </span>
               )}
 
               {/* Category Chip */}
               {categoryFilter !== 'All' && (
-                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                <span className="inline-flex items-center gap-1 bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded-none text-[11px] font-medium border border-neutral-200">
                   <span>Category: {categoryFilter}</span>
                   <button onClick={() => handleCategoryChange('All')}>
-                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                    <X className="w-3 h-3 text-neutral-400 hover:text-neutral-700" />
                   </button>
                 </span>
               )}
 
               {/* Steering Chip */}
               {steeringFilter !== 'All' && (
-                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                <span className="inline-flex items-center gap-1 bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded-none text-[11px] font-medium border border-neutral-200">
                   <span>Steering: {steeringFilter}</span>
                   <button onClick={() => { setSteeringFilter('All'); updateUrl({ steering: null }); }}>
-                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                    <X className="w-3 h-3 text-neutral-400 hover:text-neutral-700" />
                   </button>
                 </span>
               )}
 
               {/* Price Range Chip */}
               {priceRange !== 'All' && (
-                <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-0.5 rounded text-[11px] font-medium border border-slate-200">
+                <span className="inline-flex items-center gap-1 bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded-none text-[11px] font-medium border border-neutral-200">
                   <span>Price: {priceRange.replace('_', ' ')}</span>
                   <button onClick={() => { setPriceRange('All'); updateUrl({ price: null }); }}>
-                    <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                    <X className="w-3 h-3 text-neutral-400 hover:text-neutral-700" />
                   </button>
                 </span>
               )}
@@ -522,7 +522,7 @@ function VehiclesCatalogContent() {
               {activeFiltersCount > 0 && (
                 <button
                   onClick={handleResetFilters}
-                  className="text-[11px] text-orange-600 hover:text-orange-700 font-extrabold ml-1 flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-orange-50 transition-colors"
+                  className="text-[11px] text-[#ff6a00] hover:text-[#e55f00] font-extrabold ml-1 flex items-center gap-1 px-1.5 py-0.5 rounded-none hover:bg-[#fff4eb] transition-colors"
                 >
                   <RotateCcw className="w-3 h-3" />
                   <span>Reset All</span>
@@ -533,12 +533,12 @@ function VehiclesCatalogContent() {
             {/* Mobile Filter Button */}
             <button
               onClick={() => setMobileFilterOpen(true)}
-              className="lg:hidden inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 px-3.5 py-2 rounded-lg border border-slate-200 transition-colors"
+              className="lg:hidden inline-flex items-center gap-1.5 text-xs font-bold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 px-3.5 py-2 rounded-none border border-neutral-200 transition-colors"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-orange-600" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#ff6a00]" />
               <span>Filters</span>
               {activeFiltersCount > 0 && (
-                <span className="bg-orange-600 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="bg-[#ff6a00] text-white text-[10px] font-black w-4 h-4 rounded-none flex items-center justify-center">
                   {activeFiltersCount}
                 </span>
               )}
@@ -573,15 +573,15 @@ function VehiclesCatalogContent() {
           <div className="lg:col-span-3">
             {filteredVehicles.length === 0 ? (
               /* Honest No-Results State respecting selected destination */
-              <div className="bg-white border border-slate-200 rounded-xl p-8 sm:p-12 text-center shadow-xs">
-                <div className="w-14 h-14 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-white border border-neutral-200 rounded-none p-8 sm:p-12 text-center shadow-xs">
+                <div className="w-14 h-14 rounded-none bg-[#ffe8d6] text-[#ff6a00] flex items-center justify-center mx-auto mb-4">
                   <Search className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-black text-slate-900 mb-2">
+                <h3 className="text-xl font-black text-[#111111] mb-2">
                   No Matching Vehicles Found
                   {currentDestination && ` for ${currentMarketObj ? currentMarketObj.name : currentDestination.toUpperCase()}`}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto mb-6 leading-relaxed">
+                <p className="text-xs sm:text-sm text-neutral-600 max-w-md mx-auto mb-6 leading-relaxed">
                   {currentDestination ? (
                     <>
                       We could not find active inventory matching your specific filters that is reviewed for{' '}
@@ -596,7 +596,7 @@ function VehiclesCatalogContent() {
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <button
                     onClick={handleResetFilters}
-                    className="inline-flex items-center gap-1.5 bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-lg hover:bg-slate-800 transition-colors shadow-xs"
+                    className="inline-flex items-center gap-1.5 bg-[#111111] text-white text-xs font-bold px-4 py-2.5 rounded-none hover:bg-neutral-800 transition-colors shadow-xs"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                     <span>Reset All Filters</span>
@@ -604,7 +604,7 @@ function VehiclesCatalogContent() {
 
                   <button
                     onClick={() => router.push('/request-a-vehicle')}
-                    className="inline-flex items-center gap-1.5 bg-orange-600 text-white text-xs font-bold px-4 py-2.5 rounded-lg hover:bg-orange-700 transition-colors shadow-xs"
+                    className="inline-flex items-center gap-1.5 bg-[#ff6a00] text-white text-xs font-bold px-4 py-2.5 rounded-none hover:bg-[#e55f00] transition-colors shadow-xs"
                   >
                     <span>Request Custom Sourcing</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -632,7 +632,7 @@ function VehiclesCatalogContent() {
 
 export function VehiclesClient() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-xs text-slate-400">Loading catalog...</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-xs text-neutral-400">Loading catalog...</div>}>
       <VehiclesCatalogContent />
     </Suspense>
   );

@@ -7,7 +7,6 @@ import { ArrowUp } from 'lucide-react';
 export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Show button when page is scrolled down
   const toggleVisibility = () => {
     if (window.scrollY > 300) {
       setIsVisible(true);
@@ -16,8 +15,6 @@ export default function ScrollToTop() {
     }
   };
 
-  // Set the top cordinate to 0
-  // make scrolling smooth
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -36,16 +33,16 @@ export default function ScrollToTop() {
     <AnimatePresence>
       {isVisible && (
         <motion.button
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={scrollToTop}
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[999] p-3 rounded-full bg-white/40 backdrop-blur-md border border-white/50 shadow-lg shadow-black/5 hover:bg-white/60 transition-all focus:outline-none"
+          className="fixed bottom-6 right-6 z-[60] w-10 h-10 rounded-none bg-[#111111] hover:bg-[#ff6a00] text-white border border-neutral-700 flex items-center justify-center transition-colors shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6a00]"
           aria-label="Scroll to top"
         >
-          <ArrowUp className="w-6 h-6 text-primary" />
+          <ArrowUp className="w-5 h-5 text-white" />
         </motion.button>
       )}
     </AnimatePresence>

@@ -104,11 +104,11 @@ export function ContactPageClient() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-slate-900 text-white py-16 px-4">
+      <section className="bg-[#111111] text-white py-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <p className="text-orange-400 text-sm font-semibold uppercase tracking-widest mb-3">Contact</p>
+          <p className="text-[#ff8a33] text-sm font-semibold uppercase tracking-widest mb-3">Contact</p>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h1>
-          <p className="text-slate-300 text-lg max-w-2xl">
+          <p className="text-neutral-300 text-lg max-w-2xl">
             Our team handles export inquiries, destination checks, and quotation requests. Choose the desk
             closest to your market or use the form below.
           </p>
@@ -116,37 +116,37 @@ export function ContactPageClient() {
       </section>
 
       {/* Desk cards */}
-      <section className="py-14 px-4 bg-slate-50">
+      <section className="py-14 px-4 bg-neutral-50">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-2 mb-8">
-            <Clock className="w-4 h-4 text-slate-500" />
-            <p className="text-slate-600 text-sm">
+            <Clock className="w-4 h-4 text-neutral-500" />
+            <p className="text-neutral-600 text-sm">
               We aim to respond within one business day. For urgent inquiries, WhatsApp is fastest.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 gap-5">
             {desks.map((desk) => (
-              <div key={desk.title} className="bg-white border border-slate-200 rounded-xl p-6">
+              <div key={desk.title} className="bg-white border border-neutral-200 rounded-none p-6">
                 <p className="text-2xl mb-2">{desk.icon}</p>
-                <h3 className="font-bold text-slate-900 text-lg">{desk.title}</h3>
+                <h3 className="font-bold text-[#111111] text-lg">{desk.title}</h3>
                 {desk.subtitle && (
-                  <p className="text-slate-500 text-xs mb-1">{desk.subtitle}</p>
+                  <p className="text-neutral-500 text-xs mb-1">{desk.subtitle}</p>
                 )}
                 <div className="mt-3 space-y-2">
                   <a
                     href={`mailto:${desk.email}`}
-                    className="flex items-center gap-2 text-sm text-slate-700 hover:text-orange-600 transition"
+                    className="flex items-center gap-2 text-sm text-neutral-700 hover:text-[#ff6a00] transition"
                   >
-                    <Mail className="w-4 h-4 text-slate-400" /> {desk.email}
+                    <Mail className="w-4 h-4 text-neutral-400" /> {desk.email}
                   </a>
                   {desk.whatsapp ? (
                     <a
                       href={`https://wa.me/${desk.whatsapp}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-sm text-slate-700 hover:text-green-600 transition"
+                      className="flex items-center gap-2 text-sm text-neutral-700 hover:text-green-600 transition"
                     >
-                      <MessageCircle className="w-4 h-4 text-slate-400" /> WhatsApp
+                      <MessageCircle className="w-4 h-4 text-neutral-400" /> WhatsApp
                     </a>
                   ) : desk.whatsappNote ? (
                     <p className="flex items-center gap-2 text-xs text-amber-600 italic">
@@ -156,8 +156,8 @@ export function ContactPageClient() {
                 </div>
                 <ul className="mt-4 space-y-1">
                   {desk.handles.map((h) => (
-                    <li key={h} className="text-xs text-slate-500 flex items-start gap-1.5">
-                      <span className="text-orange-500 mt-0.5">•</span> {h}
+                    <li key={h} className="text-xs text-neutral-500 flex items-start gap-1.5">
+                      <span className="text-[#ff6a00] mt-0.5">•</span> {h}
                     </li>
                   ))}
                 </ul>
@@ -170,17 +170,17 @@ export function ContactPageClient() {
       {/* Contact form */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Send an Inquiry</h2>
-          <p className="text-slate-600 text-sm mb-8">No account required. We'll reply to your email.</p>
+          <h2 className="text-2xl font-bold text-[#111111] mb-2">Send an Inquiry</h2>
+          <p className="text-neutral-600 text-sm mb-8">No account required. We'll reply to your email.</p>
 
           {status === 'success' ? (
-            <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
+            <div className="bg-green-50 border border-green-200 rounded-none p-8 text-center">
               <CheckCircle2 className="w-10 h-10 text-green-600 mx-auto mb-3" />
-              <h3 className="font-semibold text-slate-900 text-lg mb-1">Inquiry Received</h3>
-              <p className="text-slate-600 text-sm mb-3">
-                Your reference number is <strong className="font-mono text-orange-600">{refId}</strong>
+              <h3 className="font-semibold text-[#111111] text-lg mb-1">Inquiry Received</h3>
+              <p className="text-neutral-600 text-sm mb-3">
+                Your reference number is <strong className="font-mono text-[#ff6a00]">{refId}</strong>
               </p>
-              <p className="text-slate-500 text-sm">We aim to respond within one business day.</p>
+              <p className="text-neutral-500 text-sm">We aim to respond within one business day.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -189,18 +189,18 @@ export function ContactPageClient() {
 
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Full Name <span className="text-red-500">*</span></label>
+                  <label className="block text-sm font-medium text-neutral-700 mb-1">Full Name <span className="text-red-500">*</span></label>
                   <input
                     type="text" name="name" value={form.name} onChange={handleChange} required
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full border border-neutral-300 rounded-none px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff6a00] focus:border-transparent"
                     placeholder="Your name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Email <span className="text-red-500">*</span></label>
+                  <label className="block text-sm font-medium text-neutral-700 mb-1">Email <span className="text-red-500">*</span></label>
                   <input
                     type="email" name="email" value={form.email} onChange={handleChange} required
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full border border-neutral-300 rounded-none px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff6a00] focus:border-transparent"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -208,18 +208,18 @@ export function ContactPageClient() {
 
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Phone / WhatsApp</label>
+                  <label className="block text-sm font-medium text-neutral-700 mb-1">Phone / WhatsApp</label>
                   <input
                     type="tel" name="phone" value={form.phone} onChange={handleChange}
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full border border-neutral-300 rounded-none px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff6a00] focus:border-transparent"
                     placeholder="+81 80 0000 0000"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Destination Country</label>
+                  <label className="block text-sm font-medium text-neutral-700 mb-1">Destination Country</label>
                   <select
                     name="destination" value={form.destination} onChange={handleChange}
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                    className="w-full border border-neutral-300 rounded-none px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff6a00] bg-white"
                   >
                     <option value="">Select destination</option>
                     {destinations.map((d) => <option key={d} value={d}>{d}</option>)}
@@ -228,10 +228,10 @@ export function ContactPageClient() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Inquiry Type</label>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">Inquiry Type</label>
                 <select
                   name="inquiryType" value={form.inquiryType} onChange={handleChange}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                  className="w-full border border-neutral-300 rounded-none px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff6a00] bg-white"
                 >
                   <option value="">Select type</option>
                   {inquiryTypes.map((t) => <option key={t} value={t}>{t}</option>)}
@@ -239,30 +239,30 @@ export function ContactPageClient() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Message</label>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">Message</label>
                 <textarea
                   name="message" value={form.message} onChange={handleChange} rows={5}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                  className="w-full border border-neutral-300 rounded-none px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff6a00] focus:border-transparent resize-none"
                   placeholder="Tell us what you're looking for, your stock ID of interest, or any questions..."
                 />
               </div>
 
               {status === 'error' && (
-                <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg p-3">{errorMsg}</p>
+                <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-none p-3">{errorMsg}</p>
               )}
 
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="w-full bg-orange-600 hover:bg-orange-700 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition flex items-center justify-center gap-2"
+                className="w-full bg-[#ff6a00] hover:bg-[#e55f00] disabled:opacity-60 text-white font-semibold py-3 rounded-none transition flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4" />
                 {status === 'sending' ? 'Sending…' : 'Send Inquiry'}
               </button>
 
-              <p className="text-xs text-slate-500 text-center">
+              <p className="text-xs text-neutral-500 text-center">
                 By submitting, you agree to our{' '}
-                <a href="/privacy" className="underline hover:text-orange-600">privacy policy</a>.
+                <a href="/privacy" className="underline hover:text-[#ff6a00]">privacy policy</a>.
               </p>
             </form>
           )}
@@ -270,11 +270,11 @@ export function ContactPageClient() {
       </section>
 
       {/* Map placeholder note */}
-      <section className="py-8 px-4 bg-slate-50 border-t border-slate-200">
+      <section className="py-8 px-4 bg-neutral-50 border-t border-neutral-200">
         <div className="max-w-5xl mx-auto flex items-start gap-3">
-          <MapPin className="w-5 h-5 text-slate-400 flex-shrink-0 mt-0.5" />
-          <p className="text-slate-500 text-sm">
-            <strong className="text-slate-700">Registered address:</strong> Pending formal corporate registration
+          <MapPin className="w-5 h-5 text-neutral-400 flex-shrink-0 mt-0.5" />
+          <p className="text-neutral-500 text-sm">
+            <strong className="text-neutral-700">Registered address:</strong> Pending formal corporate registration
             publication. Physical office details will be listed here upon confirmation. All correspondence
             and documentation is handled via the email addresses above.
           </p>

@@ -132,23 +132,23 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
   );
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen py-6 sm:py-10">
+    <div className="bg-white min-h-screen py-6 sm:py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
-        <div className="flex items-center justify-between gap-3 text-xs text-slate-500 mb-4">
+        <div className="flex items-center justify-between gap-3 text-xs text-neutral-500 mb-4">
           <div className="flex items-center gap-1.5 truncate">
-            <a href="/" className="hover:text-slate-800">Home</a>
+            <a href="/" className="hover:text-neutral-800">Home</a>
             <span>/</span>
-            <a href="/vehicles" className="hover:text-slate-800">Vehicles</a>
+            <a href="/vehicles" className="hover:text-neutral-800">Vehicles</a>
             <span>/</span>
-            <span className="font-semibold text-slate-800 truncate">
+            <span className="font-semibold text-neutral-800 truncate">
               {vehicle.year} {vehicle.make} {vehicle.model}
             </span>
           </div>
 
           <button
             onClick={handleCopyLink}
-            className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-600 bg-white border border-slate-200 px-2.5 py-1 rounded hover:bg-slate-50 transition-colors shrink-0"
+            className="inline-flex items-center gap-1 text-[11px] font-medium text-neutral-600 bg-white border border-neutral-200 px-2.5 py-1 rounded-none hover:bg-neutral-50 transition-colors shrink-0"
           >
             {copiedLink ? <Check className="w-3 h-3 text-emerald-600" /> : <Share2 className="w-3 h-3" />}
             <span>{copiedLink ? 'Link Copied' : 'Share Listing'}</span>
@@ -157,16 +157,16 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
 
         {/* SOLD BANNER (When Vehicle is Sold) */}
         {isSold && (
-          <div className="mb-6 p-4 bg-slate-900 text-white rounded-lg border-l-4 border-amber-500 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="mb-6 p-4 bg-[#111111] text-white rounded-none border-l-4 border-amber-500 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-start sm:items-center gap-3">
-              <div className="w-8 h-8 rounded bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-none bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <div>
                 <div className="font-black text-sm uppercase tracking-wide">
                   This Vehicle Has Been Sold
                 </div>
-                <div className="text-xs text-slate-300">
+                <div className="text-xs text-neutral-300">
                   Stock record {vehicle.stockId} is archived for customs and bill of lading reference. Quote requests are disabled.
                 </div>
               </div>
@@ -174,7 +174,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
 
             <a
               href={`/request-a-vehicle?model=${encodeURIComponent(`${vehicle.make} ${vehicle.model}`)}`}
-              className="inline-flex items-center justify-center gap-1.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold px-4 py-2 rounded shrink-0 transition-colors"
+              className="inline-flex items-center justify-center gap-1.5 bg-[#ff6a00] hover:bg-[#e55f00] text-white text-xs font-bold px-4 py-2 rounded-none shrink-0 transition-colors"
             >
               <span>Source Matching Unit</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -183,52 +183,52 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
         )}
 
         {/* Vehicle Header Title Section */}
-        <div className="bg-white border border-slate-200 rounded-lg p-4 sm:p-6 mb-6 shadow-sm">
+        <div className="bg-white border border-neutral-200 rounded-none p-4 sm:p-6 mb-6 shadow-sm">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className="px-2.5 py-0.5 bg-slate-900 text-white text-xs font-mono font-bold tracking-wider rounded">
+                <span className="px-2.5 py-0.5 bg-[#111111] text-white text-xs font-mono font-bold tracking-wider rounded-none">
                   Stock: {vehicle.stockId}
                 </span>
-                <span className="px-2.5 py-0.5 bg-slate-100 text-slate-700 text-xs font-bold rounded border border-slate-200">
+                <span className="px-2.5 py-0.5 bg-neutral-100 text-neutral-700 text-xs font-bold rounded-none border border-neutral-200">
                   Chassis / Model: {vehicle.modelCode}
                 </span>
-                <span className="px-2.5 py-0.5 bg-emerald-50 text-emerald-800 text-xs font-bold rounded border border-emerald-200">
+                <span className="px-2.5 py-0.5 bg-emerald-50 text-emerald-800 text-xs font-bold rounded-none border border-emerald-200">
                   Grade {vehicle.conditionGrade}
                 </span>
-                <span className="px-2.5 py-0.5 bg-slate-100 text-slate-600 text-xs font-medium rounded">
+                <span className="px-2.5 py-0.5 bg-neutral-100 text-neutral-600 text-xs font-medium rounded-none">
                   {vehicle.sourceType}
                 </span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black text-[#111111] tracking-tight">
                 {vehicle.year} {vehicle.make} {vehicle.model}
               </h1>
-              <p className="text-sm font-semibold text-slate-500 mt-0.5">
+              <p className="text-sm font-semibold text-neutral-500 mt-0.5">
                 {vehicle.grade} · First Reg: {vehicle.firstRegistrationDate}
               </p>
             </div>
 
             {/* Price Plaque */}
-            <div className="text-left md:text-right shrink-0 bg-slate-50 md:bg-transparent p-3 md:p-0 rounded border md:border-0 border-slate-200">
-              <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <div className="text-left md:text-right shrink-0 bg-neutral-50 md:bg-transparent p-3 md:p-0 rounded-none border md:border-0 border-neutral-200">
+              <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
                 {priceInfo.priceBasis === 'CIF'
                   ? `CIF Price (${priceInfo.portLabel})`
                   : priceInfo.priceBasis === 'FOB'
                   ? `FOB Price (${priceInfo.portLabel})`
                   : 'Quotation Basis'}
               </div>
-              <div className="text-2xl sm:text-3xl font-black text-slate-900">
+              <div className="text-2xl sm:text-3xl font-black text-[#111111]">
                 {isSold ? (
-                  <span className="text-slate-500">SOLD</span>
+                  <span className="text-neutral-500">SOLD</span>
                 ) : priceInfo.priceBasis === 'QUOTE_ONLY' ? (
-                  <span className="text-xl text-slate-700">Quote on Request</span>
+                  <span className="text-xl text-neutral-700">Quote on Request</span>
                 ) : (
                   formattedPrice.formatted
                 )}
               </div>
               {formattedPrice.isConverted && !isSold && priceInfo.priceBasis !== 'QUOTE_ONLY' && (
-                <div className="text-xs text-slate-500 font-medium">
+                <div className="text-xs text-neutral-500 font-medium">
                   (~ USD ${priceInfo.amount.toLocaleString()} base)
                 </div>
               )}
@@ -241,9 +241,9 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
           {/* Left Column: Gallery & Technical Specs (8 Cols) */}
           <div className="lg:col-span-8 space-y-8">
             {/* Gallery */}
-            <div className="bg-white border border-slate-200 rounded-lg p-3 sm:p-4 shadow-sm">
+            <div className="bg-white border border-neutral-200 rounded-none p-3 sm:p-4 shadow-sm">
               {/* Primary Large Image */}
-              <div className="relative aspect-[16/10] bg-slate-100 rounded overflow-hidden mb-3">
+              <div className="relative aspect-[16/10] bg-neutral-100 rounded-none overflow-hidden mb-3">
                 <Image
                   src={vehicle.images[selectedImage] || '/images/vehicle.jpg'}
                   alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
@@ -261,9 +261,9 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`relative w-20 h-14 rounded overflow-hidden shrink-0 border-2 transition-all ${
+                      className={`relative w-20 h-14 rounded-none overflow-hidden shrink-0 border-2 transition-all ${
                         selectedImage === idx
-                          ? 'border-orange-600 scale-95 ring-1 ring-orange-500'
+                          ? 'border-[#ff6a00] scale-95 ring-1 ring-[#ff6a00]'
                           : 'border-transparent opacity-70 hover:opacity-100'
                       }`}
                     >
@@ -280,27 +280,27 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
             </div>
 
             {/* 3-Question Evaluation Plaque */}
-            <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-                <h3 className="font-extrabold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-orange-600" />
+            <div className="bg-white border border-neutral-200 rounded-none p-5 shadow-sm">
+              <div className="flex items-center justify-between pb-3 border-b border-neutral-100 mb-4">
+                <h3 className="font-extrabold text-sm text-[#111111] uppercase tracking-wider flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#ff6a00]" />
                   Three-Question Verification Matrix
                 </h3>
-                <span className="text-[11px] text-slate-400">
+                <span className="text-[11px] text-neutral-400">
                   Last checked: {new Date(vehicle.lastAvailabilityCheck).toLocaleDateString()}
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Question 1: Physical Availability */}
-                <div className="p-3 bg-slate-50 border border-slate-200/80 rounded">
-                  <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">
+                <div className="p-3 bg-neutral-50 border border-neutral-200/80 rounded-none">
+                  <div className="text-[10px] font-bold uppercase text-neutral-400 mb-1">
                     1. Physical Availability
                   </div>
-                  <div className="text-sm font-black text-slate-900 flex items-center gap-1.5">
+                  <div className="text-sm font-black text-[#111111] flex items-center gap-1.5">
                     {isSold ? (
                       <>
-                        <span className="w-2 h-2 rounded-full bg-slate-500" />
+                        <span className="w-2 h-2 rounded-full bg-neutral-500" />
                         Sold (Archived)
                       </>
                     ) : isReserved ? (
@@ -315,17 +315,17 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                       </>
                     )}
                   </div>
-                  <div className="text-[11px] text-slate-500 mt-1">
+                  <div className="text-[11px] text-neutral-500 mt-1">
                     Inspected physical unit in Japan export yard.
                   </div>
                 </div>
 
                 {/* Question 2: Destination Review */}
-                <div className="p-3 bg-slate-50 border border-slate-200/80 rounded">
-                  <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">
+                <div className="p-3 bg-neutral-50 border border-neutral-200/80 rounded-none">
+                  <div className="text-[10px] font-bold uppercase text-neutral-400 mb-1">
                     2. Destination Review ({activeDest ? activeDest.toUpperCase() : 'Global'})
                   </div>
-                  <div className="text-sm font-black text-slate-900 flex items-center gap-1.5">
+                  <div className="text-sm font-black text-[#111111] flex items-center gap-1.5">
                     {reviewState === 'reviewed_for_quotation' ? (
                       <>
                         <span className="w-2 h-2 rounded-full bg-emerald-500" />
@@ -343,7 +343,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                       </>
                     )}
                   </div>
-                  <div className="text-[11px] text-slate-500 mt-1">
+                  <div className="text-[11px] text-neutral-500 mt-1">
                     {activeDest
                       ? `Conformity reviewed for ${activeDest.toUpperCase()} import policy.`
                       : 'Select a destination country to assess route eligibility.'}
@@ -351,14 +351,14 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                 </div>
 
                 {/* Question 3: Current Route Pricing */}
-                <div className="p-3 bg-slate-50 border border-slate-200/80 rounded">
-                  <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">
+                <div className="p-3 bg-neutral-50 border border-neutral-200/80 rounded-none">
+                  <div className="text-[10px] font-bold uppercase text-neutral-400 mb-1">
                     3. Route Pricing Status
                   </div>
-                  <div className="text-sm font-black text-slate-900 flex items-center gap-1.5">
+                  <div className="text-sm font-black text-[#111111] flex items-center gap-1.5">
                     {isSold ? (
                       <>
-                        <span className="w-2 h-2 rounded-full bg-slate-400" />
+                        <span className="w-2 h-2 rounded-full bg-neutral-400" />
                         Unavailable (Sold)
                       </>
                     ) : priceInfo.priceBasis === 'CIF' ? (
@@ -378,7 +378,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                       </>
                     )}
                   </div>
-                  <div className="text-[11px] text-slate-500 mt-1">
+                  <div className="text-[11px] text-neutral-500 mt-1">
                     {priceInfo.priceBasis === 'CIF'
                       ? 'Ocean freight and marine insurance calculated.'
                       : 'FOB Japan yard amount listed. Ocean freight quoted upon request.'}
@@ -388,7 +388,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
 
               {/* Reviewer Note when Destination is Active */}
               {reviewDetails && reviewDetails.regulatoryNotes && (
-                <div className="mt-4 p-3 bg-blue-50/70 border border-blue-200/80 rounded text-xs text-blue-900">
+                <div className="mt-4 p-3 bg-neutral-50 border border-neutral-200 rounded-none text-xs text-[#111111]">
                   <strong>Specialist Review Note ({reviewDetails.reviewer}):</strong>{' '}
                   {reviewDetails.regulatoryNotes}
                 </div>
@@ -396,89 +396,89 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
             </div>
 
             {/* Comprehensive Technical Specifications Table */}
-            <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
-              <h3 className="font-extrabold text-sm text-slate-900 uppercase tracking-wider mb-4">
+            <div className="bg-white border border-neutral-200 rounded-none p-5 shadow-sm">
+              <h3 className="font-extrabold text-sm text-[#111111] uppercase tracking-wider mb-4">
                 Detailed Vehicle Specifications
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-xs">
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Stock Number:</span>
-                  <span className="font-mono font-bold text-slate-900">{vehicle.stockId}</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Stock Number:</span>
+                  <span className="font-mono font-bold text-[#111111]">{vehicle.stockId}</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Chassis / Model Code:</span>
-                  <span className="font-bold text-slate-900">{vehicle.modelCode}</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Chassis / Model Code:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.modelCode}</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Model Year:</span>
-                  <span className="font-bold text-slate-900">{vehicle.year}</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Model Year:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.year}</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">First Registration Date:</span>
-                  <span className="font-bold text-slate-900">{vehicle.firstRegistrationDate}</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">First Registration Date:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.firstRegistrationDate}</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Mileage (Verified):</span>
-                  <span className="font-bold text-slate-900">{vehicle.mileageKm.toLocaleString()} km</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Mileage (Verified):</span>
+                  <span className="font-bold text-[#111111]">{vehicle.mileageKm.toLocaleString()} km</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Engine Displacement:</span>
-                  <span className="font-bold text-slate-900">{vehicle.engineCc.toLocaleString()} cc</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Engine Displacement:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.engineCc.toLocaleString()} cc</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Fuel Type:</span>
-                  <span className="font-bold text-slate-900">{vehicle.fuel}</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Fuel Type:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.fuel}</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Transmission:</span>
-                  <span className="font-bold text-slate-900">{vehicle.transmission}</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Transmission:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.transmission}</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Drivetrain:</span>
-                  <span className="font-bold text-slate-900">{vehicle.drivetrain}</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Drivetrain:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.drivetrain}</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Steering Side:</span>
-                  <span className="font-bold text-slate-900">{vehicle.steering} (Right-Hand Drive)</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Steering Side:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.steering} (Right-Hand Drive)</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Body Style:</span>
-                  <span className="font-bold text-slate-900">{vehicle.bodyType}</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Body Style:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.bodyType}</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Seating Capacity:</span>
-                  <span className="font-bold text-slate-900">{vehicle.seats} Seats</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Seating Capacity:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.seats} Seats</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Exterior Color:</span>
-                  <span className="font-bold text-slate-900">{vehicle.color}</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Exterior Color:</span>
+                  <span className="font-bold text-[#111111]">{vehicle.color}</span>
                 </div>
-                <div className="flex items-center justify-between py-1.5 border-b border-slate-100">
-                  <span className="text-slate-500 font-medium">Inspection Status:</span>
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-100">
+                  <span className="text-neutral-500 font-medium">Inspection Status:</span>
                   <span className="font-bold text-emerald-700">{vehicle.inspectionStatus}</span>
                 </div>
               </div>
             </div>
 
             {/* Key Features & Overview */}
-            <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
-              <h3 className="font-extrabold text-sm text-slate-900 uppercase tracking-wider mb-3">
+            <div className="bg-white border border-neutral-200 rounded-none p-5 shadow-sm">
+              <h3 className="font-extrabold text-sm text-[#111111] uppercase tracking-wider mb-3">
                 Key Features & Equipment
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-neutral-700 mb-6">
                 {vehicle.keyFeatures.map((feat, idx) => (
                   <div key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-orange-600 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#ff6a00] shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </div>
                 ))}
               </div>
 
-              <h4 className="font-bold text-xs text-slate-900 uppercase tracking-wider mb-2">
+              <h4 className="font-bold text-xs text-[#111111] uppercase tracking-wider mb-2">
                 Inspector Overview
               </h4>
-              <p className="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3.5 rounded border border-slate-200/80">
+              <p className="text-xs text-neutral-600 leading-relaxed bg-neutral-50 p-3.5 rounded-none border border-neutral-200/80">
                 {vehicle.overview}
               </p>
             </div>
@@ -487,23 +487,23 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
           {/* Right Column: Destination Checker, Pricing Inclusions, and Leads (4 Cols) */}
           <div className="lg:col-span-4 space-y-6">
             {/* Destination Selection Plaque */}
-            <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
+            <div className="bg-white border border-neutral-200 rounded-none p-5 shadow-sm">
               <div className="flex items-center gap-2 mb-3">
-                <Globe className="w-4 h-4 text-orange-600" />
-                <h3 className="font-extrabold text-xs uppercase tracking-wider text-slate-900">
+                <Globe className="w-4 h-4 text-[#ff6a00]" />
+                <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#111111]">
                   Destination Import Check
                 </h3>
               </div>
 
               <div className="space-y-3 mb-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-500 uppercase mb-1">
+                  <label className="block text-[11px] font-bold text-neutral-500 uppercase mb-1">
                     Select Your Country
                   </label>
                   <select
                     value={activeDest || ''}
                     onChange={(e) => setDestination(e.target.value || null)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-800 font-semibold focus:outline-none focus:border-orange-500"
+                    className="w-full bg-neutral-50 border border-neutral-200 rounded-none p-2 text-xs text-neutral-800 font-semibold focus:outline-none focus:border-[#ff6a00]"
                   >
                     <option value="">Global Showroom (FOB Terms)</option>
                     <option value="india">India (Direct Import Program)</option>
@@ -516,13 +516,13 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
 
                 {currentMarket && currentMarket.supportedPorts.length > 0 && (
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-500 uppercase mb-1">
+                    <label className="block text-[11px] font-bold text-neutral-500 uppercase mb-1">
                       Discharge Port
                     </label>
                     <select
                       value={selectedPortId || ''}
                       onChange={(e) => setPortId(e.target.value || null)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-800 focus:outline-none focus:border-orange-500"
+                      className="w-full bg-neutral-50 border border-neutral-200 rounded-none p-2 text-xs text-neutral-800 focus:outline-none focus:border-[#ff6a00]"
                     >
                       {currentMarket.supportedPorts.map((p) => (
                         <option key={p.id} value={p.id}>
@@ -535,16 +535,16 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
               </div>
 
               {/* Price Terms & Inclusions */}
-              <div className="border-t border-slate-100 pt-3 text-xs">
+              <div className="border-t border-neutral-100 pt-3 text-xs">
                 <div className="flex items-baseline justify-between mb-1">
-                  <span className="font-bold text-slate-700">Price Basis:</span>
-                  <span className="font-mono font-bold text-orange-600">
+                  <span className="font-bold text-neutral-700">Price Basis:</span>
+                  <span className="font-mono font-bold text-[#ff6a00]">
                     {priceInfo.priceBasis} {priceInfo.portLabel ? `(${priceInfo.portLabel})` : ''}
                   </span>
                 </div>
 
-                <div className="text-[11px] text-slate-500 space-y-1 mt-2">
-                  <div className="font-semibold text-slate-700">What is Included:</div>
+                <div className="text-[11px] text-neutral-500 space-y-1 mt-2">
+                  <div className="font-semibold text-neutral-700">What is Included:</div>
                   {currentOffer ? (
                     currentOffer.inclusions.map((inc, i) => (
                       <div key={i} className="flex items-start gap-1.5 text-emerald-700">
@@ -553,14 +553,14 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                       </div>
                     ))
                   ) : (
-                    <div className="text-slate-600">
+                    <div className="text-neutral-600">
                       • Base vehicle cost in Japan yard
                       <br />• Official export certificate & de-registration
                     </div>
                   )}
 
-                  <div className="font-semibold text-slate-700 pt-1.5">What is Excluded:</div>
-                  <div className="text-slate-500 text-[10px] leading-relaxed">
+                  <div className="font-semibold text-neutral-700 pt-1.5">What is Excluded:</div>
+                  <div className="text-neutral-500 text-[10px] leading-relaxed">
                     Destination import duty, local VAT/GST, port demurrage, customs brokerage, and domestic vehicle registration.
                   </div>
                 </div>
@@ -568,20 +568,20 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
             </div>
 
             {/* Primary Action Buttons */}
-            <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm space-y-3">
-              <h3 className="font-extrabold text-xs uppercase tracking-wider text-slate-900 mb-2">
+            <div className="bg-white border border-neutral-200 rounded-none p-5 shadow-sm space-y-3">
+              <h3 className="font-extrabold text-xs uppercase tracking-wider text-[#111111] mb-2">
                 Order & Quotation Desk
               </h3>
 
               {isSold ? (
-                <div className="p-3 bg-slate-100 text-slate-600 rounded text-xs text-center">
+                <div className="p-3 bg-neutral-100 text-neutral-600 rounded-none text-xs text-center">
                   This unit has been sold. Quotation submissions are closed.
                 </div>
               ) : (
                 <>
                   <button
                     onClick={() => setQuoteModalOpen(true)}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-3 rounded-md transition-colors shadow-sm flex items-center justify-center gap-2"
+                    className="w-full bg-[#ff6a00] hover:bg-[#e55f00] text-white font-bold text-xs py-3 rounded-none transition-colors shadow-sm flex items-center justify-center gap-2"
                   >
                     <FileText className="w-4 h-4" />
                     <span>Request Official Written Quote</span>
@@ -591,7 +591,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                     href={`https://wa.me/818012345678?text=${whatsappMessage}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-md transition-colors shadow-sm flex items-center justify-center gap-2"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-none transition-colors shadow-sm flex items-center justify-center gap-2"
                   >
                     <MessageCircle className="w-4 h-4 fill-white text-emerald-600" />
                     <span>WhatsApp Export Specialist</span>
@@ -601,14 +601,14 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
 
               {/* Sri Lanka Reference Note when active */}
               {activeDest === 'sri-lanka' && vehicle.referencePriceLKR && (
-                <div className="mt-3 p-2.5 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-600">
-                  <div className="font-bold text-slate-800">
+                <div className="mt-3 p-2.5 bg-neutral-50 border border-neutral-200 rounded-none text-[11px] text-neutral-600">
+                  <div className="font-bold text-neutral-800">
                     {vehicle.referencePriceLKR.label}:
                   </div>
                   <div className="font-bold text-emerald-700 text-xs">
                     LKR {(vehicle.referencePriceLKR.minLKR / 100000).toFixed(1)} Lakhs – {(vehicle.referencePriceLKR.maxLKR / 100000).toFixed(1)} Lakhs
                   </div>
-                  <div className="text-[10px] text-slate-400 mt-0.5">
+                  <div className="text-[10px] text-neutral-400 mt-0.5">
                     Estimated landed market valuation in Sri Lanka. Excludes individual bank LC margin.
                   </div>
                 </div>
@@ -616,20 +616,20 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
             </div>
 
             {/* Operations Contact Desk */}
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-xs text-slate-600 space-y-2">
-              <div className="font-bold text-slate-900 text-xs uppercase tracking-wider">
+            <div className="bg-neutral-50 border border-neutral-200 rounded-none p-4 text-xs text-neutral-600 space-y-2">
+              <div className="font-bold text-[#111111] text-xs uppercase tracking-wider">
                 Direct Contact Desks
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-orange-600 shrink-0" />
+                <Phone className="w-3.5 h-3.5 text-[#ff6a00] shrink-0" />
                 <span>Tokyo Export Hub: +81 3 5555 0198</span>
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-orange-600 shrink-0" />
+                <Phone className="w-3.5 h-3.5 text-[#ff6a00] shrink-0" />
                 <span>Sri Lanka Desk: +94 77 123 4567</span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="w-3.5 h-3.5 text-orange-600 shrink-0" />
+                <Mail className="w-3.5 h-3.5 text-[#ff6a00] shrink-0" />
                 <span>inquiry@makerscorp.jp</span>
               </div>
             </div>
@@ -637,17 +637,17 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
         </div>
 
         {/* Similar / Alternative Vehicles Recommendations */}
-        <div className="mt-12 pt-8 border-t border-slate-200">
+        <div className="mt-12 pt-8 border-t border-neutral-200">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-black text-slate-900 tracking-tight">
+              <h3 className="text-lg font-black text-[#111111] tracking-tight">
                 {isSold ? 'Recommended Alternative Vehicles' : 'Similar Vehicles in Showroom'}
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-neutral-500">
                 Explore matching genuine physical stock available for export loading
               </p>
             </div>
-            <a href="/vehicles" className="text-xs font-bold text-orange-600 hover:underline">
+            <a href="/vehicles" className="text-xs font-bold text-[#ff6a00] hover:underline">
               View All Stock →
             </a>
           </div>
@@ -663,32 +663,32 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
       {/* QUOTATION MODAL */}
       {quoteModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-2xl max-w-lg w-full p-6 text-slate-800 relative animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-none shadow-2xl max-w-lg w-full p-6 text-neutral-800 relative animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => {
                 setQuoteModalOpen(false);
                 setFormSubmitted(null);
                 setFormError('');
               }}
-              className="absolute right-4 top-4 text-slate-400 hover:text-slate-600"
+              className="absolute right-4 top-4 text-neutral-400 hover:text-neutral-600"
             >
               <X className="w-5 h-5" />
             </button>
 
             {formSubmitted ? (
               <div className="text-center py-6">
-                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-none flex items-center justify-center mx-auto mb-4">
                   <Check className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
+                <h3 className="text-lg font-bold text-[#111111] mb-2">
                   Quotation Request Received
                 </h3>
-                <p className="text-xs text-slate-600 mb-4">
-                  Reference Code: <strong className="font-mono text-slate-900">{formSubmitted.leadId}</strong>
+                <p className="text-xs text-neutral-600 mb-4">
+                  Reference Code: <strong className="font-mono text-[#111111]">{formSubmitted.leadId}</strong>
                   <br />
-                  Routed to queue: <strong className="text-orange-600">{formSubmitted.routedTo}</strong>
+                  Routed to queue: <strong className="text-[#ff6a00]">{formSubmitted.routedTo}</strong>
                 </p>
-                <p className="text-xs text-slate-500 mb-6 leading-relaxed">
+                <p className="text-xs text-neutral-500 mb-6 leading-relaxed">
                   Our Tokyo trade coordinator is preparing your official Proforma quotation and will contact you via your preferred channel ({formContactMethod}).
                 </p>
 
@@ -697,7 +697,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                     setQuoteModalOpen(false);
                     setFormSubmitted(null);
                   }}
-                  className="bg-slate-900 text-white text-xs font-bold px-5 py-2.5 rounded hover:bg-slate-800"
+                  className="bg-[#111111] text-white text-xs font-bold px-5 py-2.5 rounded-none hover:bg-neutral-800"
                 >
                   Close Window
                 </button>
@@ -705,25 +705,25 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
             ) : (
               <form onSubmit={handleQuoteSubmit} className="space-y-4">
                 <div>
-                  <span className="text-[10px] font-bold uppercase text-orange-600 tracking-wider">
+                  <span className="text-[10px] font-bold uppercase text-[#ff6a00] tracking-wider">
                     Official Written Quotation
                   </span>
-                  <h3 className="text-base sm:text-lg font-black text-slate-900">
+                  <h3 className="text-base sm:text-lg font-black text-[#111111]">
                     {vehicle.year} {vehicle.make} {vehicle.model}
                   </h3>
-                  <div className="text-xs text-slate-500">
-                    Stock ID: <span className="font-mono font-bold text-slate-800">{vehicle.stockId}</span>
+                  <div className="text-xs text-neutral-500">
+                    Stock ID: <span className="font-mono font-bold text-neutral-800">{vehicle.stockId}</span>
                   </div>
                 </div>
 
                 {formError && (
-                  <div className="p-3 bg-rose-50 text-rose-700 text-xs rounded border border-rose-200">
+                  <div className="p-3 bg-rose-50 text-rose-700 text-xs rounded-none border border-rose-200">
                     {formError}
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-bold text-neutral-700 mb-1">
                     Full Name *
                   </label>
                   <input
@@ -732,19 +732,19 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
                     placeholder="Enter your name or dealership name"
-                    className="w-full bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-900 focus:outline-none focus:border-orange-500 focus:bg-white"
+                    className="w-full bg-neutral-50 border border-neutral-200 rounded-none p-2 text-xs text-[#111111] focus:outline-none focus:border-[#ff6a00] focus:bg-white"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                    <label className="block text-xs font-bold text-neutral-700 mb-1">
                       Preferred Channel *
                     </label>
                     <select
                       value={formContactMethod}
                       onChange={(e) => setFormContactMethod(e.target.value as any)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-900 focus:outline-none focus:border-orange-500"
+                      className="w-full bg-neutral-50 border border-neutral-200 rounded-none p-2 text-xs text-[#111111] focus:outline-none focus:border-[#ff6a00]"
                     >
                       <option value="WhatsApp">WhatsApp</option>
                       <option value="Email">Email</option>
@@ -753,13 +753,13 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                    <label className="block text-xs font-bold text-neutral-700 mb-1">
                       Buyer Type
                     </label>
                     <select
                       value={formBuyerType}
                       onChange={(e) => setFormBuyerType(e.target.value as any)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-900 focus:outline-none focus:border-orange-500"
+                      className="w-full bg-neutral-50 border border-neutral-200 rounded-none p-2 text-xs text-[#111111] focus:outline-none focus:border-[#ff6a00]"
                     >
                       <option value="Individual">Individual Buyer</option>
                       <option value="Dealer / Importer">Dealer / Commercial Importer</option>
@@ -769,7 +769,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
 
                 {formContactMethod === 'WhatsApp' || formContactMethod === 'Phone' ? (
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                    <label className="block text-xs font-bold text-neutral-700 mb-1">
                       WhatsApp / Phone Number (With Country Code) *
                     </label>
                     <input
@@ -778,12 +778,12 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                       value={formPhone}
                       onChange={(e) => setFormPhone(e.target.value)}
                       placeholder="e.g. +91 98765 43210 or +94 77 123 4567"
-                      className="w-full bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-900 focus:outline-none focus:border-orange-500 focus:bg-white"
+                      className="w-full bg-neutral-50 border border-neutral-200 rounded-none p-2 text-xs text-[#111111] focus:outline-none focus:border-[#ff6a00] focus:bg-white"
                     />
                   </div>
                 ) : (
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                    <label className="block text-xs font-bold text-neutral-700 mb-1">
                       Email Address *
                     </label>
                     <input
@@ -792,38 +792,38 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                       value={formEmail}
                       onChange={(e) => setFormEmail(e.target.value)}
                       placeholder="e.g. buyer@example.com"
-                      className="w-full bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-900 focus:outline-none focus:border-orange-500 focus:bg-white"
+                      className="w-full bg-neutral-50 border border-neutral-200 rounded-none p-2 text-xs text-[#111111] focus:outline-none focus:border-[#ff6a00] focus:bg-white"
                     />
                   </div>
                 )}
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                    <label className="block text-xs font-bold text-neutral-700 mb-1">
                       Destination Country
                     </label>
                     <input
                       type="text"
                       disabled
                       value={activeDest ? activeDest.toUpperCase() : 'GLOBAL / TOKYO HUB'}
-                      className="w-full bg-slate-100 border border-slate-200 rounded p-2 text-xs text-slate-600 font-bold"
+                      className="w-full bg-neutral-100 border border-neutral-200 rounded-none p-2 text-xs text-neutral-600 font-bold"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                    <label className="block text-xs font-bold text-neutral-700 mb-1">
                       Port of Discharge
                     </label>
                     <input
                       type="text"
                       disabled
                       value={selectedPortId || 'Primary Discharge Port'}
-                      className="w-full bg-slate-100 border border-slate-200 rounded p-2 text-xs text-slate-600"
+                      className="w-full bg-neutral-100 border border-neutral-200 rounded-none p-2 text-xs text-neutral-600"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-xs font-bold text-neutral-700 mb-1">
                     Specific Requirements or Questions (Optional)
                   </label>
                   <textarea
@@ -831,7 +831,7 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                     value={formNotes}
                     onChange={(e) => setFormNotes(e.target.value)}
                     placeholder="e.g. Request CIF Nhava Sheva container loading, LC payment inquiry, JEVIC certificate..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-900 focus:outline-none focus:border-orange-500 focus:bg-white"
+                    className="w-full bg-neutral-50 border border-neutral-200 rounded-none p-2 text-xs text-[#111111] focus:outline-none focus:border-[#ff6a00] focus:bg-white"
                   />
                 </div>
 
@@ -839,11 +839,11 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
                   <button
                     type="submit"
                     disabled={formSubmitting}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-2.5 rounded transition-colors shadow-sm disabled:opacity-50"
+                    className="w-full bg-[#ff6a00] hover:bg-[#e55f00] text-white font-bold text-xs py-2.5 rounded-none transition-colors shadow-sm disabled:opacity-50"
                   >
                     {formSubmitting ? 'Sending Request...' : 'Submit Quotation Request'}
                   </button>
-                  <p className="text-[10px] text-slate-400 text-center mt-2">
+                  <p className="text-[10px] text-neutral-400 text-center mt-2">
                     Your contact information will only be used to provide your vehicle quotation. No marketing spam.
                   </p>
                 </div>

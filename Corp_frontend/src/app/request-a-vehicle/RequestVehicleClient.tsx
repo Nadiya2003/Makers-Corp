@@ -84,11 +84,11 @@ export function RequestVehicleClient() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-slate-900 text-white py-16 px-4">
+      <section className="bg-[#111111] text-white py-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <p className="text-orange-400 text-sm font-semibold uppercase tracking-widest mb-3">Sourcing Request</p>
+          <p className="text-[#ff8a33] text-sm font-semibold uppercase tracking-widest mb-3">Sourcing Request</p>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Request a Vehicle</h1>
-          <p className="text-slate-300 text-lg max-w-2xl">
+          <p className="text-neutral-300 text-lg max-w-2xl">
             {`Can't find what you're looking for? Tell us what you need. We source vehicles through Japan's
             auction network and dealer connections.`}
           </p>
@@ -101,15 +101,15 @@ export function RequestVehicleClient() {
           {/* Form column */}
           <div className="lg:col-span-2">
             {/* Mode toggle */}
-            <div className="flex rounded-lg border border-slate-200 overflow-hidden mb-8 w-full">
+            <div className="flex rounded-none border border-neutral-200 overflow-hidden mb-8 w-full">
               {(['specific', 'general'] as Mode[]).map((m) => (
                 <button
                   key={m}
                   onClick={() => { setMode(m); setStatus('idle'); }}
                   className={`flex-1 py-2.5 text-sm font-semibold transition ${
                     mode === m
-                      ? 'bg-orange-600 text-white'
-                      : 'bg-white text-slate-600 hover:bg-slate-50'
+                      ? 'bg-[#ff6a00] text-white'
+                      : 'bg-white text-neutral-600 hover:bg-neutral-50'
                   }`}
                 >
                   {m === 'specific' ? 'Specific Model Request' : 'General Sourcing Inquiry'}
@@ -118,14 +118,14 @@ export function RequestVehicleClient() {
             </div>
 
             {status === 'success' ? (
-              <div className="bg-green-50 border border-green-200 rounded-xl p-10 text-center">
+              <div className="bg-green-50 border border-green-200 rounded-none p-10 text-center">
                 <CheckCircle2 className="w-10 h-10 text-green-600 mx-auto mb-3" />
-                <h3 className="font-semibold text-slate-900 text-lg mb-1">Request Received</h3>
-                <p className="text-slate-600 text-sm mb-3">
-                  Reference: <strong className="font-mono text-orange-600">{refId}</strong>
+                <h3 className="font-semibold text-[#111111] text-lg mb-1">Request Received</h3>
+                <p className="text-neutral-600 text-sm mb-3">
+                  Reference: <strong className="font-mono text-[#ff6a00]">{refId}</strong>
                 </p>
-                <p className="text-slate-500 text-sm mb-6">We will respond within one business day with availability and preliminary pricing.</p>
-                <Link href="/vehicles" className="inline-flex items-center gap-2 text-orange-600 font-medium text-sm hover:underline">
+                <p className="text-neutral-500 text-sm mb-6">We will respond within one business day with availability and preliminary pricing.</p>
+                <Link href="/vehicles" className="inline-flex items-center gap-2 text-[#ff6a00] font-medium text-sm hover:underline">
                   Continue browsing stock <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -181,7 +181,7 @@ export function RequestVehicleClient() {
                 <Field label="Specific Requirements / Notes">
                   <textarea name="notes" value={specific.notes} onChange={handleSpecificChange} rows={4} placeholder="Grade preference, mileage limit, colour, right-hand drive requirement, etc." className="resize-none" />
                 </Field>
-                {status === 'error' && <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg p-3">{errorMsg}</p>}
+                {status === 'error' && <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-none p-3">{errorMsg}</p>}
                 <SubmitBtn label="Submit Request" sending={status === 'sending'} />
               </form>
             ) : (
@@ -207,15 +207,15 @@ export function RequestVehicleClient() {
                   </select>
                 </Field>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Vehicle Categories of Interest</label>
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">Vehicle Categories of Interest</label>
                   <div className="flex flex-wrap gap-2">
                     {categoryOptions.map((cat) => (
                       <button
                         key={cat} type="button" onClick={() => toggleCategory(cat)}
-                        className={`px-3 py-1.5 text-sm rounded-full border transition ${
+                        className={`px-3 py-1.5 text-sm rounded-none border transition ${
                           general.categories.includes(cat)
-                            ? 'bg-orange-600 border-orange-600 text-white'
-                            : 'bg-white border-slate-300 text-slate-700 hover:border-orange-400'
+                            ? 'bg-[#ff6a00] border-[#ff6a00] text-white'
+                            : 'bg-white border-neutral-300 text-neutral-700 hover:border-[#ff8a33]'
                         }`}
                       >
                         {cat}
@@ -226,7 +226,7 @@ export function RequestVehicleClient() {
                 <Field label="Message / Additional Details">
                   <textarea name="message" value={general.message} onChange={handleGeneralChange} rows={4} placeholder="Tell us more about what you're looking for..." className="resize-none" />
                 </Field>
-                {status === 'error' && <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg p-3">{errorMsg}</p>}
+                {status === 'error' && <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-none p-3">{errorMsg}</p>}
                 <SubmitBtn label="Submit Inquiry" sending={status === 'sending'} />
               </form>
             )}
@@ -234,30 +234,30 @@ export function RequestVehicleClient() {
 
           {/* Sidebar */}
           <aside className="space-y-6">
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
-              <h3 className="font-semibold text-slate-900 mb-4">How sourcing works</h3>
+            <div className="bg-neutral-50 border border-neutral-200 rounded-none p-6">
+              <h3 className="font-semibold text-[#111111] mb-4">How sourcing works</h3>
               <ul className="space-y-4">
                 {[
-                  { icon: <Search className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />, text: 'We search auction records and dealer stock matching your specification — make, model, year, grade and condition.' },
-                  { icon: <FileText className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />, text: 'We provide a preliminary price range and availability estimate. No commitment required at this stage.' },
-                  { icon: <Package className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />, text: 'You receive a formal proforma invoice before committing to purchase. Inspection and shipping are arranged after deposit confirmation.' },
+                  { icon: <Search className="w-5 h-5 text-[#ff6a00] flex-shrink-0 mt-0.5" />, text: 'We search auction records and dealer stock matching your specification — make, model, year, grade and condition.' },
+                  { icon: <FileText className="w-5 h-5 text-[#ff6a00] flex-shrink-0 mt-0.5" />, text: 'We provide a preliminary price range and availability estimate. No commitment required at this stage.' },
+                  { icon: <Package className="w-5 h-5 text-[#ff6a00] flex-shrink-0 mt-0.5" />, text: 'You receive a formal proforma invoice before committing to purchase. Inspection and shipping are arranged after deposit confirmation.' },
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-slate-600">
+                  <li key={i} className="flex items-start gap-3 text-sm text-neutral-600">
                     {item.icon} {item.text}
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="bg-orange-50 border border-orange-200 rounded-xl p-5">
-              <p className="text-sm text-orange-900 font-medium mb-1">Already see a vehicle you like?</p>
-              <p className="text-xs text-orange-700 mb-3">Use the quote button on any vehicle detail page to request a destination-specific proforma.</p>
-              <Link href="/vehicles" className="inline-flex items-center gap-1 text-orange-700 text-sm font-semibold hover:underline">
+            <div className="bg-[#fff4eb] border border-[#ffd1ad] rounded-none p-5">
+              <p className="text-sm text-[#b34a00] font-medium mb-1">Already see a vehicle you like?</p>
+              <p className="text-xs text-[#e55f00] mb-3">Use the quote button on any vehicle detail page to request a destination-specific proforma.</p>
+              <Link href="/vehicles" className="inline-flex items-center gap-1 text-[#e55f00] text-sm font-semibold hover:underline">
                 Browse stock <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <div className="text-xs text-slate-500 leading-relaxed">
+            <div className="text-xs text-neutral-500 leading-relaxed">
               We respond within one business day. By submitting this form you agree to our{' '}
-              <Link href="/privacy" className="underline hover:text-orange-600">privacy policy</Link>.
+              <Link href="/privacy" className="underline hover:text-[#ff6a00]">privacy policy</Link>.
             </div>
           </aside>
         </div>
@@ -270,17 +270,17 @@ export function RequestVehicleClient() {
 function Field({ label, required, hint, children }: {
   label: string; required?: boolean; hint?: string; children: React.ReactElement;
 }) {
-  const inputClass = "w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white";
+  const inputClass = "w-full border border-neutral-300 rounded-none px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff6a00] focus:border-transparent bg-white";
   const child = React.cloneElement(children, {
     className: (children.props.className || '') + ' ' + inputClass,
   });
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+      <label className="block text-sm font-medium text-neutral-700 mb-1">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       {child}
-      {hint && <p className="text-xs text-slate-500 mt-1">{hint}</p>}
+      {hint && <p className="text-xs text-neutral-500 mt-1">{hint}</p>}
     </div>
   );
 }
@@ -289,7 +289,7 @@ function SubmitBtn({ label, sending }: { label: string; sending: boolean }) {
   return (
     <button
       type="submit" disabled={sending}
-      className="w-full bg-orange-600 hover:bg-orange-700 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition"
+      className="w-full bg-[#ff6a00] hover:bg-[#e55f00] disabled:opacity-60 text-white font-semibold py-3 rounded-none transition"
     >
       {sending ? 'Sending…' : label}
     </button>

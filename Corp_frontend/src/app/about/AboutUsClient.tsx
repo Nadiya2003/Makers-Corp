@@ -407,11 +407,11 @@ export function AboutUsClient() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-none bg-white/10 backdrop-blur-md border border-white/20 border-l-2 border-l-orange-500 mb-6">
-                <span className="w-2 h-2 rounded-none bg-orange-500 animate-pulse" />
-                <span className="text-orange-400 font-black tracking-[0.25em] uppercase text-xs">Leadership</span>
+                <span className="w-2 h-2 rounded-none bg-[#ff6a00] animate-pulse" />
+                <span className="text-[#ff8a33] font-black tracking-[0.25em] uppercase text-xs">Leadership</span>
               </div>
               <h2 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-white mt-2 mb-4">
-                Board of <span className="text-orange-500">Directors</span>
+                Board of <span className="text-[#ff6a00]">Directors</span>
               </h2>
               <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-orange-300 rounded-none mx-auto mb-4" />
               <p className="text-gray-300 max-w-2xl mx-auto text-lg">Meet the visionary leaders behind Makers Ceylon.</p>

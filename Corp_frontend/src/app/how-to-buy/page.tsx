@@ -85,11 +85,11 @@ export default function HowToBuyPage() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-slate-900 text-white py-20 px-4">
+      <section className="bg-[#111111] text-white py-20 px-4">
         <div className="max-w-4xl mx-auto">
-          <p className="text-orange-400 text-sm font-semibold uppercase tracking-widest mb-3">Export Process</p>
+          <p className="text-[#ff8a33] text-sm font-semibold uppercase tracking-widest mb-3">Export Process</p>
           <h1 className="text-4xl md:text-5xl font-bold mb-5 leading-tight">How Vehicle Export Works</h1>
-          <p className="text-slate-300 text-lg max-w-2xl">
+          <p className="text-neutral-300 text-lg max-w-2xl">
             From Japan to your destination: a clear, documented process. No hidden steps, no surprises on duties.
           </p>
         </div>
@@ -100,13 +100,13 @@ export default function HowToBuyPage() {
         <div className="max-w-4xl mx-auto space-y-10">
           {steps.map((step, i) => (
             <div key={step.num} className="flex gap-6 items-start">
-              <div className="flex-shrink-0 w-14 h-14 rounded-full bg-orange-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
+              <div className="flex-shrink-0 w-14 h-14 rounded-none bg-[#ff6a00] text-white flex items-center justify-center font-bold text-lg shadow-md">
                 {step.num}
               </div>
-              <div className={`flex-1 ${i < steps.length - 1 ? 'border-b border-slate-100 pb-10' : ''}`}>
-                <h2 className="text-xl font-bold text-slate-900 mb-2">{step.title}</h2>
-                <p className="text-slate-600 leading-relaxed mb-3">{step.body}</p>
-                <div className="bg-orange-50 border border-orange-200 rounded-lg px-4 py-2 text-sm text-orange-800">
+              <div className={`flex-1 ${i < steps.length - 1 ? 'border-b border-neutral-100 pb-10' : ''}`}>
+                <h2 className="text-xl font-bold text-[#111111] mb-2">{step.title}</h2>
+                <p className="text-neutral-600 leading-relaxed mb-3">{step.body}</p>
+                <div className="bg-[#fff4eb] border border-[#ffd1ad] rounded-none px-4 py-2 text-sm text-[#cc5500]">
                   <strong>Note:</strong> {step.tip}
                 </div>
               </div>
@@ -116,46 +116,46 @@ export default function HowToBuyPage() {
       </section>
 
       {/* Payment + Inspection table */}
-      <section className="py-14 px-4 bg-slate-50">
+      <section className="py-14 px-4 bg-neutral-50">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-10 items-start">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-5 flex items-center gap-2">
-              <CreditCard className="w-6 h-6 text-orange-600" /> Payment
+            <h2 className="text-2xl font-bold text-[#111111] mb-5 flex items-center gap-2">
+              <CreditCard className="w-6 h-6 text-[#ff6a00]" /> Payment
             </h2>
-            <ul className="space-y-4 text-slate-700 text-sm">
+            <ul className="space-y-4 text-neutral-700 text-sm">
               <li className="flex items-start gap-2">
-                <span className="text-orange-500 font-bold mt-0.5">→</span>
+                <span className="text-[#ff6a00] font-bold mt-0.5">→</span>
                 <span><strong>Telegraphic Transfer (TT / Wire)</strong> — standard for all transactions. Bank details provided in the proforma invoice.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-orange-500 font-bold mt-0.5">→</span>
+                <span className="text-[#ff6a00] font-bold mt-0.5">→</span>
                 <span><strong>Letter of Credit (LC)</strong> — available for large or fleet orders. Confirm with the export desk at quote stage.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-orange-500 font-bold mt-0.5">→</span>
+                <span className="text-[#ff6a00] font-bold mt-0.5">→</span>
                 <span><strong>Deposit structure:</strong> typically 30% to hold the vehicle and book inspection; balance payable before shipment. Exact terms stated in proforma invoice.</span>
               </li>
             </ul>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-5 flex items-center gap-2">
-              <ShieldCheck className="w-6 h-6 text-orange-600" /> Inspection by Destination
+            <h2 className="text-2xl font-bold text-[#111111] mb-5 flex items-center gap-2">
+              <ShieldCheck className="w-6 h-6 text-[#ff6a00]" /> Inspection by Destination
             </h2>
-            <div className="rounded-xl border border-slate-200 overflow-hidden">
+            <div className="rounded-none border border-neutral-200 overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-slate-100 text-slate-700">
+                <thead className="bg-neutral-100 text-neutral-700">
                   <tr>
                     <th className="text-left px-4 py-3 font-semibold">Market</th>
                     <th className="text-left px-4 py-3 font-semibold">Agency</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 bg-white">
+                <tbody className="divide-y divide-neutral-100 bg-white">
                   {inspectionTable.map((row) => (
-                    <tr key={row.market} className="hover:bg-slate-50">
-                      <td className="px-4 py-3 font-medium text-slate-900">{row.market}</td>
+                    <tr key={row.market} className="hover:bg-neutral-50">
+                      <td className="px-4 py-3 font-medium text-[#111111]">{row.market}</td>
                       <td className="px-4 py-3">
-                        <div className="text-slate-700">{row.agency}</div>
-                        <div className="text-xs text-slate-500 mt-0.5">{row.note}</div>
+                        <div className="text-neutral-700">{row.agency}</div>
+                        <div className="text-xs text-neutral-500 mt-0.5">{row.note}</div>
                       </td>
                     </tr>
                   ))}
@@ -169,14 +169,14 @@ export default function HowToBuyPage() {
       {/* FAQ */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-2">
-            <HelpCircle className="w-6 h-6 text-orange-600" /> Frequently Asked Questions
+          <h2 className="text-2xl font-bold text-[#111111] mb-8 flex items-center gap-2">
+            <HelpCircle className="w-6 h-6 text-[#ff6a00]" /> Frequently Asked Questions
           </h2>
           <div className="space-y-6">
             {faqs.map((faq) => (
-              <div key={faq.q} className="border-b border-slate-100 pb-6">
-                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">{faq.a}</p>
+              <div key={faq.q} className="border-b border-neutral-100 pb-6">
+                <h3 className="font-semibold text-[#111111] mb-2">{faq.q}</h3>
+                <p className="text-neutral-600 text-sm leading-relaxed">{faq.a}</p>
               </div>
             ))}
           </div>
@@ -184,20 +184,20 @@ export default function HowToBuyPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-14 px-4 bg-slate-900">
+      <section className="py-14 px-4 bg-[#111111]">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl font-bold text-white mb-3">Ready to get started?</h2>
-          <p className="text-slate-400 mb-8">Browse available stock or tell us what you need.</p>
+          <p className="text-neutral-400 mb-8">Browse available stock or tell us what you need.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/vehicles"
-              className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-8 py-3 rounded-lg transition flex items-center justify-center gap-2"
+              className="bg-[#ff6a00] hover:bg-[#e55f00] text-white font-semibold px-8 py-3 rounded-none transition flex items-center justify-center gap-2"
             >
               Browse Vehicles <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/request-a-vehicle"
-              className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-3 rounded-lg transition flex items-center justify-center gap-2"
+              className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-3 rounded-none transition flex items-center justify-center gap-2"
             >
               Request a Vehicle
             </Link>

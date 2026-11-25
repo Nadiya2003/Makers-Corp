@@ -88,22 +88,22 @@ export function ContactForm() {
 
   if (state === 'success') {
     return (
-      <div className="rounded-2xl border border-green-200 bg-green-50 px-6 py-8 text-center">
+      <div className="rounded-none border border-green-200 bg-green-50 px-6 py-8 text-center">
         <div className="text-4xl mb-3">✅</div>
-        <h3 className="text-lg font-semibold text-slate-900 mb-1">
+        <h3 className="text-lg font-semibold text-[#111111] mb-1">
           Inquiry Received
         </h3>
-        <p className="text-sm text-slate-600 mb-4">
+        <p className="text-sm text-neutral-600 mb-4">
           We aim to respond within one business day. For urgent inquiries,
           WhatsApp is fastest.
         </p>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-neutral-500">
           Reference number:{' '}
-          <span className="font-mono font-semibold text-slate-700">{refNum}</span>
+          <span className="font-mono font-semibold text-neutral-700">{refNum}</span>
         </p>
         <button
           onClick={() => setState('idle')}
-          className="mt-5 text-sm text-orange-600 hover:underline"
+          className="mt-5 text-sm text-[#ff6a00] hover:underline"
         >
           Send another inquiry
         </button>
@@ -112,8 +112,8 @@ export function ContactForm() {
   }
 
   const inputClass =
-    'w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent';
-  const labelClass = 'block text-sm font-medium text-slate-700 mb-1';
+    'w-full rounded-none border border-neutral-300 px-3 py-2 text-sm text-[#111111] placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#ff6a00] focus:border-transparent';
+  const labelClass = 'block text-sm font-medium text-neutral-700 mb-1';
 
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
@@ -163,7 +163,7 @@ export function ContactForm() {
       <div>
         <label htmlFor={`${formId}-phone`} className={labelClass}>
           Phone / WhatsApp{' '}
-          <span className="text-slate-400 font-normal">(optional)</span>
+          <span className="text-neutral-400 font-normal">(optional)</span>
         </label>
         <input
           id={`${formId}-phone`}
@@ -228,7 +228,7 @@ export function ContactForm() {
       </div>
 
       {state === 'error' && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-none px-4 py-3">
           {errorMsg}
         </p>
       )}
@@ -236,12 +236,12 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={state === 'submitting'}
-        className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-orange-400 text-white font-semibold py-3 rounded-xl text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+        className="w-full bg-[#ff6a00] hover:bg-[#e55f00] disabled:bg-orange-400 text-white font-semibold py-3 rounded-none text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#ff6a00] focus:ring-offset-2"
       >
         {state === 'submitting' ? 'Sending…' : 'Send Inquiry'}
       </button>
 
-      <p className="text-xs text-slate-500 text-center">
+      <p className="text-xs text-neutral-500 text-center">
         We aim to respond within one business day. For urgent inquiries,
         WhatsApp is fastest.
       </p>

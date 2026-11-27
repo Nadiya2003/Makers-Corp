@@ -27,7 +27,7 @@ const campaigns: CampaignCard[] = [
     subtext: 'Direct homologation checks & JNPT / Chennai shipping for luxury SUVs & sports stock.',
     actionText: 'Explore India',
     href: '/destinations/asia/india',
-    image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
+    image: '/images/India campagincard.png',
     icon: Globe,
   },
   {
@@ -39,7 +39,7 @@ const campaigns: CampaignCard[] = [
     actionText: 'Visit MAKERS CEYLON',
     href: 'https://makersceylon.com/',
     isExternal: true,
-    image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
+    image: '/images/Sri Lanka campagincard.png',
     icon: ShieldCheck,
   },
   {
@@ -50,7 +50,7 @@ const campaigns: CampaignCard[] = [
     subtext: 'Clear breakdown of JEVIC audits, FOB/CIF terms, ocean freight tracking, and delivery.',
     actionText: 'Read the Guide',
     href: '/how-to-buy',
-    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80',
+    image: '/images/Step-by-Step Export Guide.png',
     icon: Ship,
   },
   {
@@ -61,7 +61,7 @@ const campaigns: CampaignCard[] = [
     subtext: 'Can’t find your specific model or trim? We source directly from Japanese dealer & auction networks.',
     actionText: 'Request a Vehicle',
     href: '/request-a-vehicle',
-    image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+    image: '/images/Custom Japanese Car Sourcing.png',
     icon: Search,
   },
 ];

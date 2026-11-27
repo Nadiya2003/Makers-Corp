@@ -2,214 +2,168 @@ import { VehicleOffer, PriceBasis } from './types';
 import { vehicles } from './vehicles';
 
 export const vehicleOffers: VehicleOffer[] = [
+  // --- SRI LANKA OFFERS (CIF Colombo / Hambantota) ---
+  {
+    stockId: 'MCJ-2026-8901', // Toyota Raize Z Package 2026
+    marketSlug: 'sri-lanka',
+    portId: 'lk-hambantota',
+    priceBasis: 'QUOTE_ONLY',
+    amount: 39000 - 42000,
+    currency: 'USD',
+    validUntil: '2027-11-20',
+    inclusions: [
+      'Vehicle purchase price in Japan yard',
+      'Japanese export certificate & de-registration',
+      'JEVIC roadworthiness pre-shipment inspection'
+    ],
+    exclusions: [
+      'Ocean freight & transit insurance (quoted upon LC terms)',
+      'Sri Lanka Customs import duty, excise tax & VAT (settled at Colombo Port)',
+      'Port clearance and local landing delivery'
+    ]
+  },
+  {
+    stockId: 'MCJ-2026-8902', // Honda N-BOX Custom 2026
+    marketSlug: 'sri-lanka',
+    portId: 'lk-colombo',
+    priceBasis: 'QUOTE_ONLY',
+    amount: 0,
+    currency: 'USD',
+    validUntil: '2027-11-20',
+    inclusions: [
+      'Vehicle purchase in Japan',
+      'Japanese export de-registration',
+      'JEVIC inspection certificate'
+    ],
+    exclusions: [
+      'Ocean freight to Colombo',
+      'Sri Lanka customs clearing & local registration'
+    ]
+  },
+  {
+    stockId: 'MCJ-2026-8903', // Suzuki Wagon R Hybrid
+    marketSlug: 'sri-lanka',
+    portId: 'lk-colombo',
+    priceBasis: 'QUOTE_ONLY',
+    amount: 0,
+    currency: 'USD',
+    validUntil: '2027-11-20',
+    inclusions: [
+      'Vehicle purchase in Japan',
+      'Japanese export de-registration',
+      'JEVIC inspection'
+    ],
+    exclusions: [
+      'Ocean freight to Colombo',
+      'Sri Lanka customs clearing'
+    ]
+  },
+  {
+    stockId: 'MCJ-2026-8904', // Toyota Raize Hybrid Z
+    marketSlug: 'sri-lanka',
+    portId: 'lk-colombo',
+    priceBasis: 'QUOTE_ONLY',
+    amount: 0,
+    currency: 'USD',
+    validUntil: '2027-11-20',
+    inclusions: [
+      'Vehicle purchase in Japan',
+      'Japanese export documentation',
+      'JEVIC inspection'
+    ],
+    exclusions: [
+      'Ocean freight & insurance',
+      'Sri Lanka customs taxes'
+    ]
+  },
+  {
+    stockId: 'MCJ-2026-8905', // Toyota Roomy 2026
+    marketSlug: 'sri-lanka',
+    portId: 'lk-colombo',
+    priceBasis: 'QUOTE_ONLY',
+    amount: 0,
+    currency: 'USD',
+    validUntil: '2027-11-20',
+    inclusions: [
+      'Vehicle purchase in Japan',
+      'Export certificate',
+      'JEVIC inspection'
+    ],
+    exclusions: [
+      'Freight & local duties'
+    ]
+  },
+  {
+    stockId: 'MCJ-2026-8906', // Toyota Alphard Executive Lounge 2026
+    marketSlug: 'sri-lanka',
+    portId: 'lk-colombo',
+    priceBasis: 'QUOTE_ONLY',
+    amount: 0,
+    currency: 'USD',
+    validUntil: '2027-11-20',
+    inclusions: [
+      'Vehicle purchase in Japan',
+      'Export certificate & de-registration',
+      'JEVIC luxury pre-export inspection'
+    ],
+    exclusions: [
+      'Specialized container ocean freight',
+      'Sri Lanka import tariffs and luxury cess'
+    ]
+  },
+  {
+    stockId: 'MCJ-2026-8907', // Mitsubishi Delica D:2 Hybrid 2024
+    marketSlug: 'sri-lanka',
+    portId: 'lk-colombo',
+    priceBasis: 'QUOTE_ONLY',
+    amount: 0,
+    currency: 'USD',
+    validUntil: '2027-11-20',
+    inclusions: [
+      'Vehicle purchase in Japan',
+      'Shaken inspection renewal record',
+      'Export certificate'
+    ],
+    exclusions: [
+      'Freight to Colombo',
+      'Sri Lanka taxes'
+    ]
+  },
+  {
+    stockId: 'MCJ-2026-8908', // Daihatsu Move G Two-Tone 2025
+    marketSlug: 'sri-lanka',
+    portId: 'lk-colombo',
+    priceBasis: 'QUOTE_ONLY',
+    amount: 0,
+    currency: 'USD',
+    validUntil: '2027-11-20',
+    inclusions: [
+      'Vehicle purchase in Japan',
+      'Japanese export certificate',
+      'JEVIC inspection'
+    ],
+    exclusions: [
+      'Freight & Sri Lanka customs duties'
+    ]
+  },
+
   // --- INDIA OFFERS (CIF Nhava Sheva / Chennai) ---
   {
-    stockId: 'MCJ-2024-8801', // GT-R NISMO
+    stockId: 'MCJ-2026-8906', // Alphard Executive Lounge
     marketSlug: 'india',
     portId: 'in-nhava-sheva',
-    priceBasis: 'QUOTE_ONLY', // High-value unit requiring custom containerization & insurance quote
-    amount: 198000,
+    priceBasis: 'QUOTE_ONLY',
+    amount: 0,
     currency: 'USD',
-    validUntil: '2026-12-10',
+    validUntil: '2027-11-20',
     inclusions: [
       'Vehicle purchase price in Japan',
       'Japanese export certificate & de-registration'
     ],
     exclusions: [
-      'Ocean freight & specialized containerization (quoted upon destination port confirmation)',
-      'Indian Customs import duties, IGST (28%), and compensation cess (22%)',
-      'Port clearance (Customs House Agent charges) at Nhava Sheva',
+      'Ocean freight to Nhava Sheva',
+      'Indian Customs duties (Basic Duty + IGST 28% + Cess)',
       'Local RTO road tax and registration'
-    ]
-  },
-  {
-    stockId: 'MCJ-2024-8802', // LX 600
-    marketSlug: 'india',
-    portId: 'in-nhava-sheva',
-    priceBasis: 'CIF',
-    amount: 117200, // FOB 115,000 + freight & insurance 2,200
-    currency: 'USD',
-    validUntil: '2026-12-08',
-    inclusions: [
-      'Vehicle FOB purchase in Japan',
-      'Ocean freight to Nhava Sheva (JNPT) / Mumbai Port',
-      'Marine transit insurance policy (110% CIF value cover)',
-      'Export certificate and de-registration documentation'
-    ],
-    exclusions: [
-      'Indian Customs import duty (tariff line 870324)',
-      'Integrated Goods and Services Tax (IGST) & cess',
-      'Terminal Handling Charges (THC) and CHA fees at Mumbai',
-      'Local state road tax and RTO vehicle registration'
-    ]
-  },
-  {
-    stockId: 'MCJ-2024-8805', // Land Cruiser 300 ZX
-    marketSlug: 'india',
-    portId: 'in-nhava-sheva',
-    priceBasis: 'CIF',
-    amount: 91100, // FOB 89,000 + 2,100
-    currency: 'USD',
-    validUntil: '2026-12-09',
-    inclusions: [
-      'Vehicle FOB price in Japan',
-      'Ocean freight to Nhava Sheva (JNPT)',
-      'Marine insurance cover to Indian port',
-      'JAAI / JEVIC inspection certification'
-    ],
-    exclusions: [
-      'Indian Customs tariff settlement and GST cess',
-      'Port storage or demurrage charges if incurred',
-      'Local registration and inland transit'
-    ]
-  },
-  {
-    stockId: 'MCJ-2024-8814', // Mercedes G63 AMG
-    marketSlug: 'india',
-    portId: 'in-nhava-sheva',
-    priceBasis: 'CIF',
-    amount: 184500, // FOB 182,000 + 2,500
-    currency: 'USD',
-    validUntil: '2026-12-11',
-    inclusions: [
-      'Vehicle purchase price in Japan',
-      'Direct container ocean freight to Nhava Sheva',
-      'Full marine insurance',
-      'Export verification and de-registration documents'
-    ],
-    exclusions: [
-      'Indian customs import duties and IGST',
-      'Port clearance fees at Nhava Sheva',
-      'Local state registration'
-    ]
-  },
-
-  // --- SRI LANKA OFFERS (CIF Colombo) ---
-  {
-    stockId: 'MCJ-2024-8804', // Hiace
-    marketSlug: 'sri-lanka',
-    portId: 'lk-colombo',
-    priceBasis: 'CIF',
-    amount: 28100, // FOB 26,500 + 1,600
-    currency: 'USD',
-    validUntil: '2026-12-10',
-    inclusions: [
-      'Vehicle purchase price in Japan',
-      'Direct Ro-Ro ocean freight to Colombo Sea Port',
-      'Marine insurance policy to Colombo',
-      'JEVIC roadworthiness & genuine mileage certificate'
-    ],
-    exclusions: [
-      'Sri Lanka Customs import duty and PAL/CESS',
-      'Sri Lanka Ports Authority (SLPA) port clearance charges',
-      'Local Department of Motor Traffic (DMT) registration'
-    ]
-  },
-  {
-    stockId: 'MCJ-2024-8806', // Prado TX L
-    marketSlug: 'sri-lanka',
-    portId: 'lk-colombo',
-    priceBasis: 'CIF',
-    amount: 39600, // FOB 37,800 + 1,800
-    currency: 'USD',
-    validUntil: '2026-12-10',
-    inclusions: [
-      'Vehicle FOB price in Japan',
-      'Ocean freight to Colombo Port',
-      'Marine insurance cover',
-      'JEVIC inspection certificate'
-    ],
-    exclusions: [
-      'Sri Lanka import duties and luxury excise tax',
-      'Port clearance and local delivery charges'
-    ]
-  },
-  {
-    stockId: 'MCJ-2024-8807', // Vezel
-    marketSlug: 'sri-lanka',
-    portId: 'lk-colombo',
-    priceBasis: 'CIF',
-    amount: 19450, // FOB 17,900 + 1,550
-    currency: 'USD',
-    validUntil: '2026-12-08',
-    inclusions: [
-      'Vehicle FOB price in Japan',
-      'Ro-Ro shipping to Colombo Port',
-      'Marine transit insurance',
-      'JEVIC pre-export inspection certificate'
-    ],
-    exclusions: [
-      'Customs import duty, VAT, and port handling in Colombo'
-    ]
-  },
-  {
-    stockId: 'MCJ-2024-8808', // Swift RS
-    marketSlug: 'sri-lanka',
-    portId: 'lk-colombo',
-    priceBasis: 'CIF',
-    amount: 10650, // FOB 9,200 + 1,450
-    currency: 'USD',
-    validUntil: '2026-12-08',
-    inclusions: [
-      'Vehicle FOB price in Japan',
-      'Ocean freight to Colombo',
-      'Marine insurance policy',
-      'JEVIC certificate'
-    ],
-    exclusions: [
-      'Customs import duties and local port handling'
-    ]
-  },
-  {
-    stockId: 'MCJ-2024-8810', // Alphard Executive Lounge
-    marketSlug: 'sri-lanka',
-    portId: 'lk-colombo',
-    priceBasis: 'CIF',
-    amount: 60200, // FOB 58,000 + 2,200
-    currency: 'USD',
-    validUntil: '2026-12-09',
-    inclusions: [
-      'Vehicle purchase price in Japan',
-      'Ro-Ro / container freight to Colombo Sea Port',
-      'Marine insurance cover to Colombo',
-      'Makers Certified 150-Point inspection & JEVIC cert'
-    ],
-    exclusions: [
-      'Sri Lanka Customs duties and port clearance fees'
-    ]
-  },
-  {
-    stockId: 'MCJ-2024-8812', // Hilux GR Sport
-    marketSlug: 'sri-lanka',
-    portId: 'lk-colombo',
-    priceBasis: 'CIF',
-    amount: 36400, // FOB 34,500 + 1,900
-    currency: 'USD',
-    validUntil: '2026-12-09',
-    inclusions: [
-      'Vehicle FOB price in Japan',
-      'Ro-Ro shipping to Colombo Port',
-      'Marine insurance cover'
-    ],
-    exclusions: [
-      'Customs duties and port clearance'
-    ]
-  },
-  {
-    stockId: 'MCJ-2024-8813', // Jimny Sierra
-    marketSlug: 'sri-lanka',
-    portId: 'lk-colombo',
-    priceBasis: 'CIF',
-    amount: 20100, // FOB 18,400 + 1,700
-    currency: 'USD',
-    validUntil: '2026-12-09',
-    inclusions: [
-      'Vehicle FOB price in Japan',
-      'Ro-Ro freight to Colombo',
-      'Marine insurance policy'
-    ],
-    exclusions: [
-      'Customs import taxes and port clearance'
     ]
   }
 ];
@@ -245,6 +199,17 @@ export function getEffectivePrice(
     return { priceBasis: 'QUOTE_ONLY', amount: 0, currency: 'USD', isEstimate: false };
   }
 
+  // If vehicle has 0 amount, quotation basis only
+  if (!vehicle.priceFOB || vehicle.priceFOB.amount === 0) {
+    return {
+      priceBasis: 'QUOTE_ONLY',
+      amount: 0,
+      currency: 'USD',
+      isEstimate: false,
+      portLabel: vehicle.priceFOB?.port || 'FOB Yokohama'
+    };
+  }
+
   if (!marketSlug) {
     return {
       priceBasis: 'FOB',
@@ -266,7 +231,16 @@ export function getEffectivePrice(
     };
   }
 
-  // Fallback to FOB
+  if (offer && offer.priceBasis === 'QUOTE_ONLY') {
+    return {
+      priceBasis: 'QUOTE_ONLY',
+      amount: 0,
+      currency: 'USD',
+      isEstimate: false,
+      portLabel: offer.portId || vehicle.priceFOB.port
+    };
+  }
+
   return {
     priceBasis: 'FOB',
     amount: vehicle.priceFOB.amount,

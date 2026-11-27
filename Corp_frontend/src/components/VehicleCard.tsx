@@ -31,21 +31,20 @@ export function VehicleCard({ vehicle, destinationOverride, priority = false }: 
     ? activeDestination === 'india'
       ? 'India'
       : activeDestination === 'sri-lanka'
-      ? 'Sri Lanka'
-      : activeDestination === 'pakistan'
-      ? 'Pakistan'
-      : activeDestination.charAt(0).toUpperCase() + activeDestination.slice(1)
+        ? 'Sri Lanka'
+        : activeDestination === 'pakistan'
+          ? 'Pakistan'
+          : activeDestination.charAt(0).toUpperCase() + activeDestination.slice(1)
     : null;
 
   const departurePort = vehicle.priceFOB?.port || 'FOB Yokohama';
 
   return (
     <div
-      className={`group flex flex-col bg-white rounded-none border transition-all duration-200 overflow-hidden ${
-        isSold
+      className={`group flex flex-col bg-white rounded-none border transition-all duration-200 overflow-hidden ${isSold
           ? 'border-neutral-200 opacity-80'
           : 'border-neutral-300 hover:border-[#ff6a00] hover:shadow-lg'
-      }`}
+        }`}
     >
       {/* 1. Large, High-Quality Vehicle Photograph */}
       <Link href={`/vehicles/${vehicle.slug}`} className="relative block aspect-[16/10] bg-neutral-100 overflow-hidden rounded-none">
@@ -204,9 +203,8 @@ export function VehicleCard({ vehicle, destinationOverride, priority = false }: 
               </Link>
             ) : (
               <a
-                href={`https://wa.me/818012345678?text=${encodeURIComponent(
-                  `Hi Makers Corp Japan, I would like to request an official written quote for:\n${vehicle.year} ${vehicle.make} ${vehicle.model} (${vehicle.grade})\nStock ID: ${vehicle.stockId}\nDeparture Port: ${departurePort}${
-                    destinationName ? `\nDestination Country: ${destinationName}` : ''
+                href={`https://wa.me/818048931674?text=${encodeURIComponent(
+                  `Hi Makers Corp Japan, I would like to request an official written quote for:\n${vehicle.year} ${vehicle.make} ${vehicle.model} (${vehicle.grade})\nStock ID: ${vehicle.stockId}\nDeparture Port: ${departurePort}${destinationName ? `\nDestination Country: ${destinationName}` : ''
                   }`
                 )}`}
                 target="_blank"

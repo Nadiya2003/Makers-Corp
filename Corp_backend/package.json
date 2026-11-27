@@ -1,7 +1,7 @@
 {
-  "name": "ceylon-backend",
+  "name": "makers-corp-japan-backend",
   "version": "1.0.0",
-  "description": "Ceylon Imports Node.js Backend API",
+  "description": "Makers Corp Japan Node.js Backend API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

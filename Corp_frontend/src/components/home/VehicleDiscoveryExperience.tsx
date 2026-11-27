@@ -511,17 +511,15 @@ export function VehicleDiscoveryExperience() {
             <button
               type="button"
               onClick={() => handleDivisionChange('vehicles')}
-              className={`relative flex items-center justify-between p-4 sm:p-5 text-left transition-all duration-200 rounded-none ${
-                division === 'vehicles'
+              className={`relative flex items-center justify-between p-4 sm:p-5 text-left transition-all duration-200 rounded-none ${division === 'vehicles'
                   ? 'bg-neutral-900 text-white shadow-md'
                   : 'bg-white text-neutral-800 hover:bg-neutral-50 border border-neutral-200'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 sm:gap-4">
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shrink-0 rounded-none transition-colors ${
-                    division === 'vehicles' ? 'bg-[#ff6a00] text-white' : 'bg-neutral-100 text-neutral-700'
-                  }`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shrink-0 rounded-none transition-colors ${division === 'vehicles' ? 'bg-[#ff6a00] text-white' : 'bg-neutral-100 text-neutral-700'
+                    }`}
                 >
                   <Car className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
@@ -531,11 +529,10 @@ export function VehicleDiscoveryExperience() {
                       DIVISION 01
                     </span>
                     <span
-                      className={`text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider ${
-                        division === 'vehicles'
+                      className={`text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider ${division === 'vehicles'
                           ? 'bg-neutral-800 text-neutral-300'
                           : 'bg-neutral-200 text-neutral-600'
-                      }`}
+                        }`}
                     >
                       8 Categories
                     </span>
@@ -544,9 +541,8 @@ export function VehicleDiscoveryExperience() {
                     Vehicles
                   </h3>
                   <p
-                    className={`text-xs mt-0.5 line-clamp-1 font-medium ${
-                      division === 'vehicles' ? 'text-neutral-300' : 'text-neutral-500'
-                    }`}
+                    className={`text-xs mt-0.5 line-clamp-1 font-medium ${division === 'vehicles' ? 'text-neutral-300' : 'text-neutral-500'
+                      }`}
                   >
                     Passenger Cars · Luxury SUVs · Executive MPVs · Sports · Hybrids
                   </p>
@@ -565,17 +561,15 @@ export function VehicleDiscoveryExperience() {
             <button
               type="button"
               onClick={() => handleDivisionChange('commercial')}
-              className={`relative flex items-center justify-between p-4 sm:p-5 text-left transition-all duration-200 rounded-none ${
-                division === 'commercial'
+              className={`relative flex items-center justify-between p-4 sm:p-5 text-left transition-all duration-200 rounded-none ${division === 'commercial'
                   ? 'bg-neutral-900 text-white shadow-md'
                   : 'bg-white text-neutral-800 hover:bg-neutral-50 border border-neutral-200'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3 sm:gap-4">
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shrink-0 rounded-none transition-colors ${
-                    division === 'commercial' ? 'bg-[#ff6a00] text-white' : 'bg-neutral-100 text-neutral-700'
-                  }`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shrink-0 rounded-none transition-colors ${division === 'commercial' ? 'bg-[#ff6a00] text-white' : 'bg-neutral-100 text-neutral-700'
+                    }`}
                 >
                   <Truck className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
@@ -585,11 +579,10 @@ export function VehicleDiscoveryExperience() {
                       DIVISION 02
                     </span>
                     <span
-                      className={`text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider ${
-                        division === 'commercial'
+                      className={`text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider ${division === 'commercial'
                           ? 'bg-neutral-800 text-neutral-300'
                           : 'bg-neutral-200 text-neutral-600'
-                      }`}
+                        }`}
                     >
                       12 Categories
                     </span>
@@ -598,9 +591,8 @@ export function VehicleDiscoveryExperience() {
                     Commercial Vehicles
                   </h3>
                   <p
-                    className={`text-xs mt-0.5 line-clamp-1 font-medium ${
-                      division === 'commercial' ? 'text-neutral-300' : 'text-neutral-500'
-                    }`}
+                    className={`text-xs mt-0.5 line-clamp-1 font-medium ${division === 'commercial' ? 'text-neutral-300' : 'text-neutral-500'
+                      }`}
                   >
                     Isuzu, Hino, Fuso, UD Trucks · Buses · Cargo Vans · Heavy Duty
                   </p>
@@ -627,9 +619,8 @@ export function VehicleDiscoveryExperience() {
             <button
               type="button"
               onClick={() => setSubView('overview')}
-              className={`hover:text-[#ff6a00] transition-colors ${
-                subView === 'overview' ? 'text-[#ff6a00] font-bold' : 'text-neutral-300'
-              }`}
+              className={`hover:text-[#ff6a00] transition-colors ${subView === 'overview' ? 'text-[#ff6a00] font-bold' : 'text-neutral-300'
+                }`}
             >
               {division === 'vehicles' ? 'PASSENGER VEHICLES' : 'COMMERCIAL TRANSPORT'}
             </button>
@@ -758,7 +749,8 @@ export function VehicleDiscoveryExperience() {
 
               <div className="flex flex-wrap items-center gap-2">
                 {[
-                  { name: 'Toyota Land Cruiser', action: () => setSubView('land-cruiser'), isSpecial: true },
+                  //{ name: 'Toyota Land Cruiser', action: () => setSubView('land-cruiser'), isSpecial: true },
+                  { name: 'Toyota Land Cruser', href: '/vehicles?make=Toyota&model=Land+C+land-cruiser' },
                   { name: 'Toyota Prado', href: '/vehicles?make=Toyota&model=Land+Cruiser+Prado' },
                   { name: 'Toyota Alphard', href: '/vehicles?make=Toyota&model=Alphard' },
                   { name: 'Toyota Vellfire', href: '/vehicles?make=Toyota&model=Vellfire' },
@@ -772,7 +764,7 @@ export function VehicleDiscoveryExperience() {
                   { name: 'Honda Vezel e:HEV', href: '/vehicles?make=Honda&model=Vezel' },
                   { name: 'Porsche 911 Carrera', href: '/vehicles?make=Porsche' },
                 ].map((item, i) =>
-                  item.action ? (
+                  /*item.action ? (
                     <button
                       key={i}
                       type="button"
@@ -782,15 +774,15 @@ export function VehicleDiscoveryExperience() {
                       <span>{item.name}</span>
                       <CornerDownRight className="w-3 h-3" />
                     </button>
-                  ) : (
-                    <Link
-                      key={i}
-                      href={item.href || '/vehicles'}
-                      className="px-3 py-1.5 bg-white hover:bg-neutral-200 border border-neutral-300 text-neutral-800 text-xs font-bold uppercase tracking-wider rounded-none transition-colors"
-                    >
-                      {item.name}
-                    </Link>
-                  )
+                  ) : */(
+                  <Link
+                    key={i}
+                    href={item.href || '/vehicles'}
+                    className="px-3 py-1.5 bg-white hover:bg-neutral-200 border border-neutral-300 text-neutral-800 text-xs font-bold uppercase tracking-wider rounded-none transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                )
                 )}
               </div>
             </div>
@@ -974,11 +966,10 @@ export function VehicleDiscoveryExperience() {
                             GEN 0{index + 1}
                           </span>
                           <span
-                            className={`text-[10px] font-mono px-2 py-0.5 uppercase tracking-wider font-bold ${
-                              item.status === 'In Stock'
+                            className={`text-[10px] font-mono px-2 py-0.5 uppercase tracking-wider font-bold ${item.status === 'In Stock'
                                 ? 'bg-emerald-600 text-white'
                                 : 'bg-neutral-800 text-neutral-300 border border-neutral-700'
-                            }`}
+                              }`}
                           >
                             {item.status}
                           </span>

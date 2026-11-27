@@ -171,7 +171,7 @@ export function ContactPageClient() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl font-bold text-[#111111] mb-2">Send an Inquiry</h2>
-          <p className="text-neutral-600 text-sm mb-8">No account required. We'll reply to your email.</p>
+          <p className="text-neutral-600 text-sm mb-8">No account required. We&apos;ll reply to your email.</p>
 
           {status === 'success' ? (
             <div className="bg-green-50 border border-green-200 rounded-none p-8 text-center">

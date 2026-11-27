@@ -1333,7 +1333,7 @@ export default function VehiclesManagement() {
                 ) : (
                   !showAddCustomSpec && (
                     <div className="text-center py-6 text-gray-300">
-                      <p className="text-[10px] font-black uppercase tracking-widest">No custom specs yet — click "Add Spec" above</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest">No custom specs yet — click &quot;Add Spec&quot; above</p>
                     </div>
                   )
                 )}

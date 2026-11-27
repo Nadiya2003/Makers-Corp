@@ -32,9 +32,9 @@ export default function ContactSettings() {
       whatsappNumber: ''
     },
     footer: {
-      address: '123 Import Avenue, Colombo 03, Sri Lanka',
-      email: 'info@ceylonimports.lk',
-      phone: '+94 77 123 4567'
+      address: 'Tokyo Export Hub, Minato-ku, Tokyo 105-0004, Japan',
+      email: 'export@makerscorp.jp',
+      phone: '+81 3 5555 0198'
     },
     contactPage: {
       title: 'Contact Us',

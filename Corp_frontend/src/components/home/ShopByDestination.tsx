@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Globe, ArrowRight, ShieldCheck, Ship, MapPin } from 'lucide-react';
+import { Globe, ArrowRight, ShieldCheck, Ship, MapPin, ExternalLink } from 'lucide-react';
 import { useMarket } from '@/context/MarketContext';
 
 export function ShopByDestination() {
@@ -130,26 +130,25 @@ export function ShopByDestination() {
               </div>
             </div>
 
-            <div className="pt-2 flex items-center gap-3">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+              <a
+                href="https://makersceylon.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#ff6a00] hover:bg-[#e55f00] text-white text-xs font-black uppercase tracking-wider py-2.5 px-4 rounded-none text-center transition-colors shadow-sm"
+              >
+                <span>Visit MAKERS CEYLON</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
               <button
                 type="button"
                 onClick={() => {
                   setDestination('sri-lanka');
                   router.push('/destinations/asia/sri-lanka');
                 }}
-                className="flex-1 bg-[#ff6a00] hover:bg-[#e55f00] text-white text-xs font-bold py-2.5 px-4 rounded-none text-center transition-colors shadow-sm"
+                className="bg-neutral-100 hover:bg-neutral-200 text-neutral-900 border border-neutral-300 text-xs font-bold py-2.5 px-4 rounded-none transition-colors"
               >
-                Explore Sri Lanka Route & Services
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setDestination('sri-lanka');
-                  router.push('/vehicles?destination=sri-lanka');
-                }}
-                className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-300 text-xs font-bold py-2.5 px-4 rounded-none transition-colors"
-              >
-                View Sri Lanka Stock
+                Explore Route Details
               </button>
             </div>
           </div>

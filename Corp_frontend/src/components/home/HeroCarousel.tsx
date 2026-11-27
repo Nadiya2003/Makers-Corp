@@ -3,13 +3,31 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, ArrowRight, ExternalLink, Pause, Play } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+  ExternalLink,
+  Pause,
+  Play,
+  Compass,
+  Sparkles,
+  Flame,
+  Truck,
+  Globe
+} from 'lucide-react';
+import {
+  CountryFlag,
+  MakersCeylonBadge,
+  ExportRoutePlaque
+} from './HeroExportVisuals';
 
-interface Slide {
+interface SlideConfig {
   id: string;
-  badge: string;
-  heading: string;
-  body: string;
+  tag: string;
+  badgeIcon?: React.ElementType;
+  headline: string;
+  description: string;
   primaryCta: {
     text: string;
     href: string;
@@ -22,54 +40,126 @@ interface Slide {
   };
   imageSrc: string;
   imageAlt: string;
-  bgTone: string;
+  targetMarket?: 'global' | 'sri-lanka' | 'india' | 'russia' | 'uae';
+  showMakersCeylon?: boolean;
+  routePlaque?: {
+    destinationName: string;
+    destinationPort: string;
+    transitDays: string;
+    flag: 'sri-lanka' | 'india' | 'russia' | 'uae';
+    shippingType?: string;
+  };
 }
 
-const SLIDES: Slide[] = [
+const CAROUSEL_SLIDES: SlideConfig[] = [
+  // SLIDE 01 – FROM JAPAN TO THE GLOBE
   {
-    id: 'global',
-    badge: 'Japan Direct Export Showroom',
-    heading: 'Vehicles from Japan. Sourced for Your Market.',
-    body: 'Browse Japanese inventory or tell us what you’re looking for. We inspect, negotiate, and export directly to your destination port.',
+    id: 'slide-global-export',
+    tag: 'Japanese Vehicle Export · Worldwide Shipping',
+    badgeIcon: Compass,
+    headline: 'FROM JAPAN TO THE GLOBE',
+    description:
+      'Discover exceptional Japanese vehicles sourced directly from Japan and exported to international markets. From premium SUVs and luxury 4x4s to iconic Japanese automobiles, we connect global buyers with quality vehicles from Japan through tailored sourcing and export solutions.',
     primaryCta: {
-      text: 'Browse Inventory',
-      href: '/vehicles'
+      text: 'Explore Vehicles',
+      href: '/vehicles',
     },
     secondaryCta: {
-      text: 'Request a Vehicle',
-      href: '/request-a-vehicle'
+      text: 'Request Export Enquiry',
+      href: '/request-a-vehicle',
     },
-    imageSrc: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1600&q=85',
-    imageAlt: 'Lexus LX executive export SUV uncropped complete source view',
-    bgTone: '#171717'
+    imageSrc: '/images/Japan vehicles.png',
+    imageAlt: 'Japanese premium luxury 4x4 export SUV',
   },
+
+  // SLIDE 02 – SRI LANKA DEDICATED EXPORT (MAKERS CEYLON)
   {
-    id: 'india',
-    badge: 'Specialized Market Destination',
-    heading: 'Explore Vehicles for India',
-    body: 'Tell us the model you’re looking for. Our team handles auction sourcing, pre-export inspection, and documentation for international export.',
+    id: 'slide-sri-lanka',
+    tag: 'Sri Lanka Dedicated Export Liaison',
+    targetMarket: 'sri-lanka',
+    headline: 'Japan to Sri Lanka. Trusted Vehicle Exports.',
+    description:
+      'Explore quality Japanese vehicles sourced and exported for the Sri Lankan market with MAKERS CEYLON. Complete duty advice, LC handling, and Colombo/Hambantota delivery.',
     primaryCta: {
-      text: 'Explore India',
-      href: '/destinations/asia/india'
-    },
-    imageSrc: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1600&q=85',
-    imageAlt: 'High-performance Japanese sports coupe uncropped complete source view',
-    bgTone: '#121212'
-  },
-  {
-    id: 'sri-lanka',
-    badge: 'Sri Lanka Dedicated Partner',
-    heading: 'Shopping in Sri Lanka?',
-    body: 'Visit Makers Ceylon for Sri Lanka vehicle listings, local team contact, and Colombo port delivery support.',
-    primaryCta: {
-      text: 'Visit Makers Ceylon',
+      text: 'Visit MAKERS CEYLON',
       href: 'https://makersceylon.com/',
-      isExternal: true
+      isExternal: true,
     },
-    imageSrc: '/images/cars-lineup.png',
-    imageAlt: 'Makers Ceylon complete vehicle lineup with all models fully visible from bumper to bumper',
-    bgTone: '#1a1a1a'
-  }
+    secondaryCta: {
+      text: 'Explore Sri Lanka Stock',
+      href: '/destinations/asia/sri-lanka',
+    },
+    imageSrc: '/images/Sri lankan vehicles.png',
+    imageAlt: 'Authentic Japanese vehicle yard line ready for Colombo port dispatch',
+    showMakersCeylon: true,
+    /*routePlaque: {
+      destinationName: 'Sri Lanka',
+      destinationPort: 'Hambantota',
+      transitDays: '14 – 18 Days',
+      flag: 'sri-lanka',
+      shippingType: 'Ro-Ro & Dedicated Container',
+    },*/
+  },
+
+  // SLIDE 03 – LUXURY & EXECUTIVE VEHICLES
+  {
+    id: 'slide-luxury',
+    tag: 'Executive & VIP Collection · Tokyo Desk',
+    badgeIcon: Sparkles,
+    headline: 'Experience Japanese Automotive Excellence',
+    description:
+      'Discover luxury vehicles, executive MPVs and premium automotive collections. Featuring Lexus LX 600, LX 700h, Alphard Executive Lounge, and Mercedes-Benz G63.',
+    primaryCta: {
+      text: 'Explore Luxury Vehicles',
+      href: '/vehicles?body=Luxury+%26+Performance',
+    },
+    secondaryCta: {
+      text: 'Explore Executive MPVs',
+      href: '/vehicles?body=Vans+%26+MPVs',
+    },
+    imageSrc: '/images/Lexus LX at the Harbor.png',
+    imageAlt: 'Executive Japanese luxury vehicles ready for export dispatch',
+  },
+
+  // SLIDE 04 – SPORTS & PERFORMANCE CARS
+  {
+    id: 'slide-sports',
+    tag: 'Sports & Performance · Auction Direct',
+    badgeIcon: Flame,
+    headline: 'Performance Without Compromise',
+    description:
+      'Discover exceptional sports cars and performance vehicles from Japan. Museum-grade Nissan GT-R NISMO, Porsche 911 Carrera, and manual Fairlady Z models.',
+    primaryCta: {
+      text: 'Explore Sports Cars',
+      href: '/vehicles?body=Luxury+%26+Performance',
+    },
+    secondaryCta: {
+      text: 'Browse GT-R Stock',
+      href: '/vehicles?make=Nissan&model=GT-R',
+    },
+    imageSrc: '/images/ChatGPT Image Oct 27, 2026, 12_00_38 PM-8.png',
+    imageAlt: 'High-performance Japanese sports vehicle in Kanagawa yard',
+  },
+
+  // SLIDE 05 – COMMERCIAL VEHICLE EXPORTS
+  {
+    id: 'slide-commercial',
+    tag: 'Commercial & Fleet Logistics · Ro-Ro Ready',
+    badgeIcon: Truck,
+    headline: 'Reliable Commercial Vehicles from Japan',
+    description:
+      'Find quality commercial vehicles for international business requirements. From workhorse Toyota Hiace Vans and Hilux pickups to verified heavy-duty fleet solutions.',
+    primaryCta: {
+      text: 'Explore Commercial Vehicles',
+      href: '/vehicles?category=Commercial+Vehicles',
+    },
+    secondaryCta: {
+      text: 'Browse Pickup Trucks',
+      href: '/vehicles?body=Trucks+%26+Commercial',
+    },
+    imageSrc: '/images/White Suzuki Mini Truck at the Waterfront.png',
+    imageAlt: 'Reliable Japanese commercial export vehicles',
+  },
 ];
 
 export function HeroCarousel() {
@@ -83,14 +173,14 @@ export function HeroCarousel() {
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev === 0 ? SLIDES.length - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? CAROUSEL_SLIDES.length - 1 : prev - 1));
   }, []);
 
   const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev === SLIDES.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev === CAROUSEL_SLIDES.length - 1 ? 0 : prev + 1));
   }, []);
 
-  // Autoplay management: respects pause state, hover, focus, and reduced-motion
+  // Automatic slide movement every 5 seconds (5000ms), paused on hover/focus/reduced motion
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -102,7 +192,7 @@ export function HeroCarousel() {
 
     autoplayTimerRef.current = setInterval(() => {
       nextSlide();
-    }, 7000);
+    }, 3000);
 
     return () => {
       if (autoplayTimerRef.current) clearInterval(autoplayTimerRef.current);
@@ -123,7 +213,7 @@ export function HeroCarousel() {
     }
   };
 
-  // Touch swipe support
+  // Touch swipe support on mobile
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
   };
@@ -135,7 +225,7 @@ export function HeroCarousel() {
   const handleTouchEnd = () => {
     if (!touchStartX.current || !touchEndX.current) return;
     const distance = touchStartX.current - touchEndX.current;
-    const minSwipeDistance = 40;
+    const minSwipeDistance = 45;
 
     if (distance > minSwipeDistance) {
       nextSlide();
@@ -147,12 +237,12 @@ export function HeroCarousel() {
     touchEndX.current = null;
   };
 
-  const currentSlide = SLIDES[currentIndex];
+  const currentSlide = CAROUSEL_SLIDES[currentIndex];
 
   return (
     <section
-      className="w-full bg-[#111111] border-b border-neutral-300 relative select-none rounded-none"
-      aria-label="Featured vehicle export spotlights"
+      className="relative w-full bg-[#111111] overflow-hidden select-none border-b border-neutral-800"
+      aria-label="Featured Japanese Vehicle Export Showcase"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onFocus={() => setIsFocused(true)}
@@ -162,153 +252,219 @@ export function HeroCarousel() {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       tabIndex={0}
-      role="region"
-      aria-roledescription="carousel"
     >
-      {/* ─────────────────────────────────────────────────────────────
-          1. DESKTOP / TABLET HERO (md:block)
-          Full viewport width with complete uncropped image on right & solid panel on left
-         ───────────────────────────────────────────────────────────── */}
-      <div className="hidden md:block relative w-full h-[380px] lg:h-[420px] overflow-hidden bg-[#141414]">
-        {/* Slide Layers */}
-        {SLIDES.map((slide, idx) => {
-          const isActive = idx === currentIndex;
+      {/* ============================================================== */}
+      {/* DESKTOP & TABLET VIEWPORT (md and above) */}
+      {/* ============================================================== */}
+      <div className="hidden md:block relative w-full h-[460px] lg:h-[500px] bg-[#111111]">
+        {/* Full-Width Background Photo with Smooth Fade Transition */}
+        {CAROUSEL_SLIDES.map((slide, index) => {
+          const isActive = index === currentIndex;
           return (
             <div
-              key={`desk-${slide.id}`}
-              role="group"
-              aria-roledescription="slide"
-              aria-label={`Slide ${idx + 1} of ${SLIDES.length}: ${slide.heading}`}
-              aria-hidden={!isActive}
-              className={`absolute inset-0 transition-opacity duration-300 ease-in-out ${
-                isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-              }`}
-              style={{ backgroundColor: slide.bgTone }}
+              key={slide.id}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                }`}
             >
-              {/* Full Uncropped Source Image Container */}
-              <div className="absolute right-0 top-0 bottom-0 w-full md:w-[65%] lg:w-[62%] h-full flex items-center justify-end pr-4 sm:pr-8 lg:pr-12 pointer-events-none">
-                <div className="relative w-full h-[92%]">
-                  <Image
-                    src={slide.imageSrc}
-                    alt={slide.imageAlt}
-                    fill
-                    sizes="(max-width: 1024px) 70vw, 60vw"
-                    priority={idx === 0}
-                    loading={idx === 0 ? 'eager' : 'lazy'}
-                    className="object-contain object-right"
-                  />
-                </div>
-              </div>
-
-              {/* Localized Left Scrim for Desktop Typography Contrast without darkening the car */}
-              <div className="absolute inset-y-0 left-0 w-[55%] lg:w-[48%] bg-gradient-to-r from-[#111111] via-[#111111]/95 to-transparent z-10 pointer-events-none" />
-
-              {/* Foreground Live HTML Text Panel */}
-              <div className="relative z-20 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
-                <div className="max-w-md lg:max-w-lg bg-[#111111]/90 backdrop-blur-sm p-6 lg:p-8 border-l-4 border-[#ff6a00] rounded-none shadow-2xl">
-                  {/* Market Tag */}
-                  <div className="inline-flex items-center gap-2 mb-2">
-                    <span className="w-2 h-2 bg-[#ff6a00] rounded-none" />
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#ff6a00]">
-                      {slide.badge}
-                    </span>
-                  </div>
-
-                  {/* Headline */}
-                  <h1 className="text-2xl lg:text-3xl font-black text-white tracking-tight leading-tight mb-2.5">
-                    {slide.heading}
-                  </h1>
-
-                  {/* Body copy */}
-                  <p className="text-xs lg:text-sm text-neutral-300 leading-relaxed mb-5">
-                    {slide.body}
-                  </p>
-
-                  {/* CTAs */}
-                  <div className="flex flex-wrap items-center gap-3">
-                    {slide.primaryCta.isExternal ? (
-                      <a
-                        href={slide.primaryCta.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 bg-[#ff6a00] hover:bg-[#e55f00] text-white font-bold text-xs lg:text-sm px-5 py-2.5 rounded-none shadow-md transition-all active:scale-95"
-                      >
-                        <span>{slide.primaryCta.text}</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    ) : (
-                      <Link
-                        href={slide.primaryCta.href}
-                        className="inline-flex items-center gap-2 bg-[#ff6a00] hover:bg-[#e55f00] text-white font-bold text-xs lg:text-sm px-5 py-2.5 rounded-none shadow-md transition-all active:scale-95"
-                      >
-                        <span>{slide.primaryCta.text}</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
-                    )}
-
-                    {slide.secondaryCta && (
-                      <Link
-                        href={slide.secondaryCta.href}
-                        className="inline-flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-600 font-bold text-xs lg:text-sm px-4 py-2.5 rounded-none transition-all"
-                      >
-                        <span>{slide.secondaryCta.text}</span>
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              </div>
+              <Image
+                src={slide.imageSrc}
+                alt={slide.imageAlt}
+                fill
+                sizes="100vw"
+                priority={index === 0}
+                className="object-cover object-right lg:object-center"
+              />
+              {/* Localized Dark Scrim for text legibility while keeping vehicles bright */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#111111] via-[#111111]/85 to-transparent w-full md:w-[70%] lg:w-[58%] z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#111111]/80 via-transparent to-transparent z-10" />
             </div>
           );
         })}
+
+        {/* Content Container */}
+        <div className="relative z-20 max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-between py-8 lg:py-10 pointer-events-none">
+          {/* Top Info Tag */}
+          <div className="flex items-center justify-between gap-4 pointer-events-auto">
+            <div className="flex items-center gap-3">
+              {currentSlide.targetMarket && currentSlide.targetMarket !== 'global' && (
+                <CountryFlag country={currentSlide.targetMarket} className="w-8 h-5" />
+              )}
+              {currentSlide.showMakersCeylon && <MakersCeylonBadge />}
+
+              <span className="text-[11px] font-black uppercase tracking-widest text-[#ff6a00] bg-[#111111]/90 px-3 py-1 border border-neutral-700 shadow-xs inline-flex items-center gap-1.5">
+                {currentSlide.badgeIcon && <currentSlide.badgeIcon className="w-3.5 h-3.5 text-[#ff6a00]" />}
+                <span>{currentSlide.tag}</span>
+              </span>
+            </div>
+
+            {/* Direct Sourcing Badge */}
+            <div className="hidden lg:flex items-center gap-2 text-[10px] font-mono text-neutral-300 bg-[#111111]/85 px-3 py-1 border border-neutral-700">
+              <CountryFlag country="japan" className="w-4 h-2.5" />
+              <span>Sourced Directly from Japan (Tokyo · Yokohama · Nagoya · Kobe)</span>
+            </div>
+          </div>
+
+          {/* Main Headline & Description */}
+          <div className="max-w-xl lg:max-w-2xl space-y-3.5 my-auto pointer-events-auto">
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-black text-white tracking-tight leading-[1.12]">
+              {currentSlide.headline}
+            </h1>
+            <p className="text-sm lg:text-base text-neutral-200 leading-relaxed font-medium">
+              {currentSlide.description}
+            </p>
+
+            {/* Optional Route Plaque for Destination Slides */}
+            {currentSlide.routePlaque && (
+              <div className="pt-1">
+                <ExportRoutePlaque {...currentSlide.routePlaque} />
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              {currentSlide.primaryCta.isExternal ? (
+                <a
+                  href={currentSlide.primaryCta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#ff6a00] hover:bg-[#e55f00] text-white text-xs lg:text-sm font-black uppercase tracking-wider px-6 py-3.5 rounded-none transition-all shadow-md group"
+                >
+                  <span>{currentSlide.primaryCta.text}</span>
+                  <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </a>
+              ) : (
+                <Link
+                  href={currentSlide.primaryCta.href}
+                  className="inline-flex items-center gap-2 bg-[#ff6a00] hover:bg-[#e55f00] text-white text-xs lg:text-sm font-black uppercase tracking-wider px-6 py-3.5 rounded-none transition-all shadow-md group"
+                >
+                  <span>{currentSlide.primaryCta.text}</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              )}
+
+              {currentSlide.secondaryCta && (
+                <Link
+                  href={currentSlide.secondaryCta.href}
+                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-xs lg:text-sm font-bold uppercase tracking-wider px-5 py-3.5 rounded-none border border-white/20 transition-colors backdrop-blur-xs"
+                >
+                  <span>{currentSlide.secondaryCta.text}</span>
+                </Link>
+              )}
+            </div>
+          </div>
+
+          {/* Bottom Bar: Indicators & Controls */}
+          <div className="flex items-center justify-between pt-4 border-t border-neutral-800/80 pointer-events-auto">
+            {/* Small Slide Indicator Dots */}
+            <div className="flex items-center gap-2" role="tablist" aria-label="Slide indicators">
+              {CAROUSEL_SLIDES.map((slide, idx) => {
+                const isSelected = idx === currentIndex;
+                return (
+                  <button
+                    key={slide.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isSelected}
+                    aria-label={`Slide ${idx + 1}: ${slide.headline}`}
+                    onClick={() => setCurrentIndex(idx)}
+                    className={`transition-all duration-300 rounded-full ${isSelected
+                      ? 'w-7 h-2 bg-[#ff6a00]'
+                      : 'w-2 h-2 bg-neutral-600 hover:bg-neutral-400'
+                      }`}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Manual Navigation Arrows & Pause Control */}
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setIsPaused((p) => !p)}
+                className="w-8 h-8 flex items-center justify-center bg-[#111111] hover:bg-neutral-800 text-neutral-300 hover:text-white border border-neutral-700 rounded-none transition-colors"
+                title={isPaused ? 'Resume autoplay (5s)' : 'Pause autoplay'}
+                aria-label={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
+              >
+                {isPaused ? <Play className="w-3.5 h-3.5 text-[#ff6a00]" /> : <Pause className="w-3.5 h-3.5" />}
+              </button>
+
+              <button
+                type="button"
+                onClick={prevSlide}
+                className="w-8 h-8 flex items-center justify-center bg-[#111111] hover:bg-[#ff6a00] text-white border border-neutral-700 hover:border-[#ff6a00] rounded-none transition-colors"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={nextSlide}
+                className="w-8 h-8 flex items-center justify-center bg-[#111111] hover:bg-[#ff6a00] text-white border border-neutral-700 hover:border-[#ff6a00] rounded-none transition-colors"
+                aria-label="Next slide"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. MOBILE HERO (< md)
-          Show complete source image at top with separate rectangular panel below
-          Guarantees uncropped vehicles with zero text overlap!
-         ───────────────────────────────────────────────────────────── */}
+      {/* ============================================================== */}
+      {/* MOBILE VIEWPORT (Phones & Small screens) */}
+      {/* ============================================================== */}
       <div className="block md:hidden w-full bg-[#111111]">
-        {/* Full Uncropped Source Image Container */}
-        <div
-          className="relative w-full h-[220px] sm:h-[260px] flex items-center justify-center p-3"
-          style={{ backgroundColor: currentSlide.bgTone }}
-        >
-          <div className="relative w-full h-full">
-            <Image
-              src={currentSlide.imageSrc}
-              alt={currentSlide.imageAlt}
-              fill
-              sizes="100vw"
-              priority={currentIndex === 0}
-              className="object-contain object-center"
-            />
+        {/* Full Image Container */}
+        <div className="relative w-full h-[220px] bg-neutral-900 overflow-hidden">
+          <Image
+            src={currentSlide.imageSrc}
+            alt={currentSlide.imageAlt}
+            fill
+            sizes="100vw"
+            priority
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-transparent to-transparent" />
+
+          {/* Top Tag */}
+          <div className="absolute top-3 left-3 z-10 flex items-center gap-2">
+            {currentSlide.targetMarket && currentSlide.targetMarket !== 'global' && (
+              <CountryFlag country={currentSlide.targetMarket} className="w-6 h-4" />
+            )}
+            <span className="text-[10px] font-black uppercase tracking-wider text-white bg-[#111111]/90 px-2 py-0.5 border border-neutral-700">
+              {currentSlide.tag}
+            </span>
           </div>
         </div>
 
-        {/* Separate Rectangular Text Panel Below Photo */}
-        <div className="bg-[#111111] text-white p-4 sm:p-5 border-t border-neutral-800 rounded-none">
-          <div className="inline-flex items-center gap-1.5 mb-1.5">
-            <span className="w-2 h-2 bg-[#ff6a00] rounded-none" />
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#ff6a00]">
-              {currentSlide.badge}
-            </span>
-          </div>
+        {/* Separate Text and Action Panel below photo */}
+        <div className="p-4 bg-[#111111] space-y-3.5 border-t border-neutral-800">
+          {currentSlide.showMakersCeylon && (
+            <div>
+              <MakersCeylonBadge />
+            </div>
+          )}
 
-          <h1 className="text-lg sm:text-xl font-black text-white tracking-tight leading-tight mb-2">
-            {currentSlide.heading}
-          </h1>
+          <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
+            {currentSlide.headline}
+          </h2>
 
-          <p className="text-xs text-neutral-300 leading-relaxed mb-4">
-            {currentSlide.body}
+          <p className="text-xs text-neutral-300 leading-relaxed font-medium">
+            {currentSlide.description}
           </p>
 
-          <div className="flex flex-wrap items-center gap-2.5">
+          {/* Mobile Route info */}
+          {currentSlide.routePlaque && (
+            <ExportRoutePlaque {...currentSlide.routePlaque} />
+          )}
+
+          {/* Primary Action Button */}
+          <div className="pt-1 flex flex-col gap-2">
             {currentSlide.primaryCta.isExternal ? (
               <a
                 href={currentSlide.primaryCta.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 bg-[#ff6a00] hover:bg-[#e55f00] text-white font-bold text-xs px-4 py-2 rounded-none shadow-sm active:scale-95"
+                className="w-full flex items-center justify-center gap-2 bg-[#ff6a00] hover:bg-[#e55f00] text-white text-xs font-black uppercase tracking-wider py-3 rounded-none shadow-sm transition-colors text-center"
               >
                 <span>{currentSlide.primaryCta.text}</span>
                 <ExternalLink className="w-3.5 h-3.5" />
@@ -316,7 +472,7 @@ export function HeroCarousel() {
             ) : (
               <Link
                 href={currentSlide.primaryCta.href}
-                className="inline-flex items-center gap-1.5 bg-[#ff6a00] hover:bg-[#e55f00] text-white font-bold text-xs px-4 py-2 rounded-none shadow-sm active:scale-95"
+                className="w-full flex items-center justify-center gap-2 bg-[#ff6a00] hover:bg-[#e55f00] text-white text-xs font-black uppercase tracking-wider py-3 rounded-none shadow-sm transition-colors text-center"
               >
                 <span>{currentSlide.primaryCta.text}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -326,70 +482,47 @@ export function HeroCarousel() {
             {currentSlide.secondaryCta && (
               <Link
                 href={currentSlide.secondaryCta.href}
-                className="inline-flex items-center gap-1.5 bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-600 font-bold text-xs px-3.5 py-2 rounded-none"
+                className="w-full flex items-center justify-center gap-2 bg-neutral-900 text-white text-xs font-bold uppercase tracking-wider py-2.5 rounded-none border border-neutral-700 transition-colors text-center"
               >
                 <span>{currentSlide.secondaryCta.text}</span>
               </Link>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* ─────────────────────────────────────────────────────────────
-          3. SQUARE CONTROLS & RECTANGULAR INDICATORS (Across all screens)
-         ───────────────────────────────────────────────────────────── */}
-      {/* Square Previous Button */}
-      <button
-        type="button"
-        onClick={prevSlide}
-        aria-label="Previous slide"
-        className="absolute left-2 top-[35%] md:top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-none bg-neutral-900/90 hover:bg-[#ff6a00] text-white flex items-center justify-center transition-colors border border-white/20 focus-visible:outline-[#ff6a00]"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
+          {/* Mobile Indicators & Controls */}
+          <div className="pt-3 border-t border-neutral-800 flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              {CAROUSEL_SLIDES.map((slide, idx) => (
+                <button
+                  key={slide.id}
+                  type="button"
+                  aria-label={`Go to slide ${idx + 1}`}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`transition-all rounded-full ${idx === currentIndex ? 'w-5 h-1.5 bg-[#ff6a00]' : 'w-1.5 h-1.5 bg-neutral-600'
+                    }`}
+                />
+              ))}
+            </div>
 
-      {/* Square Next Button */}
-      <button
-        type="button"
-        onClick={nextSlide}
-        aria-label="Next slide"
-        className="absolute right-2 top-[35%] md:top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-none bg-neutral-900/90 hover:bg-[#ff6a00] text-white flex items-center justify-center transition-colors border border-white/20 focus-visible:outline-[#ff6a00]"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-
-      {/* Bottom Bar: Rectangular Slide Indicators & Visible Pause/Play Control */}
-      <div className="absolute bottom-3 right-4 z-30 flex items-center gap-2 bg-[#111111]/90 border border-neutral-700 px-3 py-1.5 rounded-none">
-        {/* Pause/Play Button */}
-        <button
-          type="button"
-          onClick={() => setIsPaused((prev) => !prev)}
-          aria-label={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
-          className="text-neutral-400 hover:text-white transition-colors p-0.5 rounded-none"
-          title={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
-        >
-          {isPaused ? <Play className="w-3 h-3 fill-current" /> : <Pause className="w-3 h-3 fill-current" />}
-        </button>
-
-        <span className="text-neutral-600 text-[10px]" aria-hidden="true">|</span>
-
-        {/* Rectangular Indicators */}
-        <div role="tablist" aria-label="Slide indicators" className="flex items-center gap-1.5">
-          {SLIDES.map((slide, idx) => (
-            <button
-              key={`dot-${slide.id}`}
-              type="button"
-              role="tab"
-              aria-selected={idx === currentIndex}
-              aria-label={`Go to slide ${idx + 1}: ${slide.heading}`}
-              onClick={() => setCurrentIndex(idx)}
-              className={`h-1.5 transition-all rounded-none ${
-                idx === currentIndex
-                  ? 'w-7 sm:w-9 bg-[#ff6a00]'
-                  : 'w-4 sm:w-5 bg-neutral-600 hover:bg-neutral-400'
-              }`}
-            />
-          ))}
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={prevSlide}
+                className="w-7 h-7 flex items-center justify-center bg-neutral-900 text-white border border-neutral-700 rounded-none text-xs"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={nextSlide}
+                className="w-7 h-7 flex items-center justify-center bg-neutral-900 text-white border border-neutral-700 rounded-none text-xs"
+                aria-label="Next slide"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

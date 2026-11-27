@@ -205,14 +205,14 @@ export function Header() {
           <div className="flex items-center justify-between gap-3 sm:gap-4">
             {/* Official Makers Brand Logo & Identity */}
             <Link href="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0 group">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shrink-0">
                 <Image
-                  src="/images/makers-logo.png"
+                  src="/images/makers-mark.png"
                   alt="Makers Corp Japan Official Logo"
-                  width={40}
-                  height={40}
+                  width={48}
+                  height={48}
                   priority
-                  className="object-contain w-9 h-9 sm:w-10 sm:h-10"
+                  className="object-contain w-10 h-10 sm:w-12 sm:h-12"
                 />
               </div>
               <div className="flex flex-col">

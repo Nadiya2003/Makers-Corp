@@ -36,17 +36,25 @@ export function HeroCompactSearch() {
     'Nissan',
     'Honda',
     'Suzuki',
-    'Mercedes-Benz',
     'Mazda',
-    'Subaru'
-  ];
+    'Mitsubishi',
+    'Subaru',
+    'Daihatsu',
+    'Isuzu',
+    'UD Trucks',
+    'Mercedes-Benz',
+    'BMW',
+    'Audi'
+  ]
 
   const bodyTypes = [
     'All',
     'SUVs & 4x4',
+    'Sedans',
+    'Hatchbacks',
     'Luxury & Performance',
     'Vans & MPVs',
-    'Sedans & Hatchbacks',
+    'Pickup Trucks',
     'Trucks & Commercial'
   ];
 

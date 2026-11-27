@@ -280,7 +280,7 @@ export default function InquiriesManagement() {
                       <MessageSquare size={14} /> Message Content
                     </label>
                     <div className="bg-gray-50 rounded-[2rem] p-8 border border-gray-100 italic text-gray-700 leading-relaxed font-medium">
-                      "{selectedInquiry.message}"
+                      &ldquo;{selectedInquiry.message}&rdquo;
                     </div>
                 </div>
 

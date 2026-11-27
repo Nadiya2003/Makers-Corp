@@ -27,11 +27,11 @@ export default function AboutUsSettings() {
   const savedRef = useRef<string>('');
   
   const [aboutData, setAboutData] = useState({
-    title: 'About Makers Ceylon',
-    content: 'Ceylon Imports was founded with a single mission: to revolutionize the vehicle import process in Sri Lanka. We believe that importing a car from Japan should be transparent, cost-effective, and completely stress-free.',
+    title: 'About Makers Corp Japan',
+    content: 'Makers Corp Japan was founded with a single mission: to provide verified, premium Japanese-market vehicles directly to international buyers and dealerships worldwide. We believe that sourcing and exporting a vehicle from Japan should be transparent, cost-effective, and completely reliable.',
     image: 'https://images.unsplash.com/photo-1562426509-5044a121aa49?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-    mission: 'To provide a seamless, transparent, and highly reliable vehicle import service that empowers our customers to purchase their dream cars directly from Japan.',
-    vision: 'To be the most trusted and preferred vehicle import partner in Sri Lanka, known for our integrity and customer-centric approach.',
+    mission: 'To provide a seamless, transparent, and highly reliable vehicle export service connecting verified Tokyo, Yokohama, Kobe, and Nagoya inventory with international buyers worldwide.',
+    vision: 'To be the most trusted and preferred Japanese automotive export partner globally, known for our inspection integrity and customer-centric approach.',
     directorsBg: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2000&auto=format&fit=crop',
     galleryImages: [] as string[],
     directors: [] as { name: string; role: string; bio: string; image: string; }[]
@@ -160,7 +160,7 @@ export default function AboutUsSettings() {
     <div className="space-y-8 max-w-5xl">
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2 font-black uppercase tracking-tighter">About Us Content</h1>
-        <p className="text-gray-500 font-medium text-sm">Manage the story and mission behind Makers Ceylon.</p>
+        <p className="text-gray-500 font-medium text-sm">Manage the story and mission behind Makers Corp Japan.</p>
       </div>
 
       {statusMessage && (
@@ -413,7 +413,7 @@ export default function AboutUsSettings() {
 
               {aboutData.directors.length === 0 && (
                 <p className="text-xs text-gray-400 font-medium text-center py-6 bg-gray-50 rounded-none border border-dashed border-gray-200">
-                  No directors added yet. Click "Add Director" to create one.
+                  No directors added yet. Click &quot;Add Director&quot; to create one.
                 </p>
               )}
             </div>
@@ -456,7 +456,7 @@ export default function AboutUsSettings() {
                 {aboutData.galleryImages.length === 0 && (
                   <div className="col-span-full">
                     <p className="text-xs text-gray-400 font-medium text-center py-6 bg-gray-50 rounded-none border border-dashed border-gray-200">
-                      No gallery photos added yet. Click "Add Photo" to upload some.
+                      No gallery photos added yet. Click &quot;Add Photo&quot; to upload some.
                     </p>
                   </div>
                 )}

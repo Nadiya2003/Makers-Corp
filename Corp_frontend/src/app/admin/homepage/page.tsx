@@ -31,7 +31,7 @@ export default function HomepageManagement() {
         ] as { value: string; label: string }[]
       },
       whyChooseUs: {
-        subtitle: 'The Ceylon Advantage',
+        subtitle: 'The Makers Advantage',
         title: 'Why Choose Us',
         backgroundImage: '',
         reasons: [] as { icon: string; title: string; desc: string }[]
@@ -179,7 +179,7 @@ export default function HomepageManagement() {
         if (!fetched?.homepage?.whyChooseUs || !fetched.homepage.whyChooseUs.reasons || fetched.homepage.whyChooseUs.reasons.length === 0) {
           if (!fetched.homepage) fetched.homepage = {};
           fetched.homepage.whyChooseUs = {
-            subtitle: fetched?.homepage?.whyChooseUs?.subtitle || 'The Ceylon Advantage',
+            subtitle: fetched?.homepage?.whyChooseUs?.subtitle || 'The Makers Advantage',
             title: fetched?.homepage?.whyChooseUs?.title || 'Why Choose Us',
             backgroundImage: fetched?.homepage?.whyChooseUs?.backgroundImage || '',
             reasons: [
@@ -483,7 +483,7 @@ export default function HomepageManagement() {
                 ))}
                 {(settings.homepage.about.stats || []).length === 0 && (
                   <p className="text-xs text-gray-400 font-medium text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                    No stat cards yet. Click "Add Stat" to create one.
+                    No stat cards yet. Click &quot;Add Stat&quot; to create one.
                   </p>
                 )}
               </div>
@@ -507,7 +507,7 @@ export default function HomepageManagement() {
                   value={settings.homepage.whyChooseUs?.subtitle || ''}
                   onChange={(e) => setSettings({ ...settings, homepage: { ...settings.homepage, whyChooseUs: { ...settings.homepage.whyChooseUs, subtitle: e.target.value } } })}
                   className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-600/20 focus:border-orange-600 transition-all"
-                  placeholder="e.g. The Ceylon Advantage"
+                  placeholder="e.g. The Makers Advantage"
                 />
               </div>
               <div>
@@ -633,7 +633,7 @@ export default function HomepageManagement() {
                 ))}
                 {(settings.homepage.whyChooseUs?.reasons || []).length === 0 && (
                   <p className="text-xs text-gray-400 font-medium text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                    No reason cards yet. Click "Add Reason" to create one.
+                    No reason cards yet. Click &quot;Add Reason&quot; to create one.
                   </p>
                 )}
               </div>
@@ -787,7 +787,7 @@ export default function HomepageManagement() {
                 ))}
                 {(settings.homepage.howItWorks?.steps || []).length === 0 && (
                   <p className="text-xs text-gray-400 font-medium text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                    No steps yet. Click "Add Step" to create one.
+                    No steps yet. Click &quot;Add Step&quot; to create one.
                   </p>
                 )}
               </div>

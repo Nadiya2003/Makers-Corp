@@ -226,7 +226,7 @@ export default function AppearanceManagement() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Appearance & Footer</h1>
-          <p className="text-gray-500">Manage your website's contact info and footer content.</p>
+          <p className="text-gray-500">Manage your website&apos;s contact info and footer content.</p>
         </div>
         <button
           onClick={handleSave}

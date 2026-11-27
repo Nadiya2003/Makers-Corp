@@ -749,8 +749,8 @@ export function VehicleDiscoveryExperience() {
 
               <div className="flex flex-wrap items-center gap-2">
                 {[
-                  //{ name: 'Toyota Land Cruiser', action: () => setSubView('land-cruiser'), isSpecial: true },
-                  { name: 'Toyota Land Cruser', href: '/vehicles?make=Toyota&model=Land+C+land-cruiser' },
+
+                  { name: 'Toyota Land Cruiser', action: () => setSubView('land-cruiser'), isSpecial: true },
                   { name: 'Toyota Prado', href: '/vehicles?make=Toyota&model=Land+Cruiser+Prado' },
                   { name: 'Toyota Alphard', href: '/vehicles?make=Toyota&model=Alphard' },
                   { name: 'Toyota Vellfire', href: '/vehicles?make=Toyota&model=Vellfire' },
@@ -764,7 +764,7 @@ export function VehicleDiscoveryExperience() {
                   { name: 'Honda Vezel e:HEV', href: '/vehicles?make=Honda&model=Vezel' },
                   { name: 'Porsche 911 Carrera', href: '/vehicles?make=Porsche' },
                 ].map((item, i) =>
-                  /*item.action ? (
+                  item.action ? (
                     <button
                       key={i}
                       type="button"
@@ -774,15 +774,15 @@ export function VehicleDiscoveryExperience() {
                       <span>{item.name}</span>
                       <CornerDownRight className="w-3 h-3" />
                     </button>
-                  ) : */(
-                  <Link
-                    key={i}
-                    href={item.href || '/vehicles'}
-                    className="px-3 py-1.5 bg-white hover:bg-neutral-200 border border-neutral-300 text-neutral-800 text-xs font-bold uppercase tracking-wider rounded-none transition-colors"
-                  >
-                    {item.name}
-                  </Link>
-                )
+                  ) : (
+                    <Link
+                      key={i}
+                      href={item.href || '/vehicles'}
+                      className="px-3 py-1.5 bg-white hover:bg-neutral-200 border border-neutral-300 text-neutral-800 text-xs font-bold uppercase tracking-wider rounded-none transition-colors"
+                    >
+                      {item.name}
+                    </Link>
+                  )
                 )}
               </div>
             </div>

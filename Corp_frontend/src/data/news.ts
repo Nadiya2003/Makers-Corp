@@ -38,7 +38,7 @@ export const articles: Article[] = [
     excerpt:
       'From selecting verified physical stock in Japanese yards to independent pre-export inspection, proforma agreement, and vessel tracking — understand the full export workflow.',
     coverImage:
-      'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1200&q=80',
+      '/images/Japan Vehicle Export Guide.png',
     author: {
       name: 'Kenji Takahashi',
       role: 'Export Operations Desk, Tokyo',
@@ -75,7 +75,7 @@ export const articles: Article[] = [
     excerpt:
       'Avoid costly import delays by verifying age thresholds, emissions compliance, steering orientation, and port selection before requesting your written export proforma.',
     coverImage:
-      'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80',
+      '/images/Export Quote Checklist for Car Shipping.png',
     author: {
       name: 'Hiroshi Sato',
       role: 'Homologation Specialist, Yokohama',
@@ -110,7 +110,7 @@ export const articles: Article[] = [
     excerpt:
       'Demystifying auction grades from 3.5 to 5.0, interior condition scores, and third-party pre-export audits so you can buy with total technical confidence.',
     coverImage:
-      'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80',
+      '/images/Japanese Vehicle Inspection Standards Explained.png',
     author: {
       name: 'Kenji Takahashi',
       role: 'Export Operations Desk, Tokyo',
@@ -143,7 +143,7 @@ export const articles: Article[] = [
     excerpt:
       'How vehicle export requirements differ between India (DGFT direct import, FOB valuation thresholds) and Sri Lanka (Makers Ceylon liaison support, commercial LC).',
     coverImage:
-      'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1200&q=80',
+      '/images/Japanese Vehicle Inspection Standards Explained.png',
     author: {
       name: 'Hiroshi Sato',
       role: 'Homologation Specialist, Yokohama',

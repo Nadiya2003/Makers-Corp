@@ -14,9 +14,9 @@ export default function IndiaDestinationPage() {
   const market = getMarketBySlug('india');
   if (!market) notFound();
 
-  // Campaign priority models specified in prompt:
-  // Nissan GT-R NISMO, Lexus LX 600, Lexus LX 700h, Toyota Hiace
-  const campaignStockIds = ['MCJ-2024-8801', 'MCJ-2024-8802', 'MCJ-2024-8803', 'MCJ-2024-8804'];
+  // Campaign priority models available in inventory:
+  // Toyota Alphard Executive Lounge, Toyota Raize Z, Toyota Raize Hybrid
+  const campaignStockIds = ['MCJ-2026-8906', 'MCJ-2026-8901', 'MCJ-2026-8904'];
   const campaignModels = vehicles.filter((v) => campaignStockIds.includes(v.stockId));
 
   // Only vehicles with reviewed_for_quotation qualify for the primary destination grid

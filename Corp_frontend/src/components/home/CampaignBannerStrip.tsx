@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Globe, ShieldCheck, Ship, Search } from 'lucide-react';
+import { ArrowRight, Globe, ShieldCheck, Ship, Search, ExternalLink } from 'lucide-react';
 
 interface CampaignCard {
   id: string;
@@ -13,6 +13,7 @@ interface CampaignCard {
   subtext: string;
   actionText: string;
   href: string;
+  isExternal?: boolean;
   image: string;
   icon: React.ComponentType<{ className?: string }>;
 }
@@ -21,7 +22,7 @@ const campaigns: CampaignCard[] = [
   {
     id: 'india-launch',
     tag: 'India Market',
-    tagColor: 'bg-emerald-600 text-white',
+    tagColor: 'bg-emerald-700 text-white',
     headline: 'Explore Japan-Sourced Vehicles',
     subtext: 'Direct homologation checks & JNPT / Chennai shipping for luxury SUVs & sports stock.',
     actionText: 'Explore India',
@@ -32,18 +33,19 @@ const campaigns: CampaignCard[] = [
   {
     id: 'sri-lanka-desk',
     tag: 'Sri Lanka Market',
-    tagColor: 'bg-neutral-800 text-white',
+    tagColor: 'bg-[#ff6a00] text-white',
     headline: 'Explore Vehicles & Local Support',
-    subtext: 'Supported by Makers Ceylon liaison in Colombo. Verified LC and CPTAD documentation.',
-    actionText: 'View Sri Lanka',
-    href: '/destinations/asia/sri-lanka',
+    subtext: 'Official vehicle export partner MAKERS CEYLON. Bank LC coordination & Colombo port delivery.',
+    actionText: 'Visit MAKERS CEYLON',
+    href: 'https://makersceylon.com/',
+    isExternal: true,
     image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
     icon: ShieldCheck,
   },
   {
     id: 'how-to-buy-guide',
     tag: 'Export Process',
-    tagColor: 'bg-amber-600 text-white',
+    tagColor: 'bg-neutral-800 text-white',
     headline: 'A Step-by-Step Export Guide',
     subtext: 'Clear breakdown of JEVIC audits, FOB/CIF terms, ocean freight tracking, and delivery.',
     actionText: 'Read the Guide',
@@ -54,7 +56,7 @@ const campaigns: CampaignCard[] = [
   {
     id: 'custom-sourcing',
     tag: 'Made-to-Order',
-    tagColor: 'bg-[#ff6a00] text-white',
+    tagColor: 'bg-neutral-900 text-white',
     headline: 'Tell Us What You’re Looking For',
     subtext: 'Can’t find your specific model or trim? We source directly from Japanese dealer & auction networks.',
     actionText: 'Request a Vehicle',
@@ -73,23 +75,29 @@ export function CampaignBannerStrip() {
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 bg-[#ff6a00] rounded-none shrink-0" />
             <h2 className="text-xs font-black uppercase tracking-wider text-neutral-900">
-              Featured Export Highlights & Markets
+              Featured Export Highlights &amp; Markets
             </h2>
           </div>
           <span className="text-[11px] text-neutral-500 hidden sm:inline font-medium">
-            Direct Tokyo yard dispatches & regional import routes
+            Direct Tokyo yard dispatches &amp; regional import routes
           </span>
         </div>
 
-        {/* Compact Horizontal Grid / Mobile Snap Swiper (Square Corners) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 snap-x snap-mandatory scrollbar-none">
+        {/* 4 Compact Campaign Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 overflow-x-auto pb-1 sm:pb-0 snap-x">
           {campaigns.map((card, idx) => {
             const Icon = card.icon;
+            const CardWrapper = card.isExternal ? 'a' : Link;
+            const extraProps = card.isExternal
+              ? { target: '_blank', rel: 'noopener noreferrer' }
+              : {};
+
             return (
-              <Link
+              <CardWrapper
                 key={card.id}
                 href={card.href}
-                className="group relative bg-white border border-neutral-300 hover:border-[#ff6a00] rounded-none overflow-hidden shadow-sm hover:shadow-md transition-all duration-150 flex flex-col justify-between min-w-[280px] sm:min-w-0 snap-center"
+                {...extraProps}
+                className="group relative bg-white border border-neutral-300 hover:border-[#ff6a00] rounded-none overflow-hidden shadow-xs hover:shadow-md transition-all duration-150 flex flex-col justify-between min-w-[280px] sm:min-w-0 snap-center"
               >
                 {/* Visual Image Header */}
                 <div className="relative h-32 w-full overflow-hidden bg-neutral-100 rounded-none">
@@ -106,7 +114,7 @@ export function CampaignBannerStrip() {
                   {/* Top Badge */}
                   <div className="absolute top-2 left-2 flex items-center gap-1.5">
                     <span
-                      className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-none shadow-sm flex items-center gap-1 ${card.tagColor}`}
+                      className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-none shadow-xs flex items-center gap-1 ${card.tagColor}`}
                     >
                       <Icon className="w-3 h-3" />
                       {card.tag}
@@ -117,6 +125,14 @@ export function CampaignBannerStrip() {
                     <div className="absolute top-2 right-2">
                       <span className="bg-[#ff6a00] text-white text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-none">
                         Priority Route
+                      </span>
+                    </div>
+                  )}
+
+                  {card.id === 'sri-lanka-desk' && (
+                    <div className="absolute top-2 right-2">
+                      <span className="bg-white text-neutral-900 text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-none border border-neutral-300">
+                        MAKERS CEYLON
                       </span>
                     </div>
                   )}
@@ -136,14 +152,18 @@ export function CampaignBannerStrip() {
                   <div className="mt-3 pt-2.5 border-t border-neutral-100 flex items-center justify-between">
                     <span className="text-xs font-bold text-[#ff6a00] group-hover:text-[#e55f00] flex items-center gap-1">
                       {card.actionText}
-                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                      {card.isExternal ? (
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      ) : (
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                      )}
                     </span>
                     <span className="text-[10px] font-semibold text-neutral-400 group-hover:text-neutral-600">
-                      Learn more
+                      {card.isExternal ? 'Official Site' : 'Learn more'}
                     </span>
                   </div>
                 </div>
-              </Link>
+              </CardWrapper>
             );
           })}
         </div>

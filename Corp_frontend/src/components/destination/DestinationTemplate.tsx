@@ -15,7 +15,8 @@ import {
   Clock,
   ArrowRight,
   MessageCircle,
-  AlertTriangle
+  AlertTriangle,
+  ExternalLink
 } from 'lucide-react';
 import { Market, Vehicle } from '@/data';
 import { useMarket } from '@/context/MarketContext';
@@ -101,6 +102,17 @@ export function DestinationTemplate({
               <div className="text-sm font-extrabold text-[#111111]">
                 {isInquiryOnly ? 'Made-to-Order Sourcing' : `${reviewedVehicles.length} Units Reviewed`}
               </div>
+              {market.slug === 'sri-lanka' && (
+                <a
+                  href="https://makersceylon.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 flex items-center justify-center gap-2 bg-[#ff6a00] hover:bg-[#e55f00] text-white py-2.5 px-3 rounded-none text-xs font-black uppercase tracking-wider transition-colors shadow-xs"
+                >
+                  <span>Visit MAKERS CEYLON</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
               <a
                 href={`https://wa.me/${market.approvedContact.whatsapp}?text=${encodeURIComponent(
                   `Hello Makers Corp Japan, I am inquiring about shipping vehicles to ${market.name}.`

@@ -622,6 +622,192 @@ export const vehicles: Vehicle[] = [
     overview:
       'THIS VEHICLE HAS BEEN SOLD. Listing retained for stock reference and customs invoice tracking. Please consult our team or submit a Sourcing Request to procure a matching unit.',
     isFeatured: false
+  },
+  {
+    id: 'mcj-toyota-vellfire-2023',
+    stockId: 'MCJ-2024-8817',
+    slug: '2023-toyota-vellfire-z-premier-5ba-taha24w',
+    make: 'Toyota',
+    model: 'Vellfire',
+    grade: 'Z Premier Turbo Executive',
+    modelCode: '5BA-TAHA24W',
+    year: 2023,
+    firstRegistrationDate: '2023/07',
+    mileageKm: 6400,
+    fuel: 'Petrol',
+    transmission: 'Automatic',
+    engineCc: 2393,
+    drivetrain: '2WD',
+    steering: 'RHD',
+    bodyType: 'Vans & MPVs',
+    seats: 7,
+    color: 'Black 202',
+    conditionGrade: '5.0/A',
+    inspectionStatus: 'Makers Certified 150-Point',
+    sourceType: 'Confirmed Makers Inventory',
+    availability: 'Available',
+    lastAvailabilityCheck: '2026-11-20T10:00:00Z',
+    priceFOB: {
+      amount: 66000,
+      currency: 'USD',
+      port: 'FOB Nagoya'
+    },
+    referencePriceLKR: {
+      minLKR: 72000000,
+      maxLKR: 79000000,
+      label: 'Indicative Sri Lanka Landed Valuation'
+    },
+    images: [
+      'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80'
+    ],
+    keyFeatures: [
+      'T24A-FTS 2.4L Turbo Engine (279 PS)',
+      'Executive Lounge power independent captain seats with armrest touchscreen remotes',
+      'Rear ceiling Super Long Overhead Console with independent multi-zone illumination',
+      'Toyota Safety Sense 3.0 with Proactive Driving Assist',
+      '19-inch dark gray metallic alloy wheels'
+    ],
+    overview:
+      'Flagship 2023 Toyota Vellfire Z Premier Turbo. Dynamic exterior styling with aggressive front fascia, whisper-quiet cabin acoustics, and first-class seating comfort. Inspected in Nagoya yard, clean de-registration document ready for immediate booking.',
+    isFeatured: true
+  },
+  {
+    id: 'mcj-lexus-lm500h-2024',
+    stockId: 'MCJ-2024-8818',
+    slug: '2024-lexus-lm-500h-executive-4-seater-vip-6aa-tawh15w',
+    make: 'Lexus',
+    model: 'LM',
+    grade: '500h Executive 4-Seater VIP',
+    modelCode: '6AA-TAWH15W',
+    year: 2024,
+    firstRegistrationDate: '2024/04',
+    mileageKm: 750,
+    fuel: 'Hybrid',
+    transmission: 'Automatic',
+    engineCc: 2393,
+    drivetrain: '4WD',
+    steering: 'RHD',
+    bodyType: 'Vans & MPVs',
+    seats: 4,
+    color: 'Sonic Titanium',
+    conditionGrade: 'S/A (Brand New Delivery)',
+    inspectionStatus: 'Lexus Japan Delivery Certification & JEVIC Verified',
+    sourceType: 'Confirmed Makers Inventory',
+    availability: 'Available',
+    lastAvailabilityCheck: '2026-11-22T08:00:00Z',
+    priceFOB: {
+      amount: 148000,
+      currency: 'USD',
+      port: 'FOB Yokohama'
+    },
+    referencePriceLKR: {
+      minLKR: 165000000,
+      maxLKR: 180000000,
+      label: 'Indicative Sri Lanka Landed Valuation'
+    },
+    images: [
+      'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80'
+    ],
+    keyFeatures: [
+      '2.4L Turbocharged Hybrid system with DIRECT4 e-Axle all-wheel drive',
+      'Private rear suite with 48-inch widescreen display and glass partition with electrochromic dimming',
+      'Ultra-luxurious airline-standard power reclining ottoman seats with whole-body warming',
+      'Mark Levinson 23-speaker 3D Reference Sound System',
+      'Retractable tablet controllers and active noise cancellation (ANC)'
+    ],
+    overview:
+      'The pinnacle of executive mobility. Sourced directly from premier Japanese dealership allocation with delivery mileage only. Ultra-exclusive 4-seat configuration offering unmatched passenger privacy, comfort, and status.',
+    isFeatured: true
+  },
+  {
+    id: 'mcj-porsche-911-2022',
+    stockId: 'MCJ-2024-8819',
+    slug: '2022-porsche-911-carrera-4s-japan-spec-rhd-3ba-992',
+    make: 'Porsche',
+    model: '911',
+    grade: 'Carrera 4S Japan Spec RHD',
+    modelCode: '3BA-992',
+    year: 2022,
+    firstRegistrationDate: '2022/06',
+    mileageKm: 12100,
+    fuel: 'Petrol',
+    transmission: 'Dual-Clutch',
+    engineCc: 2981,
+    drivetrain: '4WD',
+    steering: 'RHD',
+    bodyType: 'Luxury & Performance',
+    seats: 4,
+    color: 'GT Silver Metallic / Bordeaux Red Leather',
+    conditionGrade: '5.0/A',
+    inspectionStatus: 'Porsche Centre Tokyo Certified & JEVIC Passed',
+    sourceType: 'Confirmed Makers Inventory',
+    availability: 'Available',
+    lastAvailabilityCheck: '2026-11-21T14:30:00Z',
+    priceFOB: {
+      amount: 132000,
+      currency: 'USD',
+      port: 'FOB Yokohama'
+    },
+    images: [
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80'
+    ],
+    keyFeatures: [
+      '3.0L Twin-Turbo Flat-6 Engine (450 PS / 530 Nm)',
+      '8-speed Porsche Doppelkupplung (PDK) dual-clutch transmission',
+      'Sport Chrono Package with mode switch and Porsche Track Precision App',
+      'PASM sport suspension (-10mm lower ride height) with rear-axle steering',
+      '20/21-inch Carrera Classic forged alloy wheels with colored crests'
+    ],
+    overview:
+      'Immaculate 992-generation Porsche 911 Carrera 4S RHD sourced from private climate-controlled garage in Minato-ku, Tokyo. Complete Porsche authorized dealer maintenance book, zero paint flaws, original factory specification throughout.',
+    isFeatured: true
+  },
+  {
+    id: 'mcj-nissan-fairlady-z-2023',
+    stockId: 'MCJ-2024-8820',
+    slug: '2023-nissan-fairlady-z-version-st-6mt-5ba-rz34',
+    make: 'Nissan',
+    model: 'Fairlady Z',
+    grade: 'Version ST 6-Speed Manual',
+    modelCode: '5BA-RZ34',
+    year: 2023,
+    firstRegistrationDate: '2023/03',
+    mileageKm: 8300,
+    fuel: 'Petrol',
+    transmission: 'Manual',
+    engineCc: 2997,
+    drivetrain: '2WD',
+    steering: 'RHD',
+    bodyType: 'Luxury & Performance',
+    seats: 2,
+    color: 'Ikazuchi Yellow / Super Black 2-Tone',
+    conditionGrade: '4.5/A',
+    inspectionStatus: 'Makers Certified 150-Point & JEVIC Passed',
+    sourceType: 'Confirmed Makers Inventory',
+    availability: 'Available',
+    lastAvailabilityCheck: '2026-11-23T11:00:00Z',
+    priceFOB: {
+      amount: 51800,
+      currency: 'USD',
+      port: 'FOB Yokohama'
+    },
+    images: [
+      'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80'
+    ],
+    keyFeatures: [
+      'VR30DDTT 3.0L Twin-Turbo V6 (405 PS / 475 Nm)',
+      '6-speed close-ratio manual gearbox with SynchroRev Match',
+      'Mechanical clutch-type Limited Slip Differential (LSD)',
+      'Bose 8-speaker audio system with Active Noise Cancellation & Active Sound Enhancement',
+      '19-inch Rays super-lightweight forged alloy wheels in gloss black'
+    ],
+    overview:
+      'Pure enthusiast specification 2023 Nissan Fairlady Z Version ST in signature Ikazuchi Yellow. 6-speed manual transmission, low verified mileage, enthusiast maintained in Kanagawa, and ready for global delivery.',
+    isFeatured: true
   }
 ];
 

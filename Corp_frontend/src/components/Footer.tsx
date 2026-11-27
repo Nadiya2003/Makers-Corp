@@ -63,12 +63,12 @@ export function Footer() {
           {/* Brand & Corporate */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 flex items-center justify-center shrink-0">
                 <Image
-                  src="/images/makers-logo.png"
+                  src="/images/makers-mark.png"
                   alt="Makers Corp Japan Logo"
-                  width={36}
-                  height={36}
+                  width={40}
+                  height={40}
                   className="object-contain"
                 />
               </div>

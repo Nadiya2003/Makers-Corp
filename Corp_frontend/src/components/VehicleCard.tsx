@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Fuel, Gauge, Settings, Compass, MessageCircle, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Fuel, Gauge, Settings, Compass, MessageCircle, ArrowRight, ShieldCheck, AlertCircle, Ship } from 'lucide-react';
 import { Vehicle, ReviewState } from '@/data';
 import { useMarket } from '@/context/MarketContext';
 import { getReviewState } from '@/data/reviews';
@@ -37,51 +37,51 @@ export function VehicleCard({ vehicle, destinationOverride, priority = false }: 
       : activeDestination.charAt(0).toUpperCase() + activeDestination.slice(1)
     : null;
 
+  const departurePort = vehicle.priceFOB?.port || 'FOB Yokohama';
+
   return (
     <div
-      className={`group flex flex-col bg-white rounded-none border transition-all duration-150 overflow-hidden ${
+      className={`group flex flex-col bg-white rounded-none border transition-all duration-200 overflow-hidden ${
         isSold
           ? 'border-neutral-200 opacity-80'
-          : 'border-neutral-300 hover:border-[#ff6a00] hover:shadow-md'
+          : 'border-neutral-300 hover:border-[#ff6a00] hover:shadow-lg'
       }`}
     >
-      {/* Top Image Section */}
+      {/* 1. Large, High-Quality Vehicle Photograph */}
       <Link href={`/vehicles/${vehicle.slug}`} className="relative block aspect-[16/10] bg-neutral-100 overflow-hidden rounded-none">
         <Image
           src={vehicle.images[0] || '/images/vehicle.jpg'}
           alt={`${vehicle.year} ${vehicle.make} ${vehicle.model} - ${vehicle.stockId}`}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           priority={priority}
           className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
 
-        {/* Top Badges (Rectangular tags) */}
+        {/* 2. Manufacturing Year and Auction Grade + 3. Availability Status Badges */}
         <div className="absolute top-2 left-2 flex flex-wrap gap-1.5 items-center">
-          {/* Year & Condition Grade */}
-          <span className="px-2 py-0.5 bg-neutral-900/95 text-white text-[11px] font-bold tracking-wider rounded-none">
+          <span className="px-2 py-0.5 bg-[#111111]/95 text-white text-[10px] sm:text-[11px] font-bold tracking-wider rounded-none">
             {vehicle.year} · Grade {vehicle.conditionGrade}
           </span>
 
-          {/* Availability Status */}
           {isSold ? (
-            <span className="px-2 py-0.5 bg-neutral-800 text-white text-[11px] font-black uppercase tracking-wider rounded-none">
+            <span className="px-2 py-0.5 bg-neutral-800 text-white text-[10px] sm:text-[11px] font-black uppercase tracking-wider rounded-none">
               Sold
             </span>
           ) : isReserved ? (
-            <span className="px-2 py-0.5 bg-amber-600 text-white text-[11px] font-black uppercase tracking-wider rounded-none">
+            <span className="px-2 py-0.5 bg-amber-600 text-white text-[10px] sm:text-[11px] font-black uppercase tracking-wider rounded-none">
               Reserved
             </span>
           ) : (
-            <span className="px-2 py-0.5 bg-emerald-600 text-white text-[11px] font-bold uppercase tracking-wider rounded-none">
-              Available
+            <span className="px-2 py-0.5 bg-emerald-700 text-white text-[10px] sm:text-[11px] font-bold uppercase tracking-wider rounded-none">
+              Available in Japan Yard
             </span>
           )}
         </div>
 
         {/* Stock ID Plaque bottom right */}
         <div className="absolute bottom-2 right-2">
-          <span className="px-2 py-0.5 bg-white/95 text-neutral-900 text-[10px] font-mono font-bold tracking-tight rounded-none border border-neutral-300 shadow-sm">
+          <span className="px-2 py-0.5 bg-white/95 text-neutral-900 text-[10px] font-mono font-bold tracking-tight rounded-none border border-neutral-300 shadow-xs">
             {vehicle.stockId}
           </span>
         </div>
@@ -111,56 +111,62 @@ export function VehicleCard({ vehicle, destinationOverride, priority = false }: 
             </div>
           )}
 
-          {/* Vehicle Make, Model, Grade */}
+          {/* 4. Vehicle Name & Model */}
           <Link href={`/vehicles/${vehicle.slug}`} className="block group-hover:text-[#ff6a00] transition-colors">
             <h3 className="font-black text-sm sm:text-base text-neutral-900 leading-snug line-clamp-1">
               {vehicle.year} {vehicle.make} {vehicle.model}
             </h3>
+            {/* 5. Vehicle Variant */}
             <p className="text-xs text-neutral-500 font-medium line-clamp-1 mt-0.5">
               {vehicle.grade} · {vehicle.modelCode}
             </p>
           </Link>
 
-          {/* Quick Specs Grid */}
+          {/* Quick Specs Grid (6. Mileage, 7. Fuel, 8. Transmission, 9. Steering & Drivetrain) */}
           <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 my-3 pt-2 pb-2.5 border-y border-neutral-200 text-xs text-neutral-600">
-            <div className="flex items-center gap-1.5 truncate">
+            <div className="flex items-center gap-1.5 truncate" title={`Verified Mileage: ${vehicle.mileageKm.toLocaleString()} km`}>
               <Gauge className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
               <span className="font-semibold text-neutral-900">{vehicle.mileageKm.toLocaleString()} km</span>
             </div>
-            <div className="flex items-center gap-1.5 truncate">
+            <div className="flex items-center gap-1.5 truncate" title={`Fuel Type: ${vehicle.fuel}`}>
               <Fuel className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
               <span>{vehicle.fuel}</span>
             </div>
-            <div className="flex items-center gap-1.5 truncate">
+            <div className="flex items-center gap-1.5 truncate" title={`Transmission: ${vehicle.transmission}`}>
               <Settings className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
               <span>{vehicle.transmission}</span>
             </div>
-            <div className="flex items-center gap-1.5 truncate">
+            <div className="flex items-center gap-1.5 truncate" title={`Steering: ${vehicle.steering} | Drivetrain: ${vehicle.drivetrain}`}>
               <Compass className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
               <span className="font-bold text-neutral-800">{vehicle.steering} ({vehicle.drivetrain})</span>
             </div>
           </div>
+
+          {/* 11. Stock Verification Status */}
+          <div className="mb-3">
+            <div className="inline-flex items-center gap-1 text-[10px] font-semibold text-neutral-700 bg-neutral-50 px-2 py-0.5 rounded-none border border-neutral-200 w-full truncate">
+              <ShieldCheck className="w-3 h-3 text-emerald-600 shrink-0" />
+              <span className="truncate">{vehicle.inspectionStatus || 'Makers Certified 150-Point · Yard Verified'}</span>
+            </div>
+          </div>
         </div>
 
-        {/* Pricing & Call to Actions */}
+        {/* 10. FOB Price & Japanese Departure Port + Call to Actions */}
         <div className="pt-1">
-          <div className="flex items-baseline justify-between mb-3">
+          <div className="flex items-baseline justify-between mb-3 bg-neutral-50/70 p-2 border border-neutral-200">
             <div>
-              <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
-                {priceInfo.priceBasis === 'CIF'
-                  ? `CIF Price (${priceInfo.portLabel})`
-                  : priceInfo.priceBasis === 'FOB'
-                  ? `FOB Price (${priceInfo.portLabel})`
-                  : 'Quotation Basis'}
+              <div className="flex items-center gap-1 text-[10px] font-bold text-neutral-500 uppercase tracking-wider">
+                <Ship className="w-3 h-3 text-neutral-400 shrink-0" />
+                <span>{departurePort}</span>
               </div>
-              <div className="flex items-baseline gap-1.5">
+              <div className="flex items-baseline gap-1.5 mt-0.5">
                 {priceInfo.priceBasis === 'QUOTE_ONLY' || isSold ? (
-                  <span className="text-sm font-bold text-neutral-700">
+                  <span className="text-sm font-black text-neutral-700">
                     {isSold ? 'Sold' : 'Quote on Request'}
                   </span>
                 ) : (
                   <>
-                    <span className="text-lg font-black text-neutral-900 leading-none">
+                    <span className="text-base sm:text-lg font-black text-[#111111] leading-none">
                       {formatted.formatted}
                     </span>
                     {formatted.isConverted && (
@@ -173,17 +179,17 @@ export function VehicleCard({ vehicle, destinationOverride, priority = false }: 
               </div>
             </div>
 
-            {/* Source Type Tag */}
-            <span className="text-[10px] text-neutral-600 bg-neutral-100 px-1.5 py-0.5 rounded-none border border-neutral-300 font-semibold">
-              {vehicle.sourceType === 'Confirmed Makers Inventory' ? 'Verified Stock' : 'Partner Stock'}
+            {/* Verification tag */}
+            <span className="text-[9px] uppercase tracking-wider text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded-none border border-emerald-300 font-extrabold shrink-0">
+              Verified Stock
             </span>
           </div>
 
-          {/* Action Row (Square Corners) */}
+          {/* Action Row: 12. View Details & 13. Request a Quote (Square Corners) */}
           <div className="grid grid-cols-2 gap-2">
             <Link
               href={`/vehicles/${vehicle.slug}`}
-              className="w-full flex items-center justify-center gap-1 text-xs font-bold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 py-2 rounded-none border border-neutral-200 transition-colors text-center"
+              className="w-full flex items-center justify-center gap-1 text-xs font-bold text-neutral-900 bg-neutral-100 hover:bg-neutral-200 py-2.5 rounded-none border border-neutral-300 transition-colors text-center"
             >
               <span>View Details</span>
               <ArrowRight className="w-3.5 h-3.5 text-neutral-500" />
@@ -192,24 +198,24 @@ export function VehicleCard({ vehicle, destinationOverride, priority = false }: 
             {isSold ? (
               <Link
                 href={`/request-a-vehicle?model=${encodeURIComponent(`${vehicle.make} ${vehicle.model}`)}`}
-                className="w-full flex items-center justify-center gap-1 text-xs font-bold text-[#ff6a00] bg-orange-50 hover:bg-orange-100 py-2 rounded-none border border-orange-200 transition-colors text-center"
+                className="w-full flex items-center justify-center gap-1 text-xs font-bold text-[#ff6a00] bg-[#fff4eb] hover:bg-[#ffe8d6] py-2.5 rounded-none border border-[#ffd1ad] transition-colors text-center"
               >
                 <span>Source Similar</span>
               </Link>
             ) : (
               <a
                 href={`https://wa.me/818012345678?text=${encodeURIComponent(
-                  `Hi Makers Corp Japan, I am interested in quoting ${vehicle.year} ${vehicle.make} ${vehicle.model} (Stock ID: ${vehicle.stockId})${
-                    destinationName ? ` for destination: ${destinationName}` : ''
-                  }.`
+                  `Hi Makers Corp Japan, I would like to request an official written quote for:\n${vehicle.year} ${vehicle.make} ${vehicle.model} (${vehicle.grade})\nStock ID: ${vehicle.stockId}\nDeparture Port: ${departurePort}${
+                    destinationName ? `\nDestination Country: ${destinationName}` : ''
+                  }`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-1 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 py-2 rounded-none transition-colors"
-                aria-label={`WhatsApp quote for ${vehicle.stockId}`}
+                className="w-full flex items-center justify-center gap-1.5 text-xs font-bold text-white bg-[#ff6a00] hover:bg-[#e55f00] py-2.5 rounded-none transition-colors shadow-xs text-center"
+                aria-label={`Request quote for ${vehicle.stockId}`}
               >
-                <MessageCircle className="w-3.5 h-3.5 fill-emerald-600 text-white" />
-                <span>Quote</span>
+                <MessageCircle className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Request a Quote</span>
               </a>
             )}
           </div>

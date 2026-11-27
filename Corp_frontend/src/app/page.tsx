@@ -2,9 +2,8 @@ import React from 'react';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { HeroCompactSearch } from '@/components/home/HeroCompactSearch';
 import { CampaignBannerStrip } from '@/components/home/CampaignBannerStrip';
-import { ShopByType } from '@/components/home/ShopByType';
+import { VehicleDiscoveryExperience } from '@/components/home/VehicleDiscoveryExperience';
 import { LatestVehiclesSection } from '@/components/home/LatestVehiclesSection';
-import { CuratedShelves } from '@/components/home/CuratedShelves';
 import { MediaCenterPreview } from '@/components/home/MediaCenterPreview';
 import { ShopByDestination } from '@/components/home/ShopByDestination';
 import { TrustAndProcess } from '@/components/home/TrustAndProcess';
@@ -12,31 +11,28 @@ import { TrustAndProcess } from '@/components/home/TrustAndProcess';
 export default function HomePage() {
   return (
     <main className="w-full">
-      {/* 1. Premium Vehicle Hero Carousel */}
+      {/* 1. Premium Automatically Moving Hero Carousel (5s interval, smooth transitions) */}
       <HeroCarousel />
 
-      {/* 2. Compact search placed directly below hero carousel */}
+      {/* 2. Compact Vehicle Search (Preserved directly below hero carousel) */}
       <HeroCompactSearch />
 
-      {/* 3. Homepage Campaign Banner Strip (Directly below hero & search) */}
+      {/* 3. Homepage Campaign Banner Strip */}
       <CampaignBannerStrip />
 
-      {/* 4. Shop by type (compact chips & tiles) */}
-      <ShopByType />
+      {/* 4. Complete Vehicle Category Discovery Experience (Vehicles & Commercial Vehicles multi-level discovery) */}
+      <VehicleDiscoveryExperience />
 
-      {/* 5. Latest Vehicles in Japan (Immediate real card grid on initial screen) */}
+      {/* 5. Latest Vehicles in Japan (Physical stock cards) */}
       <LatestVehiclesSection />
 
-      {/* 6. More ways to shop (Curated shelves) */}
-      <CuratedShelves />
-
-      {/* 7. Makers Corp Japan Media Center (News & Reviews Editorial Preview) */}
+      {/* 6. Makers Corp Japan Media Center (News & Reviews Editorial Preview) */}
       <MediaCenterPreview />
 
-      {/* 8. Shop by Destination (India & Sri Lanka featured) */}
+      {/* 7. Shop by Destination (India & Sri Lanka featured) */}
       <ShopByDestination />
 
-      {/* 9. Conclude with trust and conversion */}
+      {/* 8. Conclude with trust and export process */}
       <TrustAndProcess />
     </main>
   );

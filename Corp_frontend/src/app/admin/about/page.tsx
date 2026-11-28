@@ -18,6 +18,7 @@ import {
   Upload
 } from 'lucide-react';
 import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
+import { broadcastSettingsUpdated } from '@/context/SettingsContext';
 
 export default function AboutUsSettings() {
   const [loading, setLoading] = useState(true);
@@ -129,7 +130,7 @@ export default function AboutUsSettings() {
     if (e) e.preventDefault();
     setSubmitting(true);
     try {
-      const token = sessionStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken') || localStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/settings`, {
         method: 'PUT',
@@ -141,9 +142,15 @@ export default function AboutUsSettings() {
       });
       const data = await res.json();
       if (data.success) {
+        if (data.data) {
+          try {
+            localStorage.setItem('mcj_site_settings', JSON.stringify(data.data));
+          } catch {}
+        }
+        broadcastSettingsUpdated();
         savedRef.current = JSON.stringify(aboutData);
         setIsDirty(false);
-        showStatus('success', 'About Us content updated successfully.');
+        showStatus('success', 'About Us content updated & synchronized live.');
       } else {
         showStatus('error', data.message || 'Update failed.');
       }

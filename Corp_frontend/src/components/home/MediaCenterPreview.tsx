@@ -1,14 +1,29 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, BookOpen, Clock, Calendar, ChevronRight } from 'lucide-react';
-import { articles, getFeaturedArticle } from '@/data/news';
+import { articles as staticArticles, Article } from '@/data/news';
+import { fetchLiveArticles } from '@/lib/api';
 
 export function MediaCenterPreview() {
-  const featured = getFeaturedArticle();
-  const secondaryArticles = articles.filter((a) => a.id !== featured.id).slice(0, 2);
+  const [articleList, setArticleList] = useState<Article[]>(staticArticles);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchLiveArticles().then((live) => {
+      if (isMounted && live && live.length > 0) {
+        setArticleList(live);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const featured = articleList.find((a) => a.featured) || articleList[0] || staticArticles[0];
+  const secondaryArticles = articleList.filter((a) => a.id !== featured.id).slice(0, 2);
 
   return (
     <section className="bg-white py-12 border-b border-neutral-200 rounded-none">

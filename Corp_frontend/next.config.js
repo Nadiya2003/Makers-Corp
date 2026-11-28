@@ -26,7 +26,13 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
         port: '5000',
-        pathname: '/public/uploads/**',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '5000',
+        pathname: '/**',
       },
       // Production backend – http (images uploaded from production server use http)
       {
@@ -58,6 +64,22 @@ const nextConfig = {
     ],
     // Allow standard <img> tags to load from any source (used in admin gallery)
     unoptimized: true,
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/public/uploads/:path*',
+        destination: 'http://localhost:5000/public/uploads/:path*',
+      },
+      {
+        source: '/uploads/:path*',
+        destination: 'http://localhost:5000/public/uploads/:path*',
+      },
+      {
+        source: '/public/:path*',
+        destination: 'http://localhost:5000/public/:path*',
+      },
+    ];
   },
 };
 

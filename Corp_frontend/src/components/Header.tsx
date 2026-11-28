@@ -17,6 +17,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useMarket } from '@/context/MarketContext';
+import { useSettings } from '@/context/SettingsContext';
 
 interface AnnouncementItem {
   text: string;
@@ -37,6 +38,7 @@ const ANNOUNCEMENT_ITEMS: AnnouncementItem[] = [
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
+  const { settings } = useSettings();
   const {
     destinationSlug,
     market,
@@ -88,15 +90,37 @@ export function Header() {
     setCurrencyMenuOpen(false);
   }, [pathname]);
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Inventory', href: '/vehicles' },
-    { name: 'Destinations', href: '/destinations' },
-    { name: 'How to Buy', href: '/how-to-buy' },
-    { name: 'News & Reviews', href: '/news' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' }
-  ];
+  const announcementItems: AnnouncementItem[] = React.useMemo(() => {
+    if (settings?.header?.announcementTicker && settings.header.announcementTicker.length > 0) {
+      return settings.header.announcementTicker.map((item) => ({
+        text: item.text,
+        href: item.link || '/',
+        isExternal: Boolean(item.external)
+      }));
+    }
+    return ANNOUNCEMENT_ITEMS;
+  }, [settings?.header?.announcementTicker]);
+
+  const navLinks = React.useMemo(() => {
+    if (settings?.header?.navLinks && settings.header.navLinks.length > 0) {
+      return settings.header.navLinks.map((item) => ({
+        name: item.label,
+        href: item.url
+      }));
+    }
+    return [
+      { name: 'Home', href: '/' },
+      { name: 'Inventory', href: '/vehicles' },
+      { name: 'Destinations', href: '/destinations' },
+      { name: 'How to Buy', href: '/how-to-buy' },
+      { name: 'News & Reviews', href: '/news' },
+      { name: 'About', href: '/about' },
+      { name: 'Contact', href: '/contact' }
+    ];
+  }, [settings?.header?.navLinks]);
+
+  const whatsappPhone = (settings?.header?.whatsappNumber || '+81 80-4893-1674').replace(/[^0-9]/g, '');
+  const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(`Hello ${settings?.siteName || 'Makers Corp Japan'}, I am inquiring about vehicle export quotation.`)}`;
 
   return (
     <>
@@ -131,7 +155,7 @@ export function Header() {
               >
                 {/* Primary Loop */}
                 <div className="flex items-center shrink-0">
-                  {ANNOUNCEMENT_ITEMS.map((item, idx) => (
+                  {announcementItems.map((item, idx) => (
                     <React.Fragment key={`announce-p-${idx}`}>
                       {item.isExternal ? (
                         <a
@@ -160,7 +184,7 @@ export function Header() {
 
                 {/* Duplicated Loop for Marquee */}
                 <div className="flex items-center shrink-0" aria-hidden="true">
-                  {ANNOUNCEMENT_ITEMS.map((item, idx) => (
+                  {announcementItems.map((item, idx) => (
                     <React.Fragment key={`announce-dup-${idx}`}>
                       {item.isExternal ? (
                         <a
@@ -207,8 +231,8 @@ export function Header() {
             <Link href="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0 group">
               <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shrink-0">
                 <Image
-                  src="/images/makers-mark.png"
-                  alt="Makers Corp Japan Official Logo"
+                  src={settings?.logo || '/images/makers-mark.png'}
+                  alt={`${settings?.siteName || 'Makers Corp Japan'} Official Logo`}
                   width={48}
                   height={48}
                   priority
@@ -217,10 +241,14 @@ export function Header() {
               </div>
               <div className="flex flex-col">
                 <span className="font-black text-base sm:text-xl tracking-tight text-neutral-900 uppercase leading-none">
-                  Makers Corp <span className="text-[#ff6a00] font-black">Japan</span>
+                  {settings?.siteName?.includes('Makers') ? (
+                    <>Makers Corp <span className="text-[#ff6a00] font-black">Japan</span></>
+                  ) : (
+                    settings?.siteName || 'Makers Corp Japan'
+                  )}
                 </span>
                 <span className="text-[10px] sm:text-[11px] text-neutral-500 font-bold tracking-wider uppercase mt-0.5">
-                  Vehicles Sourced from Japan
+                  {settings?.header?.tagline || settings?.tagline || 'Vehicles Sourced from Japan'}
                 </span>
               </div>
             </Link>
@@ -405,7 +433,7 @@ export function Header() {
 
               {/* WhatsApp Quote Button (Desktop) */}
               <a
-                href="https://wa.me/818012345678?text=Hello%20Makers%20Corp%20Japan,%20I%20am%20inquiring%20about%20vehicle%20export%20quotation."
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden sm:inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-3 sm:px-3.5 py-1.5 rounded-none text-xs font-bold tracking-wide transition-all shadow-sm active:scale-95"
@@ -482,7 +510,7 @@ export function Header() {
 
             <div className="mt-3 pt-3 border-t border-neutral-200 flex flex-col gap-2">
               <a
-                href="https://wa.me/818012345678?text=Hello%20Makers%20Corp%20Japan,%20I%20am%20inquiring%20about%20vehicle%20export%20quotation."
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-none text-xs font-bold shadow-sm"

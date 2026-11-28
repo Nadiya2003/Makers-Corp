@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { convertMapUrl } from '@/lib/mapUtils';
 import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
+import { broadcastSettingsUpdated } from '@/context/SettingsContext';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
@@ -162,7 +163,7 @@ export default function ContactSettings() {
 
     setSubmitting(true);
     try {
-      const token = sessionStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken') || localStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       
       const res = await fetch(`${apiUrl}/settings`, {
@@ -182,6 +183,12 @@ export default function ContactSettings() {
       });
       const data = await res.json();
       if (data.success) {
+        if (data.data) {
+          try {
+            localStorage.setItem('mcj_site_settings', JSON.stringify(data.data));
+          } catch {}
+        }
+        broadcastSettingsUpdated();
         // Update local state to show the resolved URL
         setContactData(prev => ({
           ...prev,
@@ -192,7 +199,7 @@ export default function ContactSettings() {
           contactPage: { ...contactData.contactPage, googleMapUrl: resolvedMapUrl }
         });
         setIsDirty(false);
-        showStatus('success', 'Contact details updated successfully.');
+        showStatus('success', 'Contact details updated and synchronized live.');
       } else {
         showStatus('error', data.message || 'Update failed.');
       }

@@ -23,6 +23,7 @@ import {
 import { VehicleCard } from '@/components/VehicleCard';
 import { VehicleBrowseSidebar, categoryOptions } from '@/components/vehicles/VehicleBrowseSidebar';
 import { vehicles, Vehicle, BodyType, FuelType, SteeringType } from '@/data';
+import { fetchLiveVehicles } from '@/lib/api';
 import { useMarket } from '@/context/MarketContext';
 import { getReviewState } from '@/data/reviews';
 import { markets } from '@/data';
@@ -31,6 +32,21 @@ function VehiclesCatalogContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { destinationSlug, setDestination, market } = useMarket();
+
+  // Dynamic live vehicles state initialized with static catalog for instant render
+  const [allVehicles, setAllVehicles] = useState<Vehicle[]>(vehicles);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchLiveVehicles().then((live) => {
+      if (isMounted && live && live.length > 0) {
+        setAllVehicles(live);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Search & Filter States
   const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
@@ -84,16 +100,16 @@ function VehiclesCatalogContent() {
   // Extract available makes and dependent models
   const availableMakes = useMemo(() => {
     const set = new Set<string>();
-    vehicles.forEach((v) => set.add(v.make));
+    allVehicles.forEach((v) => set.add(v.make));
     return ['All', ...Array.from(set).sort()];
-  }, []);
+  }, [allVehicles]);
 
   const availableModels = useMemo(() => {
     if (makeFilter === 'All') return ['All'];
     const set = new Set<string>();
-    vehicles.filter((v) => v.make === makeFilter).forEach((v) => set.add(v.model));
+    allVehicles.filter((v) => v.make === makeFilter).forEach((v) => set.add(v.model));
     return ['All', ...Array.from(set).sort()];
-  }, [makeFilter]);
+  }, [makeFilter, allVehicles]);
 
   // Reset model filter if make changes
   const handleMakeChange = (newMake: string) => {
@@ -147,7 +163,7 @@ function VehiclesCatalogContent() {
     const counts: Record<string, number> = {};
     availableMakes.forEach((m) => {
       if (m === 'All') return;
-      counts[m] = vehicles.filter((v) => {
+      counts[m] = allVehicles.filter((v) => {
         if (v.availability === 'Sold' && availabilityFilter === 'Available') return false;
         if (currentDestination) {
           const review = getReviewState(v.stockId, currentDestination);
@@ -159,7 +175,7 @@ function VehiclesCatalogContent() {
       }).length;
     });
     return counts;
-  }, [availableMakes, currentDestination, bodyFilter, categoryFilter, availabilityFilter]);
+  }, [availableMakes, currentDestination, bodyFilter, categoryFilter, availabilityFilter, allVehicles]);
 
   // Calculate Accurate Dynamic Counts for Body Types (respecting destination, make, and category)
   const bodyCounts = useMemo(() => {
@@ -173,7 +189,7 @@ function VehiclesCatalogContent() {
       'Kei Cars',
     ];
     allBodies.forEach((b) => {
-      counts[b] = vehicles.filter((v) => {
+      counts[b] = allVehicles.filter((v) => {
         if (v.availability === 'Sold' && availabilityFilter === 'Available') return false;
         if (currentDestination) {
           const review = getReviewState(v.stockId, currentDestination);
@@ -185,13 +201,13 @@ function VehiclesCatalogContent() {
       }).length;
     });
     return counts;
-  }, [currentDestination, makeFilter, categoryFilter, availabilityFilter]);
+  }, [currentDestination, makeFilter, categoryFilter, availabilityFilter, allVehicles]);
 
   // Calculate Accurate Dynamic Counts for Categories (respecting destination, make, and body)
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     categoryOptions.forEach((opt) => {
-      counts[opt.key] = vehicles.filter((v) => {
+      counts[opt.key] = allVehicles.filter((v) => {
         if (v.availability === 'Sold' && availabilityFilter === 'Available') return false;
         if (currentDestination) {
           const review = getReviewState(v.stockId, currentDestination);
@@ -203,11 +219,11 @@ function VehiclesCatalogContent() {
       }).length;
     });
     return counts;
-  }, [currentDestination, makeFilter, bodyFilter, availabilityFilter]);
+  }, [currentDestination, makeFilter, bodyFilter, availabilityFilter, allVehicles]);
 
   // Filter and sort the vehicles
   const filteredVehicles = useMemo(() => {
-    return vehicles
+    return allVehicles
       .filter((v) => {
         // 1. Keyword / Stock ID / Model code search
         if (searchTerm.trim()) {
@@ -293,6 +309,7 @@ function VehiclesCatalogContent() {
     priceRange,
     currentDestination,
     sortBy,
+    allVehicles,
   ]);
 
   const activeFiltersCount = [

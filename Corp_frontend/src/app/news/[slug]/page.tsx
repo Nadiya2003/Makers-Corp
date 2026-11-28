@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { articles, getArticleBySlug } from '@/data/news';
+import { fetchLiveArticle, fetchLiveArticles } from '@/lib/api';
 import { ArticleDetailClient } from './ArticleDetailClient';
 
 interface Props {
@@ -9,14 +10,29 @@ interface Props {
   };
 }
 
+// Allow any dynamic slug uploaded via Admin Dashboard to render without 404
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  return articles.map((article) => ({
-    slug: article.slug,
-  }));
+  try {
+    const live = await fetchLiveArticles().catch(() => []);
+    const liveSlugs = (live || []).filter((a) => a.slug).map((a) => ({ slug: a.slug }));
+    const staticSlugs = articles.map((article) => ({ slug: article.slug }));
+    // Merge unique slugs
+    const seen = new Set<string>();
+    const all = [...liveSlugs, ...staticSlugs].filter((item) => {
+      if (seen.has(item.slug)) return false;
+      seen.add(item.slug);
+      return true;
+    });
+    return all;
+  } catch {
+    return articles.map((article) => ({ slug: article.slug }));
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const article = getArticleBySlug(params.slug);
+  const article = (await fetchLiveArticle(params.slug)) || getArticleBySlug(params.slug);
   if (!article) return {};
 
   return {
@@ -40,8 +56,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function ArticlePage({ params }: Props) {
-  const article = getArticleBySlug(params.slug);
+export default async function ArticlePage({ params }: Props) {
+  const article = (await fetchLiveArticle(params.slug)) || getArticleBySlug(params.slug);
 
   if (!article) {
     notFound();

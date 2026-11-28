@@ -6,10 +6,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Search, ChevronRight } from 'lucide-react';
 import { useMarket } from '@/context/MarketContext';
+import { useSettings } from '@/context/SettingsContext';
 
 export function HeroCompactSearch() {
   const router = useRouter();
   const { destinationSlug, setDestination } = useMarket();
+  const { settings } = useSettings();
 
   const [keyword, setKeyword] = useState('');
   const [make, setMake] = useState('All');
@@ -179,27 +181,21 @@ export function HeroCompactSearch() {
             <div className="mt-4 pt-3 border-t border-neutral-200 flex flex-wrap items-center justify-between gap-3">
               <div className="flex flex-wrap items-center gap-2 text-[11px] text-neutral-500">
                 <span className="font-bold text-neutral-700">Quick Searches:</span>
-                <button
-                  type="button"
-                  onClick={() => router.push('/vehicles?make=Toyota&body=SUVs+%26+4x4')}
-                  className="bg-neutral-50 hover:bg-[#fff4eb] text-neutral-700 hover:text-[#ff6a00] px-3 py-1 rounded-md border border-neutral-200 transition-colors font-medium text-xs shadow-2xs"
-                >
-                  Toyota SUVs
-                </button>
-                <button
-                  type="button"
-                  onClick={() => router.push('/vehicles?destination=india')}
-                  className="bg-neutral-50 hover:bg-[#fff4eb] text-neutral-700 hover:text-[#ff6a00] px-3 py-1 rounded-md border border-neutral-200 transition-colors font-medium text-xs shadow-2xs"
-                >
-                  India Reviewed
-                </button>
-                <button
-                  type="button"
-                  onClick={() => router.push('/vehicles?destination=sri-lanka')}
-                  className="bg-neutral-50 hover:bg-[#fff4eb] text-neutral-700 hover:text-[#ff6a00] px-3 py-1 rounded-md border border-neutral-200 transition-colors font-medium text-xs shadow-2xs"
-                >
-                  Sri Lanka Stock
-                </button>
+                {(settings?.homepage?.searchConfig?.quickSearches || ['Toyota SUVs', 'India Reviewed', 'Sri Lanka Stock']).map((qs, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => {
+                      if (qs.toLowerCase().includes('toyota')) router.push('/vehicles?make=Toyota&body=SUVs+%26+4x4');
+                      else if (qs.toLowerCase().includes('india')) router.push('/vehicles?destination=india');
+                      else if (qs.toLowerCase().includes('sri lanka')) router.push('/vehicles?destination=sri-lanka');
+                      else router.push(`/vehicles?q=${encodeURIComponent(qs)}`);
+                    }}
+                    className="bg-neutral-50 hover:bg-[#fff4eb] text-neutral-700 hover:text-[#ff6a00] px-3 py-1 rounded-md border border-neutral-200 transition-colors font-medium text-xs shadow-2xs"
+                  >
+                    {qs}
+                  </button>
+                ))}
               </div>
 
               <button

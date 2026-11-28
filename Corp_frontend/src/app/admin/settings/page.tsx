@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Save, Loader2, Globe, Shield, Palette, Upload, Phone } from 'lucide-react';
 import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
+import { broadcastSettingsUpdated } from '@/context/SettingsContext';
 
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
@@ -11,22 +12,22 @@ export default function SettingsPage() {
   const [isDirty, setIsDirty] = useState(false);
   const savedRef = useRef<string>('');
   const [settings, setSettings] = useState({
-    siteName: '',
+    siteName: 'Makers Corp Japan',
     logo: '',
     favicon: '',
     seo: {
-      metaTitle: '',
-      metaDescription: '',
-      keywords: ''
+      metaTitle: 'Makers Corp Japan | Japanese Vehicle Exporter',
+      metaDescription: 'Verified physical inventory in Tokyo & Yokohama yards, certified JEVIC inspections, and global export shipping.',
+      keywords: 'Japanese vehicle export, Tokyo cars, FOB Japan, JEVIC certified'
     },
     header: {
-      contactNumber: '',
-      whatsappNumber: ''
+      contactNumber: '+81 3-5555-0199',
+      whatsappNumber: '+81 90-1234-5678'
     },
     theme: {
-      primaryColor: '#000000',
-      secondaryColor: '#ffffff',
-      accentColor: '#fbbf24'
+      primaryColor: '#ff6a00',
+      secondaryColor: '#111111',
+      accentColor: '#ff6a00'
     }
   });
 
@@ -41,7 +42,7 @@ export default function SettingsPage() {
     formDataObj.append('category', 'Settings');
 
     try {
-      const token = sessionStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken') || localStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/media`, {
         method: 'POST',
@@ -97,7 +98,7 @@ export default function SettingsPage() {
     setSaving(true);
     setMessage('');
     try {
-      const token = sessionStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken') || localStorage.getItem('adminToken');
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/settings`, {
         method: 'PUT',
         headers: {
@@ -109,9 +110,15 @@ export default function SettingsPage() {
 
       const data = await res.json();
       if (data.success) {
+        if (data.data) {
+          try {
+            localStorage.setItem('mcj_site_settings', JSON.stringify(data.data));
+          } catch {}
+        }
+        broadcastSettingsUpdated();
         savedRef.current = JSON.stringify(settings);
         setIsDirty(false);
-        setMessage('Settings saved successfully!');
+        setMessage('Settings saved and synchronized live!');
         setTimeout(() => setMessage(''), 3000);
       } else {
         setMessage('Error saving settings: ' + data.message);

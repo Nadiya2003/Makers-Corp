@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Globe, ShieldCheck, Ship, Search, ExternalLink } from 'lucide-react';
+import { useSettings } from '@/context/SettingsContext';
 
 interface CampaignCard {
   id: string;
@@ -67,6 +68,29 @@ const campaigns: CampaignCard[] = [
 ];
 
 export function CampaignBannerStrip() {
+  const { settings } = useSettings();
+
+  const campaignList: CampaignCard[] = useMemo(() => {
+    if (settings?.homepage?.campaignHighlights && settings.homepage.campaignHighlights.length > 0) {
+      return settings.homepage.campaignHighlights.map((c, idx) => {
+        const fallback = campaigns[idx] || campaigns[0];
+        return {
+          id: c.id || `camp-${idx}`,
+          tag: c.badge || c.market || fallback.tag,
+          tagColor: fallback.tagColor,
+          headline: c.title || fallback.headline,
+          subtext: c.description || fallback.subtext,
+          actionText: c.linkText || fallback.actionText,
+          href: c.linkUrl || fallback.href,
+          isExternal: Boolean(c.isExternal),
+          image: fallback.image,
+          icon: fallback.icon,
+        };
+      });
+    }
+    return campaigns;
+  }, [settings?.homepage?.campaignHighlights]);
+
   return (
     <section className="bg-white py-5 border-b border-neutral-200 rounded-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -85,7 +109,7 @@ export function CampaignBannerStrip() {
 
         {/* 4 Compact Campaign Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 overflow-x-auto pb-1 sm:pb-0 snap-x">
-          {campaigns.map((card, idx) => {
+          {campaignList.map((card, idx) => {
             const Icon = card.icon;
             const CardWrapper = card.isExternal ? 'a' : Link;
             const extraProps = card.isExternal

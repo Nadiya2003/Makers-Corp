@@ -30,11 +30,12 @@ export default function AdminLayout({
       return;
     }
 
-    const token = sessionStorage.getItem('adminToken');
+    const token = sessionStorage.getItem('adminToken') || localStorage.getItem('adminToken');
     if (!token) {
       // No token — redirect to login immediately
       router.replace('/admin/login');
     } else {
+      sessionStorage.setItem('adminToken', token);
       setIsAuthorized(true);
       setChecking(false);
     }

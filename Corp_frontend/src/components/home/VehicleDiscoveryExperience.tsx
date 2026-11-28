@@ -3,6 +3,7 @@
 import React, { useState, useId } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSettings } from '@/context/SettingsContext';
 import {
   ChevronRight,
   ArrowRight,
@@ -456,10 +457,16 @@ const TRUCK_MANUFACTURERS: TruckManufacturer[] = [
    ========================================================================= */
 
 export function VehicleDiscoveryExperience() {
+  const { settings } = useSettings();
   const [division, setDivision] = useState<DivisionType>('vehicles');
   const [subView, setSubView] = useState<SubViewType>('overview');
 
   const sectionId = useId();
+
+  const spotlight = settings?.homepage?.categoryDiscovery?.spotlight;
+  const spotlightGenerations = spotlight?.generations && spotlight.generations.length > 0
+    ? spotlight.generations.map((g) => g.code || g.name)
+    : ['300 Series', '250 Series', '70 Series', '200 Series', 'Prado 150', 'Prado 120'];
 
   // Switch division resets subView back to root overview
   const handleDivisionChange = (newDivision: DivisionType) => {
@@ -715,18 +722,18 @@ export function VehicleDiscoveryExperience() {
                 <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between z-10 bg-[#111111]/95 lg:bg-transparent">
                   <div>
                     <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest block mb-1">
-                      TOYOTA MOTOR CORPORATION · TAHARA &amp; YOSHIWARA PLANTS
+                      {spotlight?.manufacturer || 'TOYOTA MOTOR CORPORATION · TAHARA & YOSHIWARA PLANTS'}
                     </span>
                     <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white leading-tight">
-                      TOYOTA <span className="text-[#ff6a00]">LAND CRUISER</span>
+                      {spotlight?.title || <>TOYOTA <span className="text-[#ff6a00]">LAND CRUISER</span></>}
                     </h3>
                     <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed mt-3 font-medium">
-                      Explore the legendary Land Cruiser family. Discover iconic Japanese 4x4 vehicles engineered for exceptional performance, durability, and off-road capability. Covering all major generation from the modern 300 &amp; 250 series to the heavy-duty 70, 200, and Prado lines.
+                      {spotlight?.description || 'Explore the legendary Land Cruiser family. Discover iconic Japanese 4x4 vehicles engineered for exceptional performance, durability, and off-road capability. Covering all major generation from the modern 300 & 250 series to the heavy-duty 70, 200, and Prado lines.'}
                     </p>
 
                     {/* Generation Series Badges */}
                     <div className="grid grid-cols-3 gap-2 mt-5">
-                      {['300 Series', '250 Series', '70 Series', '200 Series', 'Prado 150', 'Prado 120'].map(
+                      {spotlightGenerations.map(
                         (ser, idx) => (
                           <div
                             key={idx}

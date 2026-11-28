@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -15,7 +15,8 @@ import {
   ShieldCheck,
   ChevronRight
 } from 'lucide-react';
-import { articles, NewsCategory, Article } from '@/data/news';
+import { articles as staticArticles, NewsCategory, Article } from '@/data/news';
+import { fetchLiveArticles } from '@/lib/api';
 
 const categories: Array<'All' | NewsCategory> = [
   'All',
@@ -27,10 +28,23 @@ const categories: Array<'All' | NewsCategory> = [
 ];
 
 export function NewsIndexClient() {
+  const [articlesList, setArticlesList] = useState<Article[]>(staticArticles);
   const [selectedCategory, setSelectedCategory] = useState<'All' | NewsCategory>('All');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredArticles = articles.filter((a) => {
+  useEffect(() => {
+    let isMounted = true;
+    fetchLiveArticles().then((live) => {
+      if (isMounted && live && live.length > 0) {
+        setArticlesList(live);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const filteredArticles = articlesList.filter((a) => {
     const matchCat = selectedCategory === 'All' || a.category === selectedCategory;
     const matchSearch =
       !searchTerm.trim() ||
@@ -39,7 +53,7 @@ export function NewsIndexClient() {
     return matchCat && matchSearch;
   });
 
-  const featured = articles.find((a) => a.featured) || articles[0];
+  const featured = articlesList.find((a) => a.featured) || articlesList[0] || staticArticles[0];
   const remaining = filteredArticles.filter((a) => a.id !== featured.id || selectedCategory !== 'All' || searchTerm.trim() !== '');
 
   return (

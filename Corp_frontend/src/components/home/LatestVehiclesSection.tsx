@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { VehicleCard } from '@/components/VehicleCard';
 import { vehicles } from '@/data';
@@ -16,35 +17,52 @@ export function LatestVehiclesSection() {
     .slice(0, 8);
 
   return (
-    <section className="bg-white py-8 border-b border-neutral-200 rounded-none">
+    <section className="bg-white py-6 sm:py-8 border-b border-neutral-200 rounded-none overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="w-2 h-2 bg-emerald-500 animate-pulse rounded-none" />
-              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800">
-                Live Inventory Feed · Tokyo & Yokohama Yards
-              </span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
-              Latest Vehicles in Japan
-            </h2>
-            <p className="text-xs text-neutral-500 mt-0.5 font-medium">
-              {destinationSlug && market
-                ? `Showing genuine Japan stock with review status for ${market.name}`
-                : 'Physical export inventory inspected and ready for container or Ro-Ro booking'}
-            </p>
+        {/* Section Header with Mount Fuji Japanese Port Backdrop matching reference */}
+        <div className="relative mb-6 sm:mb-8 rounded-none overflow-hidden border border-neutral-200 shadow-sm bg-neutral-900 min-h-[140px] sm:min-h-[170px] flex items-center">
+          {/* Background Panoramic Graphic */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/fuji-header-banner.jpg"
+              alt="Mount Fuji and Japanese Export Port Yard"
+              fill
+              priority
+              className="object-cover object-right sm:object-center opacity-90"
+            />
+            {/* Gradient Overlay for high legibility on left and vibrant orange accent on right edge */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 sm:via-white/70 to-transparent" />
+            <div className="absolute top-0 right-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#ff6a00]/30 to-transparent pointer-events-none" />
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
-            <Link
-              href="/vehicles"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#ff6a00] hover:text-[#e55f00] bg-[#fff4eb] hover:bg-[#ffe8d6] px-3.5 py-2 rounded-none border border-[#ffd1ad] transition-colors"
-            >
-              <span>View Full Inventory ({vehicles.length})</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+          {/* Header Content */}
+          <div className="relative z-10 w-full p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="w-2.5 h-2.5 bg-[#ff6a00] rounded-none shrink-0" />
+                <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-neutral-800">
+                  LIVE INVENTORY FEED · TOKYO &amp; YOKOHAMA YARDS
+                </span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-neutral-950 tracking-tight leading-none">
+                Latest Vehicles in <span className="text-[#ff6a00]">Japan</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-600 mt-1.5 font-medium max-w-xl">
+                {destinationSlug && market
+                  ? `Showing genuine Japan stock with review status for ${market.name}`
+                  : 'Physical export inventory inspected and ready for container or Ro-Ro booking'}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0">
+              <Link
+                href="/vehicles"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#ff6a00] hover:text-[#e55f00] bg-white/95 hover:bg-white px-4 py-2.5 rounded-none border border-[#ffd1ad] shadow-sm hover:shadow transition-all"
+              >
+                <span>View Full Inventory ({vehicles.length})</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </div>
 

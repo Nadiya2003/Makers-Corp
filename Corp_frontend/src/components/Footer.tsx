@@ -12,9 +12,21 @@ import {
   FileCheck,
   ArrowUpRight
 } from 'lucide-react';
+import { useSettings } from '@/context/SettingsContext';
 
 export function Footer() {
+  const { settings } = useSettings();
   const currentYear = new Date().getFullYear();
+
+  const footerAbout = settings?.footer?.aboutText ||
+    'A specialized Japanese vehicle export marketplace connecting verified Tokyo, Yokohama, Kobe, and Nagoya stock with international buyers across Asia, East Africa, and global right-hand-drive markets.';
+
+  const footerAddress = settings?.footer?.address || 'Tokyo Export Hub, Minato-ku, Tokyo 105-0004, Japan';
+  const footerPhone = settings?.footer?.phone || '+81 3 5555 0198';
+  const footerEmail = settings?.footer?.email || 'japan@makers-corp.com';
+  const footerLogo = settings?.footer?.logo || settings?.logo || '/images/makers-mark.png';
+  const copyrightText = settings?.footer?.copyrightText ||
+    `© ${currentYear} ${settings?.siteName || 'Makers Corp Japan'}. All rights reserved. Tokyo, Japan.`;
 
   return (
     <footer className="bg-[#111111] text-neutral-300 pt-12 pb-8 border-t border-neutral-800 text-xs rounded-none">
@@ -65,47 +77,41 @@ export function Footer() {
             <div className="flex items-center gap-2.5">
               <div className="w-10 h-10 flex items-center justify-center shrink-0">
                 <Image
-                  src="/images/makers-mark.png"
-                  alt="Makers Corp Japan Logo"
+                  src={footerLogo}
+                  alt={`${settings?.siteName || 'Makers Corp Japan'} Logo`}
                   width={40}
                   height={40}
                   className="object-contain"
                 />
               </div>
               <span className="font-black text-base tracking-tight text-white uppercase">
-                Makers Corp <span className="text-[#ff6a00] font-black">Japan</span>
+                {settings?.siteName?.includes('Makers') ? (
+                  <>Makers Corp <span className="text-[#ff6a00] font-black">Japan</span></>
+                ) : (
+                  settings?.siteName || 'Makers Corp Japan'
+                )}
               </span>
             </div>
             <p className="text-neutral-400 leading-relaxed text-xs pr-4">
-              A specialized Japanese vehicle export marketplace connecting verified Tokyo, Yokohama, Kobe, and Nagoya stock with international buyers across Asia, East Africa, and global right-hand-drive markets.
+              {footerAbout}
             </p>
 
             <div className="space-y-2 text-neutral-300 text-xs pt-2">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[#ff6a00] shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-white font-medium">Head Operations Desk:</span> Tokyo Export Hub, Minato-ku, Tokyo 105-0004, Japan
-                  <span className="block text-[11px] text-neutral-500 italic mt-0.5">
-                    (Registered entity confirmation pending formal corporate registration publication)
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-[#ff6a00] shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-white font-medium">Sri Lanka Operations Liaison:</span> 123 Import Avenue, Colombo 03, Sri Lanka
+                  <span className="text-white font-medium">Head Operations Desk:</span> {footerAddress}
                 </div>
               </div>
 
               <div className="flex items-center gap-2 pt-1">
                 <Phone className="w-4 h-4 text-[#ff6a00] shrink-0" />
-                <span className="text-neutral-300">Japan HQ: +81 3 5555 0198 | SL Desk: +94 77 123 4567</span>
+                <span className="text-neutral-300">Japan HQ: {footerPhone}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[#ff6a00] shrink-0" />
-                <span className="text-neutral-300">export@makerscorp.jp | india-desk@makerscorp.jp</span>
+                <span className="text-neutral-300">{footerEmail}</span>
               </div>
             </div>
           </div>
@@ -239,7 +245,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-neutral-500 text-[11px]">
           <div>
-            © {currentYear} Makers Corp Japan. All rights reserved. Tokyo, Japan.
+            {copyrightText}
           </div>
           <div className="flex items-center gap-4">
             <Link href="/terms" className="hover:text-neutral-400">

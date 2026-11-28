@@ -1,18 +1,42 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { VehicleCard } from '@/components/VehicleCard';
-import { vehicles } from '@/data';
+import { vehicles as staticVehicles, Vehicle } from '@/data';
+import { fetchLiveVehicles } from '@/lib/api';
 import { useMarket } from '@/context/MarketContext';
+import { useSettings } from '@/context/SettingsContext';
 
 export function LatestVehiclesSection() {
   const { destinationSlug, market } = useMarket();
+  const { settings } = useSettings();
+  const [vehicleList, setVehicleList] = useState<Vehicle[]>(staticVehicles);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchLiveVehicles().then((live) => {
+      if (isMounted && live && live.length > 0) {
+        setVehicleList(live);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const sectionConfig = settings?.homepage?.latestVehiclesSection;
+  const tagText = sectionConfig?.tag || 'LIVE INVENTORY FEED · TOKYO & YOKOHAMA YARDS';
+  const subtitleText = sectionConfig?.subtitle || (destinationSlug && market
+    ? `Showing genuine Japan stock with review status for ${market.name}`
+    : 'Physical export inventory inspected and ready for container or Ro-Ro booking');
+  const bannerImage = sectionConfig?.bannerImage || '/images/fuji-header-banner.jpg';
+  const viewAllLabel = sectionConfig?.viewAllText || 'View Full Inventory';
 
   // Show available physical vehicles (targeting 8-10 units)
-  const availableVehicles = vehicles
+  const availableVehicles = vehicleList
     .filter((v) => v.availability !== 'Sold')
     .slice(0, 8);
 
@@ -24,7 +48,7 @@ export function LatestVehiclesSection() {
           {/* Background Panoramic Graphic */}
           <div className="absolute inset-0 z-0">
             <Image
-              src="/images/fuji-header-banner.jpg"
+              src={bannerImage}
               alt="Mount Fuji and Japanese Export Port Yard"
               fill
               priority
@@ -41,16 +65,14 @@ export function LatestVehiclesSection() {
               <div className="flex items-center gap-2 mb-1.5">
                 <span className="w-2.5 h-2.5 bg-[#ff6a00] rounded-none shrink-0" />
                 <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-neutral-800">
-                  LIVE INVENTORY FEED · TOKYO &amp; YOKOHAMA YARDS
+                  {tagText}
                 </span>
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-neutral-950 tracking-tight leading-none">
                 Latest Vehicles in <span className="text-[#ff6a00]">Japan</span>
               </h2>
               <p className="text-xs sm:text-sm text-neutral-600 mt-1.5 font-medium max-w-xl">
-                {destinationSlug && market
-                  ? `Showing genuine Japan stock with review status for ${market.name}`
-                  : 'Physical export inventory inspected and ready for container or Ro-Ro booking'}
+                {subtitleText}
               </p>
             </div>
 
@@ -59,7 +81,7 @@ export function LatestVehiclesSection() {
                 href="/vehicles"
                 className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#ff6a00] hover:text-[#e55f00] bg-white/95 hover:bg-white px-4 py-2.5 rounded-none border border-[#ffd1ad] shadow-sm hover:shadow transition-all"
               >
-                <span>View Full Inventory ({vehicles.length})</span>
+                <span>{viewAllLabel} ({vehicleList.length})</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Mail, Phone, MessageCircle, MapPin, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { useSettings } from '@/context/SettingsContext';
 
 const desks = [
   {
@@ -45,6 +46,53 @@ function generateRef() {
 }
 
 export function ContactPageClient() {
+  const { settings } = useSettings();
+  const contact = settings?.contactPage;
+
+  const pageTitle = contact?.title || 'Get in Touch';
+  const pageDescription = contact?.description || 'Our team handles export inquiries, destination checks, and quotation requests. Choose the desk closest to your market or use the form below.';
+  const workingHours = contact?.workingHours || 'Mon - Fri: 9:00 AM - 6:00 PM JST (UTC+9)';
+  const hubEmail = contact?.email || settings?.footer?.email || 'japan@makers-corp.com';
+  const hubPhone = contact?.phone || settings?.footer?.phone || '+81 3-5555-0199';
+  const hubAddress = contact?.address || settings?.footer?.address || 'Tokyo Export Hub, Minato-ku, Tokyo 105-0004, Japan';
+  const whatsappRaw = (settings?.header?.whatsappNumber || '+81 80-4893-1674').replace(/[^0-9]/g, '');
+
+  const dynamicDesks = [
+    {
+      title: 'Tokyo Export Hub',
+      icon: '🇯🇵',
+      email: hubEmail,
+      phone: hubPhone,
+      whatsapp: whatsappRaw,
+      handles: ['Global inquiries', 'FOB quotations', 'Shipping coordination', 'General vehicle questions'],
+    },
+    {
+      title: 'India Desk',
+      icon: '🇮🇳',
+      email: 'india-desk@makerscorp.jp',
+      phone: hubPhone,
+      whatsapp: whatsappRaw,
+      handles: ['India CIF quotations', 'Homologation guidance', 'BH-series registration questions'],
+    },
+    {
+      title: 'Sri Lanka Liaison',
+      subtitle: 'Operated by Makers Ceylon',
+      icon: '🇱🇰',
+      email: 'export@makerscorpjapan.com',
+      phone: '+94 77 123 4567',
+      whatsapp: '94771234567',
+      handles: ['Sri Lanka CIF quotations', 'CPTAD clearance support', 'Local delivery coordination'],
+    },
+    {
+      title: 'Africa Trade Desk',
+      icon: '🌍',
+      email: 'africa@makerscorpjapan.com',
+      phone: hubPhone,
+      whatsapp: whatsappRaw,
+      handles: ['Kenya & Tanzania CIF', 'KEBS / TBS pre-export inspection', 'East Africa shipping routes'],
+    },
+  ];
+
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -106,11 +154,10 @@ export function ContactPageClient() {
       {/* Hero */}
       <section className="bg-[#111111] text-white py-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#ff8a33] text-sm font-semibold uppercase tracking-widest mb-3">Contact</p>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h1>
-          <p className="text-neutral-300 text-lg max-w-2xl">
-            Our team handles export inquiries, destination checks, and quotation requests. Choose the desk
-            closest to your market or use the form below.
+          <p className="text-[#ff6a00] text-xs font-black uppercase tracking-widest mb-3">Tokyo Export Operations</p>
+          <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight uppercase">{pageTitle}</h1>
+          <p className="text-neutral-300 text-base md:text-lg max-w-2xl leading-relaxed">
+            {pageDescription}
           </p>
         </div>
       </section>
@@ -120,13 +167,13 @@ export function ContactPageClient() {
         <div className="max-w-5xl mx-auto">
           <div className="flex items-center gap-2 mb-8">
             <Clock className="w-4 h-4 text-neutral-500" />
-            <p className="text-neutral-600 text-sm">
-              We aim to respond within one business day. For urgent inquiries, WhatsApp is fastest.
+            <p className="text-neutral-600 text-xs sm:text-sm font-medium">
+              Operations Desk Working Hours: <strong>{workingHours}</strong>. Direct WhatsApp inquiries are monitored 7 days a week.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 gap-5">
-            {desks.map((desk) => (
-              <div key={desk.title} className="bg-white border border-neutral-200 rounded-none p-6">
+            {dynamicDesks.map((desk) => (
+              <div key={desk.title} className="bg-white border border-neutral-300 rounded-none p-6 shadow-2xs hover:border-[#ff6a00] transition-colors">
                 <p className="text-2xl mb-2">{desk.icon}</p>
                 <h3 className="font-bold text-[#111111] text-lg">{desk.title}</h3>
                 {desk.subtitle && (
@@ -146,15 +193,16 @@ export function ContactPageClient() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 text-sm text-neutral-700 hover:text-green-600 transition"
                     >
-                      <MessageCircle className="w-4 h-4 text-neutral-400" /> WhatsApp
+                      <MessageCircle className="w-4 h-4 text-emerald-600" /> WhatsApp Direct Desk
                     </a>
-                  ) : desk.whatsappNote ? (
-                    <p className="flex items-center gap-2 text-xs text-amber-600 italic">
-                      <Phone className="w-4 h-4" /> {desk.whatsappNote}
-                    </p>
+                  ) : null}
+                  {desk.phone ? (
+                    <div className="flex items-center gap-2 text-xs text-neutral-500">
+                      <Phone className="w-3.5 h-3.5 text-neutral-400" /> {desk.phone}
+                    </div>
                   ) : null}
                 </div>
-                <ul className="mt-4 space-y-1">
+                <ul className="mt-4 space-y-1 pt-3 border-t border-neutral-100">
                   {desk.handles.map((h) => (
                     <li key={h} className="text-xs text-neutral-500 flex items-start gap-1.5">
                       <span className="text-[#ff6a00] mt-0.5">•</span> {h}
@@ -269,15 +317,30 @@ export function ContactPageClient() {
         </div>
       </section>
 
-      {/* Map placeholder note */}
+      {/* Map & Office Address */}
       <section className="py-8 px-4 bg-neutral-50 border-t border-neutral-200">
-        <div className="max-w-5xl mx-auto flex items-start gap-3">
-          <MapPin className="w-5 h-5 text-neutral-400 flex-shrink-0 mt-0.5" />
-          <p className="text-neutral-500 text-sm">
-            <strong className="text-neutral-700">Registered address:</strong> Pending formal corporate registration
-            publication. Physical office details will be listed here upon confirmation. All correspondence
-            and documentation is handled via the email addresses above.
-          </p>
+        <div className="max-w-5xl mx-auto space-y-4">
+          {contact?.googleMapUrl ? (
+            <div className="w-full h-80 rounded-none overflow-hidden border border-neutral-300 shadow-xs mb-4">
+              <iframe
+                src={contact.googleMapUrl}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Tokyo Operations Desk Location"
+              />
+            </div>
+          ) : null}
+          <div className="flex items-start gap-3">
+            <MapPin className="w-5 h-5 text-[#ff6a00] flex-shrink-0 mt-0.5" />
+            <p className="text-neutral-600 text-sm">
+              <strong className="text-neutral-900">Tokyo Headquarters Operations Desk:</strong> {hubAddress}.
+              Official vehicle export inspections and container/Ro-Ro bill of lading processing handled direct from Tokyo and Yokohama yards.
+            </p>
+          </div>
         </div>
       </section>
     </main>

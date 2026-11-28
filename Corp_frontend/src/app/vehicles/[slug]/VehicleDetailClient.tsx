@@ -36,6 +36,7 @@ import { getReviewState, getVehicleReview } from '@/data/reviews';
 import { getEffectivePrice, getVehicleOffer } from '@/data/offers';
 import { markets, vehicles } from '@/data';
 import { VehicleCard } from '@/components/VehicleCard';
+import { fetchLiveVehicles } from '@/lib/api';
 
 export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
   const router = useRouter();
@@ -63,6 +64,14 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
   const [formSubmitted, setFormSubmitted] = useState<null | { leadId: string; routedTo: string }>(null);
   const [formError, setFormError] = useState('');
 
+  // Load live vehicles from DB for alternative recommendations
+  const [liveVehicles, setLiveVehicles] = useState(vehicles);
+  React.useEffect(() => {
+    fetchLiveVehicles()
+      .then((v) => { if (v && v.length > 0) setLiveVehicles(v); })
+      .catch(() => {});
+  }, []);
+
   // 3-Question Matrix evaluation
   const activeDest = destinationSlug;
   const currentMarket = markets.find((m) => m.slug === activeDest);
@@ -76,8 +85,8 @@ export function VehicleDetailClient({ vehicle }: { vehicle: Vehicle }) {
   const isSold = vehicle.availability === 'Sold';
   const isReserved = vehicle.availability === 'Reserved';
 
-  // Find alternatives if sold or for cross-recommendations
-  const alternativeVehicles = vehicles
+  // Find alternatives from live DB vehicles (includes admin-uploaded vehicles)
+  const alternativeVehicles = liveVehicles
     .filter((v) => v.stockId !== vehicle.stockId && v.availability !== 'Sold')
     .slice(0, 3);
 

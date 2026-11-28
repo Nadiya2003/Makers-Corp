@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Save, Loader2, Layout, Mail, Phone, MapPin, Share2, Upload, Type, Globe } from 'lucide-react';
 import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
+import { broadcastSettingsUpdated } from '@/context/SettingsContext';
 
 export default function AppearanceManagement() {
   const [loading, setLoading] = useState(true);
@@ -11,12 +12,12 @@ export default function AppearanceManagement() {
   const [isDirty, setIsDirty] = useState(false);
   const savedRef = useRef<string>('');
   const [settings, setSettings] = useState({
-    siteName: '',
+    siteName: 'Makers Corp Japan',
     logo: '',
     header: {
-      contactNumber: '',
-      whatsappNumber: '',
-      tagline: 'IMPORT YOUR DREAM'
+      contactNumber: '+81 3-5555-0199',
+      whatsappNumber: '+81 90-1234-5678',
+      tagline: 'VEHICLES SOURCED FROM JAPAN'
     },
     footer: {
       logo: '',
@@ -185,7 +186,7 @@ export default function AppearanceManagement() {
     setSaving(true);
     setMessage('');
     try {
-      const token = sessionStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken') || localStorage.getItem('adminToken');
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/settings`, {
         method: 'PUT',
         headers: {
@@ -197,9 +198,15 @@ export default function AppearanceManagement() {
 
       const data = await res.json();
       if (data.success) {
+        if (data.data) {
+          try {
+            localStorage.setItem('mcj_site_settings', JSON.stringify(data.data));
+          } catch {}
+        }
+        broadcastSettingsUpdated();
         savedRef.current = JSON.stringify(settings);
         setIsDirty(false);
-        setMessage('Appearance updated successfully!');
+        setMessage('Appearance updated successfully and synced live!');
         setTimeout(() => setMessage(''), 3000);
       } else {
         setMessage('Error saving settings: ' + data.message);

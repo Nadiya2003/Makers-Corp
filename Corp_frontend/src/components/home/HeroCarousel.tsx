@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSettings } from '@/context/SettingsContext';
 import {
   ChevronLeft,
   ChevronRight,
@@ -163,22 +164,45 @@ const CAROUSEL_SLIDES: SlideConfig[] = [
 ];
 
 export function HeroCarousel() {
+  const { settings } = useSettings();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+
+  const slides: SlideConfig[] = useMemo(() => {
+    if (settings?.homepage?.heroSlides && settings.homepage.heroSlides.length > 0) {
+      return settings.homepage.heroSlides.map((s, idx) => ({
+        id: s.id || `slide-${idx}`,
+        tag: s.badge || 'Japanese Vehicle Export · Worldwide Shipping',
+        headline: s.title || 'FROM JAPAN TO THE GLOBE',
+        description: s.subtitle || '',
+        primaryCta: {
+          text: s.ctaPrimary?.text || 'Explore Vehicles',
+          href: s.ctaPrimary?.link || '/vehicles',
+        },
+        secondaryCta: s.ctaSecondary?.link ? {
+          text: s.ctaSecondary.text || 'Request Export Enquiry',
+          href: s.ctaSecondary.link,
+        } : undefined,
+        imageSrc: s.image || CAROUSEL_SLIDES[0].imageSrc,
+        imageAlt: s.title || 'Japanese Vehicle Export',
+      }));
+    }
+    return CAROUSEL_SLIDES;
+  }, [settings?.homepage?.heroSlides]);
 
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev === 0 ? CAROUSEL_SLIDES.length - 1 : prev - 1));
-  }, []);
+    setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  }, [slides.length]);
 
   const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev === CAROUSEL_SLIDES.length - 1 ? 0 : prev + 1));
-  }, []);
+    setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  }, [slides.length]);
 
   // Automatic slide movement every 5 seconds (5000ms), paused on hover/focus/reduced motion
   useEffect(() => {
@@ -237,7 +261,7 @@ export function HeroCarousel() {
     touchEndX.current = null;
   };
 
-  const currentSlide = CAROUSEL_SLIDES[currentIndex];
+  const currentSlide = slides[currentIndex] || slides[0] || CAROUSEL_SLIDES[0];
 
   return (
     <section
@@ -258,7 +282,7 @@ export function HeroCarousel() {
       {/* ============================================================== */}
       <div className="hidden md:block relative w-full h-[460px] lg:h-[500px] bg-[#111111]">
         {/* Full-Width Background Photo with Smooth Fade Transition */}
-        {CAROUSEL_SLIDES.map((slide, index) => {
+        {slides.map((slide, index) => {
           const isActive = index === currentIndex;
           return (
             <div
@@ -357,7 +381,7 @@ export function HeroCarousel() {
           <div className="flex items-center justify-between pt-4 border-t border-neutral-800/80 pointer-events-auto">
             {/* Small Slide Indicator Dots */}
             <div className="flex items-center gap-2" role="tablist" aria-label="Slide indicators">
-              {CAROUSEL_SLIDES.map((slide, idx) => {
+              {slides.map((slide, idx) => {
                 const isSelected = idx === currentIndex;
                 return (
                   <button
@@ -492,7 +516,7 @@ export function HeroCarousel() {
           {/* Mobile Indicators & Controls */}
           <div className="pt-3 border-t border-neutral-800 flex items-center justify-between">
             <div className="flex items-center gap-1.5">
-              {CAROUSEL_SLIDES.map((slide, idx) => (
+              {slides.map((slide, idx) => (
                 <button
                   key={slide.id}
                   type="button"

@@ -4,6 +4,8 @@ import { HeroCompactSearch } from '@/components/home/HeroCompactSearch';
 import { CampaignBannerStrip } from '@/components/home/CampaignBannerStrip';
 import { VehicleDiscoveryExperience } from '@/components/home/VehicleDiscoveryExperience';
 import { LatestVehiclesSection } from '@/components/home/LatestVehiclesSection';
+import { PopularModelsSection } from '@/components/home/PopularModelsSection';
+import { CustomerReviewsSection } from '@/components/home/CustomerReviewsSection';
 import { MediaCenterPreview } from '@/components/home/MediaCenterPreview';
 import { ShopByDestination } from '@/components/home/ShopByDestination';
 import { TrustAndProcess } from '@/components/home/TrustAndProcess';
@@ -26,13 +28,19 @@ export default function HomePage() {
       {/* 5. Latest Vehicles in Japan (Physical stock cards) */}
       <LatestVehiclesSection />
 
-      {/* 6. Makers Corp Japan Media Center (News & Reviews Editorial Preview) */}
+      {/* 6. Popular JDM Models (High-demand export vehicles) */}
+      <PopularModelsSection />
+
+      {/* 7. Makers Corp Japan Media Center (News & Reviews Editorial Preview) */}
       <MediaCenterPreview />
 
-      {/* 7. Shop by Destination (India & Sri Lanka featured) */}
+      {/* 8. Verified Global Customer Reviews & Testimonials */}
+      <CustomerReviewsSection />
+
+      {/* 9. Shop by Destination (India & Sri Lanka featured) */}
       <ShopByDestination />
 
-      {/* 8. Conclude with trust and export process */}
+      {/* 10. Conclude with trust and export process */}
       <TrustAndProcess />
     </main>
   );

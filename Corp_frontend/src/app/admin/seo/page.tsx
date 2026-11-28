@@ -13,6 +13,7 @@ import {
   FileText
 } from 'lucide-react';
 import { useUnsavedChanges } from '@/lib/useUnsavedChanges';
+import { broadcastSettingsUpdated } from '@/context/SettingsContext';
 
 export default function SeoSettings() {
   const [loading, setLoading] = useState(true);
@@ -64,7 +65,7 @@ export default function SeoSettings() {
     if (e) e.preventDefault();
     setSubmitting(true);
     try {
-      const token = sessionStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken') || localStorage.getItem('adminToken');
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
       const res = await fetch(`${apiUrl}/settings`, {
         method: 'PUT',
@@ -76,9 +77,15 @@ export default function SeoSettings() {
       });
       const data = await res.json();
       if (data.success) {
+        if (data.data) {
+          try {
+            localStorage.setItem('mcj_site_settings', JSON.stringify(data.data));
+          } catch {}
+        }
+        broadcastSettingsUpdated();
         savedRef.current = JSON.stringify(seoData);
         setIsDirty(false);
-        showStatus('success', 'SEO configuration updated successfully.');
+        showStatus('success', 'SEO configuration updated and synchronized live.');
       } else {
         showStatus('error', data.message || 'Update failed.');
       }
@@ -94,8 +101,8 @@ export default function SeoSettings() {
   return (
     <div className="space-y-8 max-w-4xl">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2 font-black uppercase tracking-tighter">SEO & Search Analytics</h1>
-        <p className="text-gray-500 font-medium text-sm">Optimize how Makers Ceylon appears in Google and other search engines.</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2 font-black uppercase tracking-tighter">SEO & Search Metadata</h1>
+        <p className="text-gray-500 font-medium text-sm">Optimize how Makers Corp Japan appears in Google and international search engines.</p>
       </div>
 
       {statusMessage && (

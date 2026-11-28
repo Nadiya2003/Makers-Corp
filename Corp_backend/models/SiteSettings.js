@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const siteSettingsSchema = new mongoose.Schema({
-  siteName: { type: String, default: 'Makers Ceylon' },
+  siteName: { type: String, default: 'Makers Corp Japan' },
+  tagline: { type: String, default: 'Vehicles Sourced From Japan' },
   logo: { type: String, default: '' },
   favicon: { type: String, default: '' },
   
@@ -11,9 +12,11 @@ const siteSettingsSchema = new mongoose.Schema({
       { label: { type: String }, url: { type: String } }
     ],
     showSearch: { type: Boolean, default: true },
-    contactNumber: { type: String, default: '' },
-    whatsappNumber: { type: String, default: '' },
-    tagline: { type: String, default: 'IMPORT YOUR DREAM' }
+    contactNumber: { type: String, default: '+81 3-5555-0199' },
+    whatsappNumber: { type: String, default: '+81 90-1234-5678' },
+    announcementTicker: [
+      { text: { type: String }, link: { type: String }, external: { type: Boolean, default: false } }
+    ]
   },
 
   // Footer Management
@@ -21,144 +24,177 @@ const siteSettingsSchema = new mongoose.Schema({
     logo: { type: String, default: '' },
     image: { type: String, default: '' },
     imageVisible: { type: Boolean, default: true },
-    aboutText: { type: String, default: '' },
-    address: { type: String, default: '' },
-    email: { type: String, default: '' },
-    phone: { type: String, default: '' },
+    aboutText: { type: String, default: 'Premier Japanese automobile exporter specializing in verified physical yard inventory, professional JEVIC/JAAI compliance audits, and worldwide container & Ro-Ro vessel shipping.' },
+    address: { type: String, default: 'Makers Building, 4-12-8 Ginza, Chuo-ku, Tokyo 104-0061, Japan' },
+    email: { type: String, default: 'japan@makers-corp.com' },
+    phone: { type: String, default: '+81 3-5555-0199' },
+    workingHours: { type: String, default: 'Mon - Fri: 9:00 AM - 6:00 PM JST (UTC+9)' },
     socialLinks: [
       { platform: { type: String }, url: { type: String }, icon: { type: String }, visible: { type: Boolean, default: true } }
     ],
-    copyrightText: { type: String, default: '© 2024 Makers Ceylon. All rights reserved.' }
+    copyrightText: { type: String, default: '© 2026 MAKERS CORP JAPAN. All rights reserved. Registered Export Company No. 0100-01-192837.' }
   },
 
-  // Homepage Content
+  // Homepage Content Sections
   homepage: {
-    hero: {
-      title: { type: String, default: '' },
-      subtitle: { type: String, default: '' },
-      backgroundImage: { type: String, default: '' },
-      ctaText: { type: String, default: '' },
-      ctaLink: { type: String, default: '' },
-      noticeTitle: { type: String, default: 'LIMITED AUCTION SLOTS WEEKLY!' },
-      noticeSubtitle: { type: String, default: 'Secure your vehicle before the next auction cycle.' }
-    },
-    about: {
-      title: { type: String, default: '' },
-      description: { type: String, default: '' },
-      image: { type: String, default: '' },
-      stats: [
-        {
-          value: { type: String, default: '' },
-          label: { type: String, default: '' }
+    heroSlides: [
+      {
+        id: { type: String, default: 'slide-1' },
+        badge: { type: String, default: 'JAPANESE VEHICLE EXPORT · WORLDWIDE SHIPPING' },
+        title: { type: String, default: 'FROM JAPAN TO THE GLOBE' },
+        subtitle: { type: String, default: 'Discover exceptional Japanese vehicles sourced directly from Japan and exported to international markets. From premium SUVs and luxury 4x4s to iconic Japanese automobiles, we connect global buyers with quality vehicles from Japan through tailored sourcing and export solutions.' },
+        subBadge: { type: String, default: 'Sourced Directly from Japan (Tokyo · Yokohama · Nagoya · Kobe)' },
+        image: { type: String, default: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1920&q=80' },
+        ctaPrimary: {
+          text: { type: String, default: 'EXPLORE VEHICLES' },
+          link: { type: String, default: '/vehicles' }
+        },
+        ctaSecondary: {
+          text: { type: String, default: 'REQUEST EXPORT ENQUIRY' },
+          link: { type: String, default: '/request-a-vehicle' }
         }
-      ]
-    },
-    services: [
-      { title: { type: String }, description: { type: String }, icon: { type: String } }
+      }
     ],
-    whyChooseUs: {
-      subtitle: { type: String, default: 'The Ceylon Advantage' },
-      title: { type: String, default: 'Why Choose Us' },
-      backgroundImage: { type: String, default: '' },
-      reasons: [
-        {
-          icon: { type: String, default: 'CheckCircle' },
-          title: { type: String, default: '' },
-          desc: { type: String, default: '' }
-        }
-      ]
+    searchConfig: {
+      quickSearches: { type: [String], default: ['Toyota SUVs', 'India Reviewed', 'Sri Lanka Stock'] },
+      destinationMarkets: { type: [String], default: ['Global', 'India', 'Sri Lanka', 'Pakistan', 'United Kingdom', 'Kenya', 'Tanzania', 'Uganda', 'Cyprus', 'New Zealand', 'Australia', 'Guyana', 'Jamaica'] }
     },
-    howItWorks: {
-      subtitle: { type: String, default: 'Simple Process' },
-      title: { type: String, default: 'How It Works' },
-      description: { type: String, default: "Importing a vehicle doesn't have to be complicated. We've streamlined the process into 4 simple steps." },
-      backgroundImage: { type: String, default: '' },
-      steps: [
-        {
-          icon: { type: String, default: 'Search' },
-          title: { type: String, default: '' },
-          description: { type: String, default: '' }
-        }
-      ]
+    campaignHighlights: [
+      {
+        id: { type: String, default: 'india-market' },
+        market: { type: String, default: 'INDIA MARKET' },
+        badge: { type: String, default: 'PRIORITY ROUTE' },
+        title: { type: String, default: 'Explore Japan-Sourced Vehicles' },
+        description: { type: String, default: 'Direct homologation checks & JNPT / Chennai shipping for luxury SUVs & sports stock.' },
+        linkText: { type: String, default: 'Explore India' },
+        linkUrl: { type: String, default: '/destinations/asia/india' },
+        isExternal: { type: Boolean, default: false }
+      },
+      {
+        id: { type: String, default: 'sri-lanka-market' },
+        market: { type: String, default: 'SRI LANKA MARKET' },
+        badge: { type: String, default: 'MAKERS CEYLON' },
+        title: { type: String, default: 'Explore Vehicles & Local Support' },
+        description: { type: String, default: 'Official vehicle export partner MAKERS CEYLON. Bank LC coordination & Colombo port delivery.' },
+        linkText: { type: String, default: 'Visit MAKERS CEYLON' },
+        linkUrl: { type: String, default: 'https://makersceylon.com/' },
+        isExternal: { type: Boolean, default: true }
+      },
+      {
+        id: { type: String, default: 'export-guide' },
+        market: { type: String, default: 'Export Process' },
+        badge: { type: String, default: '' },
+        title: { type: String, default: 'A Step-by-Step Export Guide' },
+        description: { type: String, default: 'Clear breakdown of JEVIC audits, FOB/CIF terms, ocean freight tracking, and delivery.' },
+        linkText: { type: String, default: 'Read the Guide' },
+        linkUrl: { type: String, default: '/how-to-buy' },
+        isExternal: { type: Boolean, default: false }
+      },
+      {
+        id: { type: String, default: 'made-to-order' },
+        market: { type: String, default: 'MADE-TO-ORDER' },
+        badge: { type: String, default: '' },
+        title: { type: String, default: "Tell Us What You're Looking For" },
+        description: { type: String, default: "Can't find your specific model or trim? We source directly from Japanese dealer & auction networks." },
+        linkText: { type: String, default: 'Request a Vehicle' },
+        linkUrl: { type: String, default: '/request-a-vehicle' },
+        isExternal: { type: Boolean, default: false }
+      }
+    ],
+    categoryDiscovery: {
+      passengerTitle: { type: String, default: 'VEHICLES' },
+      passengerSubtitle: { type: String, default: 'Passenger Cars · Luxury SUVs · Executive MPVs · Sports · Hybrids' },
+      passengerCountLabel: { type: String, default: '8 CATEGORIES' },
+      commercialTitle: { type: String, default: 'COMMERCIAL VEHICLES' },
+      commercialSubtitle: { type: String, default: 'Isuzu, Hino, Fuso, UD Trucks · Buses · Cargo Vans · Heavy Duty' },
+      commercialCountLabel: { type: String, default: '12 CATEGORIES' },
+      spotlight: {
+        tag: { type: String, default: 'FEATURED FAMILY · 01 | JAPAN DIRECT 4X4' },
+        manufacturer: { type: String, default: 'TOYOTA MOTOR CORPORATION · TAHARA & YOSHIWARA PLANTS' },
+        title: { type: String, default: 'TOYOTA LAND CRUISER' },
+        description: { type: String, default: 'Explore the legendary Land Cruiser family. Discover iconic Japanese 4x4 vehicles engineered for exceptional performance, durability, and off-road capability. Covering all major generations from the modern 300 & 250 series to the heavy-duty 70, 200, and Prado lines.' },
+        image: { type: String, default: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80' },
+        generations: [
+          {
+            code: { type: String, default: '300 Series' },
+            name: { type: String, default: 'LC GEN 300 Series' },
+            link: { type: String, default: '/vehicles?model=Land%20Cruiser%20300' }
+          },
+          {
+            code: { type: String, default: '250 Series' },
+            name: { type: String, default: 'LC GEN 250 Series' },
+            link: { type: String, default: '/vehicles?model=Land%20Cruiser%20250' }
+          },
+          {
+            code: { type: String, default: '70 Series' },
+            name: { type: String, default: 'LC GEN 70 Series' },
+            link: { type: String, default: '/vehicles?model=Land%20Cruiser%2070' }
+          },
+          {
+            code: { type: String, default: '200 Series' },
+            name: { type: String, default: 'LC GEN 200 Series' },
+            link: { type: String, default: '/vehicles?model=Land%20Cruiser%20200' }
+          },
+          {
+            code: { type: String, default: 'Prado 150' },
+            name: { type: String, default: 'LC GEN Prado 150' },
+            link: { type: String, default: '/vehicles?model=Prado%20150' }
+          },
+          {
+            code: { type: String, default: 'Prado 120' },
+            name: { type: String, default: 'LC GEN Prado 120' },
+            link: { type: String, default: '/vehicles?model=Prado%20120' }
+          }
+        ],
+        ctaPrimaryText: { type: String, default: 'EXPLORE LAND CRUISER SERIES' },
+        ctaPrimaryLink: { type: String, default: '/vehicles?make=Toyota&model=Land+Cruiser' },
+        ctaSecondaryText: { type: String, default: 'VIEW IN-STOCK (FOB JAPAN)' },
+        ctaSecondaryLink: { type: String, default: '/vehicles' }
+      }
+    },
+    latestVehiclesSection: {
+      tag: { type: String, default: 'LIVE INVENTORY FEED · TOKYO & YOKOHAMA YARDS' },
+      title: { type: String, default: 'Latest Vehicles in Japan' },
+      subtitle: { type: String, default: 'Physical export inventory inspected and ready for container or Ro-Ro booking' },
+      bannerImage: { type: String, default: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?auto=format&fit=crop&w=1920&q=80' },
+      viewAllText: { type: String, default: 'View Full Inventory' }
     }
   },
 
   // SEO Settings
   seo: {
-    metaTitle: { type: String, default: '' },
-    metaDescription: { type: String, default: '' },
-    keywords: { type: String, default: '' }
+    metaTitle: { type: String, default: 'Makers Corp Japan | Verified Physical Export Inventory' },
+    metaDescription: { type: String, default: 'Direct Japanese vehicle exporter. Verified physical inventory in Tokyo & Yokohama yards, certified JEVIC inspections, and global shipping.' },
+    keywords: { type: String, default: 'Japanese vehicle export, Tokyo cars, FOB Japan, JEVIC certified, Land Cruiser export, Japan auto auction' }
   },
 
   // Theme Colors
   theme: {
-    primaryColor: { type: String, default: '#000000' },
-    secondaryColor: { type: String, default: '#ffffff' },
-    accentColor: { type: String, default: '#fbbf24' }
+    primaryColor: { type: String, default: '#ff6a00' },
+    secondaryColor: { type: String, default: '#111111' },
+    accentColor: { type: String, default: '#ff6a00' }
   },
 
   // About Page
   aboutPage: {
-    title: { type: String, default: 'About Makers Ceylon' },
-    content: { type: String, default: '' },
-    image: { type: String, default: '' },
-    mission: { type: String, default: '' },
-    vision: { type: String, default: '' },
-    directorsBg: { type: String, default: '' },
-    galleryImages: [{ type: String }],
-    directors: [
-      {
-        name: { type: String, default: '' },
-        role: { type: String, default: '' },
-        bio: { type: String, default: '' },
-        image: { type: String, default: '' }
-      }
-    ]
+    title: { type: String, default: 'About Makers Corp Japan' },
+    tagline: { type: String, default: 'Precision Japanese Vehicle Export Operations' },
+    content: { type: String, default: 'Headquartered in Tokyo with secure staging yards across Yokohama and Nagoya, Makers Corp Japan connects international dealers and private clients directly to verified Japanese physical automobile inventory.' },
+    image: { type: String, default: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=80' },
+    mission: { type: String, default: 'To provide unmatched transparency, verified vehicle condition standards, and seamless international maritime logistics for global automotive buyers.' },
+    vision: { type: String, default: 'To be the most trusted Japanese automotive export partner worldwide, known for authentic stock and zero-compromise inspection standards.' }
   },
 
   // Contact Page
   contactPage: {
-    title: { type: String, default: 'Contact Us' },
-    description: { type: String, default: '' },
-    workingHours: { type: String, default: 'Mon - Fri: 9:00 AM - 6:00 PM' },
+    title: { type: String, default: 'Contact Tokyo Export Operations' },
+    description: { type: String, default: 'Reach our direct export desk in Tokyo for stock inquiries, custom auction sourcing, and CIF freight calculations.' },
+    workingHours: { type: String, default: 'Mon - Fri: 9:00 AM - 6:00 PM JST (UTC+9)' },
+    phone: { type: String, default: '+81 3-5555-0199' },
+    email: { type: String, default: 'japan@makers-corp.com' },
+    address: { type: String, default: 'Makers Building, 4-12-8 Ginza, Chuo-ku, Tokyo 104-0061, Japan' },
     googleMapUrl: { type: String, default: '' }
-  },
-
-  // Popup Ad Settings
-  popupAd: {
-    enabled:     { type: Boolean, default: false },
-    title:       { type: String, default: 'Special Offer!' },
-    description: { type: String, default: '' },
-    image:       { type: String, default: '' },
-    badgeText:   { type: String, default: 'New Feature' },
-    buttonText:  { type: String, default: 'Learn More' },
-    buttonLink:  { type: String, default: '/' },
-    dismissText: { type: String, default: 'Maybe Later' }
-  },
-
-  // Vehicle Specifications Settings
-  vehicleSpecs: {
-    type: [
-      {
-        key: { type: String, required: true },
-        label: { type: String, required: true },
-        icon: { type: String, default: 'Info' },
-        visible: { type: Boolean, default: true },
-        isDefault: { type: Boolean, default: false },
-        order: { type: Number, default: 0 }
-      }
-    ],
-    default: [
-      { key: 'year',         label: 'Year',         icon: 'Calendar', visible: true,  isDefault: true,  order: 0 },
-      { key: 'fuel',         label: 'Fuel Type',    icon: 'Fuel',     visible: true,  isDefault: true,  order: 1 },
-      { key: 'transmission', label: 'Transmission', icon: 'Settings', visible: true,  isDefault: true,  order: 2 },
-      { key: 'engine',       label: 'Engine',       icon: 'Zap',      visible: true,  isDefault: true,  order: 3 },
-      { key: 'mileage',      label: 'Mileage',      icon: 'Gauge',    visible: true,  isDefault: true,  order: 4 },
-      { key: 'drive',        label: 'Drive Type',   icon: 'Info',     visible: true,  isDefault: true,  order: 5 },
-      { key: 'seats',        label: 'Seats',        icon: 'Users',    visible: true,  isDefault: true,  order: 6 },
-      { key: 'color',        label: 'Color',        icon: 'Palette',  visible: true,  isDefault: true,  order: 7 }
-    ]
   }
-}, { timestamps: true });
+}, { timestamps: true, strict: false });
 
 module.exports = mongoose.model('SiteSettings', siteSettingsSchema);

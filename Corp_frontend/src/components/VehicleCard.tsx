@@ -9,6 +9,16 @@ import { useMarket } from '@/context/MarketContext';
 import { getReviewState } from '@/data/reviews';
 import { getEffectivePrice } from '@/data/offers';
 
+// Resolve relative backend image paths (local upload fallback) to absolute URLs
+const BACKEND_BASE = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/api$/, '');
+function resolveImgUrl(url: string): string {
+  if (!url) return url;
+  if (url.startsWith('/public/') || url.startsWith('/uploads/')) {
+    return `${BACKEND_BASE}${url}`;
+  }
+  return url;
+}
+
 interface VehicleCardProps {
   vehicle: Vehicle;
   destinationOverride?: string | null;
@@ -49,7 +59,7 @@ export function VehicleCard({ vehicle, destinationOverride, priority = false }: 
       {/* 1. Large, High-Quality Vehicle Photograph */}
       <Link href={`/vehicles/${vehicle.slug}`} className="relative block aspect-[16/10] bg-neutral-100 overflow-hidden rounded-none">
         <Image
-          src={vehicle.images[0] || '/images/vehicle.jpg'}
+          src={resolveImgUrl(vehicle.images[0] || '/images/vehicle.jpg')}
           alt={`${vehicle.year} ${vehicle.make} ${vehicle.model} - ${vehicle.stockId}`}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

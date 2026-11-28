@@ -13,6 +13,8 @@ const settingsRoutes = require("./routes/settingsRoutes");
 const mediaRoutes = require("./routes/mediaRoutes");
 const auctionRoutes = require("./routes/auctionRoutes");
 const mapResolveRoute = require("./routes/mapResolveRoute");
+const articleRoutes = require("./routes/articleRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 
 const app = express();
 
@@ -21,6 +23,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use("/public", express.static("public"));
+app.use("/uploads", express.static("public/uploads"));
 
 // Normalize http://makersceylon.com image URLs to https://makersceylon.com in all API responses
 app.use((req, res, next) => {
@@ -52,10 +55,12 @@ app.use("/api/settings", settingsRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api/auctions", auctionRoutes);
 app.use("/api/map-resolve", mapResolveRoute);
+app.use("/api/articles", articleRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", message: "Ceylon Imports API is running" });
+  res.json({ status: "ok", message: "Makers Corp Japan API is running" });
 });
 
 // ─── 404 Handler ─────────────────────────────────────────────────────────────

@@ -511,14 +511,14 @@ export function VehicleDiscoveryExperience() {
             <button
               type="button"
               onClick={() => handleDivisionChange('vehicles')}
-              className={`relative flex items-center justify-between p-4 sm:p-5 text-left transition-all duration-200 rounded-none ${division === 'vehicles'
-                  ? 'bg-neutral-900 text-white shadow-md'
+              className={`relative flex items-center justify-between p-3.5 sm:p-4 text-left transition-all duration-200 rounded-xl overflow-hidden ${division === 'vehicles'
+                  ? 'bg-[#111111] text-white shadow-lg border border-neutral-700'
                   : 'bg-white text-neutral-800 hover:bg-neutral-50 border border-neutral-200'
                 }`}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-3 sm:gap-4 relative z-10">
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shrink-0 rounded-none transition-colors ${division === 'vehicles' ? 'bg-[#ff6a00] text-white' : 'bg-neutral-100 text-neutral-700'
+                  className={`w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center shrink-0 rounded-lg transition-colors ${division === 'vehicles' ? 'bg-[#ff6a00] text-white' : 'bg-neutral-100 text-neutral-700'
                     }`}
                 >
                   <Car className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -529,19 +529,19 @@ export function VehicleDiscoveryExperience() {
                       DIVISION 01
                     </span>
                     <span
-                      className={`text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider ${division === 'vehicles'
+                      className={`text-[9px] px-1.5 py-0.5 font-mono uppercase tracking-wider rounded ${division === 'vehicles'
                           ? 'bg-neutral-800 text-neutral-300'
                           : 'bg-neutral-200 text-neutral-600'
                         }`}
                     >
-                      8 Categories
+                      8 CATEGORIES
                     </span>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight mt-0.5">
-                    Vehicles
+                  <h3 className="text-base sm:text-lg font-black uppercase tracking-tight mt-0.5">
+                    VEHICLES
                   </h3>
                   <p
-                    className={`text-xs mt-0.5 line-clamp-1 font-medium ${division === 'vehicles' ? 'text-neutral-300' : 'text-neutral-500'
+                    className={`text-[11px] sm:text-xs mt-0.5 line-clamp-1 font-medium ${division === 'vehicles' ? 'text-neutral-400' : 'text-neutral-500'
                       }`}
                   >
                     Passenger Cars · Luxury SUVs · Executive MPVs · Sports · Hybrids
@@ -549,26 +549,38 @@ export function VehicleDiscoveryExperience() {
                 </div>
               </div>
 
-              {division === 'vehicles' && (
-                <div className="hidden sm:flex items-center text-[#ff6a00] text-xs font-mono font-bold uppercase tracking-wider gap-1">
-                  <span>Active</span>
-                  <span className="w-2 h-2 bg-[#ff6a00] rounded-full animate-pulse" />
+              {/* Vehicle Thumbnail Background / Right Thumbnail */}
+              <div className="relative shrink-0 flex items-center gap-2.5 z-10 pl-2">
+                <div className="relative w-20 sm:w-28 h-12 sm:h-14 rounded-lg overflow-hidden border border-neutral-700/60 hidden xs:block">
+                  <Image
+                    src="/images/Lexus LX at the Harbor.png"
+                    alt="Vehicles Passenger Cars"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#111111]/80 via-transparent to-transparent" />
                 </div>
-              )}
+                {division === 'vehicles' && (
+                  <div className="flex items-center text-[#ff6a00] text-[11px] font-mono font-bold uppercase tracking-wider gap-1 shrink-0">
+                    <span>ACTIVE</span>
+                    <span className="w-2 h-2 bg-[#ff6a00] rounded-sm" />
+                  </div>
+                )}
+              </div>
             </button>
 
             {/* Division B: COMMERCIAL VEHICLES */}
             <button
               type="button"
               onClick={() => handleDivisionChange('commercial')}
-              className={`relative flex items-center justify-between p-4 sm:p-5 text-left transition-all duration-200 rounded-none ${division === 'commercial'
-                  ? 'bg-neutral-900 text-white shadow-md'
+              className={`relative flex items-center justify-between p-3.5 sm:p-4 text-left transition-all duration-200 rounded-xl overflow-hidden ${division === 'commercial'
+                  ? 'bg-[#111111] text-white shadow-lg border border-neutral-700'
                   : 'bg-white text-neutral-800 hover:bg-neutral-50 border border-neutral-200'
                 }`}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-3 sm:gap-4 relative z-10">
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shrink-0 rounded-none transition-colors ${division === 'commercial' ? 'bg-[#ff6a00] text-white' : 'bg-neutral-100 text-neutral-700'
+                  className={`w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center shrink-0 rounded-lg transition-colors ${division === 'commercial' ? 'bg-[#ff6a00] text-white' : 'bg-neutral-100 text-neutral-700'
                     }`}
                 >
                   <Truck className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -579,19 +591,19 @@ export function VehicleDiscoveryExperience() {
                       DIVISION 02
                     </span>
                     <span
-                      className={`text-[9px] px-1.5 py-0.2 font-mono uppercase tracking-wider ${division === 'commercial'
+                      className={`text-[9px] px-1.5 py-0.5 font-mono uppercase tracking-wider rounded ${division === 'commercial'
                           ? 'bg-neutral-800 text-neutral-300'
                           : 'bg-neutral-200 text-neutral-600'
                         }`}
                     >
-                      12 Categories
+                      12 CATEGORIES
                     </span>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight mt-0.5">
-                    Commercial Vehicles
+                  <h3 className="text-base sm:text-lg font-black uppercase tracking-tight mt-0.5">
+                    COMMERCIAL VEHICLES
                   </h3>
                   <p
-                    className={`text-xs mt-0.5 line-clamp-1 font-medium ${division === 'commercial' ? 'text-neutral-300' : 'text-neutral-500'
+                    className={`text-[11px] sm:text-xs mt-0.5 line-clamp-1 font-medium ${division === 'commercial' ? 'text-neutral-400' : 'text-neutral-500'
                       }`}
                   >
                     Isuzu, Hino, Fuso, UD Trucks · Buses · Cargo Vans · Heavy Duty
@@ -599,12 +611,24 @@ export function VehicleDiscoveryExperience() {
                 </div>
               </div>
 
-              {division === 'commercial' && (
-                <div className="hidden sm:flex items-center text-[#ff6a00] text-xs font-mono font-bold uppercase tracking-wider gap-1">
-                  <span>Active</span>
-                  <span className="w-2 h-2 bg-[#ff6a00] rounded-full animate-pulse" />
+              {/* Commercial Truck Thumbnail on Right */}
+              <div className="relative shrink-0 flex items-center gap-2.5 z-10 pl-2">
+                <div className="relative w-20 sm:w-28 h-12 sm:h-14 rounded-lg overflow-hidden border border-neutral-300/60 hidden xs:block">
+                  <Image
+                    src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=400&q=80"
+                    alt="Japanese Commercial Trucks Fleet"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-neutral-900/40 via-transparent to-transparent" />
                 </div>
-              )}
+                {division === 'commercial' && (
+                  <div className="flex items-center text-[#ff6a00] text-[11px] font-mono font-bold uppercase tracking-wider gap-1 shrink-0">
+                    <span>ACTIVE</span>
+                    <span className="w-2 h-2 bg-[#ff6a00] rounded-sm" />
+                  </div>
+                )}
+              </div>
             </button>
           </div>
         </div>
@@ -612,7 +636,9 @@ export function VehicleDiscoveryExperience() {
         {/* ================================================================= */}
         {/* INTERACTIVE BREADCRUMB BAR WITH SMOOTH DRILL-DOWN / BACK ACTIONS */}
         {/* ================================================================= */}
-        <div className="flex items-center justify-between py-3 px-4 bg-neutral-900 text-white text-xs font-mono uppercase tracking-wider border border-neutral-800 mb-8">
+        <div className="relative flex items-center justify-between py-3.5 px-5 bg-[#111111] text-white text-xs font-mono uppercase tracking-wider rounded-lg border border-neutral-800 mb-8 overflow-hidden">
+          {/* Subtle Orange Stripe on right matching reference screenshot */}
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#ff6a00]/40 via-[#ff6a00]/15 to-transparent skew-x-[-25deg] pointer-events-none" />
           <div className="flex items-center gap-2 overflow-x-auto">
             <span className="text-neutral-400">COLLECTION</span>
             <span className="text-neutral-600">/</span>
@@ -662,40 +688,40 @@ export function VehicleDiscoveryExperience() {
         {division === 'vehicles' && subView === 'overview' && (
           <div className="space-y-8 animate-fadeIn">
             {/* DOMINANT EDITORIAL SPOTLIGHT: TOYOTA LAND CRUISER FAMILY */}
-            <div className="relative bg-neutral-900 text-white overflow-hidden border border-neutral-800 shadow-lg">
+            <div className="relative bg-[#111111] text-white overflow-hidden rounded-xl border border-neutral-800 shadow-2xl">
               <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[420px]">
                 {/* Visual Imagery */}
                 <div className="lg:col-span-7 relative min-h-[280px] lg:min-h-full overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=85"
+                    src="/images/land cruiser.jpg"
                     alt="Toyota Land Cruiser 300 Series Flagship 4x4"
                     fill
                     sizes="(max-width: 1024px) 100vw, 60vw"
                     priority
                     className="object-cover object-center scale-102 hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-neutral-900 via-neutral-900/60 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#111111] via-[#111111]/40 to-transparent" />
                   <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                    <span className="px-2.5 py-1 bg-[#ff6a00] text-white text-[10px] font-mono font-black uppercase tracking-widest">
+                    <span className="px-2.5 py-1 bg-[#ff6a00] text-white text-[10px] font-mono font-black uppercase tracking-widest rounded-sm">
                       FEATURED FAMILY · 01
                     </span>
-                    <span className="px-2 py-1 bg-black/80 backdrop-blur-xs text-neutral-300 text-[10px] font-mono uppercase tracking-wider border border-neutral-700">
+                    <span className="px-2.5 py-1 bg-black/80 backdrop-blur-xs text-neutral-300 text-[10px] font-mono uppercase tracking-wider border border-neutral-700 rounded-sm">
                       JAPAN DIRECT 4X4
                     </span>
                   </div>
                 </div>
 
                 {/* Editorial Copy & Interactive Sizing */}
-                <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between z-10 bg-neutral-900/90 lg:bg-transparent">
+                <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between z-10 bg-[#111111]/95 lg:bg-transparent">
                   <div>
-                    <span className="text-xs font-mono text-neutral-400 uppercase tracking-widest block mb-1">
-                      Toyota Motor Corporation · Tahara & Yoshiwara Plants
+                    <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-widest block mb-1">
+                      TOYOTA MOTOR CORPORATION · TAHARA &amp; YOSHIWARA PLANTS
                     </span>
                     <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white leading-tight">
-                      Toyota <span className="text-[#ff6a00]">Land Cruiser</span>
+                      TOYOTA <span className="text-[#ff6a00]">LAND CRUISER</span>
                     </h3>
                     <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed mt-3 font-medium">
-                      Explore the legendary Land Cruiser family. Discover iconic Japanese 4x4 vehicles engineered for exceptional performance, durability, and off-road capability. Covering all major generations from the modern 300 & 250 series to the heavy-duty 70, 200, and Prado lines.
+                      Explore the legendary Land Cruiser family. Discover iconic Japanese 4x4 vehicles engineered for exceptional performance, durability, and off-road capability. Covering all major generation from the modern 300 &amp; 250 series to the heavy-duty 70, 200, and Prado lines.
                     </p>
 
                     {/* Generation Series Badges */}
@@ -704,7 +730,7 @@ export function VehicleDiscoveryExperience() {
                         (ser, idx) => (
                           <div
                             key={idx}
-                            className="bg-neutral-800/80 border border-neutral-700/80 px-2 py-1.5 text-center"
+                            className="bg-neutral-800/80 border border-neutral-700 px-2 py-2 text-center rounded-md"
                           >
                             <span className="block font-mono text-[9px] text-[#ff6a00] font-bold">LC GEN</span>
                             <span className="text-[11px] font-black text-white truncate block">{ser}</span>
@@ -719,16 +745,16 @@ export function VehicleDiscoveryExperience() {
                     <button
                       type="button"
                       onClick={() => setSubView('land-cruiser')}
-                      className="inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-[#ff6a00] hover:bg-[#e55f00] text-white text-xs font-black uppercase tracking-wider rounded-none transition-colors shadow-md group"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#ff6a00] hover:bg-[#e55f00] text-white text-xs font-black uppercase tracking-wider rounded-md transition-colors shadow-md group"
                     >
-                      <span>Explore Land Cruiser Series</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <span>EXPLORE LAND CRUISER SERIES →</span>
                     </button>
+
                     <Link
                       href="/vehicles?make=Toyota&model=Land+Cruiser"
-                      className="inline-flex items-center justify-center gap-2 px-4 py-3.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-bold uppercase tracking-wider rounded-none border border-neutral-700 transition-colors"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-neutral-900/90 hover:bg-neutral-800 text-white text-xs font-bold uppercase tracking-wider border border-neutral-700 rounded-md transition-colors"
                     >
-                      <span>View In-Stock (FOB Japan)</span>
+                      <span>VIEW IN-STOCK (FOB JAPAN)</span>
                     </Link>
                   </div>
                 </div>
